@@ -8,6 +8,7 @@
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+        <script src="{{ mix('js/app.js') }}"></script>
 
         <!-- Styles -->
         <style>
@@ -83,7 +84,9 @@
                 <div class="title m-b-md">
                     Laravel
                 </div>
-
+                <section id="app">
+                    <example-component></example-component>
+                </section>
                 <div class="links">
                     <a href="https://laravel.com/docs">Docs</a>
                     <a href="https://laracasts.com">Laracasts</a>
