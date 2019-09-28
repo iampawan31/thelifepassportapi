@@ -6,7 +6,22 @@
 
 require('./bootstrap');
 
-window.Vue = require('vue');
+//load custom js files
+require('./jquery-migrate.min.js');
+require('./jquery.easing.min.js');
+require('./jquery.showLoading.min.js');
+require('./modal.js');
+require('./autosize.min.js');
+require('./jquery.mask.js');
+require('./password.js');
+require('./jquery-ui.js');
+require('./select2.min.js');
+
+import Vue from 'vue';
+//import * as VeeValidate from "vee-validate";
+import Vuelidate from 'vuelidate';
+
+Vue.use(Vuelidate);
 
 /**
  * The following block of code may be used to automatically register your
@@ -19,7 +34,8 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+//Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('personalDetails', require('./components/PersonalDetails.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -28,5 +44,5 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  */
 
 const app = new Vue({
-    el: '#app',
+    el: '#page'
 });
