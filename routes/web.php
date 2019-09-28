@@ -12,5 +12,9 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('dashboard');
 });
+
+Route::get('dashboard', 'DashboardController@index')->name('dashboard');
+Route::get('personal-info', 'DashboardController@personalinfo')->name('personal-info');
+Route::get('personal-details', 'DashboardController@personaldetails')->name('personal-details');
