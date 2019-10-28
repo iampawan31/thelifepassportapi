@@ -51676,7 +51676,10 @@ __webpack_require__(/*! ./password.js */ "./resources/js/password.js");
 
 __webpack_require__(/*! ./jquery-ui.js */ "./resources/js/jquery-ui.js");
 
-__webpack_require__(/*! ./select2.min.js */ "./resources/js/select2.min.js");
+__webpack_require__(/*! ./jquery.mousewheel.min.js */ "./resources/js/jquery.mousewheel.min.js");
+
+__webpack_require__(/*! ./select2.min.js */ "./resources/js/select2.min.js"); //require('./mCustomScrollbar.concat.min.js');
+
 
  //import * as VeeValidate from "vee-validate";
 
@@ -58466,6 +58469,111 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     }
   }, globals.watchInterval);
 }, window.jQuery, window.Zepto);
+
+/***/ }),
+
+/***/ "./resources/js/jquery.mousewheel.min.js":
+/*!***********************************************!*\
+  !*** ./resources/js/jquery.mousewheel.min.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+/*!
+ * jQuery Mousewheel 3.1.13
+ *
+ * Copyright 2015 jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+!function (a) {
+   true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (a),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : undefined;
+}(function (a) {
+  function b(b) {
+    var g = b || window.event,
+        h = i.call(arguments, 1),
+        j = 0,
+        l = 0,
+        m = 0,
+        n = 0,
+        o = 0,
+        p = 0;
+
+    if (b = a.event.fix(g), b.type = "mousewheel", "detail" in g && (m = -1 * g.detail), "wheelDelta" in g && (m = g.wheelDelta), "wheelDeltaY" in g && (m = g.wheelDeltaY), "wheelDeltaX" in g && (l = -1 * g.wheelDeltaX), "axis" in g && g.axis === g.HORIZONTAL_AXIS && (l = -1 * m, m = 0), j = 0 === m ? l : m, "deltaY" in g && (m = -1 * g.deltaY, j = m), "deltaX" in g && (l = g.deltaX, 0 === m && (j = -1 * l)), 0 !== m || 0 !== l) {
+      if (1 === g.deltaMode) {
+        var q = a.data(this, "mousewheel-line-height");
+        j *= q, m *= q, l *= q;
+      } else if (2 === g.deltaMode) {
+        var r = a.data(this, "mousewheel-page-height");
+        j *= r, m *= r, l *= r;
+      }
+
+      if (n = Math.max(Math.abs(m), Math.abs(l)), (!f || f > n) && (f = n, d(g, n) && (f /= 40)), d(g, n) && (j /= 40, l /= 40, m /= 40), j = Math[j >= 1 ? "floor" : "ceil"](j / f), l = Math[l >= 1 ? "floor" : "ceil"](l / f), m = Math[m >= 1 ? "floor" : "ceil"](m / f), k.settings.normalizeOffset && this.getBoundingClientRect) {
+        var s = this.getBoundingClientRect();
+        o = b.clientX - s.left, p = b.clientY - s.top;
+      }
+
+      return b.deltaX = l, b.deltaY = m, b.deltaFactor = f, b.offsetX = o, b.offsetY = p, b.deltaMode = 0, h.unshift(b, j, l, m), e && clearTimeout(e), e = setTimeout(c, 200), (a.event.dispatch || a.event.handle).apply(this, h);
+    }
+  }
+
+  function c() {
+    f = null;
+  }
+
+  function d(a, b) {
+    return k.settings.adjustOldDeltas && "mousewheel" === a.type && b % 120 === 0;
+  }
+
+  var e,
+      f,
+      g = ["wheel", "mousewheel", "DOMMouseScroll", "MozMousePixelScroll"],
+      h = "onwheel" in document || document.documentMode >= 9 ? ["wheel"] : ["mousewheel", "DomMouseScroll", "MozMousePixelScroll"],
+      i = Array.prototype.slice;
+  if (a.event.fixHooks) for (var j = g.length; j;) {
+    a.event.fixHooks[g[--j]] = a.event.mouseHooks;
+  }
+  var k = a.event.special.mousewheel = {
+    version: "3.1.12",
+    setup: function setup() {
+      if (this.addEventListener) for (var c = h.length; c;) {
+        this.addEventListener(h[--c], b, !1);
+      } else this.onmousewheel = b;
+      a.data(this, "mousewheel-line-height", k.getLineHeight(this)), a.data(this, "mousewheel-page-height", k.getPageHeight(this));
+    },
+    teardown: function teardown() {
+      if (this.removeEventListener) for (var c = h.length; c;) {
+        this.removeEventListener(h[--c], b, !1);
+      } else this.onmousewheel = null;
+      a.removeData(this, "mousewheel-line-height"), a.removeData(this, "mousewheel-page-height");
+    },
+    getLineHeight: function getLineHeight(b) {
+      var c = a(b),
+          d = c["offsetParent" in a.fn ? "offsetParent" : "parent"]();
+      return d.length || (d = a("body")), parseInt(d.css("fontSize"), 10) || parseInt(c.css("fontSize"), 10) || 16;
+    },
+    getPageHeight: function getPageHeight(b) {
+      return a(b).height();
+    },
+    settings: {
+      adjustOldDeltas: !0,
+      normalizeOffset: !0
+    }
+  };
+  a.fn.extend({
+    mousewheel: function mousewheel(a) {
+      return a ? this.bind("mousewheel", a) : this.trigger("mousewheel");
+    },
+    unmousewheel: function unmousewheel(a) {
+      return this.unbind("mousewheel", a);
+    }
+  });
+});
 
 /***/ }),
 

@@ -13,8 +13,20 @@
 
 Route::get('/', function () {
     return redirect()->route('dashboard');
+    //return view('welcome');
 });
+
+Auth::routes();
+Auth::routes(['verify' => true]);
+
+Route::get('profile', function () {
+    // Only verified users may enter...
+})->middleware('verified');
 
 Route::get('dashboard', 'DashboardController@index')->name('dashboard');
 Route::get('personal-info', 'DashboardController@personalinfo')->name('personal-info');
 Route::get('personal-details', 'DashboardController@personaldetails')->name('personal-details');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

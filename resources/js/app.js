@@ -15,7 +15,9 @@ require('./autosize.min.js');
 require('./jquery.mask.js');
 require('./password.js');
 require('./jquery-ui.js');
+require('./jquery.mousewheel.min.js');
 require('./select2.min.js');
+//require('./mCustomScrollbar.concat.min.js');
 
 import Vue from 'vue';
 //import * as VeeValidate from "vee-validate";
