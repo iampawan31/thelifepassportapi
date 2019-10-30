@@ -67,7 +67,7 @@
             <div class="col-md-6 col-sm-12">
               <div class="field-group">
                 <label for="citizenship" class="input-label">Citizenship</label>
-                <!-- <select
+                <select
                   name="citizenship"
                   id="citizenship"
                   class="custom-select"
@@ -79,13 +79,7 @@
                   <option value="3">Son</option>
                   <option value="4">Daughter</option>
                   <option value="5">Other</option>
-                </select> -->
-
-                <vue-select class="custom-select" name="citizenship"
-                        :options="citizenship" :model.sync="result2"
-                        :searchable="true" language="en-US">
-                </vue-select>
-
+                </select>
               </div>
             </div>
             <div class="col-md-6 col-sm-12">
@@ -142,135 +136,13 @@
           </div>
 
           <h4 class="form-subhead">Email Addresses</h4>
-          <div class="field-group">
-            <div class="fields-group clearfix">
-              <input
-                type="text"
-                name="primary_email"
-                id="primary_email"
-                class="field-input field-input__first email"
-                placeholder="Email address"
-              />
-              <input
-                type="password"
-                name="primary_email_pwd"
-                id="primary_email_pwd"
-                class="field-input field-input__last"
-                placeholder="password"
-              />
-            </div>
-            <!-- <div class="add-anohter-field">
-              <div class="field-wrapper hidden">
-                <div class="fields-group clearfix">
-                  <input
-                    type="text"
-                    name="spouse_email"
-                    id="spouse_email"
-                    class="field-input field-input__first email"
-                    placeholder="Email address"
-                  />
-                  <input
-                    type="password"
-                    name="spouse_email_pwd"
-                    id="spouse_email_pwd"
-                    class="field-input field-input__last"
-                    placeholder="password"
-                  />
-                </div>
-                <a href="#" class="btn-remove"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg></a>
-              </div>
-              <div class="btn-add">
-                <a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Add another</a>
-              </div>
-            </div> -->
-          </div>
+          <email></email>
 
           <h4 class="form-subhead">Social Media</h4>
-          <div class="field-group">
-            <div class="row">
-              <div class="col-md-5">
-                <select
-                  name="social_media_type"
-                  id="social_media_type"
-                  class="custom-select"
-                  data-placeholder="Social Media Account"
-                >
-                  <option></option>
-                  <option value="1">Facebook</option>
-                  <option value="2">Twitter</option>
-                  <option value="3">Instagram</option>
-                  <option value="4">LinkedIn</option>
-                  <option value="5">YouTube</option>
-                  <option value="6">Other</option>
-                </select>
-              </div>
-              <div class="col-md-7 col-sm-12">
-                <div class="fields-group clearfix">
-                  <input
-                    type="text"
-                    name="social_username"
-                    id="social_username"
-                    class="field-input"
-                    placeholder="Username"
-                  />
-                  <input
-                    type="password"
-                    name="social_password"
-                    id="social_password"
-                    class="field-input field-input__last"
-                    placeholder="Password"
-                  />
-                </div>
-              </div>
-            </div>
-            <!-- <div class="add-anohter-field">
-              <div class="field-wrapper hidden">
-                <div class="row">
-                  <div class="col-md-5">
-                    <select
-                      name="social_media_type<?php echo $i?>"
-                      id="social_media_type<?php echo $i?>"
-                      class="custom-select"
-                      data-placeholder="Social Media Account"
-                    >
-                      <option></option>
-                      <option value="1">Facebook</option>
-                      <option value="2">Twitter</option>
-                      <option value="3">Instagram</option>
-                      <option value="4">LinkedIn</option>
-                      <option value="5">YouTube</option>
-                      <option value="6">Other</option>
-                    </select>
-                  </div>
-                  <div class="col-md-7 col-sm-12">
-                    <div class="fields-group clearfix">
-                      <input
-                        type="text"
-                        name="social_username"
-                        id="social_username"
-                        class="field-input"
-                        placeholder="Username"
-                      />
-                      <input
-                        type="password"
-                        name="social_password"
-                        id="social_password"
-                        class="field-input field-input__last"
-                        placeholder="Password"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <a href="#" class="btn-remove"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg></a>
-              </div>
-              <div class="btn-add">
-                <a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Add another</a>
-              </div>
-            </div> -->
-          </div>
+          <social></social>
 
           <h4 class="form-subhead">Current Employers including self employment</h4>
-          <div class="add-anohter-field">
+          <!-- <div class="add-anohter-field">
             <div class="field-wrapper hidden">
               <div class="form-subgroup">
                 <div class="row">
@@ -351,7 +223,8 @@
             <div class="btn-add">
                 <a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Add another</a>
             </div>
-          </div>
+          </div> -->
+          <employee></employee>
 
           <div class="field-group field-group__action clearfix">
             <input type="submit" class="field-submit btn-primary" value="Save and continue" />
@@ -364,15 +237,21 @@
 </template>
 <script>
 import DatePicker from 'vue2-datepicker';
-import VueSelect from 'vue-select';
-import phone from './Phone.vue';
+//import VueSelect from 'vue-select';
+import Phone from './Phone.vue';
+import Email from './Email.vue';
+import Social from './Social.vue';
+import Employee from './Employee.vue';
 
 import { required, email, minLength } from "vuelidate/lib/validators";
 export default {
  components: {
-    phone,
+    Phone,
+    Email,
     DatePicker,
-    VueSelect
+    Social,
+    Employee
+    //VueSelect
   },
   data() {
     return {
