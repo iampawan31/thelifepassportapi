@@ -5,8 +5,8 @@
   <div class="dashboard">
     <div class="container">
       <div class="welcome-text">
-        <p>Welcome to The Life Passport, one stop-shop to securely store all of your personal and financial information. It is the peace of mind, in knowing, those that you love will be well equipped to conveniently manage and access all of what you have built over a lifetime, when you may not be easily accessible.</p>
-        <p><a href="personal-details.php" class="btn btn__get-started">Get Started</a></p>
+        <p>{{ __('Welcome to The Life Passport, one stop-shop to securely store all of your personal and financial information. It is the peace of mind, in knowing, those that you love will be well equipped to conveniently manage and access all of what you have built over a lifetime, when you may not be easily accessible.') }}</p>
+        <p><a href="{{ route('personal-info') }}" class="btn btn__get-started">Get Started</a></p>
       </div>
       <div class="dashboard__menus">
         <ul class="clearfix">

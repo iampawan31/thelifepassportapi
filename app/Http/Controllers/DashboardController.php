@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
+    
     /**
      * Handle the incoming request.
      *
@@ -18,11 +19,11 @@ class DashboardController extends Controller
         return view('dashboard.index');
     }
 
-    public function personalinfo(Request $request) {
-        return view('dashboard.personalinfo');
-    }
+    // public function personalinfo(Request $request) {
+    //     return view('dashboard.personalinfo');
+    // }
 
-    public function personaldetails(Request $request) {
-        return view('dashboard.personaldetails');
-    }
+    // public function personaldetails(Request $request) {
+    //     return view('dashboard.personaldetails');
+    // }
 }

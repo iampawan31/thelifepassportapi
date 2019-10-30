@@ -24,8 +24,8 @@ Route::get('profile', function () {
 })->middleware('verified');
 
 Route::get('dashboard', 'DashboardController@index')->name('dashboard');
-Route::get('personal-info', 'DashboardController@personalinfo')->name('personal-info');
-Route::get('personal-details', 'DashboardController@personaldetails')->name('personal-details');
+Route::get('personal-info', 'PersonalinfoController@index')->name('personal-info');
+//Route::get('personal-details', 'PersonalinfoController@personaldetails')->name('personal-details');
 
 Auth::routes();
 
