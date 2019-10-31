@@ -2257,6 +2257,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2278,16 +2284,20 @@ __webpack_require__.r(__webpack_exports__);
       citizenshipValue: '',
       citizenshipOptions: ['op1', 'op2', 'op3'],
       dob: "",
-      citizenship: [{
-        text: "India",
-        value: "IN"
-      }, {
-        text: "United State",
-        value: "US"
-      }, {
-        text: "United Kingdom",
-        value: "UK"
-      }],
+      // citizenshipOptions: [
+      //     {
+      //         text: "India",
+      //         value: "IN"
+      //     }, 
+      //     {
+      //         text: "United State",
+      //         value: "US"
+      //     }, 
+      //     {
+      //         text: "United Kingdom",
+      //         value: "UK"
+      //     }
+      // ],
       result2: "",
       lang: {
         days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
@@ -2376,6 +2386,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -45300,8 +45311,8 @@ var render = function() {
                 staticClass: "field-input field-input__first email",
                 attrs: {
                   type: "text",
-                  name: "spouse_email",
-                  id: "spouse_email",
+                  name: "user_email",
+                  id: "user_email",
                   placeholder: "Email address",
                   value: ""
                 },
@@ -45328,8 +45339,8 @@ var render = function() {
                 staticClass: "field-input field-input__last",
                 attrs: {
                   type: "password",
-                  name: "spouse_email_pwd",
-                  id: "spouse_email_pwd",
+                  name: "email_password",
+                  id: "email_password",
                   placeholder: "password",
                   value: ""
                 },
@@ -45467,7 +45478,7 @@ var render = function() {
                     "label",
                     {
                       staticClass: "input-label",
-                      attrs: { for: "spouse_employer_name" }
+                      attrs: { for: "employer_name" }
                     },
                     [_vm._v("Employer Name")]
                   ),
@@ -45484,8 +45495,8 @@ var render = function() {
                     staticClass: "field-input",
                     attrs: {
                       type: "text",
-                      name: "spouse_employer_name",
-                      id: "spouse_employer_name",
+                      name: "employer_name",
+                      id: "employer_name",
                       placeholder: "Employer Name",
                       value: ""
                     },
@@ -45508,7 +45519,7 @@ var render = function() {
                     "label",
                     {
                       staticClass: "input-label",
-                      attrs: { for: "spouse_employer_phone" }
+                      attrs: { for: "employer_phone" }
                     },
                     [_vm._v("Employer Phone")]
                   ),
@@ -45525,8 +45536,8 @@ var render = function() {
                     staticClass: "field-input",
                     attrs: {
                       type: "text",
-                      name: "spouse_employer_phone",
-                      id: "spouse_employer_phone",
+                      name: "employer_phone",
+                      id: "employer_phone",
                       placeholder: "Phone number",
                       value: ""
                     },
@@ -45545,7 +45556,7 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "field-group" }, [
-              _c("label", { attrs: { for: "spouse_employer_address" } }, [
+              _c("label", { attrs: { for: "employer_address" } }, [
                 _vm._v("Employer Address")
               ]),
               _vm._v(" "),
@@ -45561,8 +45572,8 @@ var render = function() {
                 staticClass: "field-input",
                 attrs: {
                   rows: "2",
-                  name: "spouse_employer_address",
-                  id: "spouse_employer_address",
+                  name: "employer_address",
+                  id: "employer_address",
                   placeholder:
                     "Street Address, Town, City, State, Zipcode and country",
                   value: ""
@@ -45580,7 +45591,7 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "field-group" }, [
-              _c("label", { attrs: { for: "spouse_company_computer" } }, [
+              _c("label", { attrs: { for: "company_computer_username" } }, [
                 _vm._v("Company computer user name and password")
               ]),
               _vm._v(" "),
@@ -45598,8 +45609,8 @@ var render = function() {
                     staticClass: "field-input",
                     attrs: {
                       type: "text",
-                      name: "spouse_company_computer_un",
-                      id: "spouse_company_computer_un",
+                      name: "company_computer_username",
+                      id: "company_computer_username",
                       placeholder: "Username",
                       value: ""
                     },
@@ -45632,8 +45643,8 @@ var render = function() {
                     staticClass: "field-input",
                     attrs: {
                       type: "text",
-                      name: "spouse_company_computer_pwd",
-                      id: "spouse_company_computer_pwd",
+                      name: "company_computer_password",
+                      id: "company_computer_password",
                       placeholder: "Password",
                       value: ""
                     },
@@ -45656,7 +45667,7 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "field-group field-group__last" }, [
-              _c("label", { attrs: { for: "spouse_employer_benefits" } }, [
+              _c("label", { attrs: { for: "employee_benifits" } }, [
                 _vm._v("Benefits used")
               ]),
               _vm._v(" "),
@@ -45672,8 +45683,8 @@ var render = function() {
                 staticClass: "field-input",
                 attrs: {
                   rows: "2",
-                  name: "spouse_employer_benefits",
-                  id: "spouse_employer_benefits",
+                  name: "employee_benifits",
+                  id: "employee_benifits",
                   placeholder: "Benefits used",
                   value: ""
                 },
@@ -46054,6 +46065,8 @@ var render = function() {
                   _c("date-picker", {
                     staticClass: "field-datepicker field-input",
                     attrs: {
+                      name: "dob",
+                      id: "dob",
                       valueType: "format",
                       "first-day-of-week": 1,
                       lang: _vm.lang,
@@ -46090,6 +46103,8 @@ var render = function() {
                       _vm._v(" "),
                       _c("Select2", {
                         attrs: {
+                          name: "citizenship",
+                          id: "citizenship",
                           width: "resolve",
                           placeholder: "Select an Options",
                           options: _vm.citizenshipOptions
@@ -46368,7 +46383,8 @@ var render = function() {
                 type: "text",
                 "numeric-keyboard-toggle": "",
                 placeholder: "Phone number",
-                value: ""
+                value: "",
+                name: "phone[]"
               },
               domProps: { value: line.number },
               on: {
@@ -71658,8 +71674,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\wamp64\www\thelifepassportapi\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\wamp64\www\thelifepassportapi\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/mdprawezmusharraf/Sites/thelifepassportapi/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/mdprawezmusharraf/Sites/thelifepassportapi/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

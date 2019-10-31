@@ -48,10 +48,14 @@
               placeholder="Street Address, Town, City, State, Zipcode and country"
             ></textarea>
           </div>
+
           <phone></phone>
+          
           <div class="field-group">
             <label for="dob" class="input-label">Date of Birth</label>
             <date-picker 
+                name="dob"
+                id="dob"
                 v-model="dob" 
                 valueType="format" 
                 :first-day-of-week="1" 
@@ -68,6 +72,8 @@
               <div class="field-group">
                 <label for="citizenship" class="input-label">Citizenship</label>
                 <Select2 
+                  name="citizenship"
+                  id="citizenship"
                   width="resolve"
                   placeholder="Select an Options"
                   v-model="citizenshipValue" 
@@ -154,8 +160,8 @@ import Phone from './Phone.vue';
 import Email from './Email.vue';
 import Social from './Social.vue';
 import Employee from './Employee.vue';
-
 import { required, email, minLength } from "vuelidate/lib/validators";
+
 export default {
  components: {
     Phone,
@@ -170,20 +176,20 @@ export default {
         citizenshipValue: '',
         citizenshipOptions: ['op1', 'op2', 'op3'],
         dob: "",
-        citizenship: [
-            {
-                text: "India",
-                value: "IN"
-            }, 
-            {
-                text: "United State",
-                value: "US"
-            }, 
-            {
-                text: "United Kingdom",
-                value: "UK"
-            }
-        ],
+        // citizenshipOptions: [
+        //     {
+        //         text: "India",
+        //         value: "IN"
+        //     }, 
+        //     {
+        //         text: "United State",
+        //         value: "US"
+        //     }, 
+        //     {
+        //         text: "United Kingdom",
+        //         value: "UK"
+        //     }
+        // ],
         result2: "",
         lang: {
             days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
