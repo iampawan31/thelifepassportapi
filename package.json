@@ -26,6 +26,7 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "v-select2-component": "^0.4.1",
         "vee-validate": "^3.0.8",
         "vue-select2": "^0.2.6",
         "vue2-datepicker": "^2.13.3",

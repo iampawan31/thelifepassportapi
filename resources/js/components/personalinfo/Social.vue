@@ -4,22 +4,15 @@
       <div class="field-wrapper" v-for="(line, index) in lines" v-bind:key="index">
         <div class="row">
           <div class="col-md-5">
-            <select
+            <Select2 
+              width="resolve"
               name="social_media_type"
               id="social_media_type"
-              class="custom-select"
-              data-placeholder="Social Media Account"
-              v-model="line.social"
-              value=""
-            >
-              <option></option>
-              <option value="1">Facebook</option>
-              <option value="2">Twitter</option>
-              <option value="3">Instagram</option>
-              <option value="4">LinkedIn</option>
-              <option value="5">YouTube</option>
-              <option value="6">Other</option>
-            </select>
+              placeholder="Select an Options"
+              v-model="socialValue" 
+              :options="socialOptions" 
+              @change="socialChangeEvent($event)" 
+              @select="socialSelectEvent($event)" />
           </div>
           <div class="col-md-7 col-sm-12">
             <div class="fields-group clearfix">
@@ -85,9 +78,15 @@
   </div>
 </template>
 <script>
+import Select2 from 'v-select2-component';
 export default {
-    data() {
+  components: {
+    Select2
+  },
+  data() {
     return {
+      socialValue: '',
+      socialOptions: ['Facebook', 'Twitter', 'Instagram', 'LinkedIn', 'Youtube', 'Others'],
       lines: [],
       blockRemoval: true
     };
@@ -111,6 +110,12 @@ export default {
   },
   mounted() {
     this.addLine();
+  },
+  socialChangeEvent(val){
+      console.log(val);
+  },
+  socialSelectEvent({id, text}){
+      console.log({id, text})
   }
 }
 </script>

@@ -67,19 +67,13 @@
             <div class="col-md-6 col-sm-12">
               <div class="field-group">
                 <label for="citizenship" class="input-label">Citizenship</label>
-                <select
-                  name="citizenship"
-                  id="citizenship"
-                  class="custom-select"
-                  data-placeholder="Citizenship"
-                >
-                  <option></option>
-                  <option value="1">Brother</option>
-                  <option value="2">Sister</option>
-                  <option value="3">Son</option>
-                  <option value="4">Daughter</option>
-                  <option value="5">Other</option>
-                </select>
+                <Select2 
+                  width="resolve"
+                  placeholder="Select an Options"
+                  v-model="citizenshipValue" 
+                  :options="citizenshipOptions" 
+                  @change="citizenshipChangeEvent($event)" 
+                  @select="citizenshipSelectEvent($event)" />
               </div>
             </div>
             <div class="col-md-6 col-sm-12">
@@ -142,88 +136,6 @@
           <social></social>
 
           <h4 class="form-subhead">Current Employers including self employment</h4>
-          <!-- <div class="add-anohter-field">
-            <div class="field-wrapper hidden">
-              <div class="form-subgroup">
-                <div class="row">
-                  <div class="col-md-6 col-sm-12">
-                    <div class="field-group">
-                      <label for="spouse_employer_name" class="input-label">Employer Name</label>
-                      <input
-                        type="text"
-                        name="spouse_employer_name"
-                        id="spouse_employer_name"
-                        class="field-input"
-                        placeholder="Employer Name"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-md-6 col-sm-12">
-                    <div class="field-group">
-                      <label for="spouse_employer_phone" class="input-label">Employer Phone</label>
-                      <input
-                        type="text"
-                        name="spouse_employer_phone"
-                        id="spouse_employer_phone"
-                        class="field-input"
-                        placeholder="Phone number"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div class="field-group">
-                  <label for="spouse_employer_address">Employer Address</label>
-                  <textarea
-                    rows="2"
-                    name="spouse_employer_address"
-                    id="spouse_employer_address"
-                    class="field-input"
-                    placeholder="Street Address, Town, City, State, Zipcode and country"
-                  ></textarea>
-                </div>
-
-                <div class="field-group">
-                  <label for="spouse_company_computer">Company computer user name and password</label>
-                  <div class="row">
-                    <div class="col-md-6 col-sm-12">
-                      <input
-                        type="text"
-                        name="spouse_company_computer_un"
-                        id="spouse_company_computer_un"
-                        class="field-input"
-                        placeholder="Username"
-                      />
-                    </div>
-                    <div class="col-md-6 col-sm-12">
-                      <input
-                        type="text"
-                        name="spouse_company_computer_pwd"
-                        id="spouse_company_computer_pwd"
-                        class="field-input"
-                        placeholder="Password"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div class="field-group field-group__last">
-                  <label for="spouse_employer_benefits">Benefits used</label>
-                  <textarea
-                    rows="2"
-                    name="spouse_employer_benefits"
-                    id="spouse_employer_benefits"
-                    class="field-input"
-                    placeholder="Benefits used"
-                  ></textarea>
-                </div>
-              </div>
-              <a href="#" class="btn-remove"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg></a>
-            </div>
-            <div class="btn-add">
-                <a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Add another</a>
-            </div>
-          </div> -->
           <employee></employee>
 
           <div class="field-group field-group__action clearfix">
@@ -237,7 +149,7 @@
 </template>
 <script>
 import DatePicker from 'vue2-datepicker';
-//import VueSelect from 'vue-select';
+import Select2 from 'v-select2-component';
 import Phone from './Phone.vue';
 import Email from './Email.vue';
 import Social from './Social.vue';
@@ -250,11 +162,13 @@ export default {
     Email,
     DatePicker,
     Social,
-    Employee
-    //VueSelect
+    Employee,
+    Select2
   },
   data() {
     return {
+        citizenshipValue: '',
+        citizenshipOptions: ['op1', 'op2', 'op3'],
         dob: "",
         citizenship: [
             {
@@ -315,6 +229,12 @@ export default {
       }
 
       alert("SUCCESS!! :-)\n\n" + JSON.stringify(this.user));
+    },
+    citizenshipChangeEvent(val){
+        console.log(val);
+    },
+    citizenshipSelectEvent({id, text}){
+        console.log({id, text})
     }
   }
 };
