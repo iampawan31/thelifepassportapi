@@ -155,7 +155,7 @@ import Email from './Email.vue';
 import Social from './Social.vue';
 import Employee from './Employee.vue';
 
-import { required, email, minLength } from "vuelidate/lib/validators";
+//import { required, email, minLength } from "vuelidate/lib/validators";
 export default {
  components: {
     Phone,
@@ -194,42 +194,11 @@ export default {
             dateRange: 'Select Date Range'
             }
         },
-        user: {
-            legal_name: "",
-            nick_name: "",
-            home_address: "",
-            phone_nubmer: "",
-            dob: "",
-            email: ""
-        },
         submitted: false
     };
   },
-  validations: {
-    user: {
-      legal_name: { required },
-      nick_name: { required },
-      home_address: { required, minLength: minLength(500) },
-      phone_nubmer: { required, minLength: minLength(10) },
-      dob: { required, minLength: minLength(10) },
-      email: { required, email }
-    }
-  },
   mounted() {},
-  methods: {
-    handleSubmit(e) {
-      this.submitted = true;
-      // stop here if form is invalid
-      this.$v.$touch();
-      console.log(this.$v.user.legal_name.$error);
-      console.log(this.$v.user.legal_name.required);
-      if (this.$v.$invalid) {
-        console.log("invalid");
-        return;
-      }
-
-      alert("SUCCESS!! :-)\n\n" + JSON.stringify(this.user));
-    },
+  methods: {    
     citizenshipChangeEvent(val){
         console.log(val);
     },
