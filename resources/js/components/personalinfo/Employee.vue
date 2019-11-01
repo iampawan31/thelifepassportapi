@@ -5,11 +5,11 @@
         <div class="row">
           <div class="col-md-6 col-sm-12">
             <div class="field-group">
-              <label for="spouse_employer_name" class="input-label">Employer Name</label>
+              <label for="employer_name" class="input-label">Employer Name</label>
               <input
                 type="text"
-                name="spouse_employer_name"
-                id="spouse_employer_name"
+                name="employer_name"
+                id="employer_name"
                 class="field-input"
                 placeholder="Employer Name"
                 v-model="line.employer_name"
@@ -19,11 +19,11 @@
           </div>
           <div class="col-md-6 col-sm-12">
             <div class="field-group">
-              <label for="spouse_employer_phone" class="input-label">Employer Phone</label>
+              <label for="employer_phone" class="input-label">Employer Phone</label>
               <input
                 type="text"
-                name="spouse_employer_phone"
-                id="spouse_employer_phone"
+                name="employer_phone"
+                id="employer_phone"
                 class="field-input"
                 placeholder="Phone number"
                 v-model="line.employer_phone"
@@ -34,11 +34,11 @@
         </div>
 
         <div class="field-group">
-          <label for="spouse_employer_address">Employer Address</label>
+          <label for="employer_address">Employer Address</label>
           <textarea
             rows="2"
-            name="spouse_employer_address"
-            id="spouse_employer_address"
+            name="employer_address"
+            id="employer_address"
             class="field-input"
             placeholder="Street Address, Town, City, State, Zipcode and country"
             v-model="line.employer_address"
@@ -47,13 +47,13 @@
         </div>
 
         <div class="field-group">
-          <label for="spouse_company_computer">Company computer user name and password</label>
+          <label for="company_computer_username">Company computer user name and password</label>
           <div class="row">
             <div class="col-md-6 col-sm-12">
               <input
                 type="text"
-                name="spouse_company_computer_un"
-                id="spouse_company_computer_un"
+                name="company_computer_username"
+                id="company_computer_username"
                 class="field-input"
                 placeholder="Username"
                 v-model="line.employer_computer_username"
@@ -63,8 +63,8 @@
             <div class="col-md-6 col-sm-12">
               <input
                 type="text"
-                name="spouse_company_computer_pwd"
-                id="spouse_company_computer_pwd"
+                name="company_computer_password"
+                id="company_computer_password"
                 class="field-input"
                 placeholder="Password"
                 v-model="line.employer_computer_password"
@@ -75,11 +75,11 @@
         </div>
 
         <div class="field-group field-group__last">
-          <label for="spouse_employer_benefits">Benefits used</label>
+          <label for="employee_benifits">Benefits used</label>
           <textarea
             rows="2"
-            name="spouse_employer_benefits"
-            id="spouse_employer_benefits"
+            name="employee_benifits"
+            id="employee_benifits"
             class="field-input"
             placeholder="Benefits used"
             v-model="line.employee_benefits"

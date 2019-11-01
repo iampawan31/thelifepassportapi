@@ -5,8 +5,8 @@
             <div class="fields-group clearfix">
                 <input
                 type="text"
-                name="spouse_email"
-                id="spouse_email"
+                name="user_email"
+                id="user_email"
                 class="field-input field-input__first email"
                 placeholder="Email address"
                 v-model="line.email"
@@ -14,8 +14,8 @@
                 />
                 <input
                 type="password"
-                name="spouse_email_pwd"
-                id="spouse_email_pwd"
+                name="email_password"
+                id="email_password"
                 class="field-input field-input__last"
                 placeholder="password"
                 v-model="line.password"
