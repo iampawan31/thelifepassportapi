@@ -176,20 +176,6 @@ export default {
         citizenshipValue: '',
         citizenshipOptions: ['op1', 'op2', 'op3'],
         dob: "",
-        // citizenshipOptions: [
-        //     {
-        //         text: "India",
-        //         value: "IN"
-        //     }, 
-        //     {
-        //         text: "United State",
-        //         value: "US"
-        //     }, 
-        //     {
-        //         text: "United Kingdom",
-        //         value: "UK"
-        //     }
-        // ],
         result2: "",
         lang: {
             days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
