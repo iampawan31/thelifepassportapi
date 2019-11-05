@@ -20,10 +20,15 @@ require('./select2.min.js');
 //require('./mCustomScrollbar.concat.min.js');
 
 import Vue from 'vue';
-//import * as VeeValidate from "vee-validate";
-import Vuelidate from 'vuelidate';
+//import Vuelidate from 'vuelidate';
+import * as VeeValidate from 'vee-validate';
+import VeeValidateLaravel from 'vee-validate-laravel';
 
-Vue.use(Vuelidate);
+//Vue.use(Vuelidate);
+
+Vue.use(VeeValidate, {inject: true});
+Vue.use(VeeValidateLaravel);
+
 
 /**
  * The following block of code may be used to automatically register your

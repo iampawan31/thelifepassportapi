@@ -7,9 +7,9 @@
         <form
           id="frmPersonalDetails"
           name="frmPersonalDetails"
-          action="#"
           method="post"
           class="custom-form"
+          @submit.prevent="handleSubmit"
         >
           <div class="row">
             <div class="col-md-6 col-sm-12">
@@ -21,6 +21,8 @@
                   id="legal_name"
                   class="field-input required"
                   placeholder="Legal Name"
+                  v-validate="'required'"
+                  v-bind:class="{'input-error': errors.has('legal_name')}"
                 />
               </div>
             </div>
