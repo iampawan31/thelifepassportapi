@@ -7360,6 +7360,11 @@ body {
   line-height: 24px;
   padding: 12px 12px;
 }
+
+.invalid-feedback {
+  display: inline !important;
+}
+
 @media (max-width: 719px) {
   /* line 1, ../sass/include/login/_login.scss */
   .login-block {
@@ -7502,6 +7507,7 @@ body {
 .questions-list .item__no-data::after {
   background-color: #bbb;
 }
+
 @media (max-width: 991px) {
   /* line 117, ../sass/include/_secondary.scss */
   .questions-list .item {
