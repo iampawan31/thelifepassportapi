@@ -27,7 +27,8 @@
     },
     "dependencies": {
         "v-select2-component": "^0.4.1",
-        "vee-validate": "^3.0.8",
+        "vee-validate": "^3.0.11",
+        "vee-validate-laravel": "^1.1.0",
         "vue-select2": "^0.2.6",
         "vue2-datepicker": "^2.13.3",
         "vuelidate": "^0.7.4"
