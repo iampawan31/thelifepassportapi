@@ -20,15 +20,19 @@ require('./select2.min.js');
 //require('./mCustomScrollbar.concat.min.js');
 
 import Vue from 'vue';
+import VueRouter from 'vue-router';
 //import Vuelidate from 'vuelidate';
-import * as VeeValidate from 'vee-validate';
+import { ValidationProvider, extend } from 'vee-validate';
+import { required } from 'vee-validate/dist/rules';
 import VeeValidateLaravel from 'vee-validate-laravel';
 
-//Vue.use(Vuelidate);
+extend('required', {
+    ...required,
+    message: 'This {_field_} is required'
+});
 
-Vue.use(VeeValidate, {inject: true});
+Vue.use(VueRouter);
 Vue.use(VeeValidateLaravel);
-
 
 /**
  * The following block of code may be used to automatically register your
