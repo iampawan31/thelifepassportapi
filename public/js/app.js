@@ -2120,9 +2120,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Email_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Email.vue */ "./resources/js/components/personalinfo/Email.vue");
 /* harmony import */ var _Social_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Social.vue */ "./resources/js/components/personalinfo/Social.vue");
 /* harmony import */ var _Employee_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Employee.vue */ "./resources/js/components/personalinfo/Employee.vue");
-/* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
-/* harmony import */ var q__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! q */ "./node_modules/q/q.js");
-/* harmony import */ var q__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(q__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _questions_Spouse__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./questions/Spouse */ "./resources/js/components/personalinfo/questions/Spouse.vue");
+/* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
+/* harmony import */ var q__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! q */ "./node_modules/q/q.js");
+/* harmony import */ var q__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(q__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -2237,8 +2239,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
+
  //import { required, email, minLength } from "vuelidate/lib/validators";
 
+var router = new vue_router__WEBPACK_IMPORTED_MODULE_10__["default"]({
+  routes: [{
+    path: '/spouse',
+    name: 'spouse',
+    component: _questions_Spouse__WEBPACK_IMPORTED_MODULE_7__["default"]
+  }]
+});
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     Phone: _Phone_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
@@ -2247,8 +2258,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     Social: _Social_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
     Employee: _Employee_vue__WEBPACK_IMPORTED_MODULE_6__["default"],
     Select2: v_select2_component__WEBPACK_IMPORTED_MODULE_2__["default"],
-    ValidationObserver: vee_validate__WEBPACK_IMPORTED_MODULE_7__["ValidationObserver"],
-    ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_7__["ValidationProvider"]
+    ValidationObserver: vee_validate__WEBPACK_IMPORTED_MODULE_8__["ValidationObserver"],
+    ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_8__["ValidationProvider"],
+    Spouse: _questions_Spouse__WEBPACK_IMPORTED_MODULE_7__["default"]
   },
   data: function data() {
     var _personalDetail;
@@ -2310,7 +2322,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
                 if (!isValid) {}
 
-              case 5:
+                this.$router.push('/spouse');
+
+              case 6:
               case "end":
                 return _context.stop();
             }
@@ -2543,6 +2557,34 @@ __webpack_require__.r(__webpack_exports__);
       text: text
     });
   }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/questions/Spouse.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/personalinfo/questions/Spouse.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {}
 });
 
 /***/ }),
@@ -51563,12 +51605,6 @@ var render = function() {
                                                         .legal_name,
                                                     expression:
                                                       "personalDetail.legal_name"
-                                                  },
-                                                  {
-                                                    name: "validate",
-                                                    rawName: "v-validate",
-                                                    value: "required",
-                                                    expression: "'required'"
                                                   }
                                                 ],
                                                 staticClass:
@@ -52435,6 +52471,66 @@ var render = function() {
   ])
 }
 var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/questions/Spouse.vue?vue&type=template&id=0b975706&":
+/*!********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/personalinfo/questions/Spouse.vue?vue&type=template&id=0b975706& ***!
+  \********************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "question-item",
+        attrs: {
+          "data-nextpage": "questions/previous-spouse.php",
+          "data-viewpage": "views/spouse.php",
+          "data-prevpage": "views/personal-details.php"
+        }
+      },
+      [
+        _c("div", { staticClass: "question-header" }, [
+          _c("h3", [_vm._v("Are you married?")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "yesno" }, [
+            _c("a", { staticClass: "btn-yes", attrs: { href: "#" } }, [
+              _vm._v("Yes")
+            ]),
+            _vm._v(" "),
+            _c("a", { staticClass: "btn-no", attrs: { href: "#" } }, [
+              _vm._v("No")
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("a", { staticClass: "btn-skip", attrs: { href: "#" } }, [
+          _vm._v("Skip")
+        ])
+      ]
+    )
+  }
+]
 render._withStripped = true
 
 
@@ -67545,6 +67641,7 @@ Object(vee_validate__WEBPACK_IMPORTED_MODULE_2__["extend"])('required', _objectS
 }));
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vee_validate_laravel__WEBPACK_IMPORTED_MODULE_4___default.a);
+var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({});
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -67564,6 +67661,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('personal-info', __webpack_
  */
 
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
+  router: router,
   el: '#page'
 });
 
@@ -68256,6 +68354,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Social_vue_vue_type_template_id_5f0c3e5a___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Social_vue_vue_type_template_id_5f0c3e5a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/personalinfo/questions/Spouse.vue":
+/*!*******************************************************************!*\
+  !*** ./resources/js/components/personalinfo/questions/Spouse.vue ***!
+  \*******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Spouse_vue_vue_type_template_id_0b975706___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Spouse.vue?vue&type=template&id=0b975706& */ "./resources/js/components/personalinfo/questions/Spouse.vue?vue&type=template&id=0b975706&");
+/* harmony import */ var _Spouse_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Spouse.vue?vue&type=script&lang=js& */ "./resources/js/components/personalinfo/questions/Spouse.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Spouse_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Spouse_vue_vue_type_template_id_0b975706___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Spouse_vue_vue_type_template_id_0b975706___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/personalinfo/questions/Spouse.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/personalinfo/questions/Spouse.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************!*\
+  !*** ./resources/js/components/personalinfo/questions/Spouse.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Spouse_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Spouse.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/questions/Spouse.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Spouse_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/personalinfo/questions/Spouse.vue?vue&type=template&id=0b975706&":
+/*!**************************************************************************************************!*\
+  !*** ./resources/js/components/personalinfo/questions/Spouse.vue?vue&type=template&id=0b975706& ***!
+  \**************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Spouse_vue_vue_type_template_id_0b975706___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Spouse.vue?vue&type=template&id=0b975706& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/questions/Spouse.vue?vue&type=template&id=0b975706&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Spouse_vue_vue_type_template_id_0b975706___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Spouse_vue_vue_type_template_id_0b975706___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

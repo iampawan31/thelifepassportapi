@@ -10,7 +10,7 @@
 							<div class="field-group">
 								<label for="legal_name" class="input-label">Legal Name</label>
 								<ValidationProvider name="Legal Name" rules="required" v-slot="{ errors }">
-									<input type="text" name="legal_name" v-model="personalDetail.legal_name" v-validate="'required'" id="legal_name" class="field-input required" placeholder="Legal Name" />
+									<input type="text" name="legal_name" v-model="personalDetail.legal_name" id="legal_name" class="field-input required" placeholder="Legal Name" />
 									<div class="invalid-feedback" v-for="(error, index) in errors" v-bind:key="index">{{ error }}</div>
 								</ValidationProvider>
 							</div>
@@ -104,11 +104,22 @@
 	import Email from './Email.vue';
 	import Social from './Social.vue';
 	import Employee from './Employee.vue';
+	import Spouse from './questions/Spouse'
 	import { ValidationObserver, ValidationProvider } from "vee-validate";
-import { async } from 'q';
+	import { async } from 'q';
+	import VueRouter from 'vue-router';
 	//import { required, email, minLength } from "vuelidate/lib/validators";
 
-	
+
+	const router = new VueRouter({
+		routes: [
+			{
+				path: '/spouse',
+				name: 'spouse',
+				component: Spouse
+			}
+		]
+	});
 	export default {
 		components: {
 			Phone,
@@ -118,7 +129,8 @@ import { async } from 'q';
 			Employee,
 			Select2,
 			ValidationObserver,
-			ValidationProvider
+			ValidationProvider,
+			Spouse
 		},
 		data() {
 			return {
@@ -175,6 +187,8 @@ import { async } from 'q';
 				if(!isValid){
 
 				}
+
+				this.$router.push('/spouse')
 			},
 
 			citizenshipChangeEvent(val) {

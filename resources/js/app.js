@@ -34,6 +34,9 @@ extend('required', {
 Vue.use(VueRouter);
 Vue.use(VeeValidateLaravel);
 
+const router = new VueRouter({
+   
+  })
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -55,5 +58,6 @@ Vue.component('personal-info', require('./components/personalinfo/Index.vue').de
  */
 
 const app = new Vue({
+    router,
     el: '#page'
 });
