@@ -15,15 +15,7 @@ class DashboardController extends Controller
      */
     public function index(Request $request)
     {
-        //dd(Auth::User());
-        return view('dashboard.index');
+        return view('dashboard.index')
+                ->with('page_title', 'Dashboard');
     }
-
-    // public function personalinfo(Request $request) {
-    //     return view('dashboard.personalinfo');
-    // }
-
-    // public function personaldetails(Request $request) {
-    //     return view('dashboard.personaldetails');
-    // }
 }
