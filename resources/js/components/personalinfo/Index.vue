@@ -1,12 +1,12 @@
 <template>
     <div class="wrapper">
         <leftnav></leftnav>
-        <personal-form></personal-form>
+        <router-view></router-view>
     </div>
 </template>
 <script>
-import leftnav from './LeftNav.vue';
-import personalForm from './PersonalDetails.vue';
+import leftnav from "./LeftNav.vue";
+import personalForm from "./PersonalDetails.vue";
 
 export default {
     components: {
@@ -14,15 +14,9 @@ export default {
         personalForm
     },
     data() {
-        return {
-
-        }
+        return {};
     },
-    mounted() {
-            
-    },
-    methods:{
-
-    }
-}
+    mounted() {},
+    methods: {}
+};
 </script>

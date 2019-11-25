@@ -104,22 +104,11 @@
 	import Email from './Email.vue';
 	import Social from './Social.vue';
 	import Employee from './Employee.vue';
-	import Spouse from './questions/Spouse'
 	import { ValidationObserver, ValidationProvider } from "vee-validate";
 	import { async } from 'q';
 	import VueRouter from 'vue-router';
 	//import { required, email, minLength } from "vuelidate/lib/validators";
 
-
-	const router = new VueRouter({
-		routes: [
-			{
-				path: '/spouse',
-				name: 'spouse',
-				component: Spouse
-			}
-		]
-	});
 	export default {
 		components: {
 			Phone,
@@ -129,8 +118,7 @@
 			Employee,
 			Select2,
 			ValidationObserver,
-			ValidationProvider,
-			Spouse
+			ValidationProvider
 		},
 		data() {
 			return {
@@ -186,9 +174,11 @@
 
 				if(!isValid){
 
+				}else{
+					this.$router.push('/spouse-question');
 				}
 
-				this.$router.push('/spouse')
+				
 			},
 
 			citizenshipChangeEvent(val) {
