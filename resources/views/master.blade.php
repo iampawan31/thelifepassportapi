@@ -15,7 +15,10 @@
 
 <body>
   <div id="page" class="page__home">
-    @include('partials.header')
+      
+      @if (!\Request::is(['login', 'dashboard']) )  
+        @include('partials.header')
+      @endif
     <div id="content">
       @yield('content')
       @include('partials.footer')

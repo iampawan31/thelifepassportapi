@@ -1700,6 +1700,96 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/CloseFriends.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/personalinfo/CloseFriends.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/Email.vue?vue&type=script&lang=js&":
 /*!*****************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/personalinfo/Email.vue?vue&type=script&lang=js& ***!
@@ -3464,6 +3554,30 @@ __webpack_require__.r(__webpack_exports__);
     }
   }
 });
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/questions/CloseFriends.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/personalinfo/questions/CloseFriends.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
 
@@ -51768,6 +51882,263 @@ var version = '3.0.11';
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/CloseFriends.vue?vue&type=template&id=1019eb63&":
+/*!****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/personalinfo/CloseFriends.vue?vue&type=template&id=1019eb63& ***!
+  \****************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "question-item",
+        attrs: { "data-nextpage": "questions/home-assistants.php" }
+      },
+      [
+        _c("div", { staticClass: "section-data hidden" }, [
+          _c("div", { staticClass: "data__wrapper" }, [
+            _c("div", { staticClass: "data" }, [
+              _c("div", { staticClass: "item item__header clearfix" }, [
+                _c("div", { staticClass: "item__name" }, [_vm._v("Name")]),
+                _vm._v(" "),
+                _c("div", { staticClass: "item__phone" }, [
+                  _vm._v("Primary phone")
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "item__email" }, [
+                  _vm._v("Email address")
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "item__action" })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "item clearfix" }, [
+                _c("div", { staticClass: "item__name" }, [
+                  _c("strong", [_vm._v("Kapil Jain")])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "item__phone" }, [
+                  _vm._v("(987) 144 5190")
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "item__email" }, [
+                  _vm._v("hello@kapiljain.in")
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "item__action" }, [
+                  _c("a", { staticClass: "btn-edit", attrs: { href: "#" } }, [
+                    _c("i", { attrs: { "data-feather": "edit" } })
+                  ]),
+                  _vm._v("  \n            "),
+                  _c("a", { staticClass: "btn-delete", attrs: { href: "#" } }, [
+                    _c("i", { attrs: { "data-feather": "trash-2" } })
+                  ])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "btn-wrapper" }, [
+              _c(
+                "a",
+                {
+                  staticClass: "btn-primary link-toogle",
+                  attrs: { href: "#", "data-toggle": "frm-nominations" }
+                },
+                [_vm._v("Add member")]
+              )
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "section-form" }, [
+          _c("div", { staticClass: "success-message" }, [
+            _c("div", { staticClass: "success-message__text" }, [
+              _vm._v("Member added successfully.")
+            ]),
+            _vm._v(" "),
+            _c("button", { staticClass: "success-message__close" }, [
+              _c("i", { attrs: { "data-feather": "x-square" } })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-wrapper form-friends" }, [
+            _c("h3", { staticClass: "heading4 uppercase" }, [
+              _vm._v("Add friend details")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "error-message" }),
+            _vm._v(" "),
+            _c(
+              "form",
+              {
+                staticClass: "custom-form",
+                attrs: {
+                  id: "frmFriends",
+                  name: "frmFriends",
+                  action: "#",
+                  method: "post"
+                }
+              },
+              [
+                _c("div", { staticClass: "field-group" }, [
+                  _c(
+                    "label",
+                    {
+                      staticClass: "input-label",
+                      attrs: { for: "friend_name" }
+                    },
+                    [_vm._v("Name")]
+                  ),
+                  _vm._v(" "),
+                  _c("input", {
+                    staticClass: "field-input required",
+                    attrs: {
+                      type: "text",
+                      name: "friend_name",
+                      id: "txt_name",
+                      "data-id": "friend_name",
+                      placeholder: "Name"
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "field-group" }, [
+                  _c("label", { attrs: { for: "home_address" } }, [
+                    _vm._v("Home Address")
+                  ]),
+                  _vm._v(" "),
+                  _c("textarea", {
+                    staticClass: "field-input",
+                    attrs: {
+                      rows: "2",
+                      name: "home_address",
+                      id: "home_address",
+                      placeholder:
+                        "Street Address, Town, City, State, Zipcode and country"
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "field-group" }, [
+                  _c("label", { attrs: { for: "phone_number" } }, [
+                    _vm._v("Phone Numbers")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    staticClass: "field-input required input-mobile",
+                    attrs: {
+                      type: "text",
+                      name: "phone_number",
+                      id: "phone_number",
+                      placeholder: "Primary contact number"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "add-anohter-field" }, [
+                    _c("div", { staticClass: "field-wrapper hidden" }, [
+                      _c("input", {
+                        staticClass: "field-input required input-mobile",
+                        attrs: {
+                          type: "text",
+                          name: "phone_number",
+                          id: "phone_number",
+                          placeholder: "Alternate contact number"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "a",
+                        { staticClass: "btn-remove", attrs: { href: "#" } },
+                        [_c("i", { attrs: { "data-feather": "minus-circle" } })]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "field-wrapper hidden" }, [
+                      _c("input", {
+                        staticClass: "field-input required input-mobile",
+                        attrs: {
+                          type: "text",
+                          name: "phone_number",
+                          id: "phone_number",
+                          placeholder: "Alternate contact number"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "a",
+                        { staticClass: "btn-remove", attrs: { href: "#" } },
+                        [_c("i", { attrs: { "data-feather": "minus-circle" } })]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "btn-add" }, [
+                      _c("a", { attrs: { href: "#" } }, [
+                        _c("i", { attrs: { "data-feather": "plus" } }),
+                        _vm._v(" Add another")
+                      ])
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "field-group" }, [
+                  _c(
+                    "label",
+                    {
+                      staticClass: "input-label",
+                      attrs: { for: "user_email" }
+                    },
+                    [_vm._v("Email")]
+                  ),
+                  _vm._v(" "),
+                  _c("input", {
+                    staticClass: "field-input required email",
+                    attrs: {
+                      type: "text",
+                      name: "user_email",
+                      id: "user_email",
+                      placeholder: "Email address"
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "field-group clearfix" }, [
+                  _c("input", {
+                    staticClass: "field-submit btn-primary",
+                    attrs: { type: "submit", value: "Add Friend" }
+                  })
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "clearfix" })
+          ])
+        ])
+      ]
+    )
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/Email.vue?vue&type=template&id=de374db4&":
 /*!*********************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/personalinfo/Email.vue?vue&type=template&id=de374db4& ***!
@@ -54990,6 +55361,61 @@ var staticRenderFns = [
           staticClass: "field-submit btn-primary",
           attrs: { type: "submit", value: "Save and continue" }
         })
+      ]
+    )
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/questions/CloseFriends.vue?vue&type=template&id=7d338e65&":
+/*!**************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/personalinfo/questions/CloseFriends.vue?vue&type=template&id=7d338e65& ***!
+  \**************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "question-item",
+        attrs: {
+          "data-nextpage": "questions/home-assistants.php",
+          "data-viewpage": "views/close-friends.php"
+        }
+      },
+      [
+        _c("div", { staticClass: "question-header" }, [
+          _c("h3", [_vm._v("Would you like any close friends contacted?")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "yesno" }, [
+            _c("a", { staticClass: "btn-yes", attrs: { href: "#" } }, [
+              _vm._v("Add")
+            ]),
+            _vm._v(" "),
+            _c("a", { staticClass: "btn-no", attrs: { href: "#" } }, [
+              _vm._v("No")
+            ])
+          ])
+        ])
       ]
     )
   }
@@ -70523,6 +70949,75 @@ if (token) {
 
 /***/ }),
 
+/***/ "./resources/js/components/personalinfo/CloseFriends.vue":
+/*!***************************************************************!*\
+  !*** ./resources/js/components/personalinfo/CloseFriends.vue ***!
+  \***************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _CloseFriends_vue_vue_type_template_id_1019eb63___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CloseFriends.vue?vue&type=template&id=1019eb63& */ "./resources/js/components/personalinfo/CloseFriends.vue?vue&type=template&id=1019eb63&");
+/* harmony import */ var _CloseFriends_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CloseFriends.vue?vue&type=script&lang=js& */ "./resources/js/components/personalinfo/CloseFriends.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _CloseFriends_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _CloseFriends_vue_vue_type_template_id_1019eb63___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _CloseFriends_vue_vue_type_template_id_1019eb63___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/personalinfo/CloseFriends.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/personalinfo/CloseFriends.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/personalinfo/CloseFriends.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CloseFriends_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./CloseFriends.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/CloseFriends.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CloseFriends_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/personalinfo/CloseFriends.vue?vue&type=template&id=1019eb63&":
+/*!**********************************************************************************************!*\
+  !*** ./resources/js/components/personalinfo/CloseFriends.vue?vue&type=template&id=1019eb63& ***!
+  \**********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CloseFriends_vue_vue_type_template_id_1019eb63___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./CloseFriends.vue?vue&type=template&id=1019eb63& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/CloseFriends.vue?vue&type=template&id=1019eb63&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CloseFriends_vue_vue_type_template_id_1019eb63___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CloseFriends_vue_vue_type_template_id_1019eb63___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/personalinfo/Email.vue":
 /*!********************************************************!*\
   !*** ./resources/js/components/personalinfo/Email.vue ***!
@@ -71208,6 +71703,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Spouse_vue_vue_type_template_id_4728700a___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Spouse_vue_vue_type_template_id_4728700a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/personalinfo/questions/CloseFriends.vue":
+/*!*************************************************************************!*\
+  !*** ./resources/js/components/personalinfo/questions/CloseFriends.vue ***!
+  \*************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _CloseFriends_vue_vue_type_template_id_7d338e65___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CloseFriends.vue?vue&type=template&id=7d338e65& */ "./resources/js/components/personalinfo/questions/CloseFriends.vue?vue&type=template&id=7d338e65&");
+/* harmony import */ var _CloseFriends_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CloseFriends.vue?vue&type=script&lang=js& */ "./resources/js/components/personalinfo/questions/CloseFriends.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _CloseFriends_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _CloseFriends_vue_vue_type_template_id_7d338e65___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _CloseFriends_vue_vue_type_template_id_7d338e65___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/personalinfo/questions/CloseFriends.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/personalinfo/questions/CloseFriends.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************!*\
+  !*** ./resources/js/components/personalinfo/questions/CloseFriends.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CloseFriends_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./CloseFriends.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/questions/CloseFriends.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CloseFriends_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/personalinfo/questions/CloseFriends.vue?vue&type=template&id=7d338e65&":
+/*!********************************************************************************************************!*\
+  !*** ./resources/js/components/personalinfo/questions/CloseFriends.vue?vue&type=template&id=7d338e65& ***!
+  \********************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CloseFriends_vue_vue_type_template_id_7d338e65___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./CloseFriends.vue?vue&type=template&id=7d338e65& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/questions/CloseFriends.vue?vue&type=template&id=7d338e65&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CloseFriends_vue_vue_type_template_id_7d338e65___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CloseFriends_vue_vue_type_template_id_7d338e65___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -78764,9 +79328,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_personalinfo_Spouse_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/personalinfo/Spouse.vue */ "./resources/js/components/personalinfo/Spouse.vue");
 /* harmony import */ var _components_personalinfo_PreviousSpouse_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/personalinfo/PreviousSpouse.vue */ "./resources/js/components/personalinfo/PreviousSpouse.vue");
 /* harmony import */ var _components_personalinfo_FamilyMembers_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/personalinfo/FamilyMembers.vue */ "./resources/js/components/personalinfo/FamilyMembers.vue");
-/* harmony import */ var _components_personalinfo_questions_Spouse_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/personalinfo/questions/Spouse.vue */ "./resources/js/components/personalinfo/questions/Spouse.vue");
-/* harmony import */ var _components_personalinfo_questions_PreviousSpouse_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/personalinfo/questions/PreviousSpouse.vue */ "./resources/js/components/personalinfo/questions/PreviousSpouse.vue");
-/* harmony import */ var _components_personalinfo_questions_FamilyMembers_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/personalinfo/questions/FamilyMembers.vue */ "./resources/js/components/personalinfo/questions/FamilyMembers.vue");
+/* harmony import */ var _components_personalinfo_CloseFriends_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/personalinfo/CloseFriends.vue */ "./resources/js/components/personalinfo/CloseFriends.vue");
+/* harmony import */ var _components_personalinfo_questions_Spouse_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/personalinfo/questions/Spouse.vue */ "./resources/js/components/personalinfo/questions/Spouse.vue");
+/* harmony import */ var _components_personalinfo_questions_PreviousSpouse_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/personalinfo/questions/PreviousSpouse.vue */ "./resources/js/components/personalinfo/questions/PreviousSpouse.vue");
+/* harmony import */ var _components_personalinfo_questions_FamilyMembers_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/personalinfo/questions/FamilyMembers.vue */ "./resources/js/components/personalinfo/questions/FamilyMembers.vue");
+/* harmony import */ var _components_personalinfo_questions_CloseFriends_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/personalinfo/questions/CloseFriends.vue */ "./resources/js/components/personalinfo/questions/CloseFriends.vue");
+
+
 
 
 
@@ -78787,14 +79355,20 @@ var routes = [{
   path: '/family-members',
   component: _components_personalinfo_FamilyMembers_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
 }, {
+  path: '/close-friends',
+  component: _components_personalinfo_CloseFriends_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
+}, {
   path: '/spouse-question',
-  component: _components_personalinfo_questions_Spouse_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
+  component: _components_personalinfo_questions_Spouse_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
 }, {
   path: '/previous-spouse-question',
-  component: _components_personalinfo_questions_PreviousSpouse_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
+  component: _components_personalinfo_questions_PreviousSpouse_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
 }, {
   path: '/family-members-question',
-  component: _components_personalinfo_questions_FamilyMembers_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
+  component: _components_personalinfo_questions_FamilyMembers_vue__WEBPACK_IMPORTED_MODULE_7__["default"]
+}, {
+  path: '/close-friends-question',
+  component: _components_personalinfo_questions_CloseFriends_vue__WEBPACK_IMPORTED_MODULE_8__["default"]
 }];
 
 /***/ }),

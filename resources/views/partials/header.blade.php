@@ -1,4 +1,4 @@
-<header id="masthead" class="site-header clearfix" style="display:none">
+<header id="masthead" class="site-header clearfix">
     <h1 class="site-title">
         <a href="{{ route('dashboard') }}"><img src="{{ asset('images/logo.png') }}" alt="The Life Passport - Logo" class="img-fluid" /></a>
     </h1>
