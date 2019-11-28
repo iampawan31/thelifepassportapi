@@ -15,7 +15,7 @@
                     </h1>
                     <div class="login-block">
                         <h2>{{ __('Login to your account.') }}</h2>
-                        <!-- <div class="login-error-message">
+                        {{-- <div class="login-error-message">
                             @if ($errors->any())
                                 <div class="alert alert-danger">
                                     <ul>
@@ -25,7 +25,7 @@
                                     </ul>
                                 </div>
                             @endif
-                        </div> -->
+                        </div> --}}
                         <div class="login-success-message">
                             @if ($message = Session::get('success'))
                             <div class="alert alert-success alert-block">
@@ -56,12 +56,12 @@
                                     <div class="field-instructions">{{ __('Forgot your password?') }} <a href="{{ route('password.request') }}">{{ __('Click here') }}</a></div>
                                 </div>
 
-                                <div class="field-group">
+                                {{-- <div class="field-group">
                                     <input class="field-input form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
                                     <label class="form-check-label" for="remember">
                                         {{ __('Remember Me') }}
                                     </label>
-                                </div>
+                                </div> --}}
                                 <div class="field-group field-group-submit">
                                     <input type="submit" class="field-submit" value="{{ __('Login') }}" />
                                 </div>
