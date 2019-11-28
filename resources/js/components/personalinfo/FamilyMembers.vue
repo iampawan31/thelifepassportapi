@@ -3,7 +3,7 @@
         <div class="question-item" data-nextpage="questions/close-friends.php">
             <h3 class="heading3">Close family members</h3>
 
-            <div class="section-data">
+            <!--<div class="section-data">
                 <div class="data__wrapper">
                     <div class="data">
                         <div class="item item__header clearfix">
@@ -39,15 +39,15 @@
                         <a href="#" class="btn-primary btn-no">Continue</a>
                     </div>
                 </div>
-            </div>
+            </div>-->
 
-            <div id="add-member" class="section-form hidden">
-                <div class="success-message">
+            <div id="add-member" class="section-form">
+                <!--<div class="success-message">
                     <div class="success-message__text">Member added successfully.</div>
                     <button class="success-message__close">
                         <i data-feather="x-square"></i>
                     </button>
-                </div>
+                </div>-->
 
                 <div class="form-wrapper form-family-member">
                     <h3 class="heading4 uppercase">Add family member</h3>

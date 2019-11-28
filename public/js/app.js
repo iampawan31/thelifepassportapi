@@ -52679,91 +52679,10 @@ var staticRenderFns = [
             _vm._v("Close family members")
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "section-data" }, [
-            _c("div", { staticClass: "data__wrapper" }, [
-              _c("div", { staticClass: "data" }, [
-                _c("div", { staticClass: "item item__header clearfix" }, [
-                  _c("div", { staticClass: "item__name" }, [_vm._v("Name")]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "item__relationship" }, [
-                    _vm._v("Relationship")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "item__phone" }, [
-                    _vm._v("Primary phone")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "item__email" }, [
-                    _vm._v("Email address")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "item__action" })
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "item clearfix" }, [
-                  _c("div", { staticClass: "item__name" }, [
-                    _c("strong", [_vm._v("Kapil Jain")])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "item__relationship" }, [
-                    _vm._v("Younger Brother")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "item__phone" }, [
-                    _vm._v("(987) 144 5190")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "item__email" }, [
-                    _vm._v("hello@kapiljain.in")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "item__action" }, [
-                    _c("a", { staticClass: "btn-edit", attrs: { href: "#" } }, [
-                      _c("i", { attrs: { "data-feather": "edit" } })
-                    ]),
-                    _vm._v("  \n                            "),
-                    _c(
-                      "a",
-                      { staticClass: "btn-delete", attrs: { href: "#" } },
-                      [_c("i", { attrs: { "data-feather": "trash-2" } })]
-                    )
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "btn-wrapper" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass: "btn-primary link-toogle",
-                    attrs: { href: "#", "data-toggle": "add-member" }
-                  },
-                  [_vm._v("Add member")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  { staticClass: "btn-primary btn-no", attrs: { href: "#" } },
-                  [_vm._v("Continue")]
-                )
-              ])
-            ])
-          ]),
-          _vm._v(" "),
           _c(
             "div",
-            { staticClass: "section-form hidden", attrs: { id: "add-member" } },
+            { staticClass: "section-form", attrs: { id: "add-member" } },
             [
-              _c("div", { staticClass: "success-message" }, [
-                _c("div", { staticClass: "success-message__text" }, [
-                  _vm._v("Member added successfully.")
-                ]),
-                _vm._v(" "),
-                _c("button", { staticClass: "success-message__close" }, [
-                  _c("i", { attrs: { "data-feather": "x-square" } })
-                ])
-              ]),
-              _vm._v(" "),
               _c("div", { staticClass: "form-wrapper form-family-member" }, [
                 _c("h3", { staticClass: "heading4 uppercase" }, [
                   _vm._v("Add family member")
