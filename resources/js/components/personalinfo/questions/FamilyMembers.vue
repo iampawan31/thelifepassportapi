@@ -9,7 +9,7 @@
                 <h3>Would you like to add close family members including children?</h3>
                 <div class="yesno">
                     <router-link class="btn-yes" to="/family-members">Yes</router-link>
-                    <router-link class="btn-no" to="/">No</router-link>
+                    <router-link class="btn-no" to="/close-friends-question">No</router-link>
                 </div>
             </div>
         </div>

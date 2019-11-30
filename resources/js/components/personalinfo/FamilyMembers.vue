@@ -58,6 +58,7 @@
                         action="#"
                         method="post"
                         class="custom-form"
+                        @submit.prevent="handleSubmit()"
                     >
                         <div class="field-group">
                             <label for="txt_name" class="input-label">Name</label>
@@ -189,5 +190,15 @@
     </div>
 </template>
 <script>
-export default {};
+export default {
+    data() {
+        return {};
+    },
+    mounted() {},
+    methods: {
+        handleSubmit(e) {
+            this.$router.push("/close-friends-question");
+        }
+    }
+};
 </script>

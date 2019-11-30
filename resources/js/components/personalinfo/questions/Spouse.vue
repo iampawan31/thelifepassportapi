@@ -10,12 +10,12 @@
                 <h3>Are you married?</h3>
                 <div class="yesno">
                     <router-link class="btn-yes" to="/spouse">Yes</router-link>
-                    <router-link class="btn-no" to="/">No</router-link>
+                    <router-link class="btn-no" to="/previous-spouse-question">No</router-link>
                     <!--<a href="#" class="btn-yes">Yes</a>
                     <a href="#" class="btn-no">No</a>-->
                 </div>
             </div>
-            <a href="#" class="btn-skip">Skip</a>
+            <router-link class="btn-skip" to="/previous-spouse-question">Skip</router-link>
         </div>
     </div>
 </template>
