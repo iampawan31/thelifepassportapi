@@ -3,8 +3,49 @@
         <div class="question-item" data-nextpage="questions/medical-providers.php">
             <div class="section-form">
                 <div class="form-wrapper form-family-member">
-                    <form name="frmFamilyMember" action="#" method="post" class="custom-form">
-                        <p>Related field will be displayed here.....</p>
+                    <form name="frmFamilyMember" action="#" method="post" class="custom-form" @submit.prevent="handleSubmit()">
+                        <div class="staff-members-fields">
+                            <div class="field-group">
+                                <label for="txt_name" class="input-label">Computer/Device</label>
+                                <input
+                                    type="text"
+                                    name="txt_name"
+                                    id="txt_name"
+                                    data-id="txt_name"
+                                    class="field-input required"
+                                    placeholder="Computer/Device"
+                                    
+                                />
+                            </div>
+
+                            <div class="field-group">
+                                <label for="txt_name" class="input-label">User Name</label>
+                                <input
+                                    type="text"
+                                    name="txt_name"
+                                    id="txt_name"
+                                    data-id="txt_name"
+                                    class="field-input required"
+                                    placeholder="User Name"
+                                    
+                                />
+                            </div>
+
+                            <div class="field-group">
+                                <label for="txt_name" class="input-label">Password</label>
+                                <input
+                                    type="text"
+                                    name="txt_name"
+                                    id="txt_name"
+                                    data-id="txt_name"
+                                    class="field-input required"
+                                    placeholder="Password"
+                                    
+                                />
+                            </div>
+
+                            <div class="btn-add"><a href="#"><i data-feather="plus"></i> Add More </a></div>
+                        </div>
 
                         <div class="field-group clearfix">
                             <input
@@ -20,9 +61,16 @@
         </div>
     </div>
 </template>
-<script lang="ts">
-import Vue from 'vue'
-export default Vue.extend({
-  
-})
+<script>
+export default {
+    data() {
+        return {};
+    },
+    mounted() {},
+    methods: {
+        handleSubmit(e) {
+            this.$router.push("/medical-providers-question");
+        }
+    }
+};
 </script>
