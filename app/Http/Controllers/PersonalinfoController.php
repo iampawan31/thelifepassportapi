@@ -92,4 +92,9 @@ class PersonalinfoController extends Controller
     {
         //
     }
+
+    public function personaldetails()
+    {
+        return view('personalinfo.personalinfo');
+    }
 }

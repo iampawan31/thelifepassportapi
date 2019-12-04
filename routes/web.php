@@ -25,7 +25,7 @@ Route::get('profile', function () {
 
 Route::get('dashboard', 'DashboardController@index')->name('dashboard');
 Route::get('personal-info', 'PersonalinfoController@index')->name('personal-info');
-//Route::get('personal-details', 'PersonalinfoController@personaldetails')->name('personal-details');
+Route::get('personal-details', 'PersonalinfoController@personaldetails')->name('personal-details');
 
 Auth::routes();
 

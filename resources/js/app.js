@@ -20,16 +20,24 @@ require('./select2.min.js');
 //require('./mCustomScrollbar.concat.min.js');
 
 import Vue from 'vue';
+import VueRouter from 'vue-router';
 //import Vuelidate from 'vuelidate';
-import * as VeeValidate from 'vee-validate';
+import { ValidationProvider, extend } from 'vee-validate';
+import { required } from 'vee-validate/dist/rules';
 import VeeValidateLaravel from 'vee-validate-laravel';
+import {routes} from './routes';
 
-//Vue.use(Vuelidate);
+extend('required', {
+    ...required,
+    message: 'This {_field_} is required'
+});
 
-Vue.use(VeeValidate, {inject: true});
+Vue.use(VueRouter);
 Vue.use(VeeValidateLaravel);
 
-
+const router = new VueRouter({
+  routes
+})
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -51,5 +59,6 @@ Vue.component('personal-info', require('./components/personalinfo/Index.vue').de
  */
 
 const app = new Vue({
-    el: '#page'
+    el: '#page',
+    router,
 });
