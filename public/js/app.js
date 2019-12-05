@@ -55061,7 +55061,7 @@ var render = function() {
                                                   {
                                                     key: index,
                                                     staticClass:
-                                                      "invalid-feedback"
+                                                      "invalid-feedback d-block"
                                                   },
                                                   [_vm._v(_vm._s(error))]
                                                 )
