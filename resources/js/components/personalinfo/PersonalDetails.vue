@@ -11,7 +11,7 @@
 								<label for="legal_name" class="input-label">Legal Name</label>
 								<ValidationProvider name="Legal Name" rules="required" v-slot="{ errors }">
 									<input type="text" name="legal_name" v-model="personalDetail.legal_name" id="legal_name" class="field-input required" placeholder="Legal Name" />
-									<div class="invalid-feedback" v-for="(error, index) in errors" v-bind:key="index">{{ error }}</div>
+									<div class="invalid-feedback d-block" v-for="(error, index) in errors" v-bind:key="index">{{ error }}</div>
 								</ValidationProvider>
 							</div>
 						</div>
