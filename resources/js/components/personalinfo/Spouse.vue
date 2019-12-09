@@ -5,6 +5,7 @@
 
             <div class="form-wrapper">
                 <div class="error-message"></div>
+                <ValidationObserver ref="observer" v-slot="{ invalid }">
                 <form
                     id="frmSpouseDetails"
                     name="frmSpouseDetails"
@@ -16,19 +17,18 @@
                     <div class="field-group">
                         <label for="marriage_date" class="input-label">Marriage Date and location</label>
                         <div class="fields-group clearfix">
-                            <input
-                                type="text"
-                                name="marriage_date"
-                                id="marriage_date"
-                                class="field-datepicker field-input"
-                                placeholder="DD/MM/YYYY"
-                            />
+                            <date-picker name="marriage_date" id="marriage_date" v-model="spouseDetails.marriage_date" valueType="format" :first-day-of-week="1"
+                                :lang="lang" format="MM/DD/YYYY" placeholder="MM/DD/YYYY" 
+                                class="field-datepicker field-input">
+                            </date-picker>
+                            
                             <input
                                 type="text"
                                 name="marriage_location"
                                 id="marriage_location"
                                 class="field-input required"
                                 placeholder="Location"
+                                v-model="spouseDetails.marriage_location"
                             />
                         </div>
                     </div>
@@ -39,13 +39,17 @@
                         <div class="col-md-6 col-sm-12">
                             <div class="field-group">
                                 <label for="spouse_legal_name" class="input-label">Legal Name</label>
+                                <ValidationProvider name="Legal Name" rules="required" v-slot="{ errors }">
                                 <input
                                     type="text"
                                     name="spouse_legal_name"
                                     id="spouse_legal_name"
                                     class="field-input required"
                                     placeholder="Legal Name"
+                                    v-model="spouseDetails.spouse_legal_name"
                                 />
+                                <div class="invalid-feedback d-block" v-for="(error, index) in errors" v-bind:key="index">{{ error }}</div>
+                                </ValidationProvider>
                             </div>
                         </div>
                         <div class="col-md-6 col-sm-12">
@@ -60,6 +64,7 @@
                                     id="spouse_nickname"
                                     class="field-input"
                                     placeholder="Nickname or prior name"
+                                    v-model="spouseDetails.spouse_nickname"
                                 />
                             </div>
                         </div>
@@ -71,62 +76,25 @@
                             rows="2"
                             name="spouse_home_address"
                             id="spouse_home_address"
+                            v-model="spouseDetails.spouse_home_address"
                             class="field-input"
                             placeholder="Street Address, Town, City, State, Zipcode and country"
                         ></textarea>
                     </div>
 
-                    <div class="field-group">
-                        <label for="spouse_phone_nubmer">Phone Numbers</label>
-                        <input
-                            type="text"
-                            name="spouse_phone_nubmer"
-                            id="spouse_phone_nubmer"
-                            class="field-input input-mobile"
-                            placeholder="Primary phone number"
-                        />
-                        <div class="add-anohter-field">
-                            <div class="field-wrapper hidden">
-                                <input
-                                    type="text"
-                                    name="spouse_phone_nubmer_1"
-                                    id="spouse_phone_nubmer_1"
-                                    class="field-input input-mobile"
-                                    placeholder="Alternate phone number"
-                                />
-                                <a href="#" class="btn-remove">
-                                    <i data-feather="minus-circle"></i>
-                                </a>
-                            </div>
-                            <div class="field-wrapper hidden">
-                                <input
-                                    type="text"
-                                    name="spouse_phone_nubmer_2"
-                                    id="spouse_phone_nubmer_2"
-                                    class="field-input input-mobile"
-                                    placeholder="Alternate phone number"
-                                />
-                                <a href="#" class="btn-remove">
-                                    <i data-feather="minus-circle"></i>
-                                </a>
-                            </div>
-                            <div class="btn-add">
-                                <a href="#">
-                                    <i data-feather="plus"></i> Add another
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+                    <phone></phone>
 
                     <div class="field-group">
                         <label for="spouse_dob" class="input-label">Date of Birth</label>
-                        <input
-                            type="text"
-                            name="spouse_dob"
-                            id="spouse_dob"
-                            class="field-datepicker field-input"
-                            placeholder="DD/MM/YYYY"
-                        />
+                        <date-picker 
+                            name="spouse_dob" 
+                            id="spouse_dob" 
+                            v-model="spouseDetails.spouse_dob" 
+                            valueType="format" :first-day-of-week="1"
+                            :lang="lang" format="MM/DD/YYYY" 
+                            placeholder="MM/DD/YYYY" 
+                            class="field-datepicker field-input">
+                        </date-picker>
                     </div>
 
                     <div class="row">
@@ -138,6 +106,7 @@
                                     id="citizenship"
                                     class="custom-select"
                                     data-placeholder="Citizenship"
+                                    v-model="spouseDetails.citizenship"
                                 >
                                     <option></option>
                                     <option value="1">Brother</option>
@@ -157,6 +126,7 @@
                                     id="legal_name"
                                     class="field-input"
                                     placeholder="Passport Number"
+                                    v-model="spouseDetails.passport_number"
                                 />
                             </div>
                         </div>
@@ -171,6 +141,7 @@
                                 id="father_name"
                                 class="field-input"
                                 placeholder="Father's Name"
+                                v-model="spouseDetails.father_name"
                             />
                             <input
                                 type="text"
@@ -178,6 +149,7 @@
                                 id="father_birth_place"
                                 class="field-input field-input__last"
                                 placeholder="Birth place"
+                                v-model="spouseDetails.father_birth_place"
                             />
                         </div>
                     </div>
@@ -191,6 +163,7 @@
                                 id="mother_name"
                                 class="field-input"
                                 placeholder="Mother's Name"
+                                v-model="spouseDetails.mother_name"
                             />
                             <input
                                 type="text"
@@ -198,242 +171,19 @@
                                 id="mother_birth_place"
                                 class="field-input field-input__last"
                                 placeholder="Birth place"
+                                v-model="spouseDetails.mother_birth_place"
                             />
                         </div>
                     </div>
 
                     <h4 class="form-subhead">Email Addresses</h4>
-                    <div class="field-group">
-                        <div class="fields-group clearfix">
-                            <input
-                                type="text"
-                                name="spouse_email"
-                                id="spouse_email"
-                                class="field-input field-input__first email"
-                                placeholder="Email address"
-                            />
-                            <input
-                                type="password"
-                                name="spouse_email_pwd"
-                                id="spouse_email_pwd"
-                                class="field-input field-input__last"
-                                placeholder="password"
-                            />
-                        </div>
-                        <div class="add-anohter-field">
-                            <div class="field-wrapper hidden">
-                                <div class="fields-group clearfix">
-                                    <input
-                                        type="text"
-                                        name="spouse_email"
-                                        id="spouse_email"
-                                        class="field-input field-input__first email"
-                                        placeholder="Email address"
-                                    />
-                                    <input
-                                        type="password"
-                                        name="spouse_email_pwd"
-                                        id="spouse_email_pwd"
-                                        class="field-input field-input__last"
-                                        placeholder="password"
-                                    />
-                                </div>
-                                <a href="#" class="btn-remove">
-                                    <i data-feather="minus-circle"></i>
-                                </a>
-                            </div>
-                            <div class="btn-add">
-                                <a href="#">
-                                    <i data-feather="plus"></i> Add another
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+                    <email></email>
 
                     <h4 class="form-subhead">Social Media</h4>
-                    <div class="field-group">
-                        <div class="row">
-                            <div class="col-md-5">
-                                <select
-                                    name="social_media_type"
-                                    id="social_media_type"
-                                    class="custom-select"
-                                    data-placeholder="Social Media Account"
-                                >
-                                    <option></option>
-                                    <option value="1">Facebook</option>
-                                    <option value="2">Twitter</option>
-                                    <option value="3">Instagram</option>
-                                    <option value="4">LinkedIn</option>
-                                    <option value="5">YouTube</option>
-                                    <option value="6">Other</option>
-                                </select>
-                            </div>
-                            <div class="col-md-7 col-sm-12">
-                                <div class="fields-group clearfix">
-                                    <input
-                                        type="text"
-                                        name="social_username"
-                                        id="social_username"
-                                        class="field-input"
-                                        placeholder="Username"
-                                    />
-                                    <input
-                                        type="password"
-                                        name="social_password"
-                                        id="social_password"
-                                        class="field-input field-input__last"
-                                        placeholder="Password"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="add-anohter-field">
-                            <div class="field-wrapper hidden">
-                                <div class="row">
-                                    <div class="col-md-5">
-                                        <select
-                                            name="social_media_type<?php echo $i?>"
-                                            id="social_media_type<?php echo $i?>"
-                                            class="custom-select"
-                                            data-placeholder="Social Media Account"
-                                        >
-                                            <option></option>
-                                            <option value="1">Facebook</option>
-                                            <option value="2">Twitter</option>
-                                            <option value="3">Instagram</option>
-                                            <option value="4">LinkedIn</option>
-                                            <option value="5">YouTube</option>
-                                            <option value="6">Other</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-7 col-sm-12">
-                                        <div class="fields-group clearfix">
-                                            <input
-                                                type="text"
-                                                name="social_username"
-                                                id="social_username"
-                                                class="field-input"
-                                                placeholder="Username"
-                                            />
-                                            <input
-                                                type="password"
-                                                name="social_password"
-                                                id="social_password"
-                                                class="field-input field-input__last"
-                                                placeholder="Password"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                                <a href="#" class="btn-remove">
-                                    <i data-feather="minus-circle"></i>
-                                </a>
-                            </div>
-                            <div class="btn-add">
-                                <a href="#">
-                                    <i data-feather="plus"></i> Add another
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+                    <social></social>
 
                     <h4 class="form-subhead">Current Employers including self employment</h4>
-                    <div class="add-anohter-field">
-                        <div class="field-wrapper hidden">
-                            <div class="form-subgroup">
-                                <div class="row">
-                                    <div class="col-md-6 col-sm-12">
-                                        <div class="field-group">
-                                            <label
-                                                for="spouse_employer_name"
-                                                class="input-label"
-                                            >Employer Name</label>
-                                            <input
-                                                type="text"
-                                                name="spouse_employer_name"
-                                                id="spouse_employer_name"
-                                                class="field-input"
-                                                placeholder="Employer Name"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-sm-12">
-                                        <div class="field-group">
-                                            <label
-                                                for="spouse_employer_phone"
-                                                class="input-label"
-                                            >Employer Phone</label>
-                                            <input
-                                                type="text"
-                                                name="spouse_employer_phone"
-                                                id="spouse_employer_phone"
-                                                class="field-input"
-                                                placeholder="Phone number"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="field-group">
-                                    <label for="spouse_employer_address">Employer Address</label>
-                                    <textarea
-                                        rows="2"
-                                        name="spouse_employer_address"
-                                        id="spouse_employer_address"
-                                        class="field-input"
-                                        placeholder="Street Address, Town, City, State, Zipcode and country"
-                                    ></textarea>
-                                </div>
-
-                                <div class="field-group">
-                                    <label
-                                        for="spouse_company_computer"
-                                    >Company computer user name and password</label>
-                                    <div class="row">
-                                        <div class="col-md-6 col-sm-12">
-                                            <input
-                                                type="text"
-                                                name="spouse_company_computer_un"
-                                                id="spouse_company_computer_un"
-                                                class="field-input"
-                                                placeholder="Username"
-                                            />
-                                        </div>
-                                        <div class="col-md-6 col-sm-12">
-                                            <input
-                                                type="text"
-                                                name="spouse_company_computer_pwd"
-                                                id="spouse_company_computer_pwd"
-                                                class="field-input"
-                                                placeholder="Password"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="field-group field-group__last">
-                                    <label for="spouse_employer_benefits">Benefits used</label>
-                                    <textarea
-                                        rows="2"
-                                        name="spouse_employer_benefits"
-                                        id="spouse_employer_benefits"
-                                        class="field-input"
-                                        placeholder="Benefits used"
-                                    ></textarea>
-                                </div>
-                            </div>
-                            <a href="#" class="btn-remove">
-                                <i data-feather="minus-circle"></i>
-                            </a>
-                        </div>
-
-                        <div class="btn-add">
-                            <a href="#">
-                                <i data-feather="plus"></i> Add employer
-                            </a>
-                        </div>
-                    </div>
+                    <employee></employee>
 
                     <div class="field-group field-group__action clearfix">
                         <input
@@ -443,20 +193,66 @@
                         />
                     </div>
                 </form>
+                </ValidationObserver>
                 <div class="clearfix"></div>
             </div>
         </div>
     </div>
 </template>
 <script>
+import DatePicker from 'vue2-datepicker';
+import Phone from './Phone.vue';
+import Email from './Email.vue';
+import Social from './Social.vue';
+import Employee from './Employee.vue';
+import { ValidationObserver, ValidationProvider } from "vee-validate";
+    
 export default {
+    components:{
+        Phone,
+        Email,
+        DatePicker,
+        Social,
+        Employee,
+        ValidationObserver,
+		ValidationProvider
+    },
     data() {
-        return {};
+        return {
+            spouseDetails: {
+                marriage_date: '',
+                marriage_location: '',
+                spouse_legal_name: '',
+                spouse_nickname: '',
+                spouse_home_address: '',
+                spouse_dob: '',
+                citizenship: '',
+                passport_number: '',
+                father_name: '',
+                father_birth_place: '',
+                mother_name: '',
+                mother_birth_place: ''
+            },
+            lang: {
+                days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                pickers: ['next 7 days', 'next 30 days', 'previous 7 days', 'previous 30 days'],
+                placeholder: {
+                    date: 'Select Date',
+                    dateRange: 'Select Date Range'
+                }
+            },
+        };
     },
     mounted() {},
     methods: {
-        handleSubmit(e) {
-            this.$router.push("/previous-spouse-question");
+        async handleSubmit(e) {
+            const isValid = await this.$refs.observer.validate();
+            if(!isValid){
+
+            }else{
+                this.$router.push("/previous-spouse-question");
+            }
         }
     }
 };
