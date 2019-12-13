@@ -2927,12 +2927,82 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    return {};
+    return {
+      routeName: null
+    };
   },
   mounted: function mounted() {},
-  methods: {}
+  watch: {
+    $route: "currentRoute"
+  },
+  methods: {
+    currentRoute: function currentRoute() {
+      var _this = this;
+
+      this.$nextTick(function () {
+        _this.routeName = _this.$route.name;
+        console.log(_this.routeName);
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -54315,38 +54385,343 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { attrs: { id: "b" } }, [
-    _c("div", { staticClass: "questions-list" }, [
-      _c("div", { staticClass: "item active" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _c(
-          "h3",
-          [
-            _c("router-link", { attrs: { to: "/", exact: "" } }, [
-              _vm._v("Your personal details")
+    _c("nav", [
+      _c(
+        "div",
+        { staticClass: "questions-list" },
+        [
+          _c("div", { staticClass: "item active" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c(
+              "h3",
+              [
+                _c("router-link", { attrs: { to: "/", exact: "" } }, [
+                  _vm._v("Your personal details")
+                ])
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _vm._m(1)
+          ]),
+          _vm._v(" "),
+          _c("router-link", {
+            attrs: { to: "/spouse-question" },
+            scopedSlots: _vm._u([
+              {
+                key: "default",
+                fn: function(ref) {
+                  var href = ref.href
+                  var route = ref.route
+                  var navigate = ref.navigate
+                  var isActive = ref.isActive
+                  var isExactActive = ref.isExactActive
+                  return [
+                    _c("div", { class: [isActive && "item active"] }, [
+                      _c("span", { staticClass: "item__status" }, [
+                        _c("i", { attrs: { "data-feather": "check" } })
+                      ]),
+                      _vm._v(" "),
+                      _c("h3", [_vm._v("Are you married?")]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "item__meta" }, [
+                        _vm._v(
+                          "\n                            You answered:\n                            "
+                        ),
+                        _c("strong", [_vm._v("YES")]),
+                        _vm._v(" "),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "item__last-updated" }, [
+                          _vm._v("Last Updated: 10.09.2018")
+                        ]),
+                        _vm._v("  / \n                            "),
+                        _c(
+                          "a",
+                          { attrs: { href: href }, on: { click: navigate } },
+                          [_vm._v("Edit")]
+                        )
+                      ])
+                    ])
+                  ]
+                }
+              }
             ])
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _vm._m(1)
-      ]),
-      _vm._v(" "),
-      _vm._m(2),
-      _vm._v(" "),
-      _vm._m(3),
-      _vm._v(" "),
-      _vm._m(4),
-      _vm._v(" "),
-      _vm._m(5),
-      _vm._v(" "),
-      _vm._m(6),
-      _vm._v(" "),
-      _vm._m(7),
-      _vm._v(" "),
-      _vm._m(8),
-      _vm._v(" "),
-      _vm._m(9)
+          }),
+          _vm._v(" "),
+          _c("router-link", {
+            attrs: { to: "/previous-spouse-question" },
+            scopedSlots: _vm._u([
+              {
+                key: "default",
+                fn: function(ref) {
+                  var href = ref.href
+                  var route = ref.route
+                  var navigate = ref.navigate
+                  var isActive = ref.isActive
+                  var isExactActive = ref.isExactActive
+                  return [
+                    _c("div", { staticClass: "item" }, [
+                      _c("div", { class: [isActive && "active"] }, [
+                        _c("span", { staticClass: "item__status" }, [
+                          _c("i", { attrs: { "data-feather": "check" } })
+                        ]),
+                        _vm._v(" "),
+                        _c("h3", [_vm._v("Were you previously married?")]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "item__meta" }, [
+                          _vm._v(
+                            "\n\t\t\t\t\t\t\tYou answered:\n\t\t\t\t\t\t\t"
+                          ),
+                          _c("strong", [_vm._v("No")]),
+                          _vm._v(" "),
+                          _c("br"),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "item__last-updated" }, [
+                            _vm._v("Last Updated: 10.09.2018")
+                          ]),
+                          _vm._v("  / \n\t\t\t\t\t\t\t"),
+                          _c(
+                            "a",
+                            { attrs: { href: href }, on: { click: navigate } },
+                            [_vm._v("Edit")]
+                          )
+                        ])
+                      ])
+                    ])
+                  ]
+                }
+              }
+            ])
+          }),
+          _vm._v(" "),
+          _c("router-link", {
+            attrs: { to: "/family-members-question" },
+            scopedSlots: _vm._u([
+              {
+                key: "default",
+                fn: function(ref) {
+                  var href = ref.href
+                  var route = ref.route
+                  var navigate = ref.navigate
+                  var isActive = ref.isActive
+                  var isExactActive = ref.isExactActive
+                  return [
+                    _c("div", { staticClass: "item" }, [
+                      _c("div", { class: [isActive && "item active"] }, [
+                        _c("span", { staticClass: "item__status" }, [
+                          _c("i", { attrs: { "data-feather": "check" } })
+                        ]),
+                        _vm._v(" "),
+                        _c("h3", [
+                          _vm._v(
+                            "Would you like to add close family members including children?"
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "item__meta" }, [
+                          _vm._v(
+                            "\n\t\t\t\t\t\t\tMember added :\n\t\t\t\t\t\t\t"
+                          ),
+                          _c("strong", [_vm._v("06")]),
+                          _vm._v(" "),
+                          _c("br"),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "item__last-updated" }, [
+                            _vm._v("Last Updated: 10.09.2018")
+                          ]),
+                          _vm._v("  / \n\t\t\t\t\t\t\t"),
+                          _c(
+                            "a",
+                            { attrs: { href: href }, on: { click: navigate } },
+                            [_vm._v("Edit")]
+                          )
+                        ])
+                      ])
+                    ])
+                  ]
+                }
+              }
+            ])
+          }),
+          _vm._v(" "),
+          _c("router-link", {
+            attrs: { to: "/close-friends-question" },
+            scopedSlots: _vm._u([
+              {
+                key: "default",
+                fn: function(ref) {
+                  var href = ref.href
+                  var route = ref.route
+                  var navigate = ref.navigate
+                  var isActive = ref.isActive
+                  var isExactActive = ref.isExactActive
+                  return [
+                    _c("div", { staticClass: "item" }, [
+                      _c("div", { class: [isActive && "item active"] }, [
+                        _c("span", { staticClass: "item__status" }, [
+                          _c("i", { attrs: { "data-feather": "check" } })
+                        ]),
+                        _vm._v(" "),
+                        _c("h3", [
+                          _vm._v("Would you like any close friends contacted?")
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "item__meta" }, [
+                          _vm._v(
+                            "\n\t\t\t\t\t\t\tFriends added :\n\t\t\t\t\t\t\t"
+                          ),
+                          _c("strong", [_vm._v("04")]),
+                          _vm._v(" "),
+                          _c("br"),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "item__last-updated" }, [
+                            _vm._v("Last Updated: 10.09.2018")
+                          ]),
+                          _vm._v("  / \n\t\t\t\t\t\t\t"),
+                          _c(
+                            "a",
+                            { attrs: { href: href }, on: { click: navigate } },
+                            [_vm._v("Edit")]
+                          )
+                        ])
+                      ])
+                    ])
+                  ]
+                }
+              }
+            ])
+          }),
+          _vm._v(" "),
+          _c("router-link", {
+            attrs: { to: "/home-assistants-question" },
+            scopedSlots: _vm._u([
+              {
+                key: "default",
+                fn: function(ref) {
+                  var href = ref.href
+                  var route = ref.route
+                  var navigate = ref.navigate
+                  var isActive = ref.isActive
+                  var isExactActive = ref.isExactActive
+                  return [
+                    _c("div", { staticClass: "item item__no-data" }, [
+                      _c("h3", [_vm._v("Do you have any home assistants?")]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "item__meta" }, [
+                        _c("span", { staticClass: "item__last-updated" }, [
+                          _vm._v("Not Visited")
+                        ]),
+                        _vm._v("  / \n                        "),
+                        _c("a", { attrs: { href: "#" } }, [_vm._v("Manage")])
+                      ])
+                    ])
+                  ]
+                }
+              }
+            ])
+          }),
+          _vm._v(" "),
+          _c("router-link", {
+            attrs: { to: "/close-friends-question" },
+            scopedSlots: _vm._u([
+              {
+                key: "default",
+                fn: function(ref) {
+                  var href = ref.href
+                  var route = ref.route
+                  var navigate = ref.navigate
+                  var isActive = ref.isActive
+                  var isExactActive = ref.isExactActive
+                  return [
+                    _c("div", { staticClass: "item item__no-data" }, [
+                      _c("h3", [
+                        _vm._v("Do you have a religious or spiritual advisor?")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "item__meta" }, [
+                        _c("span", { staticClass: "item__last-updated" }, [
+                          _vm._v("Not Visited")
+                        ]),
+                        _vm._v("  / \n                        "),
+                        _c("a", { attrs: { href: "#" } }, [_vm._v("Manage")])
+                      ])
+                    ])
+                  ]
+                }
+              }
+            ])
+          }),
+          _vm._v(" "),
+          _c("router-link", {
+            attrs: { to: "/estate-representative-question" },
+            scopedSlots: _vm._u([
+              {
+                key: "default",
+                fn: function(ref) {
+                  var href = ref.href
+                  var route = ref.route
+                  var navigate = ref.navigate
+                  var isActive = ref.isActive
+                  var isExactActive = ref.isExactActive
+                  return [
+                    _c("div", { staticClass: "item item__no-data" }, [
+                      _c("h3", [
+                        _vm._v(
+                          "Do you have a personal representative for your estate?"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "item__meta" }, [
+                        _c("span", { staticClass: "item__last-updated" }, [
+                          _vm._v("Not Visited")
+                        ]),
+                        _vm._v("  / \n                        "),
+                        _c("a", { attrs: { href: "#" } }, [_vm._v("Manage")])
+                      ])
+                    ])
+                  ]
+                }
+              }
+            ])
+          }),
+          _vm._v(" "),
+          _c("router-link", {
+            attrs: { to: "/partner-estate-representative-question" },
+            scopedSlots: _vm._u([
+              {
+                key: "default",
+                fn: function(ref) {
+                  var href = ref.href
+                  var route = ref.route
+                  var navigate = ref.navigate
+                  var isActive = ref.isActive
+                  var isExactActive = ref.isExactActive
+                  return [
+                    _c("div", { staticClass: "item item__no-data" }, [
+                      _c("h3", [
+                        _vm._v(
+                          "Does your spouse/life partner/signifcant other have a personal representative of their estate?"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "item__meta" }, [
+                        _c("span", { staticClass: "item__last-updated" }, [
+                          _vm._v("Not Visited")
+                        ]),
+                        _vm._v("  / \n                        "),
+                        _c("a", { attrs: { href: "#" } }, [_vm._v("Manage")])
+                      ])
+                    ])
+                  ]
+                }
+              }
+            ])
+          })
+        ],
+        1
+      )
     ])
   ])
 }
@@ -54367,180 +54742,8 @@ var staticRenderFns = [
       _c("span", { staticClass: "item__last-updated" }, [
         _vm._v("Last Updated: 10.09.2018")
       ]),
-      _vm._v("  / \n\t\t\t\t"),
+      _vm._v("  / \n                        "),
       _c("a", { attrs: { href: "#" } }, [_vm._v("Edit")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "item" }, [
-      _c("span", { staticClass: "item__status" }, [
-        _c("i", { attrs: { "data-feather": "check" } })
-      ]),
-      _vm._v(" "),
-      _c("h3", [_c("a", [_vm._v("Are you married?")])]),
-      _vm._v(" "),
-      _c("div", { staticClass: "item__meta" }, [
-        _vm._v("\n\t\t\t\tYou answered:\n\t\t\t\t"),
-        _c("strong", [_vm._v("YES")]),
-        _vm._v(" "),
-        _c("br"),
-        _vm._v(" "),
-        _c("span", { staticClass: "item__last-updated" }, [
-          _vm._v("Last Updated: 10.09.2018")
-        ]),
-        _vm._v("  / \n\t\t\t\t"),
-        _c("a", { attrs: { href: "#" } }, [_vm._v("Edit")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "item" }, [
-      _c("span", { staticClass: "item__status" }, [
-        _c("i", { attrs: { "data-feather": "check" } })
-      ]),
-      _vm._v(" "),
-      _c("h3", [_vm._v("Were you previously married?")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "item__meta" }, [
-        _vm._v("\n\t\t\t\tYou answered:\n\t\t\t\t"),
-        _c("strong", [_vm._v("No")]),
-        _vm._v(" "),
-        _c("br"),
-        _vm._v(" "),
-        _c("span", { staticClass: "item__last-updated" }, [
-          _vm._v("Last Updated: 10.09.2018")
-        ]),
-        _vm._v("  / \n\t\t\t\t"),
-        _c("a", { attrs: { href: "#" } }, [_vm._v("Edit")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "item" }, [
-      _c("span", { staticClass: "item__status" }, [
-        _c("i", { attrs: { "data-feather": "check" } })
-      ]),
-      _vm._v(" "),
-      _c("h3", [
-        _vm._v("Would you like to add close family members including children?")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "item__meta" }, [
-        _vm._v("\n\t\t\t\tMember added :\n\t\t\t\t"),
-        _c("strong", [_vm._v("06")]),
-        _vm._v(" "),
-        _c("br"),
-        _vm._v(" "),
-        _c("span", { staticClass: "item__last-updated" }, [
-          _vm._v("Last Updated: 10.09.2018")
-        ]),
-        _vm._v("  / \n\t\t\t\t"),
-        _c("a", { attrs: { href: "#" } }, [_vm._v("Edit")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "item" }, [
-      _c("span", { staticClass: "item__status" }, [
-        _c("i", { attrs: { "data-feather": "check" } })
-      ]),
-      _vm._v(" "),
-      _c("h3", [_vm._v("Would you like any close friends contacted?")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "item__meta" }, [
-        _vm._v("\n\t\t\t\tFriends added :\n\t\t\t\t"),
-        _c("strong", [_vm._v("04")]),
-        _vm._v(" "),
-        _c("br"),
-        _vm._v(" "),
-        _c("span", { staticClass: "item__last-updated" }, [
-          _vm._v("Last Updated: 10.09.2018")
-        ]),
-        _vm._v("  / \n\t\t\t\t"),
-        _c("a", { attrs: { href: "#" } }, [_vm._v("Edit")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "item item__no-data" }, [
-      _c("h3", [_vm._v("Do you have any home assistants?")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "item__meta" }, [
-        _c("span", { staticClass: "item__last-updated" }, [
-          _vm._v("Not Visited")
-        ]),
-        _vm._v("  / \n\t\t\t\t"),
-        _c("a", { attrs: { href: "#" } }, [_vm._v("Manage")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "item item__no-data" }, [
-      _c("h3", [_vm._v("Do you have a religious or spiritual advisor?")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "item__meta" }, [
-        _c("span", { staticClass: "item__last-updated" }, [
-          _vm._v("Not Visited")
-        ]),
-        _vm._v("  / \n\t\t\t\t"),
-        _c("a", { attrs: { href: "#" } }, [_vm._v("Manage")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "item item__no-data" }, [
-      _c("h3", [
-        _vm._v("Do you have a personal representative for your estate?")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "item__meta" }, [
-        _c("span", { staticClass: "item__last-updated" }, [
-          _vm._v("Not Visited")
-        ]),
-        _vm._v("  / \n\t\t\t\t"),
-        _c("a", { attrs: { href: "#" } }, [_vm._v("Manage")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "item item__no-data" }, [
-      _c("h3", [
-        _vm._v(
-          "Does your spouse/life partner/signifcant other have a personal representative of their estate?"
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "item__meta" }, [
-        _c("span", { staticClass: "item__last-updated" }, [
-          _vm._v("Not Visited")
-        ]),
-        _vm._v("  / \n\t\t\t\t"),
-        _c("a", { attrs: { href: "#" } }, [_vm._v("Manage")])
-      ])
     ])
   }
 ]
@@ -82783,9 +82986,11 @@ var routes = [
 /* main routes */
 {
   path: '/',
+  name: 'personalDetails',
   component: _components_personalinfo_PersonalDetails_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
 }, {
-  path: '/Spouse',
+  path: '/spouse',
+  name: 'spouse',
   component: _components_personalinfo_Spouse_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
 }, {
   path: '/previous-spouse',
