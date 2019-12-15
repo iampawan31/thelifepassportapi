@@ -15,4 +15,4 @@ mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css');
 
 //mix.browserSync('api-tlp.localhost');
-mix.browserSync('api-tlp.loc');
+mix.browserSync('api-tlp.localhost');

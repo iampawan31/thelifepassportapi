@@ -2983,6 +2983,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -54418,30 +54419,32 @@ var render = function() {
                   var isActive = ref.isActive
                   var isExactActive = ref.isExactActive
                   return [
-                    _c("div", { class: [isActive && "item active"] }, [
-                      _c("span", { staticClass: "item__status" }, [
-                        _c("i", { attrs: { "data-feather": "check" } })
-                      ]),
-                      _vm._v(" "),
-                      _c("h3", [_vm._v("Are you married?")]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "item__meta" }, [
-                        _vm._v(
-                          "\n                            You answered:\n                            "
-                        ),
-                        _c("strong", [_vm._v("YES")]),
-                        _vm._v(" "),
-                        _c("br"),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "item__last-updated" }, [
-                          _vm._v("Last Updated: 10.09.2018")
+                    _c("div", { staticClass: "item" }, [
+                      _c("div", { class: [isActive && "active"] }, [
+                        _c("span", { staticClass: "item__status" }, [
+                          _c("i", { attrs: { "data-feather": "check" } })
                         ]),
-                        _vm._v("  / \n                            "),
-                        _c(
-                          "a",
-                          { attrs: { href: href }, on: { click: navigate } },
-                          [_vm._v("Edit")]
-                        )
+                        _vm._v(" "),
+                        _c("h3", [_vm._v("Are you married?")]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "item__meta" }, [
+                          _vm._v(
+                            "\n                            You answered:\n                            "
+                          ),
+                          _c("strong", [_vm._v("YES")]),
+                          _vm._v(" "),
+                          _c("br"),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "item__last-updated" }, [
+                            _vm._v("Last Updated: 10.09.2018")
+                          ]),
+                          _vm._v("  / \n                            "),
+                          _c(
+                            "a",
+                            { attrs: { href: href }, on: { click: navigate } },
+                            [_vm._v("Edit")]
+                          )
+                        ])
                       ])
                     ])
                   ]
@@ -85884,8 +85887,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /var/www/html/thelifepassportapi/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /var/www/html/thelifepassportapi/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/mdprawezmusharraf/Sites/thelifepassportapi/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/mdprawezmusharraf/Sites/thelifepassportapi/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
