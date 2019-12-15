@@ -32,8 +32,8 @@ import PetsQuestion from './components/personalinfo/questions/Pets.vue';
 
 export const routes = [
     /* main routes */
-    { path: '/', component: PersonalDetails },
-    { path: '/Spouse', component: Spouse },
+    { path: '/', name: 'personalDetails', component: PersonalDetails },
+    { path: '/spouse', name: 'spouse', component: Spouse },
     { path: '/previous-spouse', component: PreviousSpouse },
     { path: '/family-members', component: FamilyMembers },
     { path: '/close-friends', component: CloseFriends},
