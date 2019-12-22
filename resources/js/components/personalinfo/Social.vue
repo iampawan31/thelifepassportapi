@@ -1,43 +1,44 @@
 <template>
   <div class="field-group">
     <div class="add-anohter-field">
-      <div class="field-wrapper" v-for="(line, index) in lines" v-bind:key="index">
+      <div class="field-wrapper" v-for="(social, index) in socialMedia" v-bind:key="index">
         <div class="row">
           <div class="col-md-5">
             <Select2 
               width="resolve"
-              name="social_media_type"
-              id="social_media_type"
+              :name="`social_media_type[${index}]`"
+              id="social_media_type[index]"
               placeholder="Select an Options"
-              v-model="socialValue" 
               :options="socialOptions" 
-              @change="socialChangeEvent($event)" 
-              @select="socialSelectEvent($event)" />
+               />
           </div>
+          <!-- v-model="socialValue" 
+            @change="socialChangeEvent($event)" 
+              @select="socialSelectEvent($event)" -->
           <div class="col-md-7 col-sm-12">
             <div class="fields-group clearfix">
               <input
                 type="text"
-                name="social_username"
+                :name="`social_username[${index}]`"
                 id="social_username"
                 class="field-input"
                 placeholder="Username"
-                v-model="line.username"
+                v-model="social.username"
                 value=""
               />
               <input
                 type="password"
-                name="social_password"
+                :name="`social_password[${index}]`"
                 id="social_password"
                 class="field-input field-input__last"
                 placeholder="Password"
-                v-model="line.password"
+                v-model="social.password"
                 value=""
               />
             </div>
           </div>
         </div>
-        <a href="javascript:void(0);" class="btn-remove" v-if="index != 0" @click="removeLine(index)">
+        <a href="javascript:void(0);" class="btn-remove" v-if="index != 0" @click="removeSocialMedia(index)">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -56,7 +57,7 @@
         </a>
       </div>
       <div class="btn-add">
-        <a href="javascript:void(0);" @click="addLine">
+        <a href="javascript:void(0);" @click="addSocialMedia">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -87,29 +88,25 @@ export default {
     return {
       socialValue: '',
       socialOptions: ['Facebook', 'Twitter', 'Instagram', 'LinkedIn', 'Youtube', 'Others'],
-      lines: [],
+      socialMedia: [],
       blockRemoval: true
     };
   },
   watch: {
-    lines() {
-      this.blockRemoval = this.lines.length <= 1;
+    socialMedia() {
+      this.blockRemoval = this.socialMedia.length <= 1;
     }
   },
   methods: {
-    addLine() {
-      // let checkEmptyLines = this.lines.filter(line => line.number === null)
-      // console.log(checkEmptyLines);
-      // if (checkEmptyLines.length >= 1 && this.lines.length > 0) return
-
-      this.lines.push({ social: null, username: null, password: null });
+    addSocialMedia() {
+      this.socialMedia.push({ social: null, username: null, password: null });
     },
-    removeLine(lineId) {
-      if (!this.blockRemoval) this.lines.splice(lineId, 1);
+    removeSocialMedia(lineId) {
+      if (!this.blockRemoval) this.socialMedia.splice(lineId, 1);
     }
   },
   mounted() {
-    this.addLine();
+    this.addSocialMedia();
   },
   socialChangeEvent(val){
       console.log(val);

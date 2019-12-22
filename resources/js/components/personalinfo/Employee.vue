@@ -1,6 +1,6 @@
 <template>
   <div class="add-anohter-field">
-    <div class="field-wrapper" v-for="(line, index) in lines" v-bind:key="index">
+    <div class="field-wrapper" v-for="(employer, index) in employers" v-bind:key="index">
       <div class="form-subgroup">
         <div class="row">
           <div class="col-md-6 col-sm-12">
@@ -8,11 +8,11 @@
               <label for="employer_name" class="input-label">Employer Name</label>
               <input
                 type="text"
-                name="employer_name"
+                :name="`employer_name[${index}]`"
                 id="employer_name"
                 class="field-input"
                 placeholder="Employer Name"
-                v-model="line.employer_name"
+                v-model="employer.employer_name"
                 value=""
               />
             </div>
@@ -22,11 +22,11 @@
               <label for="employer_phone" class="input-label">Employer Phone</label>
               <input
                 type="text"
-                name="employer_phone"
+                :name="`employer_phone[${index}]`"
                 id="employer_phone"
                 class="field-input"
                 placeholder="Phone number"
-                v-model="line.employer_phone"
+                v-model="employer.employer_phone"
                 value=""
               />
             </div>
@@ -37,11 +37,11 @@
           <label for="employer_address">Employer Address</label>
           <textarea
             rows="2"
-            name="employer_address"
+            :name="`employer_address[${index}]`"
             id="employer_address"
             class="field-input"
             placeholder="Street Address, Town, City, State, Zipcode and country"
-            v-model="line.employer_address"
+            v-model="employer.employer_address"
             value=""
           ></textarea>
         </div>
@@ -52,22 +52,22 @@
             <div class="col-md-6 col-sm-12">
               <input
                 type="text"
-                name="company_computer_username"
+                :name="`company_computer_username[${index}]`"
                 id="company_computer_username"
                 class="field-input"
                 placeholder="Username"
-                v-model="line.employer_computer_username"
+                v-model="employer.employer_computer_username"
                 value=""
               />
             </div>
             <div class="col-md-6 col-sm-12">
               <input
                 type="text"
-                name="company_computer_password"
+                :name="`company_computer_password[${index}]`"
                 id="company_computer_password"
                 class="field-input"
                 placeholder="Password"
-                v-model="line.employer_computer_password"
+                v-model="employer.employer_computer_password"
                 value=""
               />
             </div>
@@ -78,16 +78,16 @@
           <label for="employee_benifits">Benefits used</label>
           <textarea
             rows="2"
-            name="employee_benifits"
+            :name="`employee_benifits[${index}]`"
             id="employee_benifits"
             class="field-input"
             placeholder="Benefits used"
-            v-model="line.employee_benefits"
+            v-model="employer.employee_benefits"
             value=""
           ></textarea>
         </div>
       </div>
-      <a href="javascript:void(0);" class="btn-remove" v-if="index != 0" @click="removeLine(index)">
+      <a href="javascript:void(0);" class="btn-remove" v-if="index != 0" @click="removeEmployers(index)">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -105,7 +105,7 @@
         </svg>
       </a>
     </div>
-    <div class="btn-add" @click="addLine">
+    <div class="btn-add" @click="addEmployers">
       <a href="javascript:void(0);">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -130,22 +130,18 @@
 export default {
   data() {
     return {
-      lines: [],
+      employers: [],
       blockRemoval: true
     };
   },
   watch: {
-    lines() {
-      this.blockRemoval = this.lines.length <= 1;
+    employers() {
+      this.blockRemoval = this.employers.length <= 1;
     }
   },
   methods: {
-    addLine() {
-      // let checkEmptyLines = this.lines.filter(line => line.number === null)
-      // console.log(checkEmptyLines);
-      // if (checkEmptyLines.length >= 1 && this.lines.length > 0) return
-
-      this.lines.push({ 
+    addEmployers() {
+      this.employers.push({ 
             employer_name: null, 
             employer_phone: null,  
             employer_address: null, 
@@ -154,12 +150,12 @@ export default {
             employee_benefits: null
         });
     },
-    removeLine(lineId) {
-      if (!this.blockRemoval) this.lines.splice(lineId, 1);
+    removeEmployers(lineId) {
+      if (!this.blockRemoval) this.employers.splice(lineId, 1);
     }
   },
   mounted() {
-    this.addLine();
+    this.addEmployers();
   }
 };
 </script>

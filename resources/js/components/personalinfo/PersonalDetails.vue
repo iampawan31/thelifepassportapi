@@ -4,7 +4,7 @@
 			<h3 class="heading3">Enter your personal details:</h3>
 			<div class="form-wrapper">
 				<ValidationObserver ref="observer" v-slot="{ invalid }">
-				<form id="frmPersonalDetails" name="frmPersonalDetails" method="post" class="custom-form" @submit.prevent="handleSubmit()">
+				<form id="frmPersonalDetails" name="frmPersonalDetails" method="post" class="custom-form" @submit.prevent="handleSubmit">
 					<div class="row">
 						<div class="col-md-6 col-sm-12">
 							<div class="field-group">
@@ -128,13 +128,16 @@
 					nickname: '',	
 					dob: '',
 					home_address: '',
-					passport_number: '',
+					citizenship: '',
 					passport_number: '',
 					father_name: '',
 					father_birth_place: '',
 					mother_name: '',
 					mother_birth_place: '',
 					citizenshipValue: '',
+					phones: [],
+					user_email:[],
+
 				},
 				// citizenshipOptions: [
 				//     {
@@ -151,7 +154,7 @@
 				//     }
 				// ],
 				
-				citizenshipOptions: ['op1', 'op2', 'op3'],
+				citizenshipOptions: [],
 				result2: "",
 				lang: {
 					days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
@@ -165,20 +168,33 @@
 				submitted: false
 			};
 		},
+		created(){
+			axios.get('/countrylist').then((response) => {
+				if (response.status == 200) {
+					this.citizenshipOptions = response.data;
+					console.log(this.citizenshipOptions);
+				}
+				
+			});
+		},
 		mounted() {},
 		methods: {
 
 			async handleSubmit(e){
-				this.submitted = true;
-				const isValid = await this.$refs.observer.validate();
-
-				if(!isValid){
-
-				}else{
-					this.$router.push('/spouse-question');
+				const form = e.target
+				const formData = new FormData(form) // get all named inputs in form
+				for (const [inputName, value] of formData) {
+					console.log({ inputName, value })
 				}
+				// this.submitted = true;
+				// const isValid = await this.$refs.observer.validate();
 
-				
+				// if(!isValid){
+
+				// }else{
+				// 	this.$router.push('/spouse-question');
+					
+				// }
 			},
 
 			citizenshipChangeEvent(val) {

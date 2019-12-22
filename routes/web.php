@@ -30,3 +30,4 @@ Route::get('personal-details', 'PersonalinfoController@personaldetails')->name('
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/countrylist', 'CountryController@index')->name('countrylist');

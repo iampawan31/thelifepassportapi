@@ -2134,31 +2134,28 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      lines: [],
+      emails: [],
       blockRemoval: true
     };
   },
   watch: {
-    lines: function lines() {
-      this.blockRemoval = this.lines.length <= 1;
+    emails: function emails() {
+      this.blockRemoval = this.emails.length <= 1;
     }
   },
   methods: {
-    addLine: function addLine() {
-      // let checkEmptyLines = this.lines.filter(line => line.number === null)
-      // console.log(checkEmptyLines);
-      // if (checkEmptyLines.length >= 1 && this.lines.length > 0) return
-      this.lines.push({
+    addEmail: function addEmail() {
+      this.emails.push({
         email: null,
         password: null
       });
     },
-    removeLine: function removeLine(lineId) {
-      if (!this.blockRemoval) this.lines.splice(lineId, 1);
+    removeEmail: function removeEmail(lineId) {
+      if (!this.blockRemoval) this.emails.splice(lineId, 1);
     }
   },
   mounted: function mounted() {
-    this.addLine();
+    this.addEmail();
   }
 });
 
@@ -2304,21 +2301,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      lines: [],
+      employers: [],
       blockRemoval: true
     };
   },
   watch: {
-    lines: function lines() {
-      this.blockRemoval = this.lines.length <= 1;
+    employers: function employers() {
+      this.blockRemoval = this.employers.length <= 1;
     }
   },
   methods: {
-    addLine: function addLine() {
-      // let checkEmptyLines = this.lines.filter(line => line.number === null)
-      // console.log(checkEmptyLines);
-      // if (checkEmptyLines.length >= 1 && this.lines.length > 0) return
-      this.lines.push({
+    addEmployers: function addEmployers() {
+      this.employers.push({
         employer_name: null,
         employer_phone: null,
         employer_address: null,
@@ -2327,12 +2321,12 @@ __webpack_require__.r(__webpack_exports__);
         employee_benefits: null
       });
     },
-    removeLine: function removeLine(lineId) {
-      if (!this.blockRemoval) this.lines.splice(lineId, 1);
+    removeEmployers: function removeEmployers(lineId) {
+      if (!this.blockRemoval) this.employers.splice(lineId, 1);
     }
   },
   mounted: function mounted() {
-    this.addLine();
+    this.addEmployers();
   }
 });
 
@@ -3207,11 +3201,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 
 
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 //
 //
@@ -3334,17 +3334,23 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_7__["ValidationProvider"]
   },
   data: function data() {
-    var _personalDetail;
-
     return {
       errors: [],
-      personalDetail: (_personalDetail = {
+      personalDetail: {
         legal_name: '',
         nickname: '',
         dob: '',
         home_address: '',
-        passport_number: ''
-      }, _defineProperty(_personalDetail, "passport_number", ''), _defineProperty(_personalDetail, "father_name", ''), _defineProperty(_personalDetail, "father_birth_place", ''), _defineProperty(_personalDetail, "mother_name", ''), _defineProperty(_personalDetail, "mother_birth_place", ''), _defineProperty(_personalDetail, "citizenshipValue", ''), _personalDetail),
+        citizenship: '',
+        passport_number: '',
+        father_name: '',
+        father_birth_place: '',
+        mother_name: '',
+        mother_birth_place: '',
+        citizenshipValue: '',
+        phones: [],
+        user_email: []
+      },
       // citizenshipOptions: [
       //     {
       //         text: "India",
@@ -3359,7 +3365,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       //         value: "UK"
       //     }
       // ],
-      citizenshipOptions: ['op1', 'op2', 'op3'],
+      citizenshipOptions: [],
       result2: "",
       lang: {
         days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
@@ -3373,34 +3379,89 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       submitted: false
     };
   },
+  created: function created() {
+    var _this = this;
+
+    axios.get('/countrylist').then(function (response) {
+      if (response.status == 200) {
+        _this.citizenshipOptions = response.data;
+        console.log(_this.citizenshipOptions);
+      }
+    });
+  },
   mounted: function mounted() {},
   methods: {
     handleSubmit: function () {
       var _handleSubmit = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(e) {
-        var isValid;
+        var form, formData, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, _step$value, inputName, value;
+
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                this.submitted = true;
-                _context.next = 3;
-                return this.$refs.observer.validate();
+                form = e.target;
+                formData = new FormData(form); // get all named inputs in form
 
-              case 3:
-                isValid = _context.sent;
+                _iteratorNormalCompletion = true;
+                _didIteratorError = false;
+                _iteratorError = undefined;
+                _context.prev = 5;
 
-                if (!isValid) {} else {
-                  this.$router.push('/spouse-question');
+                for (_iterator = formData[Symbol.iterator](); !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                  _step$value = _slicedToArray(_step.value, 2), inputName = _step$value[0], value = _step$value[1];
+                  console.log({
+                    inputName: inputName,
+                    value: value
+                  });
+                } // this.submitted = true;
+                // const isValid = await this.$refs.observer.validate();
+                // if(!isValid){
+                // }else{
+                // 	this.$router.push('/spouse-question');
+                // }
+
+
+                _context.next = 13;
+                break;
+
+              case 9:
+                _context.prev = 9;
+                _context.t0 = _context["catch"](5);
+                _didIteratorError = true;
+                _iteratorError = _context.t0;
+
+              case 13:
+                _context.prev = 13;
+                _context.prev = 14;
+
+                if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+                  _iterator["return"]();
                 }
 
-              case 5:
+              case 16:
+                _context.prev = 16;
+
+                if (!_didIteratorError) {
+                  _context.next = 19;
+                  break;
+                }
+
+                throw _iteratorError;
+
+              case 19:
+                return _context.finish(16);
+
+              case 20:
+                return _context.finish(13);
+
+              case 21:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this);
+        }, _callee, null, [[5, 9, 13, 21], [14,, 16, 20]]);
       }));
 
       function handleSubmit(_x) {
@@ -3463,30 +3524,30 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      lines: [],
+      phones: [],
       blockRemoval: true
     };
   },
   watch: {
-    lines: function lines() {
-      this.blockRemoval = this.lines.length <= 1;
+    phones: function phones() {
+      this.blockRemoval = this.phones.length <= 1;
     }
   },
   methods: {
-    addLine: function addLine() {
+    addPhone: function addPhone() {
       // let checkEmptyLines = this.lines.filter(line => line.number === null)
       // console.log(checkEmptyLines);
       // if (checkEmptyLines.length >= 1 && this.lines.length > 0) return
-      this.lines.push({
+      this.phones.push({
         number: null
       });
     },
-    removeLine: function removeLine(lineId) {
-      if (!this.blockRemoval) this.lines.splice(lineId, 1);
+    removePhone: function removePhone(lineId) {
+      if (!this.blockRemoval) this.phones.splice(lineId, 1);
     }
   },
   mounted: function mounted() {
-    this.addLine();
+    this.addPhone();
   }
 });
 
@@ -3821,6 +3882,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -3830,32 +3892,29 @@ __webpack_require__.r(__webpack_exports__);
     return {
       socialValue: '',
       socialOptions: ['Facebook', 'Twitter', 'Instagram', 'LinkedIn', 'Youtube', 'Others'],
-      lines: [],
+      socialMedia: [],
       blockRemoval: true
     };
   },
   watch: {
-    lines: function lines() {
-      this.blockRemoval = this.lines.length <= 1;
+    socialMedia: function socialMedia() {
+      this.blockRemoval = this.socialMedia.length <= 1;
     }
   },
   methods: {
-    addLine: function addLine() {
-      // let checkEmptyLines = this.lines.filter(line => line.number === null)
-      // console.log(checkEmptyLines);
-      // if (checkEmptyLines.length >= 1 && this.lines.length > 0) return
-      this.lines.push({
+    addSocialMedia: function addSocialMedia() {
+      this.socialMedia.push({
         social: null,
         username: null,
         password: null
       });
     },
-    removeLine: function removeLine(lineId) {
-      if (!this.blockRemoval) this.lines.splice(lineId, 1);
+    removeSocialMedia: function removeSocialMedia(lineId) {
+      if (!this.blockRemoval) this.socialMedia.splice(lineId, 1);
     }
   },
   mounted: function mounted() {
-    this.addLine();
+    this.addSocialMedia();
   },
   socialChangeEvent: function socialChangeEvent(val) {
     console.log(val);
@@ -53159,7 +53218,7 @@ var render = function() {
       "div",
       { staticClass: "add-anohter-field" },
       [
-        _vm._l(_vm.lines, function(line, index) {
+        _vm._l(_vm.emails, function(email, index) {
           return _c("div", { key: index, staticClass: "field-wrapper" }, [
             _c("div", { staticClass: "fields-group clearfix" }, [
               _c("input", {
@@ -53167,25 +53226,25 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: line.email,
-                    expression: "line.email"
+                    value: email.email,
+                    expression: "email.email"
                   }
                 ],
                 staticClass: "field-input field-input__first email",
                 attrs: {
                   type: "text",
-                  name: "user_email",
-                  id: "user_email",
+                  name: "email[" + index + "]",
+                  id: "email",
                   placeholder: "Email address",
                   value: ""
                 },
-                domProps: { value: line.email },
+                domProps: { value: email.email },
                 on: {
                   input: function($event) {
                     if ($event.target.composing) {
                       return
                     }
-                    _vm.$set(line, "email", $event.target.value)
+                    _vm.$set(email, "email", $event.target.value)
                   }
                 }
               }),
@@ -53195,25 +53254,25 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: line.password,
-                    expression: "line.password"
+                    value: email.password,
+                    expression: "email.password"
                   }
                 ],
                 staticClass: "field-input field-input__last",
                 attrs: {
                   type: "password",
-                  name: "email_password",
+                  name: "email_password[" + index + "]",
                   id: "email_password",
                   placeholder: "password",
                   value: ""
                 },
-                domProps: { value: line.password },
+                domProps: { value: email.password },
                 on: {
                   input: function($event) {
                     if ($event.target.composing) {
                       return
                     }
-                    _vm.$set(line, "password", $event.target.value)
+                    _vm.$set(email, "password", $event.target.value)
                   }
                 }
               })
@@ -53227,7 +53286,7 @@ var render = function() {
                     attrs: { href: "javascript:void(0);" },
                     on: {
                       click: function($event) {
-                        return _vm.removeLine(index)
+                        return _vm.removeEmail(index)
                       }
                     }
                   },
@@ -53268,7 +53327,7 @@ var render = function() {
             "a",
             {
               attrs: { href: "javascript:void(0);" },
-              on: { click: _vm.addLine }
+              on: { click: _vm.addEmail }
             },
             [
               _c(
@@ -53331,7 +53390,7 @@ var render = function() {
     "div",
     { staticClass: "add-anohter-field" },
     [
-      _vm._l(_vm.lines, function(line, index) {
+      _vm._l(_vm.employers, function(employer, index) {
         return _c("div", { key: index, staticClass: "field-wrapper" }, [
           _c("div", { staticClass: "form-subgroup" }, [
             _c("div", { staticClass: "row" }, [
@@ -53351,25 +53410,25 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: line.employer_name,
-                        expression: "line.employer_name"
+                        value: employer.employer_name,
+                        expression: "employer.employer_name"
                       }
                     ],
                     staticClass: "field-input",
                     attrs: {
                       type: "text",
-                      name: "employer_name",
+                      name: "employer_name[" + index + "]",
                       id: "employer_name",
                       placeholder: "Employer Name",
                       value: ""
                     },
-                    domProps: { value: line.employer_name },
+                    domProps: { value: employer.employer_name },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(line, "employer_name", $event.target.value)
+                        _vm.$set(employer, "employer_name", $event.target.value)
                       }
                     }
                   })
@@ -53392,25 +53451,29 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: line.employer_phone,
-                        expression: "line.employer_phone"
+                        value: employer.employer_phone,
+                        expression: "employer.employer_phone"
                       }
                     ],
                     staticClass: "field-input",
                     attrs: {
                       type: "text",
-                      name: "employer_phone",
+                      name: "employer_phone[" + index + "]",
                       id: "employer_phone",
                       placeholder: "Phone number",
                       value: ""
                     },
-                    domProps: { value: line.employer_phone },
+                    domProps: { value: employer.employer_phone },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(line, "employer_phone", $event.target.value)
+                        _vm.$set(
+                          employer,
+                          "employer_phone",
+                          $event.target.value
+                        )
                       }
                     }
                   })
@@ -53428,26 +53491,26 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: line.employer_address,
-                    expression: "line.employer_address"
+                    value: employer.employer_address,
+                    expression: "employer.employer_address"
                   }
                 ],
                 staticClass: "field-input",
                 attrs: {
                   rows: "2",
-                  name: "employer_address",
+                  name: "employer_address[" + index + "]",
                   id: "employer_address",
                   placeholder:
                     "Street Address, Town, City, State, Zipcode and country",
                   value: ""
                 },
-                domProps: { value: line.employer_address },
+                domProps: { value: employer.employer_address },
                 on: {
                   input: function($event) {
                     if ($event.target.composing) {
                       return
                     }
-                    _vm.$set(line, "employer_address", $event.target.value)
+                    _vm.$set(employer, "employer_address", $event.target.value)
                   }
                 }
               })
@@ -53465,26 +53528,26 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: line.employer_computer_username,
-                        expression: "line.employer_computer_username"
+                        value: employer.employer_computer_username,
+                        expression: "employer.employer_computer_username"
                       }
                     ],
                     staticClass: "field-input",
                     attrs: {
                       type: "text",
-                      name: "company_computer_username",
+                      name: "company_computer_username[" + index + "]",
                       id: "company_computer_username",
                       placeholder: "Username",
                       value: ""
                     },
-                    domProps: { value: line.employer_computer_username },
+                    domProps: { value: employer.employer_computer_username },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
                         _vm.$set(
-                          line,
+                          employer,
                           "employer_computer_username",
                           $event.target.value
                         )
@@ -53499,26 +53562,26 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: line.employer_computer_password,
-                        expression: "line.employer_computer_password"
+                        value: employer.employer_computer_password,
+                        expression: "employer.employer_computer_password"
                       }
                     ],
                     staticClass: "field-input",
                     attrs: {
                       type: "text",
-                      name: "company_computer_password",
+                      name: "company_computer_password[" + index + "]",
                       id: "company_computer_password",
                       placeholder: "Password",
                       value: ""
                     },
-                    domProps: { value: line.employer_computer_password },
+                    domProps: { value: employer.employer_computer_password },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
                         _vm.$set(
-                          line,
+                          employer,
                           "employer_computer_password",
                           $event.target.value
                         )
@@ -53539,25 +53602,25 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: line.employee_benefits,
-                    expression: "line.employee_benefits"
+                    value: employer.employee_benefits,
+                    expression: "employer.employee_benefits"
                   }
                 ],
                 staticClass: "field-input",
                 attrs: {
                   rows: "2",
-                  name: "employee_benifits",
+                  name: "employee_benifits[" + index + "]",
                   id: "employee_benifits",
                   placeholder: "Benefits used",
                   value: ""
                 },
-                domProps: { value: line.employee_benefits },
+                domProps: { value: employer.employee_benefits },
                 on: {
                   input: function($event) {
                     if ($event.target.composing) {
                       return
                     }
-                    _vm.$set(line, "employee_benefits", $event.target.value)
+                    _vm.$set(employer, "employee_benefits", $event.target.value)
                   }
                 }
               })
@@ -53572,7 +53635,7 @@ var render = function() {
                   attrs: { href: "javascript:void(0);" },
                   on: {
                     click: function($event) {
-                      return _vm.removeLine(index)
+                      return _vm.removeEmployers(index)
                     }
                   }
                 },
@@ -53607,7 +53670,7 @@ var render = function() {
         ])
       }),
       _vm._v(" "),
-      _c("div", { staticClass: "btn-add", on: { click: _vm.addLine } }, [
+      _c("div", { staticClass: "btn-add", on: { click: _vm.addEmployers } }, [
         _c("a", { attrs: { href: "javascript:void(0);" } }, [
           _c(
             "svg",
@@ -55078,7 +55141,7 @@ var render = function() {
                           on: {
                             submit: function($event) {
                               $event.preventDefault()
-                              return _vm.handleSubmit()
+                              return _vm.handleSubmit($event)
                             }
                           }
                         },
@@ -55714,15 +55777,15 @@ var render = function() {
       "div",
       { staticClass: "add-anohter-field" },
       [
-        _vm._l(_vm.lines, function(line, index) {
+        _vm._l(_vm.phones, function(phone, index) {
           return _c("div", { key: index, staticClass: "field-wrapper" }, [
             _c("input", {
               directives: [
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: line.number,
-                  expression: "line.number"
+                  value: phone.number,
+                  expression: "phone.number"
                 }
               ],
               staticClass: "field-input input-mobile",
@@ -55731,15 +55794,15 @@ var render = function() {
                 "numeric-keyboard-toggle": "",
                 placeholder: "Phone number",
                 value: "",
-                name: "phone[]"
+                name: "phone[" + index + "]"
               },
-              domProps: { value: line.number },
+              domProps: { value: phone.number },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(line, "number", $event.target.value)
+                  _vm.$set(phone, "number", $event.target.value)
                 }
               }
             }),
@@ -55752,7 +55815,7 @@ var render = function() {
                     attrs: { href: "javascript:void(0);" },
                     on: {
                       click: function($event) {
-                        return _vm.removeLine(index)
+                        return _vm.removePhone(index)
                       }
                     }
                   },
@@ -55793,7 +55856,7 @@ var render = function() {
             "a",
             {
               attrs: { href: "javascript:void(0);" },
-              on: { click: _vm.addLine }
+              on: { click: _vm.addPhone }
             },
             [
               _c(
@@ -56325,7 +56388,7 @@ var render = function() {
       "div",
       { staticClass: "add-anohter-field" },
       [
-        _vm._l(_vm.lines, function(line, index) {
+        _vm._l(_vm.socialMedia, function(social, index) {
           return _c("div", { key: index, staticClass: "field-wrapper" }, [
             _c("div", { staticClass: "row" }, [
               _c(
@@ -56335,25 +56398,10 @@ var render = function() {
                   _c("Select2", {
                     attrs: {
                       width: "resolve",
-                      name: "social_media_type",
-                      id: "social_media_type",
+                      name: "social_media_type[" + index + "]",
+                      id: "social_media_type[index]",
                       placeholder: "Select an Options",
                       options: _vm.socialOptions
-                    },
-                    on: {
-                      change: function($event) {
-                        return _vm.socialChangeEvent($event)
-                      },
-                      select: function($event) {
-                        return _vm.socialSelectEvent($event)
-                      }
-                    },
-                    model: {
-                      value: _vm.socialValue,
-                      callback: function($$v) {
-                        _vm.socialValue = $$v
-                      },
-                      expression: "socialValue"
                     }
                   })
                 ],
@@ -56367,25 +56415,25 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: line.username,
-                        expression: "line.username"
+                        value: social.username,
+                        expression: "social.username"
                       }
                     ],
                     staticClass: "field-input",
                     attrs: {
                       type: "text",
-                      name: "social_username",
+                      name: "social_username[" + index + "]",
                       id: "social_username",
                       placeholder: "Username",
                       value: ""
                     },
-                    domProps: { value: line.username },
+                    domProps: { value: social.username },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(line, "username", $event.target.value)
+                        _vm.$set(social, "username", $event.target.value)
                       }
                     }
                   }),
@@ -56395,25 +56443,25 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: line.password,
-                        expression: "line.password"
+                        value: social.password,
+                        expression: "social.password"
                       }
                     ],
                     staticClass: "field-input field-input__last",
                     attrs: {
                       type: "password",
-                      name: "social_password",
+                      name: "social_password[" + index + "]",
                       id: "social_password",
                       placeholder: "Password",
                       value: ""
                     },
-                    domProps: { value: line.password },
+                    domProps: { value: social.password },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(line, "password", $event.target.value)
+                        _vm.$set(social, "password", $event.target.value)
                       }
                     }
                   })
@@ -56429,7 +56477,7 @@ var render = function() {
                     attrs: { href: "javascript:void(0);" },
                     on: {
                       click: function($event) {
-                        return _vm.removeLine(index)
+                        return _vm.removeSocialMedia(index)
                       }
                     }
                   },
@@ -56471,7 +56519,7 @@ var render = function() {
             "a",
             {
               attrs: { href: "javascript:void(0);" },
-              on: { click: _vm.addLine }
+              on: { click: _vm.addSocialMedia }
             },
             [
               _c(
