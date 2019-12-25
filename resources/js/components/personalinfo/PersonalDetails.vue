@@ -45,7 +45,7 @@
 							<div class="field-group">
 								<label for="citizenship" class="input-label">Citizenship</label>
 								<Select2 name="citizenship" id="citizenship" width="resolve"
-									placeholder="Select an Options" v-model="personalDetail.citizenshipValue"
+									data-placeholder="Select an Options" v-model="personalDetail.citizenshipValue"
 									:options="citizenshipOptions" @change="citizenshipChangeEvent($event)"
 									@select="citizenshipSelectEvent($event)" />
 							</div>
@@ -164,20 +164,46 @@
 		methods: {
 
 			async handleSubmit(e){
-				const form = e.target
-				const formData = new FormData(form) // get all named inputs in form
-				for (const [inputName, value] of formData) {
-					console.log({ inputName, value })
+				this.submitted = true;
+				const isValid = await this.$refs.observer.validate();
+
+				if(!isValid){
+
+				}else{
+					const form = e.target
+					const formData = new FormData(form) // get all named inputs in form
+					// const personalinfo = [];
+					// const phone = [];
+					// const email = [];
+					// const emailPassword = [];
+					// const social_media_type = [];
+					// for (const [inputName, value] of formData) {
+					// 	if (inputName == 'phone[]') {
+					// 		phone.push(value);
+					// 		personalinfo['phone'] = phone;
+					// 	} else if (inputName == 'email[]') {
+					// 		email.push(value);
+					// 		personalinfo['email'] = email;
+					// 	} else if (inputName == 'email_password[]') {
+					// 		emailPassword.push(value);
+					// 		personalinfo['email'] = emailPassword;
+					// 	} else if(inputName == 'social_media_type[]') {
+					// 		personalinfo['email'] = emailPassword;
+					// 	}
+					// 	else {
+					// 		personalinfo[inputName] = value;
+					// 	}
+					// }
+					//console.log(personalinfo);
+					axios.post('/personal-info/postdata', formData)
+						.then(function(response){
+							console.log(response);
+						})
+						.catch(function(){
+
+						});
+					//this.$router.push('/spouse-question');
 				}
-				// this.submitted = true;
-				// const isValid = await this.$refs.observer.validate();
-
-				// if(!isValid){
-
-				// }else{
-				// 	this.$router.push('/spouse-question');
-					
-				// }
 			},
 
 			citizenshipChangeEvent(val) {

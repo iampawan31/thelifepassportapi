@@ -2129,8 +2129,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2170,12 +2168,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -3201,14 +3193,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
-
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -3380,73 +3364,56 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _handleSubmit = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(e) {
-        var form, formData, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, _step$value, inputName, value;
-
+        var isValid, form, formData;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                form = e.target;
-                formData = new FormData(form); // get all named inputs in form
+                this.submitted = true;
+                _context.next = 3;
+                return this.$refs.observer.validate();
 
-                _iteratorNormalCompletion = true;
-                _didIteratorError = false;
-                _iteratorError = undefined;
-                _context.prev = 5;
+              case 3:
+                isValid = _context.sent;
 
-                for (_iterator = formData[Symbol.iterator](); !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                  _step$value = _slicedToArray(_step.value, 2), inputName = _step$value[0], value = _step$value[1];
-                  console.log({
-                    inputName: inputName,
-                    value: value
-                  });
-                } // this.submitted = true;
-                // const isValid = await this.$refs.observer.validate();
-                // if(!isValid){
-                // }else{
-                // 	this.$router.push('/spouse-question');
-                // }
+                if (!isValid) {} else {
+                  form = e.target;
+                  formData = new FormData(form); // get all named inputs in form
+                  // const personalinfo = [];
+                  // const phone = [];
+                  // const email = [];
+                  // const emailPassword = [];
+                  // const social_media_type = [];
+                  // for (const [inputName, value] of formData) {
+                  // 	if (inputName == 'phone[]') {
+                  // 		phone.push(value);
+                  // 		personalinfo['phone'] = phone;
+                  // 	} else if (inputName == 'email[]') {
+                  // 		email.push(value);
+                  // 		personalinfo['email'] = email;
+                  // 	} else if (inputName == 'email_password[]') {
+                  // 		emailPassword.push(value);
+                  // 		personalinfo['email'] = emailPassword;
+                  // 	} else if(inputName == 'social_media_type[]') {
+                  // 		personalinfo['email'] = emailPassword;
+                  // 	}
+                  // 	else {
+                  // 		personalinfo[inputName] = value;
+                  // 	}
+                  // }
+                  //console.log(personalinfo);
 
-
-                _context.next = 13;
-                break;
-
-              case 9:
-                _context.prev = 9;
-                _context.t0 = _context["catch"](5);
-                _didIteratorError = true;
-                _iteratorError = _context.t0;
-
-              case 13:
-                _context.prev = 13;
-                _context.prev = 14;
-
-                if (!_iteratorNormalCompletion && _iterator["return"] != null) {
-                  _iterator["return"]();
+                  axios.post('/personal-info/postdata', formData).then(function (response) {
+                    console.log(response);
+                  })["catch"](function () {}); //this.$router.push('/spouse-question');
                 }
 
-              case 16:
-                _context.prev = 16;
-
-                if (!_didIteratorError) {
-                  _context.next = 19;
-                  break;
-                }
-
-                throw _iteratorError;
-
-              case 19:
-                return _context.finish(16);
-
-              case 20:
-                return _context.finish(13);
-
-              case 21:
+              case 5:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[5, 9, 13, 21], [14,, 16, 20]]);
+        }, _callee, this);
       }));
 
       function handleSubmit(_x) {
@@ -3865,9 +3832,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -3886,8 +3850,6 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
 
     axios.get('/socialmedialist').then(function (response) {
-      console.log(response.data.social);
-
       if (response.status == 200) {
         _this.socialOptions = response.data.social;
       }
@@ -53230,8 +53192,7 @@ var render = function() {
                 staticClass: "field-input field-input__first email",
                 attrs: {
                   type: "text",
-                  name: "email[" + index + "]",
-                  id: "email",
+                  name: "email[]",
                   placeholder: "Email address",
                   value: ""
                 },
@@ -53258,8 +53219,7 @@ var render = function() {
                 staticClass: "field-input field-input__last",
                 attrs: {
                   type: "password",
-                  name: "email_password[" + index + "]",
-                  id: "email_password",
+                  name: "email_password[]",
                   placeholder: "password",
                   value: ""
                 },
@@ -53414,8 +53374,7 @@ var render = function() {
                     staticClass: "field-input",
                     attrs: {
                       type: "text",
-                      name: "employer_name[" + index + "]",
-                      id: "employer_name",
+                      name: "employer_name[]",
                       placeholder: "Employer Name",
                       value: ""
                     },
@@ -53455,8 +53414,7 @@ var render = function() {
                     staticClass: "field-input",
                     attrs: {
                       type: "text",
-                      name: "employer_phone[" + index + "]",
-                      id: "employer_phone",
+                      name: "employer_phone[]",
                       placeholder: "Phone number",
                       value: ""
                     },
@@ -53495,8 +53453,7 @@ var render = function() {
                 staticClass: "field-input",
                 attrs: {
                   rows: "2",
-                  name: "employer_address[" + index + "]",
-                  id: "employer_address",
+                  name: "employer_address[]",
                   placeholder:
                     "Street Address, Town, City, State, Zipcode and country",
                   value: ""
@@ -53532,8 +53489,7 @@ var render = function() {
                     staticClass: "field-input",
                     attrs: {
                       type: "text",
-                      name: "company_computer_username[" + index + "]",
-                      id: "company_computer_username",
+                      name: "company_computer_username[]",
                       placeholder: "Username",
                       value: ""
                     },
@@ -53566,8 +53522,7 @@ var render = function() {
                     staticClass: "field-input",
                     attrs: {
                       type: "text",
-                      name: "company_computer_password[" + index + "]",
-                      id: "company_computer_password",
+                      name: "company_computer_password[]",
                       placeholder: "Password",
                       value: ""
                     },
@@ -53606,8 +53561,7 @@ var render = function() {
                 staticClass: "field-input",
                 attrs: {
                   rows: "2",
-                  name: "employee_benifits[" + index + "]",
-                  id: "employee_benifits",
+                  name: "employee_benifits[]",
                   placeholder: "Benefits used",
                   value: ""
                 },
@@ -55384,7 +55338,7 @@ var render = function() {
                                       name: "citizenship",
                                       id: "citizenship",
                                       width: "resolve",
-                                      placeholder: "Select an Options",
+                                      "data-placeholder": "Select an Options",
                                       options: _vm.citizenshipOptions
                                     },
                                     on: {
@@ -55791,7 +55745,7 @@ var render = function() {
                 "numeric-keyboard-toggle": "",
                 placeholder: "Phone number",
                 value: "",
-                name: "phone[" + index + "]"
+                name: "phone[]"
               },
               domProps: { value: phone.number },
               on: {
@@ -56395,8 +56349,7 @@ var render = function() {
                   _c("Select2", {
                     attrs: {
                       width: "resolve",
-                      name: "social_media_type[" + index + "]",
-                      id: "social_media_type[index]",
+                      name: "social_media_type[]",
                       placeholder: "Select an Options",
                       options: _vm.socialOptions
                     }
@@ -56419,8 +56372,7 @@ var render = function() {
                     staticClass: "field-input",
                     attrs: {
                       type: "text",
-                      name: "social_username[" + index + "]",
-                      id: "social_username",
+                      name: "social_username[]",
                       placeholder: "Username",
                       value: ""
                     },
@@ -56447,8 +56399,7 @@ var render = function() {
                     staticClass: "field-input field-input__last",
                     attrs: {
                       type: "password",
-                      name: "social_password[" + index + "]",
-                      id: "social_password",
+                      name: "social_password[]",
                       placeholder: "Password",
                       value: ""
                     },

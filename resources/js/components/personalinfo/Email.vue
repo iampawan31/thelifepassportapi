@@ -5,8 +5,7 @@
             <div class="fields-group clearfix">
                 <input
                   type="text"
-                  :name="`email[${index}]`"
-                  id="email"
+                  name="email[]"
                   class="field-input field-input__first email"
                   placeholder="Email address"
                   v-model="email.email"
@@ -14,8 +13,7 @@
                 />
                 <input
                   type="password"
-                  :name="`email_password[${index}]`"
-                  id="email_password"
+                  name="email_password[]"
                   class="field-input field-input__last"
                   placeholder="password"
                   v-model="email.password"

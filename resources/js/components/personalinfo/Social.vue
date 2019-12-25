@@ -6,8 +6,7 @@
           <div class="col-md-5">
             <Select2 
               width="resolve"
-              :name="`social_media_type[${index}]`"
-              id="social_media_type[index]"
+              name="social_media_type[]"
               placeholder="Select an Options"
               :options="socialOptions" 
                />
@@ -19,8 +18,7 @@
             <div class="fields-group clearfix">
               <input
                 type="text"
-                :name="`social_username[${index}]`"
-                id="social_username"
+                name="social_username[]"
                 class="field-input"
                 placeholder="Username"
                 v-model="social.username"
@@ -28,8 +26,7 @@
               />
               <input
                 type="password"
-                :name="`social_password[${index}]`"
-                id="social_password"
+                name="social_password[]"
                 class="field-input field-input__last"
                 placeholder="Password"
                 v-model="social.password"
@@ -95,9 +92,9 @@ export default {
   },
   created() {
     axios.get('/socialmedialist').then((response) => {
-        console.log(response.data.social);
+        
 				if (response.status == 200) {
-					this.socialOptions = response.data.social;
+          this.socialOptions = response.data.social;
 				}
 			});
   },

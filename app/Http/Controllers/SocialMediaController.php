@@ -24,16 +24,15 @@ class SocialMediaController extends Controller
      */
     public function index()
     {
-        $arrSocialMedia = \App\SocialMedia::select('id', 'title')->where('status', '1')->get()->toArray();
+        $arrSocialMedia = \App\SocialMedia::select('id', 'title')->where('status', '1')->get();
         //dd($arrSocialMedia);
         $data = [];
-        // if ($arrCountries->count()) {
-        //     foreach( $arrCountries as $country ) {
-        //         $data[] = ['id' => $country->id, 'text' => $country->country_name];
-        //     }
-        // }
-        //$arrCountries = collect($arrCountries)->map(function($x){ return (array) $x; })->toArray(); 
-        return response()->json(['social' => $arrSocialMedia]);
+        if ($arrSocialMedia->count()) {
+            foreach( $arrSocialMedia as $social ) {
+                $data[] = ['id' => $social->id, 'text' => $social->title];
+            }
+        }
+        return response()->json(['social' => $data]);
     }
 
     /**

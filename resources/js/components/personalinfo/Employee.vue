@@ -8,8 +8,7 @@
               <label for="employer_name" class="input-label">Employer Name</label>
               <input
                 type="text"
-                :name="`employer_name[${index}]`"
-                id="employer_name"
+                name="employer_name[]"
                 class="field-input"
                 placeholder="Employer Name"
                 v-model="employer.employer_name"
@@ -22,8 +21,7 @@
               <label for="employer_phone" class="input-label">Employer Phone</label>
               <input
                 type="text"
-                :name="`employer_phone[${index}]`"
-                id="employer_phone"
+                name="employer_phone[]"
                 class="field-input"
                 placeholder="Phone number"
                 v-model="employer.employer_phone"
@@ -37,8 +35,7 @@
           <label for="employer_address">Employer Address</label>
           <textarea
             rows="2"
-            :name="`employer_address[${index}]`"
-            id="employer_address"
+            name="employer_address[]"
             class="field-input"
             placeholder="Street Address, Town, City, State, Zipcode and country"
             v-model="employer.employer_address"
@@ -52,8 +49,7 @@
             <div class="col-md-6 col-sm-12">
               <input
                 type="text"
-                :name="`company_computer_username[${index}]`"
-                id="company_computer_username"
+                name="company_computer_username[]"
                 class="field-input"
                 placeholder="Username"
                 v-model="employer.employer_computer_username"
@@ -63,8 +59,7 @@
             <div class="col-md-6 col-sm-12">
               <input
                 type="text"
-                :name="`company_computer_password[${index}]`"
-                id="company_computer_password"
+                name="company_computer_password[]"
                 class="field-input"
                 placeholder="Password"
                 v-model="employer.employer_computer_password"
@@ -78,8 +73,7 @@
           <label for="employee_benifits">Benefits used</label>
           <textarea
             rows="2"
-            :name="`employee_benifits[${index}]`"
-            id="employee_benifits"
+            name="employee_benifits[]"
             class="field-input"
             placeholder="Benefits used"
             v-model="employer.employee_benefits"

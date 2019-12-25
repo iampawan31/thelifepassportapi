@@ -24,11 +24,15 @@ Route::get('profile', function () {
 })->middleware('verified');
 
 Route::get('dashboard', 'DashboardController@index')->name('dashboard');
-Route::get('personal-info', 'PersonalinfoController@index')->name('personal-info');
-Route::get('personal-details', 'PersonalinfoController@personaldetails')->name('personal-details');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/countrylist', 'CountryController@index')->name('countrylist');
 Route::get('/socialmedialist', 'SocialMediaController@index')->name('socialmedialist');
+
+Route::middleware(['auth'])->group(function(){
+    Route::get('personal-info', 'PersonalinfoController@index')->name('personal-info');
+    Route::get('personal-details', 'PersonalinfoController@personaldetails')->name('personal-details');
+    Route::post('personal-info/postdata', 'PersonalinfoController@postpersonaldata')->name('personalinfo.postdata');
+});
