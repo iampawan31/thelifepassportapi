@@ -31,3 +31,4 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/countrylist', 'CountryController@index')->name('countrylist');
+Route::get('/socialmedialist', 'SocialMediaController@index')->name('socialmedialist');

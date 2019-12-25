@@ -87,10 +87,19 @@ export default {
   data() {
     return {
       socialValue: '',
-      socialOptions: ['Facebook', 'Twitter', 'Instagram', 'LinkedIn', 'Youtube', 'Others'],
+      //socialOptions: ['Facebook', 'Twitter', 'Instagram', 'LinkedIn', 'Youtube', 'Others'],
+      socialOptions: [],
       socialMedia: [],
       blockRemoval: true
     };
+  },
+  created() {
+    axios.get('/socialmedialist').then((response) => {
+        console.log(response.data.social);
+				if (response.status == 200) {
+					this.socialOptions = response.data.social;
+				}
+			});
   },
   watch: {
     socialMedia() {

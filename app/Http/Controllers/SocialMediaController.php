@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Countries;
+use App\SocialMedia;
 use Illuminate\Http\Request;
 
-class CountryController extends Controller
+class SocialMediaController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -24,15 +24,16 @@ class CountryController extends Controller
      */
     public function index()
     {
-        $arrCountries = \App\Countries::select('id', 'country_name')->get();
+        $arrSocialMedia = \App\SocialMedia::select('id', 'title')->where('status', '1')->get()->toArray();
+        //dd($arrSocialMedia);
         $data = [];
-        if ($arrCountries->count()) {
-            foreach( $arrCountries as $country ) {
-                $data[] = ['id' => $country->id, 'text' => $country->country_name];
-            }
-        }
+        // if ($arrCountries->count()) {
+        //     foreach( $arrCountries as $country ) {
+        //         $data[] = ['id' => $country->id, 'text' => $country->country_name];
+        //     }
+        // }
         //$arrCountries = collect($arrCountries)->map(function($x){ return (array) $x; })->toArray(); 
-        return response()->json(['countries' => $data]);
+        return response()->json(['social' => $arrSocialMedia]);
     }
 
     /**
@@ -59,10 +60,10 @@ class CountryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\PersonalInfo  $personalInfo
+     * @param  \App\SocialMedia  $socialMedia
      * @return \Illuminate\Http\Response
      */
-    public function show(Countries $personalInfo)
+    public function show(SocialMedia $socialMedia)
     {
         //
     }
@@ -70,10 +71,10 @@ class CountryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\PersonalInfo  $personalInfo
+     * @param  \App\SocialMedia  $socialMedia
      * @return \Illuminate\Http\Response
      */
-    public function edit(Countries $personalInfo)
+    public function edit(SocialMedia $socialMedia)
     {
         //
     }
@@ -82,10 +83,10 @@ class CountryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\PersonalInfo  $personalInfo
+     * @param  \App\SocialMedia  $socialMedia
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Countries $personalInfo)
+    public function update(Request $request, SocialMedia $socialMedia)
     {
         //
     }
@@ -93,10 +94,10 @@ class CountryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\PersonalInfo  $personalInfo
+     * @param  \App\SocialMedia  $socialMedia
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Countries $personalInfo)
+    public function destroy(SocialMedia $socialMedia)
     {
         //
     }

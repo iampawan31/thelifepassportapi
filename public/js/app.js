@@ -3351,20 +3351,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         phones: [],
         user_email: []
       },
-      // citizenshipOptions: [
-      //     {
-      //         text: "India",
-      //         value: "IN"
-      //     }, 
-      //     {
-      //         text: "United State",
-      //         value: "US"
-      //     }, 
-      //     {
-      //         text: "United Kingdom",
-      //         value: "UK"
-      //     }
-      // ],
       citizenshipOptions: [],
       result2: "",
       lang: {
@@ -3384,8 +3370,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
     axios.get('/countrylist').then(function (response) {
       if (response.status == 200) {
-        _this.citizenshipOptions = response.data;
-        console.log(_this.citizenshipOptions);
+        _this.citizenshipOptions = response.data.countries;
       }
     });
   },
@@ -3891,10 +3876,22 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       socialValue: '',
-      socialOptions: ['Facebook', 'Twitter', 'Instagram', 'LinkedIn', 'Youtube', 'Others'],
+      //socialOptions: ['Facebook', 'Twitter', 'Instagram', 'LinkedIn', 'Youtube', 'Others'],
+      socialOptions: [],
       socialMedia: [],
       blockRemoval: true
     };
+  },
+  created: function created() {
+    var _this = this;
+
+    axios.get('/socialmedialist').then(function (response) {
+      console.log(response.data.social);
+
+      if (response.status == 200) {
+        _this.socialOptions = response.data.social;
+      }
+    });
   },
   watch: {
     socialMedia: function socialMedia() {

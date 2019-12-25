@@ -139,21 +139,6 @@
 					user_email:[],
 
 				},
-				// citizenshipOptions: [
-				//     {
-				//         text: "India",
-				//         value: "IN"
-				//     }, 
-				//     {
-				//         text: "United State",
-				//         value: "US"
-				//     }, 
-				//     {
-				//         text: "United Kingdom",
-				//         value: "UK"
-				//     }
-				// ],
-				
 				citizenshipOptions: [],
 				result2: "",
 				lang: {
@@ -171,10 +156,8 @@
 		created(){
 			axios.get('/countrylist').then((response) => {
 				if (response.status == 200) {
-					this.citizenshipOptions = response.data;
-					console.log(this.citizenshipOptions);
+					this.citizenshipOptions = response.data.countries;
 				}
-				
 			});
 		},
 		mounted() {},
