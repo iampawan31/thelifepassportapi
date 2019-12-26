@@ -56115,7 +56115,7 @@ var staticRenderFns = [
         _c("div", { staticClass: "btn-add" }, [
           _c("a", { attrs: { href: "#" } }, [
             _c("i", { attrs: { "data-feather": "plus" } }),
-            _vm._v(" Add another\n                                ")
+            _vm._v(" Add another\r\n                                ")
           ])
         ])
       ])
@@ -85883,8 +85883,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/mdprawezmusharraf/Sites/thelifepassportapi/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/mdprawezmusharraf/Sites/thelifepassportapi/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\wamp64\www\thelifepassportapi\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\wamp64\www\thelifepassportapi\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -28,7 +28,17 @@ class PersonalinfoController extends Controller
      */
     public function index()
     {
-        return view('personalinfo.personalinfo');
+        //get personal information of users
+        $user_id = Auth::user()->id;
+        $personal_info = \App\PersonalInfo::find($user_id)
+            ->with('UserPhone')
+            ->with('UserEmail')
+            ->with('UserSocailMedia')
+            ->with('UserEmployer')
+            ->get()
+            ->toArray();
+        
+        return view('personalinfo.personalinfo', compact($personal_info));
     }
 
     /**
@@ -169,9 +179,9 @@ class PersonalinfoController extends Controller
                         'employer_name'             => $value, 
                         'employer_phone'            => $inputs['employer_phone'][$key], 
                         'employer_address'          => $inputs['employer_address'][$key],
-                        'company_computer_username' => $inputs['company_computer_username'][$key],
-                        'company_computer_password' => $inputs['company_computer_password'][$key],
-                        'employee_benifits'         => $inputs['employee_benifits'][$key]
+                        'computer_username'         => $inputs['company_computer_username'][$key],
+                        'computer_password'         => $inputs['company_computer_password'][$key],
+                        'benefits_used'             => $inputs['employee_benifits'][$key]
                     ];
                 }
             }
@@ -193,32 +203,36 @@ class PersonalinfoController extends Controller
         
         try {
             //insert personal information
-            //$objPersonalInfo = \App\PersonalInfo::create($arrPersonalInfo);
+            $objPersonalInfo = \App\PersonalInfo::create($arrPersonalInfo);
+            
+            //insert record in user personal details completion
+            $arrData = ['step_id' => 1, 'user_id' => Auth::user()->id];
+            $objPercentageCompletion = \App\UsersPersonalDetailsCompletion::Create($arrData);
 
             //insert phone information
-            // if (!empty($arrPhone)) {
-            //     foreach($arrPhone as $phones){
-            //         $objPhone = \App\UserPhone::create($phones);
-            //     } 
-            // }
+            if (!empty($arrPhone)) {
+                foreach($arrPhone as $phones){
+                    $objPhone = \App\UserPhone::create($phones);
+                } 
+            }
 
             //insert email information
-            // if (!empty($arrEmail)) {
-            //     foreach($arrEmail as $emails) {
-            //         \App\UserEmail::create($emails);
-            //     }
-            // }
+            if (!empty($arrEmail)) {
+                foreach($arrEmail as $emails) {
+                    \App\UserEmail::create($emails);
+                }
+            }
 
             //insert email information
-            // if (!empty($arrSocial)) {
-            //     foreach($arrSocial as $socials) {
-            //         \App\UserSocailMedia::create($socials);
-            //     }
-            // }
+            if (!empty($arrSocial)) {
+                foreach($arrSocial as $socials) {
+                    \App\UserSocailMedia::create($socials);
+                }
+            }
             
             if(!empty($arrEmployer)) {
                 foreach($arrEmployer as $employers) {
-                    \App\UserEmployer::created($employers);
+                    \App\UserEmployer::create($employers);
                 }
             }
 
@@ -229,8 +243,5 @@ class PersonalinfoController extends Controller
             dd($e);
             return response()->json(['status' => 503, 'message' => 'Error']);
         }
-
-        //$object = $this->model->create($inputs);
-        
     }
 }

@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class UserPhone extends Model
 {
     protected $fillable = ['user_id', 'phone', 'is_primary'];
+    protected $visible = ['user_id', 'phone', 'is_primary'];
+
+    public function getRouteKeyName() {
+        return 'user_id';
+    }
 
     //Table Name
     static function tableName() {

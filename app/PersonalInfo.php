@@ -2,6 +2,12 @@
 
 namespace App;
 
+use App\User;
+use App\UserPhone;
+use App\UserEmail;
+use Session, Auth;  
+use App\UserSocailMedia;
+use App\UserEmployer;
 use Illuminate\Database\Eloquent\Model;
 
 class PersonalInfo extends Model
@@ -21,6 +27,28 @@ class PersonalInfo extends Model
                         ];
     
     protected $table = 'personal_info';
+
+    public function getRouteKeyName() {
+        return 'user_id';
+    }
+
+    public function UserPhone() {
+        //, Auth::user()->id
+        return $this->hasMany(UserPhone::class, 'user_id')->select(['user_id', 'phone', 'is_primary']);
+    }
+
+    public function UserEmail() {
+        return $this->hasMany(UserEmail::class, 'user_id')->select(['user_id', 'email', 'password', 'is_primary']);
+    }
+
+    public function UserSocailMedia() {
+        return $this->hasMany(UserSocailMedia::class, 'user_id');
+    }
+
+    public function UserEmployer() {
+        return $this->hasMany(UserEmployer::class, 'user_id');
+    }
+
 
     //Table Name
     static function tableName() {
