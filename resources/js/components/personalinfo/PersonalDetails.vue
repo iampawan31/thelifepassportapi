@@ -30,7 +30,7 @@
 							placeholder="Street Address, Town, City, State, Zipcode and country"></textarea>
 					</div>
 
-					<phone></phone>
+					<phone :userphones="personalDetail.user_phone"></phone>
 
 					<div class="field-group">
 						<label for="dob" class="input-label">Date of Birth</label>
@@ -45,7 +45,7 @@
 							<div class="field-group">
 								<label for="citizenship" class="input-label">Citizenship</label>
 								<Select2 name="citizenship" id="citizenship" width="resolve"
-									data-placeholder="Select an Options" v-model="personalDetail.citizenshipValue"
+									data-placeholder="Select an Options" v-model="personalDetail.country_id"
 									:options="citizenshipOptions" @change="citizenshipChangeEvent($event)"
 									@select="citizenshipSelectEvent($event)" />
 							</div>
@@ -79,13 +79,13 @@
 					</div>
 
 					<h4 class="form-subhead">Email Addresses</h4>
-					<email></email>
+					<email :emails="personalDetail.user_email"></email>
 
 					<h4 class="form-subhead">Social Media</h4>
-					<social></social>
+					<social :emails="personalDetail.user_socail_media"></social>
 
 					<h4 class="form-subhead">Current Employers including self employment</h4>
-					<employee></employee>
+					<employee :emails="personalDetail.user_employer"></employee>
 
 					<div class="field-group field-group__action clearfix">
 						<input type="submit" class="field-submit btn-primary" value="Save and continue" />
@@ -123,23 +123,12 @@
 		data() {
 			return {
 				errors: [],
-				personalDetail: {
-					legal_name: '',
-					nickname: '',	
-					dob: '',
-					home_address: '',
-					citizenship: '',
-					passport_number: '',
-					father_name: '',
-					father_birth_place: '',
-					mother_name: '',
-					mother_birth_place: '',
-					citizenshipValue: '',
-					phones: [],
-					user_email:[],
-
-				},
+				personalDetail: [],
 				citizenshipOptions: [],
+				phones: [],
+				emails: [],
+				socials: [],
+				employers:[],
 				result2: "",
 				lang: {
 					days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
@@ -159,6 +148,15 @@
 					this.citizenshipOptions = response.data.countries;
 				}
 			});
+
+			axios.get('/getpersonalinfo').then((response) => {
+				if (response.status == 200) {
+					if (response.data.data[0]) {
+						this.personalDetail = response.data.data[0];
+						//console.log(this.personalDetail.user_phone);
+					}
+				}
+			});
 		},
 		mounted() {},
 		methods: {
@@ -172,29 +170,6 @@
 				}else{
 					const form = e.target
 					const formData = new FormData(form) // get all named inputs in form
-					// const personalinfo = [];
-					// const phone = [];
-					// const email = [];
-					// const emailPassword = [];
-					// const social_media_type = [];
-					// for (const [inputName, value] of formData) {
-					// 	if (inputName == 'phone[]') {
-					// 		phone.push(value);
-					// 		personalinfo['phone'] = phone;
-					// 	} else if (inputName == 'email[]') {
-					// 		email.push(value);
-					// 		personalinfo['email'] = email;
-					// 	} else if (inputName == 'email_password[]') {
-					// 		emailPassword.push(value);
-					// 		personalinfo['email'] = emailPassword;
-					// 	} else if(inputName == 'social_media_type[]') {
-					// 		personalinfo['email'] = emailPassword;
-					// 	}
-					// 	else {
-					// 		personalinfo[inputName] = value;
-					// 	}
-					// }
-					//console.log(personalinfo);
 					axios.post('/personal-info/postdata', formData)
 						.then(function(response){
 							console.log(response);

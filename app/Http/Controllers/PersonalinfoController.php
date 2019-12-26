@@ -244,4 +244,20 @@ class PersonalinfoController extends Controller
             return response()->json(['status' => 503, 'message' => 'Error']);
         }
     }
+
+    /**
+     * get user personal info
+     */
+    public function getpersonalinfo() {
+        $user_id = Auth::user()->id;
+        $personal_info = \App\PersonalInfo::find($user_id)
+            ->with('UserPhone')
+            ->with('UserEmail')
+            ->with('UserSocailMedia')
+            ->with('UserEmployer')
+            ->get()
+            ->toArray();
+
+        return response()->json(['status' => 200, 'data' => $personal_info]);
+    }
 }

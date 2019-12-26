@@ -2,7 +2,9 @@
 
 namespace App;
 
+use DB;
 use App\User;
+use Carbon\Carbon;
 use App\UserPhone;
 use App\UserEmail;
 use Session, Auth;  
@@ -30,6 +32,10 @@ class PersonalInfo extends Model
 
     public function getRouteKeyName() {
         return 'user_id';
+    }
+
+    public function getDobAttribute($date) {
+        return $this->attributes['dob'] = date('m/d/Y', strtotime($date));
     }
 
     public function UserPhone() {

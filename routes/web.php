@@ -35,4 +35,5 @@ Route::middleware(['auth'])->group(function(){
     Route::get('personal-info', 'PersonalinfoController@index')->name('personal-info');
     Route::get('personal-details', 'PersonalinfoController@personaldetails')->name('personal-details');
     Route::post('personal-info/postdata', 'PersonalinfoController@postpersonaldata')->name('personalinfo.postdata');
+    Route::get('getpersonalinfo', 'PersonalinfoController@getpersonalinfo')->name('personalinfo.getdata');
 });

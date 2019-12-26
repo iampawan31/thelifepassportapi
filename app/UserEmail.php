@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class UserEmail extends Model
 {
     protected $fillable = ['user_id', 'email', 'password', 'is_primary'];
-    protected $visible = ['user_id', 'email', 'password', 'is_primary'];
 
     //Table Name
     static function tableName() {
