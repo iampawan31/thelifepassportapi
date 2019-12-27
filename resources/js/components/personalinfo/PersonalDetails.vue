@@ -30,7 +30,7 @@
 							placeholder="Street Address, Town, City, State, Zipcode and country"></textarea>
 					</div>
 
-					<phone :userphones="personalDetail.user_phone"></phone>
+					<phone :user-phones="phones"></phone>
 
 					<div class="field-group">
 						<label for="dob" class="input-label">Date of Birth</label>
@@ -153,7 +153,10 @@
 				if (response.status == 200) {
 					if (response.data.data[0]) {
 						this.personalDetail = response.data.data[0];
-						//console.log(this.personalDetail.user_phone);
+						if (this.personalDetail.user_phone) {
+							this.phones = this.personalDetail.user_phone;
+							console.log(this.phones);
+						}
 					}
 				}
 			});

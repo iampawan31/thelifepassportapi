@@ -26,7 +26,7 @@
 </template>
 <script>
 export default {
-    props: ['userphones'],
+    props: ['userPhones'],
     data () {
         return {
             phones: [],
@@ -35,7 +35,7 @@ export default {
     },
     created() {
         console.log("in phones component");
-        console.log(this.userphones);
+        console.log(this.userPhones);
     },
     watch: {
         phones () {
@@ -47,11 +47,15 @@ export default {
             // let checkEmptyLines = this.lines.filter(line => line.number === null)
             // console.log(checkEmptyLines);
             // if (checkEmptyLines.length >= 1 && this.lines.length > 0) return
-            // if (this.userPhones) {
-            //     console.log(this.userPhones);
-            // }
+            console.log(this.userPhones.length);
+            //console.log(this.userPhones);
+            if (this.userPhones.length > 0) {
+                this.phones.push({number: this.userPhones.length})
+            } else {
+                this.phones.push({number: null})
+            }
 
-            this.phones.push({number: null})
+            
         },
         removePhone (lineId) {
             if (!this.blockRemoval) this.phones.splice(lineId, 1)
