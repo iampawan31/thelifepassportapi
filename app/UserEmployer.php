@@ -15,6 +15,10 @@ class UserEmployer extends Model
                             'computer_password', 
                             'benefits_used'
                         ];
+    
+    public function getRouteKeyName() {
+        return 'user_id';
+    }
 
     //Table Name
     static function tableName() {

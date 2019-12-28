@@ -2130,6 +2130,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['userEmails'],
   data: function data() {
     return {
       emails: [],
@@ -2148,12 +2149,34 @@ __webpack_require__.r(__webpack_exports__);
         password: null
       });
     },
+    populateEmail: function populateEmail() {
+      var _this = this;
+
+      if (this.userEmails.length > 0) {
+        this.userEmails.forEach(function (data) {
+          _this.emails.push({
+            email: data.email,
+            password: data.password
+          });
+        });
+      } else {
+        this.emails.push({
+          email: null,
+          password: null
+        });
+      }
+    },
     removeEmail: function removeEmail(lineId) {
       if (!this.blockRemoval) this.emails.splice(lineId, 1);
     }
   },
   mounted: function mounted() {
-    this.addEmail();
+    var _this2 = this;
+
+    this.$nextTick(function () {
+      //this.addEmail();
+      _this2.populateEmail();
+    });
   }
 });
 
@@ -2291,6 +2314,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['userEmployers'],
   data: function data() {
     return {
       employers: [],
@@ -2308,17 +2332,47 @@ __webpack_require__.r(__webpack_exports__);
         employer_name: null,
         employer_phone: null,
         employer_address: null,
-        employer_computer_username: null,
-        employer_computer_password: null,
+        computer_username: null,
+        computer_password: null,
         employee_benefits: null
       });
+    },
+    populateEmployers: function populateEmployers() {
+      var _this = this;
+
+      if (this.userEmployers.length > 0) {
+        this.userEmployers.forEach(function (data) {
+          _this.employers.push({
+            employer_name: data.employer_name,
+            employer_phone: data.employer_phone,
+            employer_address: data.employer_address,
+            computer_username: data.computer_username,
+            computer_password: data.computer_password,
+            employee_benefits: data.benefits_used
+          });
+        });
+      } else {
+        this.employers.push({
+          employer_name: null,
+          employer_phone: null,
+          employer_address: null,
+          computer_username: null,
+          computer_password: null,
+          employee_benefits: null
+        });
+      }
     },
     removeEmployers: function removeEmployers(lineId) {
       if (!this.blockRemoval) this.employers.splice(lineId, 1);
     }
   },
   mounted: function mounted() {
-    this.addEmployers();
+    var _this2 = this;
+
+    this.$nextTick(function () {
+      //this.addEmployers();
+      _this2.populateEmployers();
+    });
   }
 });
 
@@ -3326,6 +3380,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       emails: [],
       socials: [],
       employers: [],
+      userId: 0,
       result2: "",
       lang: {
         days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
@@ -3349,13 +3404,72 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     });
     axios.get('/getpersonalinfo').then(function (response) {
       if (response.status == 200) {
-        if (response.data.data[0]) {
-          _this.personalDetail = response.data.data[0];
+        console.log(response.data);
 
-          if (_this.personalDetail.user_phone) {
+        if (response.data.data[0]) {
+          _this.personalDetail = JSON.parse(JSON.stringify(response.data.data[0]));
+          _this.userId = _this.personalDetail.user_id;
+
+          if (_this.personalDetail.user_phone.length > 0) {
             _this.phones = _this.personalDetail.user_phone;
-            console.log(_this.phones);
+          } else {
+            _this.phones = [{
+              number: null
+            }];
           }
+
+          if (_this.personalDetail.user_email.length > 0) {
+            _this.emails = _this.personalDetail.user_email;
+          } else {
+            _this.emails = [{
+              email: null,
+              password: null
+            }];
+          }
+
+          if (_this.personalDetail.user_socail_media.length > 0) {
+            _this.socials = _this.personalDetail.user_socail_media;
+          } else {
+            _this.socials = [{
+              social: null,
+              username: null,
+              password: null
+            }];
+          }
+
+          if (_this.personalDetail.user_employer.length > 0) {
+            _this.employers = _this.personalDetail.user_employer;
+          } else {
+            _this.employers = [{
+              employer_name: null,
+              employer_phone: null,
+              employer_address: null,
+              computer_username: null,
+              computer_password: null,
+              employee_benefits: null
+            }];
+          }
+        } else {
+          _this.phones = [{
+            number: null
+          }];
+          _this.emails = [{
+            email: null,
+            password: null
+          }];
+          _this.socials = [{
+            social: null,
+            username: null,
+            password: null
+          }];
+          _this.employers = [{
+            employer_name: null,
+            employer_phone: null,
+            employer_address: null,
+            computer_username: null,
+            computer_password: null,
+            employee_benefits: null
+          }];
         }
       }
     });
@@ -3366,6 +3480,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _handleSubmit = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(e) {
+        var _this2 = this;
+
         var isValid, form, formData;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
@@ -3380,11 +3496,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 if (!isValid) {} else {
                   form = e.target;
-                  formData = new FormData(form); // get all named inputs in form
+                  formData = new FormData(form);
 
-                  axios.post('/personal-info/postdata', formData).then(function (response) {
-                    console.log(response);
-                  })["catch"](function () {}); //this.$router.push('/spouse-question');
+                  if (this.userId) {
+                    axios.post('/personal-info/' + this.userId + '/updatedata', formData).then(function (response) {
+                      _this2.$router.push('/spouse-question');
+                    })["catch"](function () {});
+                  } else {
+                    axios.post('/personal-info/postdata', formData).then(function (response) {
+                      _this2.$router.push('/spouse-question');
+                    })["catch"](function () {});
+                  } //this.$router.push('/spouse-question');
+
                 }
 
               case 5:
@@ -3460,10 +3583,6 @@ __webpack_require__.r(__webpack_exports__);
       blockRemoval: true
     };
   },
-  created: function created() {
-    console.log("in phones component");
-    console.log(this.userPhones);
-  },
   watch: {
     phones: function phones() {
       this.blockRemoval = this.phones.length <= 1;
@@ -3471,14 +3590,18 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     addPhone: function addPhone() {
-      // let checkEmptyLines = this.lines.filter(line => line.number === null)
-      // console.log(checkEmptyLines);
-      // if (checkEmptyLines.length >= 1 && this.lines.length > 0) return
-      console.log(this.userPhones.length); //console.log(this.userPhones);
+      this.phones.push({
+        number: null
+      });
+    },
+    populatePhone: function populatePhone() {
+      var _this = this;
 
       if (this.userPhones.length > 0) {
-        this.phones.push({
-          number: this.userPhones.length
+        this.userPhones.forEach(function (data) {
+          _this.phones.push({
+            number: data.phone
+          });
         });
       } else {
         this.phones.push({
@@ -3491,7 +3614,12 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    this.addPhone();
+    var _this2 = this;
+
+    this.$nextTick(function () {
+      //this.addPhone()
+      _this2.populatePhone();
+    });
   }
 });
 
@@ -3824,15 +3952,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['userSocials'],
   components: {
     Select2: v_select2_component__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   data: function data() {
     return {
       socialValue: '',
-      //socialOptions: ['Facebook', 'Twitter', 'Instagram', 'LinkedIn', 'Youtube', 'Others'],
       socialOptions: [],
       socialMedia: [],
       blockRemoval: true
@@ -3860,12 +3989,36 @@ __webpack_require__.r(__webpack_exports__);
         password: null
       });
     },
+    populateSocials: function populateSocials() {
+      var _this2 = this;
+
+      if (this.userSocials.length > 0) {
+        this.userSocials.forEach(function (data) {
+          _this2.socialMedia.push({
+            social: data.social_id,
+            username: data.username,
+            password: data.password
+          });
+        });
+      } else {
+        this.socialMedia.push({
+          social: null,
+          username: null,
+          password: null
+        });
+      }
+    },
     removeSocialMedia: function removeSocialMedia(lineId) {
       if (!this.blockRemoval) this.socialMedia.splice(lineId, 1);
     }
   },
   mounted: function mounted() {
-    this.addSocialMedia();
+    var _this3 = this;
+
+    this.$nextTick(function () {
+      //this.addSocialMedia();
+      _this3.populateSocials();
+    });
   },
   socialChangeEvent: function socialChangeEvent(val) {
     console.log(val);
@@ -53474,8 +53627,8 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: employer.employer_computer_username,
-                        expression: "employer.employer_computer_username"
+                        value: employer.computer_username,
+                        expression: "employer.computer_username"
                       }
                     ],
                     staticClass: "field-input",
@@ -53485,7 +53638,7 @@ var render = function() {
                       placeholder: "Username",
                       value: ""
                     },
-                    domProps: { value: employer.employer_computer_username },
+                    domProps: { value: employer.computer_username },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
@@ -53493,7 +53646,7 @@ var render = function() {
                         }
                         _vm.$set(
                           employer,
-                          "employer_computer_username",
+                          "computer_username",
                           $event.target.value
                         )
                       }
@@ -53507,8 +53660,8 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: employer.employer_computer_password,
-                        expression: "employer.employer_computer_password"
+                        value: employer.computer_password,
+                        expression: "employer.computer_password"
                       }
                     ],
                     staticClass: "field-input",
@@ -53518,7 +53671,7 @@ var render = function() {
                       placeholder: "Password",
                       value: ""
                     },
-                    domProps: { value: employer.employer_computer_password },
+                    domProps: { value: employer.computer_password },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
@@ -53526,7 +53679,7 @@ var render = function() {
                         }
                         _vm.$set(
                           employer,
-                          "employer_computer_password",
+                          "computer_password",
                           $event.target.value
                         )
                       }
@@ -55271,7 +55424,11 @@ var render = function() {
                             })
                           ]),
                           _vm._v(" "),
-                          _c("phone", { attrs: { "user-phones": _vm.phones } }),
+                          _vm.phones.length > 0
+                            ? _c("phone", {
+                                attrs: { "user-phones": _vm.phones }
+                              })
+                            : _vm._e(),
                           _vm._v(" "),
                           _c(
                             "div",
@@ -55584,19 +55741,21 @@ var render = function() {
                             _vm._v("Email Addresses")
                           ]),
                           _vm._v(" "),
-                          _c("email", {
-                            attrs: { emails: _vm.personalDetail.user_email }
-                          }),
+                          _vm.emails.length > 0
+                            ? _c("email", {
+                                attrs: { "user-emails": _vm.emails }
+                              })
+                            : _vm._e(),
                           _vm._v(" "),
                           _c("h4", { staticClass: "form-subhead" }, [
                             _vm._v("Social Media")
                           ]),
                           _vm._v(" "),
-                          _c("social", {
-                            attrs: {
-                              emails: _vm.personalDetail.user_socail_media
-                            }
-                          }),
+                          _vm.socials.length > 0
+                            ? _c("social", {
+                                attrs: { "user-socials": _vm.socials }
+                              })
+                            : _vm._e(),
                           _vm._v(" "),
                           _c("h4", { staticClass: "form-subhead" }, [
                             _vm._v(
@@ -55604,9 +55763,11 @@ var render = function() {
                             )
                           ]),
                           _vm._v(" "),
-                          _c("employee", {
-                            attrs: { emails: _vm.personalDetail.user_employer }
-                          }),
+                          _vm.employers.length > 0
+                            ? _c("employee", {
+                                attrs: { "user-employers": _vm.employers }
+                              })
+                            : _vm._e(),
                           _vm._v(" "),
                           _c(
                             "div",
@@ -56113,7 +56274,7 @@ var staticRenderFns = [
         _c("div", { staticClass: "btn-add" }, [
           _c("a", { attrs: { href: "#" } }, [
             _c("i", { attrs: { "data-feather": "plus" } }),
-            _vm._v(" Add another\r\n                                ")
+            _vm._v(" Add another\n                                ")
           ])
         ])
       ])
@@ -56350,6 +56511,13 @@ var render = function() {
                       name: "social_media_type[]",
                       placeholder: "Select an Options",
                       options: _vm.socialOptions
+                    },
+                    model: {
+                      value: social.social,
+                      callback: function($$v) {
+                        _vm.$set(social, "social", $$v)
+                      },
+                      expression: "social.social"
                     }
                   })
                 ],
@@ -85881,8 +86049,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\wamp64\www\thelifepassportapi\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\wamp64\www\thelifepassportapi\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/mdprawezmusharraf/Sites/thelifepassportapi/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/mdprawezmusharraf/Sites/thelifepassportapi/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

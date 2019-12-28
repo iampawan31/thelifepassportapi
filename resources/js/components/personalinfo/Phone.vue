@@ -33,10 +33,6 @@ export default {
             blockRemoval: true,
         }
     },
-    created() {
-        console.log("in phones component");
-        console.log(this.userPhones);
-    },
     watch: {
         phones () {
             this.blockRemoval = this.phones.length <= 1
@@ -44,25 +40,26 @@ export default {
     },
     methods: {
         addPhone () {
-            // let checkEmptyLines = this.lines.filter(line => line.number === null)
-            // console.log(checkEmptyLines);
-            // if (checkEmptyLines.length >= 1 && this.lines.length > 0) return
-            console.log(this.userPhones.length);
-            //console.log(this.userPhones);
+            this.phones.push({number: null})
+        },
+        populatePhone () {
             if (this.userPhones.length > 0) {
-                this.phones.push({number: this.userPhones.length})
+                this.userPhones.forEach(data => {
+                    this.phones.push({number: data.phone})
+                });
             } else {
                 this.phones.push({number: null})
             }
-
-            
         },
         removePhone (lineId) {
             if (!this.blockRemoval) this.phones.splice(lineId, 1)
         }
     },
     mounted () {
-        this.addPhone()
+        this.$nextTick(()=>{
+            //this.addPhone()
+            this.populatePhone();
+        })
     }
 }
 </script>

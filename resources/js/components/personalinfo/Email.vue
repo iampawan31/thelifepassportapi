@@ -30,6 +30,7 @@
 </template>
 <script>
 export default {
+  props: ['userEmails'],
   data() {
     return {
       emails: [],
@@ -43,14 +44,26 @@ export default {
   },
   methods: {
     addEmail() {
-      this.emails.push({ email: null, password: null });
+      this.emails.push({email: null, password: null});
+    },
+    populateEmail () {
+        if (this.userEmails.length > 0) {
+            this.userEmails.forEach(data => {
+                this.emails.push({email: data.email, password: data.password})
+            });
+        } else {
+            this.emails.push({email: null, password: null})
+        }
     },
     removeEmail(lineId) {
       if (!this.blockRemoval) this.emails.splice(lineId, 1);
     }
   },
   mounted() {
-    this.addEmail();
+    this.$nextTick(()=>{
+      //this.addEmail();
+      this.populateEmail();
+    });
   }
 };
 </script>

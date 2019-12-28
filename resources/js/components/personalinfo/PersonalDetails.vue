@@ -30,7 +30,7 @@
 							placeholder="Street Address, Town, City, State, Zipcode and country"></textarea>
 					</div>
 
-					<phone :user-phones="phones"></phone>
+					<phone :user-phones="phones" v-if="phones.length > 0"></phone>
 
 					<div class="field-group">
 						<label for="dob" class="input-label">Date of Birth</label>
@@ -79,13 +79,13 @@
 					</div>
 
 					<h4 class="form-subhead">Email Addresses</h4>
-					<email :emails="personalDetail.user_email"></email>
+					<email :user-emails="emails" v-if="emails.length > 0"></email>
 
 					<h4 class="form-subhead">Social Media</h4>
-					<social :emails="personalDetail.user_socail_media"></social>
+					<social :user-socials="socials" v-if="socials.length > 0"></social>
 
 					<h4 class="form-subhead">Current Employers including self employment</h4>
-					<employee :emails="personalDetail.user_employer"></employee>
+					<employee :user-employers="employers" v-if="employers.length > 0"></employee>
 
 					<div class="field-group field-group__action clearfix">
 						<input type="submit" class="field-submit btn-primary" value="Save and continue" />
@@ -129,6 +129,7 @@
 				emails: [],
 				socials: [],
 				employers:[],
+				userId: 0,
 				result2: "",
 				lang: {
 					days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
@@ -151,19 +152,47 @@
 
 			axios.get('/getpersonalinfo').then((response) => {
 				if (response.status == 200) {
+					console.log(response.data);
 					if (response.data.data[0]) {
-						this.personalDetail = response.data.data[0];
-						if (this.personalDetail.user_phone) {
+						this.personalDetail = JSON.parse(JSON.stringify(response.data.data[0]));
+						this.userId = this.personalDetail.user_id;
+
+						if (this.personalDetail.user_phone.length > 0) {
 							this.phones = this.personalDetail.user_phone;
-							console.log(this.phones);
+						} else {
+							this.phones = [{number: null}];
 						}
+
+						if (this.personalDetail.user_email.length > 0) {
+							this.emails = this.personalDetail.user_email;
+						} else {
+							this.emails = [{email: null, password: null}];
+						}
+
+						if (this.personalDetail.user_socail_media.length > 0) {
+							this.socials = this.personalDetail.user_socail_media;
+						} else {
+							this.socials = [{social: null, username: null, password: null}];
+						}
+
+						if (this.personalDetail.user_employer.length > 0) {
+							this.employers = this.personalDetail.user_employer;
+						} else {
+							this.employers = [{employer_name: null, employer_phone: null, employer_address: null, computer_username: null, computer_password: null,
+												employee_benefits: null}];
+						}
+					} else {
+						this.phones = [{number: null}];
+						this.emails = [{email: null, password: null}];
+						this.socials = [{social: null, username: null, password: null}];
+						this.employers = [{employer_name: null, employer_phone: null, employer_address: null, computer_username: null, computer_password: null,
+												employee_benefits: null}];
 					}
 				}
 			});
 		},
 		mounted() {},
 		methods: {
-
 			async handleSubmit(e){
 				this.submitted = true;
 				const isValid = await this.$refs.observer.validate();
@@ -172,14 +201,26 @@
 
 				}else{
 					const form = e.target
-					const formData = new FormData(form) // get all named inputs in form
-					axios.post('/personal-info/postdata', formData)
-						.then(function(response){
-							console.log(response);
-						})
-						.catch(function(){
+					const formData = new FormData(form)
 
-						});
+					if (this.userId) {
+						axios.post('/personal-info/'+this.userId+'/updatedata', formData)
+							.then((response) => {
+								this.$router.push('/spouse-question');
+							})
+							.catch(function(){
+
+							});
+					} else {
+						axios.post('/personal-info/postdata', formData)
+							.then((response) => {
+								this.$router.push('/spouse-question');
+							})
+							.catch(function(){
+
+							});
+					}
+					
 					//this.$router.push('/spouse-question');
 				}
 			},

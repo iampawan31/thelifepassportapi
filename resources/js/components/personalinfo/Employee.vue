@@ -52,7 +52,7 @@
                 name="company_computer_username[]"
                 class="field-input"
                 placeholder="Username"
-                v-model="employer.employer_computer_username"
+                v-model="employer.computer_username"
                 value=""
               />
             </div>
@@ -62,7 +62,7 @@
                 name="company_computer_password[]"
                 class="field-input"
                 placeholder="Password"
-                v-model="employer.employer_computer_password"
+                v-model="employer.computer_password"
                 value=""
               />
             </div>
@@ -122,6 +122,7 @@
 </template>
 <script>
 export default {
+  props: ['userEmployers'],
   data() {
     return {
       employers: [],
@@ -139,17 +140,43 @@ export default {
             employer_name: null, 
             employer_phone: null,  
             employer_address: null, 
-            employer_computer_username: null,
-            employer_computer_password: null,
+            computer_username: null,
+            computer_password: null,
             employee_benefits: null
         });
+    },
+    populateEmployers () {
+        if (this.userEmployers.length > 0) {
+            this.userEmployers.forEach(data => {
+                this.employers.push({ 
+                    employer_name: data.employer_name, 
+                    employer_phone: data.employer_phone,  
+                    employer_address: data.employer_address, 
+                    computer_username: data.computer_username,
+                    computer_password: data.computer_password,
+                    employee_benefits: data.benefits_used
+                });
+            });
+        } else {
+            this.employers.push({ 
+                employer_name: null, 
+                employer_phone: null,  
+                employer_address: null, 
+                computer_username: null,
+                computer_password: null,
+                employee_benefits: null
+            });
+        }
     },
     removeEmployers(lineId) {
       if (!this.blockRemoval) this.employers.splice(lineId, 1);
     }
   },
   mounted() {
-    this.addEmployers();
+    this.$nextTick(()=>{
+      //this.addEmployers();
+      this.populateEmployers();
+    });
   }
 };
 </script>

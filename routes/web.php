@@ -36,4 +36,6 @@ Route::middleware(['auth'])->group(function(){
     Route::get('personal-details', 'PersonalinfoController@personaldetails')->name('personal-details');
     Route::post('personal-info/postdata', 'PersonalinfoController@postpersonaldata')->name('personalinfo.postdata');
     Route::get('getpersonalinfo', 'PersonalinfoController@getpersonalinfo')->name('personalinfo.getdata');
+    Route::post('personal-info/{id}/updatedata', 'PersonalinfoController@updatepersonaldata')->name('personalinfo.updatedata');
+
 });

@@ -16873,13 +16873,13 @@ body.page-login a.btn:hover {
 }
 
 .ui-datepicker .ui-datepicker-prev {
-  background-image: url(/images/chevron-left.svg?50e230a59f5efa45281d9a90ae8b31f0);
+  background-image: url(/images/chevron-left.svg?2d1ac98dbd12c878f8ad954829caae58);
   left: 0;
 }
 
 .ui-datepicker .ui-datepicker-next {
   right: 0;
-  background-image: url(/images/chevron-right.svg?1af992354eb00a201fee79ffe72ddc55);
+  background-image: url(/images/chevron-right.svg?ad37185efb4bc8c9d0f5298e51df1e40);
 }
 
 .ui-datepicker .ui-datepicker-title {

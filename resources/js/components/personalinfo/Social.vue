@@ -9,6 +9,7 @@
               name="social_media_type[]"
               placeholder="Select an Options"
               :options="socialOptions" 
+              v-model="social.social"
                />
           </div>
           <!-- v-model="socialValue" 
@@ -78,13 +79,13 @@
 <script>
 import Select2 from 'v-select2-component';
 export default {
+  props: ['userSocials'],
   components: {
     Select2
   },
   data() {
     return {
       socialValue: '',
-      //socialOptions: ['Facebook', 'Twitter', 'Instagram', 'LinkedIn', 'Youtube', 'Others'],
       socialOptions: [],
       socialMedia: [],
       blockRemoval: true
@@ -107,12 +108,24 @@ export default {
     addSocialMedia() {
       this.socialMedia.push({ social: null, username: null, password: null });
     },
+    populateSocials () {
+        if (this.userSocials.length > 0) {
+            this.userSocials.forEach(data => {
+                this.socialMedia.push({ social: data.social_id, username: data.username, password: data.password });
+            });
+        } else {
+            this.socialMedia.push({ social: null, username: null, password: null });
+        }
+    },
     removeSocialMedia(lineId) {
       if (!this.blockRemoval) this.socialMedia.splice(lineId, 1);
     }
   },
   mounted() {
-    this.addSocialMedia();
+    this.$nextTick(()=>{
+      //this.addSocialMedia();
+      this.populateSocials();
+    });
   },
   socialChangeEvent(val){
       console.log(val);
