@@ -3384,18 +3384,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
+                console.log(this.personalDetail);
                 this.submitted = true;
-                _context.next = 3;
+                _context.next = 4;
                 return this.$refs.observer.validate();
 
-              case 3:
+              case 4:
                 isValid = _context.sent;
 
                 if (!isValid) {} else {
                   this.$router.push('/spouse-question');
                 }
 
-              case 5:
+                e.preventDefault();
+
+              case 7:
               case "end":
                 return _context.stop();
             }
@@ -54425,7 +54428,13 @@ var render = function() {
                           _c("i", { attrs: { "data-feather": "check" } })
                         ]),
                         _vm._v(" "),
-                        _c("h3", [_vm._v("Are you married?")]),
+                        _c("h3", [
+                          _c(
+                            "a",
+                            { attrs: { href: href }, on: { click: navigate } },
+                            [_vm._v("Are you married?")]
+                          )
+                        ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "item__meta" }, [
                           _vm._v(
@@ -54471,7 +54480,13 @@ var render = function() {
                           _c("i", { attrs: { "data-feather": "check" } })
                         ]),
                         _vm._v(" "),
-                        _c("h3", [_vm._v("Were you previously married?")]),
+                        _c("h3", [
+                          _c(
+                            "a",
+                            { attrs: { href: href }, on: { click: navigate } },
+                            [_vm._v("Were you previously married?")]
+                          )
+                        ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "item__meta" }, [
                           _vm._v(
@@ -54518,8 +54533,14 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("h3", [
-                          _vm._v(
-                            "Would you like to add close family members including children?"
+                          _c(
+                            "a",
+                            { attrs: { href: href }, on: { click: navigate } },
+                            [
+                              _vm._v(
+                                "Would you like to add close family members including children?"
+                              )
+                            ]
                           )
                         ]),
                         _vm._v(" "),
@@ -54568,7 +54589,15 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("h3", [
-                          _vm._v("Would you like any close friends contacted?")
+                          _c(
+                            "a",
+                            { attrs: { href: href }, on: { click: navigate } },
+                            [
+                              _vm._v(
+                                "Would you like any close friends contacted?"
+                              )
+                            ]
+                          )
                         ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "item__meta" }, [
@@ -54610,7 +54639,13 @@ var render = function() {
                   var isExactActive = ref.isExactActive
                   return [
                     _c("div", { staticClass: "item item__no-data" }, [
-                      _c("h3", [_vm._v("Do you have any home assistants?")]),
+                      _c("h3", [
+                        _c(
+                          "a",
+                          { attrs: { href: href }, on: { click: navigate } },
+                          [_vm._v("Do you have any home assistants?")]
+                        )
+                      ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "item__meta" }, [
                         _c("span", { staticClass: "item__last-updated" }, [
@@ -54640,7 +54675,15 @@ var render = function() {
                   return [
                     _c("div", { staticClass: "item item__no-data" }, [
                       _c("h3", [
-                        _vm._v("Do you have a religious or spiritual advisor?")
+                        _c(
+                          "a",
+                          { attrs: { href: href }, on: { click: navigate } },
+                          [
+                            _vm._v(
+                              "Do you have a religious or spiritual advisor?"
+                            )
+                          ]
+                        )
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "item__meta" }, [
@@ -54671,8 +54714,14 @@ var render = function() {
                   return [
                     _c("div", { staticClass: "item item__no-data" }, [
                       _c("h3", [
-                        _vm._v(
-                          "Do you have a personal representative for your estate?"
+                        _c(
+                          "a",
+                          { attrs: { href: href }, on: { click: navigate } },
+                          [
+                            _vm._v(
+                              "Do you have a personal representative for your estate?"
+                            )
+                          ]
                         )
                       ]),
                       _vm._v(" "),
@@ -54704,8 +54753,14 @@ var render = function() {
                   return [
                     _c("div", { staticClass: "item item__no-data" }, [
                       _c("h3", [
-                        _vm._v(
-                          "Does your spouse/life partner/signifcant other have a personal representative of their estate?"
+                        _c(
+                          "a",
+                          { attrs: { href: href }, on: { click: navigate } },
+                          [
+                            _vm._v(
+                              "Does your spouse/life partner/signifcant other have a personal representative of their estate?"
+                            )
+                          ]
                         )
                       ]),
                       _vm._v(" "),

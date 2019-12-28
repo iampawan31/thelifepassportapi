@@ -19326,6 +19326,16 @@ body {
   stroke: #000;
 }
 
+.questions-list .item.current a,
+.questions-list .item .active a {
+  color: #000;
+}
+
+.questions-list .item.current svg,
+.questions-list .item .active svg {
+  stroke: #000;
+}
+
 .questions-list .item.current:not(.active)::before {
   border-color: #000;
 }
