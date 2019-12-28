@@ -3487,11 +3487,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
+                console.log(this.personalDetail);
                 this.submitted = true;
-                _context.next = 3;
+                _context.next = 4;
                 return this.$refs.observer.validate();
 
-              case 3:
+              case 4:
                 isValid = _context.sent;
 
                 if (!isValid) {} else {
@@ -3510,7 +3511,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 }
 
-              case 5:
+              case 6:
               case "end":
                 return _context.stop();
             }
@@ -54584,7 +54585,13 @@ var render = function() {
                           _c("i", { attrs: { "data-feather": "check" } })
                         ]),
                         _vm._v(" "),
-                        _c("h3", [_vm._v("Are you married?")]),
+                        _c("h3", [
+                          _c(
+                            "a",
+                            { attrs: { href: href }, on: { click: navigate } },
+                            [_vm._v("Are you married?")]
+                          )
+                        ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "item__meta" }, [
                           _vm._v(
@@ -54630,7 +54637,13 @@ var render = function() {
                           _c("i", { attrs: { "data-feather": "check" } })
                         ]),
                         _vm._v(" "),
-                        _c("h3", [_vm._v("Were you previously married?")]),
+                        _c("h3", [
+                          _c(
+                            "a",
+                            { attrs: { href: href }, on: { click: navigate } },
+                            [_vm._v("Were you previously married?")]
+                          )
+                        ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "item__meta" }, [
                           _vm._v(
@@ -54677,8 +54690,14 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("h3", [
-                          _vm._v(
-                            "Would you like to add close family members including children?"
+                          _c(
+                            "a",
+                            { attrs: { href: href }, on: { click: navigate } },
+                            [
+                              _vm._v(
+                                "Would you like to add close family members including children?"
+                              )
+                            ]
                           )
                         ]),
                         _vm._v(" "),
@@ -54727,7 +54746,15 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("h3", [
-                          _vm._v("Would you like any close friends contacted?")
+                          _c(
+                            "a",
+                            { attrs: { href: href }, on: { click: navigate } },
+                            [
+                              _vm._v(
+                                "Would you like any close friends contacted?"
+                              )
+                            ]
+                          )
                         ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "item__meta" }, [
@@ -54769,7 +54796,13 @@ var render = function() {
                   var isExactActive = ref.isExactActive
                   return [
                     _c("div", { staticClass: "item item__no-data" }, [
-                      _c("h3", [_vm._v("Do you have any home assistants?")]),
+                      _c("h3", [
+                        _c(
+                          "a",
+                          { attrs: { href: href }, on: { click: navigate } },
+                          [_vm._v("Do you have any home assistants?")]
+                        )
+                      ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "item__meta" }, [
                         _c("span", { staticClass: "item__last-updated" }, [
@@ -54799,7 +54832,15 @@ var render = function() {
                   return [
                     _c("div", { staticClass: "item item__no-data" }, [
                       _c("h3", [
-                        _vm._v("Do you have a religious or spiritual advisor?")
+                        _c(
+                          "a",
+                          { attrs: { href: href }, on: { click: navigate } },
+                          [
+                            _vm._v(
+                              "Do you have a religious or spiritual advisor?"
+                            )
+                          ]
+                        )
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "item__meta" }, [
@@ -54830,8 +54871,14 @@ var render = function() {
                   return [
                     _c("div", { staticClass: "item item__no-data" }, [
                       _c("h3", [
-                        _vm._v(
-                          "Do you have a personal representative for your estate?"
+                        _c(
+                          "a",
+                          { attrs: { href: href }, on: { click: navigate } },
+                          [
+                            _vm._v(
+                              "Do you have a personal representative for your estate?"
+                            )
+                          ]
                         )
                       ]),
                       _vm._v(" "),
@@ -54863,8 +54910,14 @@ var render = function() {
                   return [
                     _c("div", { staticClass: "item item__no-data" }, [
                       _c("h3", [
-                        _vm._v(
-                          "Does your spouse/life partner/signifcant other have a personal representative of their estate?"
+                        _c(
+                          "a",
+                          { attrs: { href: href }, on: { click: navigate } },
+                          [
+                            _vm._v(
+                              "Does your spouse/life partner/signifcant other have a personal representative of their estate?"
+                            )
+                          ]
                         )
                       ]),
                       _vm._v(" "),
@@ -74497,14 +74550,15 @@ __webpack_require__.r(__webpack_exports__);
 /*!******************************************************************!*\
   !*** ./resources/js/components/personalinfo/PersonalDetails.vue ***!
   \******************************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _PersonalDetails_vue_vue_type_template_id_17b74fec___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PersonalDetails.vue?vue&type=template&id=17b74fec& */ "./resources/js/components/personalinfo/PersonalDetails.vue?vue&type=template&id=17b74fec&");
 /* harmony import */ var _PersonalDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PersonalDetails.vue?vue&type=script&lang=js& */ "./resources/js/components/personalinfo/PersonalDetails.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _PersonalDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _PersonalDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -74534,7 +74588,7 @@ component.options.__file = "resources/js/components/personalinfo/PersonalDetails
 /*!*******************************************************************************************!*\
   !*** ./resources/js/components/personalinfo/PersonalDetails.vue?vue&type=script&lang=js& ***!
   \*******************************************************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

@@ -15,7 +15,6 @@ import Trustee from './components/personalinfo/Trustee.vue';
 import Pets from './components/personalinfo/Pets.vue';
 import SectionComplete from './components/personalinfo/SectionComplete.vue';
 
-
 import SpouseQuestion from './components/personalinfo/questions/Spouse.vue';
 import PreviousSpouseQuestion from './components/personalinfo/questions/PreviousSpouse.vue';
 import FamilyMembersQuestion from './components/personalinfo/questions/FamilyMembers.vue';

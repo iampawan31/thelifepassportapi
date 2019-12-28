@@ -194,6 +194,11 @@
 		mounted() {},
 		methods: {
 			async handleSubmit(e){
+
+
+				console.log(this.personalDetail);
+
+				
 				this.submitted = true;
 				const isValid = await this.$refs.observer.validate();
 
