@@ -1,6 +1,6 @@
 <template>
 	<div class="c">
-		<div class="question-item" data-nextpage="questions/spouse.php" data-prevpage>
+		<div class="question-item">
 			<h3 class="heading3">Enter your personal details:</h3>
 			<div class="form-wrapper">
 				<ValidationObserver ref="observer" v-slot="{ invalid }">
@@ -194,11 +194,6 @@
 		mounted() {},
 		methods: {
 			async handleSubmit(e){
-
-
-				console.log(this.personalDetail);
-
-				
 				this.submitted = true;
 				const isValid = await this.$refs.observer.validate();
 
@@ -225,11 +220,21 @@
 
 							});
 					}
-					
-					//this.$router.push('/spouse-question');
 				}
 			},
+			async redirectToPage () {
+				await axios.get('/getmarriagestatus').then((response) => {
+					if (response.status == 200) {
+						if (response.data) {
+							if (response.data.data.is_married == '0' || response.data.data.is_married == '2') {
+								this.$router.push('/previous-spouse');
+							} else {
 
+							}
+						}
+					}
+				});
+			},
 			citizenshipChangeEvent(val) {
 				console.log(val);
 			},

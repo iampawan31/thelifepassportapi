@@ -8,19 +8,44 @@
             <div class="question-header">
                 <h3>Were you previously married?</h3>
                 <div class="yesno">
-                    <router-link class="btn-yes" to="/previous-spouse">Yes</router-link>
-                    <router-link class="btn-no" to="/">No</router-link>
+                    <a href="javascript:void(0)" @click.prevent="prevmarriagestatus(1)" class="btn-yes">Yes</a>
+                    <a href="javascript:void(0)" @click.prevent="prevmarriagestatus(0)" class="btn-no">No</a>
                 </div>
             </div>
+            <a href="javascript:void(0)" @click.prevent="prevmarriagestatus(2)" class="btn-skip">Skip</a>
         </div>
     </div>
 </template>
 <script>
 export default {
     data() {
-        return {};
+        return {
+            formData: []
+        };
     },
     mounted() {},
-    methods: {}
+    methods: {
+        prevmarriagestatus(status) {
+            if (status == 0) {
+                this.formData = {is_married: "0"}
+            } else if (status == 1) {
+                this.formData = {is_married: "1"}
+            } else if (status == 2) {
+                this.formData = {is_married: "2"}
+            }
+            console.log(this.formData);
+            axios.post('previousspouse/updatemarriagestatus', this.formData)
+            .then((response) => {
+                if (status == '1') {
+                    this.$router.push('/previous-spouse');
+                } else {
+                    this.$router.push('/family-members');
+                }
+            })
+            .catch(function(){
+
+            });
+        }
+    }
 };
 </script>

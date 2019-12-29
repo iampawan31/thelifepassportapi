@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class UserPhone extends Model
+class SpousePhone extends Model
 {
     protected $fillable = ['user_id', 'phone', 'is_primary'];
 

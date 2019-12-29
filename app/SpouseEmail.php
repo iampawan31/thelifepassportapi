@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class UserPhone extends Model
+class SpouseEmail extends Model
 {
-    protected $fillable = ['user_id', 'phone', 'is_primary'];
+    protected $fillable = ['user_id', 'email', 'password', 'is_primary'];
 
     public function getRouteKeyName() {
         return 'user_id';
