@@ -1,10 +1,10 @@
 <template>
 	<div class="c">
-		<div class="question-item" data-nextpage="questions/spouse.php" data-prevpage>
+		<div class="question-item">
 			<h3 class="heading3">Enter your personal details:</h3>
 			<div class="form-wrapper">
 				<ValidationObserver ref="observer" v-slot="{ invalid }">
-				<form id="frmPersonalDetails" name="frmPersonalDetails" method="post" class="custom-form" @submit.prevent="handleSubmit()">
+				<form id="frmPersonalDetails" name="frmPersonalDetails" method="post" class="custom-form" @submit.prevent="handleSubmit">
 					<div class="row">
 						<div class="col-md-6 col-sm-12">
 							<div class="field-group">
@@ -30,7 +30,7 @@
 							placeholder="Street Address, Town, City, State, Zipcode and country"></textarea>
 					</div>
 
-					<phone></phone>
+					<phone :user-phones="phones" v-if="phones.length > 0"></phone>
 
 					<div class="field-group">
 						<label for="dob" class="input-label">Date of Birth</label>
@@ -45,7 +45,7 @@
 							<div class="field-group">
 								<label for="citizenship" class="input-label">Citizenship</label>
 								<Select2 name="citizenship" id="citizenship" width="resolve"
-									placeholder="Select an Options" v-model="personalDetail.citizenshipValue"
+									data-placeholder="Select an Options" v-model="personalDetail.country_id"
 									:options="citizenshipOptions" @change="citizenshipChangeEvent($event)"
 									@select="citizenshipSelectEvent($event)" />
 							</div>
@@ -79,13 +79,19 @@
 					</div>
 
 					<h4 class="form-subhead">Email Addresses</h4>
-					<email></email>
+					<email :user-emails="emails" v-if="emails.length > 0"></email>
 
 					<h4 class="form-subhead">Social Media</h4>
-					<social></social>
+					<social :user-socials="socials" v-if="socials.length > 0"></social>
 
 					<h4 class="form-subhead">Current Employers including self employment</h4>
-					<employee></employee>
+					<employee :user-employers="employers" v-if="employers.length > 0"></employee>
+
+					<div class="field-group form-group-checkbox clearfix">
+						<label for="chk_complete">
+						<input type="checkbox" name="chk_complete" id="chk_complete" value="1" /><i></i> <span>Mark as complete</span>
+						</label>
+					</div>
 
 					<div class="field-group field-group__action clearfix">
 						<input type="submit" class="field-submit btn-primary" value="Save and continue" />
@@ -123,35 +129,13 @@
 		data() {
 			return {
 				errors: [],
-				personalDetail: {
-					legal_name: '',
-					nickname: '',	
-					dob: '',
-					home_address: '',
-					passport_number: '',
-					passport_number: '',
-					father_name: '',
-					father_birth_place: '',
-					mother_name: '',
-					mother_birth_place: '',
-					citizenshipValue: '',
-				},
-				// citizenshipOptions: [
-				//     {
-				//         text: "India",
-				//         value: "IN"
-				//     }, 
-				//     {
-				//         text: "United State",
-				//         value: "US"
-				//     }, 
-				//     {
-				//         text: "United Kingdom",
-				//         value: "UK"
-				//     }
-				// ],
-				
-				citizenshipOptions: ['op1', 'op2', 'op3'],
+				personalDetail: [],
+				citizenshipOptions: [],
+				phones: [],
+				emails: [],
+				socials: [],
+				employers:[],
+				userId: 0,
 				result2: "",
 				lang: {
 					days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
@@ -165,9 +149,12 @@
 				submitted: false
 			};
 		},
+		created(){
+			this.getCountyList();
+			this.getPersonalInfo();
+		},
 		mounted() {},
 		methods: {
-
 			async handleSubmit(e){
 				this.submitted = true;
 				const isValid = await this.$refs.observer.validate();
@@ -175,12 +162,92 @@
 				if(!isValid){
 
 				}else{
-					this.$router.push('/spouse-question');
+					const form = e.target
+					const formData = new FormData(form)
+
+					if (this.userId) {
+						axios.post('/personal-info/'+this.userId+'/updatedata', formData)
+							.then((response) => {
+								this.$router.push('/spouse-question');
+								//this.redirectToPage();
+							})
+							.catch(function(){
+
+							});
+					} else {
+						axios.post('/personal-info/postdata', formData)
+							.then((response) => {
+								this.$router.push('/spouse-question');
+							})
+							.catch(function(){
+
+							});
+					}
 				}
-
-				
 			},
+			async redirectToPage () {
+				await axios.get('spouse/getmarriagestatus').then((response) => {
+					if (response.status == 200) {
+						if (response.data) {
+							console.log(response.data);
+							if (response.data.data && response.data.data.is_married == '0' || response.data.data && response.data.data.is_married == '2') {
+								this.$router.push('/previous-spouse-question');
+							} else {
+								this.$router.push('/spouse');
+							}
+						}
+					}
+				});
+			},
+			getPersonalInfo() {
+				axios.get('/getpersonalinfo').then((response) => {
+					if (response.status == 200) {
+						console.log(response.data);
+						if (response.data.data[0]) {
+							this.personalDetail = JSON.parse(JSON.stringify(response.data.data[0]));
+							this.userId = this.personalDetail.user_id;
 
+							if (this.personalDetail.user_phone.length > 0) {
+								this.phones = this.personalDetail.user_phone;
+							} else {
+								this.phones = [{number: null}];
+							}
+
+							if (this.personalDetail.user_email.length > 0) {
+								this.emails = this.personalDetail.user_email;
+							} else {
+								this.emails = [{email: null, password: null}];
+							}
+
+							if (this.personalDetail.user_socail_media.length > 0) {
+								this.socials = this.personalDetail.user_socail_media;
+							} else {
+								this.socials = [{social: null, username: null, password: null}];
+							}
+
+							if (this.personalDetail.user_employer.length > 0) {
+								this.employers = this.personalDetail.user_employer;
+							} else {
+								this.employers = [{employer_name: null, employer_phone: null, employer_address: null, computer_username: null, computer_password: null,
+													employee_benefits: null}];
+							}
+						} else {
+							this.phones = [{number: null}];
+							this.emails = [{email: null, password: null}];
+							this.socials = [{social: null, username: null, password: null}];
+							this.employers = [{employer_name: null, employer_phone: null, employer_address: null, computer_username: null, computer_password: null,
+													employee_benefits: null}];
+						}
+					}
+				});
+			},
+			getCountyList() {
+				axios.get('/countrylist').then((response) => {
+					if (response.status == 200) {
+						this.citizenshipOptions = response.data.countries;
+					}
+				});
+			},
 			citizenshipChangeEvent(val) {
 				console.log(val);
 			},

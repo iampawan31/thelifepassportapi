@@ -15,7 +15,6 @@ import Trustee from './components/personalinfo/Trustee.vue';
 import Pets from './components/personalinfo/Pets.vue';
 import SectionComplete from './components/personalinfo/SectionComplete.vue';
 
-
 import SpouseQuestion from './components/personalinfo/questions/Spouse.vue';
 import PreviousSpouseQuestion from './components/personalinfo/questions/PreviousSpouse.vue';
 import FamilyMembersQuestion from './components/personalinfo/questions/FamilyMembers.vue';
@@ -39,7 +38,7 @@ export const routes = [
     { path: '/close-friends', component: CloseFriends},
     { path: '/home-assistants', component: HomeAssistants},
     { path: '/estate-representative', component: EstateRepresentative},
-    { path: '/partner-estate-representative', component: PartnerEstateRepresentative},
+    { path: '/spouse-estate-representative', component: PartnerEstateRepresentative},
     { path: '/belong', component: Belong},
     { path: '/computer-passwords', component: ComputerPasswords},
     { path: '/medical-providers', component: MedicalProviders},
@@ -54,7 +53,7 @@ export const routes = [
     { path: '/close-friends-question', component: CloseFriendsQuestion},
     { path: '/home-assistants-question', component: HomeAssistantsQuestion},
     { path: '/estate-representative-question', component: EstateRepresentativeQuestion},
-    { path: '/partner-estate-representative-question', component: PartnerEstateRepresentativeQuestion},
+    { path: '/spouse-estate-representative-question', component: PartnerEstateRepresentativeQuestion},
     { path: '/belong-question', component: BelongQuestion},
     { path: '/computer-passwords-question', component: ComputerPasswordsQuestion},
     { path: '/medical-providers-question', component: MedicalProvidersQuestion},
