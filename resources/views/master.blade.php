@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width">
   <meta name="csrf-token" content="{{ csrf_token() }}">
+  <meta name="app-url" content="{{ config('app.url') }}">
   <link rel="profile" href="http://gmpg.org/xfn/11">
   <title>{{ config('app.name', 'TheLifePassport') }} - @yield('page_title')</title>
   <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}" />

@@ -23,7 +23,9 @@ export default {
             formData: []
         };
     },
-    mounted() {},
+    mounted() {
+        this.updatestepinfo();
+    },
     methods: {
         prevmarriagestatus(status) {
             if (status == 0) {
@@ -45,6 +47,16 @@ export default {
             .catch(function(){
 
             });
+        },
+        updatestepinfo() {
+            let data = {'step_id':3, 'is_visited': '1', 'is_filled' : '0', 'is_completed' : '0'}
+            axios.post('/updatepersonalstep', data)
+                .then((response) => {
+                    
+                })
+                .catch(function(){
+
+                });
         }
     }
 };

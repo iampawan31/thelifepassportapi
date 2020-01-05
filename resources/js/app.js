@@ -17,7 +17,8 @@ require('./password.js');
 require('./jquery-ui.js');
 require('./jquery.mousewheel.min.js');
 require('./select2.min.js');
-//require('./mCustomScrollbar.concat.min.js');
+require('./mCustomScrollbar.concat.min.js');
+require('./jquery-mousewheel.js');
 
 import Vue from 'vue';
 import VueRouter from 'vue-router';

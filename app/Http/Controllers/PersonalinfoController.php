@@ -7,6 +7,7 @@ use Exception;
 use Session, Auth;
 use App\PersonalInfo;
 use Illuminate\Http\Request;
+use phpDocumentor\Reflection\Types\Null_;
 
 class PersonalinfoController extends Controller
 {
@@ -127,13 +128,13 @@ class PersonalinfoController extends Controller
         $father_birth_place = $inputs['father_birth_place'];
         $mother_name        = $inputs['mother_name'];
         $mother_birth_place = $inputs['mother_birth_place'];
+        $is_completed       = @$inputs['chk_complete'];
 
         //phone info
         $arrPhone = [];
         if (isset($inputs['phone'])) {
             foreach($inputs['phone'] as $phone) {
                 if ($phone) {
-                    //\App\UserPhone::create(['user_id' => Auth::user()->id, 'phone' => $phone]);
                     $arrPhone[] = ['user_id' => Auth::user()->id, 'phone' => $phone];
                 }
             }
@@ -144,7 +145,6 @@ class PersonalinfoController extends Controller
         if (isset($inputs['email'])) {
             foreach($inputs['email'] as $key => $value) {
                 if ($value) {
-                    //\App\UserEmail::create(['user_id' => Auth::user()->id, 'email' => $value, 'password' => $inputs['email_password'][$key]]);
                     $arrEmail[] = ['user_id' => Auth::user()->id, 'email' => $value, 'password' => $inputs['email_password'][$key]];
                 } 
             }
@@ -155,7 +155,6 @@ class PersonalinfoController extends Controller
         if (isset($inputs['social_media_type'])) {
             foreach($inputs['social_media_type'] as $key => $value) {
                 if ($value) {
-                    //\App\UserSocailMedia::create(['user_id' => Auth::user()->id, 'social_id' => $value, 'username' => $inputs['social_username'][$key], 'password' => $inputs['social_password'][$key]]);
                     $arrSocial[] = ['user_id' => Auth::user()->id, 'social_id' => $value, 'username' => $inputs['social_username'][$key], 'password' => $inputs['social_password'][$key]];
                 }
                 
@@ -185,23 +184,24 @@ class PersonalinfoController extends Controller
             'legal_name'        => $legal_name ? $legal_name : "",
             'nickname'          => $nick_name ? $nick_name : "",
             'home_address'      => $home_address ? $home_address : "",
-            'dob'               => $dob ? date('Y-m-d', strtotime($dob)) : "",
-            'country_id'        => $country_id ? $country_id : "",
+            'dob'               => $dob ? date('Y-m-d', strtotime($dob)) : Null,
+            'country_id'        => $country_id ? $country_id : 0,
             'passport_number'   => $passport_number ? $passport_number : "",
             'father_name'       => $father_name ? $father_name : "",
             'father_birth_place'    => $father_birth_place ? $father_birth_place : "",
             'mother_name'           => $mother_name ? $mother_name : "",
             'mother_birth_place'    => $mother_birth_place ? $mother_birth_place : "",
         ];
-        
+       
         try {
             //insert personal information
             $objPersonalInfo = \App\PersonalInfo::create($arrPersonalInfo);
             
             //insert record in user personal details completion
-            $arrData = ['step_id' => 1, 'user_id' => Auth::user()->id, 'is_filled' => 1];
+            $is_completed = $is_completed ? $is_completed : '0';
+            $arrData = ['step_id' => 1, 'user_id' => Auth::user()->id, 'is_visited' => '1', 'is_filled' => '1', 'is_completed' => $is_completed];
             $objPercentageCompletion = \App\UsersPersonalDetailsCompletion::Create($arrData);
-
+           
             //insert phone information
             if (!empty($arrPhone)) {
                 foreach($arrPhone as $phones){
@@ -230,11 +230,11 @@ class PersonalinfoController extends Controller
             }
 
             //return response()->json(['response' => $inputs, 'phone' => $arrPhone, 'email' => $arrEmail, 'social' => $arrSocial, 'employer' => $arrEmployer]);
-            return response()->json(['status' => 200, 'message' => 'Personal information has been saved successfully']);
+            return response()->json(['status' => 200, 'message' => 'Personal information has been saved successfully'], 200);
 
         } catch (Exception $e) {
             dd($e);
-            return response()->json(['status' => 503, 'message' => 'Error']);
+            return response()->json(['status' => 500, 'message' => 'Error'], 500);
         }
     }
 
@@ -259,6 +259,7 @@ class PersonalinfoController extends Controller
         $father_birth_place = $inputs['father_birth_place'];
         $mother_name        = $inputs['mother_name'];
         $mother_birth_place = $inputs['mother_birth_place'];
+        $is_completed       = @$inputs['chk_complete'];
 
         //phone info
         $arrPhone = [];
@@ -313,22 +314,23 @@ class PersonalinfoController extends Controller
             //insert personal information
             $objPersonalInfo = \App\PersonalInfo::find($id);
             //$objPersonalInfo->user_id       = Auth::user()->id;
-            $objPersonalInfo->legal_name    = $legal_name ? $legal_name : "";
-            $objPersonalInfo->nickname      = $nick_name ? $nick_name : "";
-            $objPersonalInfo->home_address  = $home_address ? $home_address : "";
-            $objPersonalInfo->dob           = $dob ? date('Y-m-d', strtotime($dob)) : "";
-            $objPersonalInfo->country_id    = $country_id ? $country_id : "";
-            $objPersonalInfo->passport_number = $passport_number ? $passport_number : "";
-            $objPersonalInfo->father_name     = $father_name ? $father_name : "";
-            $objPersonalInfo->father_birth_place  = $father_birth_place ? $father_birth_place : "";
-            $objPersonalInfo->mother_name         = $mother_name ? $mother_name : "";
-            $objPersonalInfo->mother_birth_place  = $mother_birth_place ? $mother_birth_place : "";
+            $objPersonalInfo->legal_name            = $legal_name ? $legal_name : "";
+            $objPersonalInfo->nickname              = $nick_name ? $nick_name : "";
+            $objPersonalInfo->home_address          = $home_address ? $home_address : "";
+            $objPersonalInfo->dob                   = $dob ? date('Y-m-d', strtotime($dob)) : Null;
+            $objPersonalInfo->country_id            = $country_id ? $country_id : 0;
+            $objPersonalInfo->passport_number       = $passport_number ? $passport_number : "";
+            $objPersonalInfo->father_name           = $father_name ? $father_name : "";
+            $objPersonalInfo->father_birth_place    = $father_birth_place ? $father_birth_place : "";
+            $objPersonalInfo->mother_name           = $mother_name ? $mother_name : "";
+            $objPersonalInfo->mother_birth_place    = $mother_birth_place ? $mother_birth_place : "";
             $objPersonalInfo->save();
 
             //insert record in user personal details completion
+            $is_completed = $is_completed ? $is_completed : '0';
             \App\UsersPersonalDetailsCompletion::where('step_id', 1)
                                                 ->where('user_id', Auth::user()->id)
-                                                ->update(['is_filled' => '1']);
+                                                ->update([ 'is_visited' => '1', 'is_filled' => '1', 'is_completed' => $is_completed]);
 
             //insert phone information
             if (!empty($arrPhone)) {
@@ -368,12 +370,11 @@ class PersonalinfoController extends Controller
                 }
             }
 
-            //return response()->json(['response' => $inputs, 'phone' => $arrPhone, 'email' => $arrEmail, 'social' => $arrSocial, 'employer' => $arrEmployer]);
-            return response()->json(['status' => 200, 'message' => 'Personal information has been saved successfully']);
+            return response()->json(['status' => 200, 'message' => 'Personal information has been saved successfully'], 200);
 
         } catch (Exception $e) {
             dd($e);
-            return response()->json(['status' => 503, 'message' => 'Error']);
+            return response()->json(['status' => 500, 'message' => 'Error'], 500);
         }
     }
 
@@ -407,5 +408,20 @@ class PersonalinfoController extends Controller
             ->get();
 
         return response()->json(['status' => 200, 'data' => $phones]);
+    }
+
+    public function updateuserpersonalstepinfo(Request $request) {
+        $inputs     = $request->all();
+        $user_id    = Auth::user()->id;
+
+        try {
+            $objPersonalStepCompletion = new \App\UsersPersonalDetailsCompletion();
+            $objPersonalStepCompletion->updatestepinfo($inputs, $user_id);
+            
+            return response()->json(['status' => 200, 'msg' => 'Details updated successfully'], 200);
+        } catch(Exception $e) {
+            dd($e);
+            return response()->json(['status' => 500, 'msg' => 'Error'], 500);
+        }
     }
 }

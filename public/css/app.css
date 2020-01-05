@@ -15333,6 +15333,10 @@ p {
   background-color: #000;
 }
 
+.btn__dark {
+  background-color: #444;
+}
+
 .btn-md {
   font-size: 14px;
   line-height: 20px;
@@ -15373,36 +15377,38 @@ p {
   background: #000;
 }
 
-.btn-edit {
+.btn-edit,
+.btn-delete {
   border-radius: 100%;
-  border: 2px solid #462066;
   padding: 6px 0;
   display: inline-block;
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   text-align: center;
+  border: 2px solid #000;
+}
+
+.btn-edit svg,
+.btn-delete svg {
+  stroke: #007499;
+  width: 14px;
+  height: 14px;
+}
+
+.btn-edit {
+  border-color: #007499;
 }
 
 .btn-edit svg {
-  stroke: #462066;
-  width: 16px;
-  height: 16px;
+  stroke: #007499;
 }
 
 .btn-delete {
-  border-radius: 100%;
-  border: 2px solid #ac1225;
-  padding: 6px 0;
-  display: inline-block;
-  width: 32px;
-  height: 32px;
-  text-align: center;
+  border-color: #ac1225;
 }
 
 .btn-delete svg {
   stroke: #ac1225;
-  width: 16px;
-  height: 16px;
 }
 
 .btn-danger {
@@ -16350,6 +16356,70 @@ p {
   }
 }
 
+.data {
+  margin: 0 0 40px;
+}
+
+.data__wrapper {
+  margin: 0 0 40px;
+}
+
+.data .item {
+  border-bottom: 1px solid #efefef;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.data .item:nth-child(even) {
+  background-color: #fafafa;
+}
+
+.data .item__header {
+  border-bottom: 2px solid #000;
+  border-top: 2px solid #000;
+  font-weight: 600;
+  color: #000;
+  font-size: 11px;
+  line-height: 1.3;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.data .item__name,
+.data .item__relationship,
+.data .item__phone,
+.data .item__email,
+.data .item__action {
+  float: left;
+  padding: 15px 15px 15px 10px;
+}
+
+.data .item__name {
+  width: 16%;
+}
+
+.data .item__relationship {
+  width: 22%;
+}
+
+.data .item__phone {
+  width: 22%;
+}
+
+.data .item__email {
+  width: 20%;
+}
+
+.data .item__action {
+  width: 20%;
+  text-align: right;
+  padding: 10px;
+}
+
+.data .item:hover {
+  background: #fff;
+}
+
 body.page-login {
   background-size: cover;
   -ms-behavior: url(/css/backgroundsize.min.htc);
@@ -16723,6 +16793,7 @@ body.page-login a.btn:hover {
 .form-group-checkbox label i {
   position: absolute;
   left: 0;
+  top: 0;
   height: 14px;
   width: 14px;
   font-style: normal;
@@ -17040,7 +17111,6 @@ body.page-login a.btn:hover {
 }
 
 .input-file-wrapper .input-file-name {
-  display: none;
   float: left;
   margin-left: 20px;
   padding: 3px 30px 5px 0;
@@ -17577,6 +17647,10 @@ body.page-login a.btn:hover {
 .field-group {
   position: relative;
   margin: 0 0 30px;
+}
+
+.field-group.form-group-checkbox {
+  margin-top: 30px;
 }
 
 .field-group .field-instructions {
@@ -18628,6 +18702,27 @@ strong {
   font-weight: 700;
 }
 
+.btn-primary {
+  display: inline-block;
+  color: #fff !important;
+  border: none;
+  text-decoration: none;
+  border-radius: 3px;
+  text-decoration: none !important;
+  padding: 10px 35px;
+  font-size: 14px;
+  line-height: 20px;
+  line-height: 20px;
+  text-align: center;
+  font-weight: 700;
+  background: #000;
+  margin: 0 10px 10px 0;
+}
+
+.btn-primary:hover {
+  background-color: #000;
+}
+
 .btn-link {
   display: inline-block;
   color: #fff !important;
@@ -19046,7 +19141,7 @@ body {
 }
 
 .questions-list .item a {
-  color: inherit;
+  color: #007499;
 }
 
 .questions-list .item__status {
@@ -19179,5 +19274,36 @@ body {
     width: 14px;
     height: 14px;
   }
+}
+
+.spouse-details {
+  margin: 0 0 40px;
+}
+
+.spouse-details .item {
+  margin: 0 0 30px;
+}
+
+.spouse-details .item__title {
+  margin: 0 0 3px;
+  font-weight: 700;
+  font-size: 11px;
+  line-height: 1.4;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.spouse-details .item__content {
+  color: #000;
+}
+
+.spouse-details .item__content span {
+  font-style: italic;
+  font-size: 0.925em;
+}
+
+.spouse-details .item__actions a {
+  margin-right: 10px;
 }
 

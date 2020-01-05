@@ -87,6 +87,12 @@
 					<h4 class="form-subhead">Current Employers including self employment</h4>
 					<employee :user-employers="employers" v-if="employers.length > 0"></employee>
 
+					<div class="field-group form-group-checkbox clearfix">
+						<label for="chk_complete">
+						<input type="checkbox" name="chk_complete" id="chk_complete" value="1" /><i></i> <span>Mark as complete</span>
+						</label>
+					</div>
+
 					<div class="field-group field-group__action clearfix">
 						<input type="submit" class="field-submit btn-primary" value="Save and continue" />
 					</div>
@@ -144,52 +150,8 @@
 			};
 		},
 		created(){
-			axios.get('/countrylist').then((response) => {
-				if (response.status == 200) {
-					this.citizenshipOptions = response.data.countries;
-				}
-			});
-
-			axios.get('/getpersonalinfo').then((response) => {
-				if (response.status == 200) {
-					console.log(response.data);
-					if (response.data.data[0]) {
-						this.personalDetail = JSON.parse(JSON.stringify(response.data.data[0]));
-						this.userId = this.personalDetail.user_id;
-
-						if (this.personalDetail.user_phone.length > 0) {
-							this.phones = this.personalDetail.user_phone;
-						} else {
-							this.phones = [{number: null}];
-						}
-
-						if (this.personalDetail.user_email.length > 0) {
-							this.emails = this.personalDetail.user_email;
-						} else {
-							this.emails = [{email: null, password: null}];
-						}
-
-						if (this.personalDetail.user_socail_media.length > 0) {
-							this.socials = this.personalDetail.user_socail_media;
-						} else {
-							this.socials = [{social: null, username: null, password: null}];
-						}
-
-						if (this.personalDetail.user_employer.length > 0) {
-							this.employers = this.personalDetail.user_employer;
-						} else {
-							this.employers = [{employer_name: null, employer_phone: null, employer_address: null, computer_username: null, computer_password: null,
-												employee_benefits: null}];
-						}
-					} else {
-						this.phones = [{number: null}];
-						this.emails = [{email: null, password: null}];
-						this.socials = [{social: null, username: null, password: null}];
-						this.employers = [{employer_name: null, employer_phone: null, employer_address: null, computer_username: null, computer_password: null,
-												employee_benefits: null}];
-					}
-				}
-			});
+			this.getCountyList();
+			this.getPersonalInfo();
 		},
 		mounted() {},
 		methods: {
@@ -207,6 +169,7 @@
 						axios.post('/personal-info/'+this.userId+'/updatedata', formData)
 							.then((response) => {
 								this.$router.push('/spouse-question');
+								//this.redirectToPage();
 							})
 							.catch(function(){
 
@@ -223,15 +186,65 @@
 				}
 			},
 			async redirectToPage () {
-				await axios.get('/getmarriagestatus').then((response) => {
+				await axios.get('spouse/getmarriagestatus').then((response) => {
 					if (response.status == 200) {
 						if (response.data) {
-							if (response.data.data.is_married == '0' || response.data.data.is_married == '2') {
-								this.$router.push('/previous-spouse');
+							console.log(response.data);
+							if (response.data.data && response.data.data.is_married == '0' || response.data.data && response.data.data.is_married == '2') {
+								this.$router.push('/previous-spouse-question');
 							} else {
-
+								this.$router.push('/spouse');
 							}
 						}
+					}
+				});
+			},
+			getPersonalInfo() {
+				axios.get('/getpersonalinfo').then((response) => {
+					if (response.status == 200) {
+						console.log(response.data);
+						if (response.data.data[0]) {
+							this.personalDetail = JSON.parse(JSON.stringify(response.data.data[0]));
+							this.userId = this.personalDetail.user_id;
+
+							if (this.personalDetail.user_phone.length > 0) {
+								this.phones = this.personalDetail.user_phone;
+							} else {
+								this.phones = [{number: null}];
+							}
+
+							if (this.personalDetail.user_email.length > 0) {
+								this.emails = this.personalDetail.user_email;
+							} else {
+								this.emails = [{email: null, password: null}];
+							}
+
+							if (this.personalDetail.user_socail_media.length > 0) {
+								this.socials = this.personalDetail.user_socail_media;
+							} else {
+								this.socials = [{social: null, username: null, password: null}];
+							}
+
+							if (this.personalDetail.user_employer.length > 0) {
+								this.employers = this.personalDetail.user_employer;
+							} else {
+								this.employers = [{employer_name: null, employer_phone: null, employer_address: null, computer_username: null, computer_password: null,
+													employee_benefits: null}];
+							}
+						} else {
+							this.phones = [{number: null}];
+							this.emails = [{email: null, password: null}];
+							this.socials = [{social: null, username: null, password: null}];
+							this.employers = [{employer_name: null, employer_phone: null, employer_address: null, computer_username: null, computer_password: null,
+													employee_benefits: null}];
+						}
+					}
+				});
+			},
+			getCountyList() {
+				axios.get('/countrylist').then((response) => {
+					if (response.status == 200) {
+						this.citizenshipOptions = response.data.countries;
 					}
 				});
 			},

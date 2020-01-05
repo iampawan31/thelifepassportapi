@@ -12,6 +12,7 @@
                     name="frmFormarSpouse"
                     method="post"
                     class="custom-form"
+                    enctype="multipart/form-data"
                     @submit.prevent="handleSubmit"
                 >
                     <div class="field-group">
@@ -118,9 +119,10 @@
                                 id="owe_alimony"
                                 name="owe_alimony"
                                 type="checkbox"
-                                value="1"
                                 class="toggle-fields"
+                                :value="isAlimonyPaid"
                                 data-toggle-fields="alimony_details"
+                                v-model="isAlimonyPaid"
                             />
                             <label for="owe_alimony">
                                 <div
@@ -133,24 +135,26 @@
                                 ></div>
                             </label>
                         </div>
-
-                        <div id="alimony_details" class="hidden">
+                        
+                        <div id="alimony_details" v-if="isAlimonyPaid">
                             <div class="row">
                                 <div class="col-md-6 col-xs-12">
                                     <div class="field-group">
                                         <label for="alimony_agreement" class="input-label">Agreement</label>
                                         <div class="input-file-wrapper clearfix">
-                                            <div class="input-browse">
+                                            <div class="input-browse" v-if="divorceDoc.length == 0">
                                                 <span class="btn-link">Add file</span>
                                                 <input
                                                     type="file"
                                                     id="alimony_agreement"
                                                     name="alimony_agreement"
+                                                    @change="handleFileUpload"
                                                 />
                                             </div>
-                                            <div class="input-file-name">
-                                                <span></span>
-                                                <button class="removefile">&times;</button>
+                                            
+                                            <div class="input-file-name" v-if="divorceDoc.title">
+                                                <span><a :href="divorceDoc.url">{{ divorceDoc.title }}</a></span>
+                                                <a href="javascript:void(0);" @click="removeDivorceFile()" class="removefile">&times;</a>
                                             </div>
                                         </div>
                                     </div>
@@ -164,6 +168,7 @@
                                             id="alimony_amount"
                                             class="field-input required"
                                             placeholder="Amount"
+                                            v-model="spouseDetails.alimony_amount"
                                         />
                                     </div>
                                 </div>
@@ -214,7 +219,10 @@ export default {
             employers:[],
             userId: 0,
             submitted: false,
-            citizenshipOptions: []
+            citizenshipOptions: [],
+            file: '',
+            isAlimonyPaid: false,
+            divorceDoc: []
         };
     },
     created() {
@@ -225,42 +233,30 @@ export default {
                     this.spouseDetails = JSON.parse(JSON.stringify(response.data.data[0]));
                     this.userId = this.spouseDetails.user_id;
 
-                    if (this.spouseDetails.spouse_phone.length > 0) {
-                        this.phones = this.spouseDetails.spouse_phone;
+                    if (this.spouseDetails.is_alimony_paid == '1') {
+                        this.isAlimonyPaid = true;
+                    }
+
+                    if (this.spouseDetails.previous_spouse_phone.length > 0) {
+                        this.phones = this.spouseDetails.previous_spouse_phone;
                     } else {
                         this.phones = [{number: null}];
                     }
-
-                    // if (this.spouseDetails.spouse_email.length > 0) {
-                    //     this.emails = this.spouseDetails.spouse_email;
-                    // } else {
-                    //     this.emails = [{email: null, password: null}];
-                    // }
-
-                    // if (this.spouseDetails.spouse_socail_media.length > 0) {
-                    //     this.socials = this.spouseDetails.spouse_socail_media;
-                    // } else {
-                    //     this.socials = [{social: null, username: null, password: null}];
-                    // }
-
-                    // if (this.spouseDetails.spouse_employer.length > 0) {
-                    //     this.employers = this.spouseDetails.spouse_employer;
-                    // } else {
-                    //     this.employers = [{employer_name: null, employer_phone: null, employer_address: null, computer_username: null, computer_password: null,
-                    //                         employee_benefits: null}];
-                    // }
+                    
+                    if (this.spouseDetails.divorce_doc.length > 0) {
+                        this.divorceDoc = this.spouseDetails.divorce_doc[0];
+                    }
                 } else {
                     this.phones = [{number: null}];
-                    // this.emails = [{email: null, password: null}];
-                    // this.socials = [{social: null, username: null, password: null}];
-                    // this.employers = [{employer_name: null, employer_phone: null, employer_address: null, computer_username: null, computer_password: null,
-                    //                         employee_benefits: null}];
                 }
             }
         });
     },
     mounted() {},
     methods: {
+        handleFileUpload(e){
+            this.file = e.target.files;
+        },
         async handleSubmit(e) {
             //this.$router.push("/family-members-question");
             this.submitted = true;
@@ -268,13 +264,14 @@ export default {
             if(!isValid){
 
             }else{
-                const form = e.target;
-                const formData = new FormData(form);
+                let form = e.target;
+                let formData = new FormData(form);
+                formData.append('file', this.file);
 
                 if (this.userId) {
-                    axios.post('/previousspouse/'+this.userId+'/updatedata', formData)
+                    axios.post('/previousspouse/'+this.userId+'/updatedata', formData, {headers: {'Content-Type': 'multipart/form-data'}})
                         .then((response) => {
-                            //this.$router.push("/previous-spouse-question");
+                            this.$router.push("/family-members-question");
                         })
                         .catch(function(){
 
@@ -282,13 +279,24 @@ export default {
                 } else {
                     axios.post('/previousspouse/postdata', formData)
                         .then((response) => {
-                            //this.$router.push("/previous-spouse-question");
+                            this.$router.push("/family-members-question");
                         })
                         .catch(function(){
 
                         });
                 }
 			}
+        },
+        removeDivorceFile() {
+            axios.post('/removedivorcefile')
+            .then((response) => { 
+                if (response.status == 200) {
+                    this.divorceDoc = [];
+                }
+            })
+            .catch(function () {
+
+            });
         }
     }
 };

@@ -14,7 +14,10 @@ class PreviousSpouseInfo extends Model
         'divorce_date', 
         'divorce_location', 
         'email',
-        'is_alimony_paid'
+        'address',
+        'is_alimony_paid',
+        'divorce_agreement_doc',
+        'alimony_amount'
     ];
 
     public function getRouteKeyName() {
@@ -31,6 +34,10 @@ class PreviousSpouseInfo extends Model
 
     public function PreviousSpousePhone() {
         return $this->hasMany(\App\PreviousSpousePhone::class, 'user_id')->select(['user_id', 'phone', 'is_primary']);
+    }
+
+    public function DivorceDoc() {
+        return $this->hasMany(\App\DivorceDoc::class, 'user_id')->select(['user_id', 'title', 'url']);
     }
 
     //Table Name

@@ -421,7 +421,6 @@ class SpouseController extends Controller
         try {
             //check for record
             $objMarriageStatus = \App\MarriageStatus::find($user_id);
-            
             return response()->json(['status' => 200, 'data' => $objMarriageStatus]);
         } catch (Exception $e) {
             return response()->json(['status' => 503, 'data' => [[]]]);

@@ -21,7 +21,8 @@ export default {
         }
     },
     created () {
-        
+        console.log("In Created");
+        this.updatestepinfo();
     },
     mounted() {
 
@@ -47,6 +48,16 @@ export default {
             .catch(function(){
 
             });
+        },
+        updatestepinfo() {
+            let data = {'step_id':2, 'is_visited': '1', 'is_filled' : '0', 'is_completed' : '0'}
+            axios.post('/updatepersonalstep', data)
+                .then((response) => {
+                    
+                })
+                .catch(function(){
+
+                });
         }
     }
 };

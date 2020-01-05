@@ -35,7 +35,11 @@ class PersonalInfo extends Model
     }
 
     public function getDobAttribute($date) {
-        return $this->attributes['dob'] = date('m/d/Y', strtotime($date));
+        if($date) {
+            return $this->attributes['dob'] = date('m/d/Y', strtotime($date));
+        } else {
+            return $this->attributes['dob'] = "";
+        }
     }
 
     public function UserPhone() {
