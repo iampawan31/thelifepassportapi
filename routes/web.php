@@ -46,6 +46,7 @@ Route::middleware(['auth'])->group(function(){
     Route::post('spouse/{id}/updatedata', 'SpouseController@update')->name('spouseinfo.updatedata');
     Route::post('spouse/updatemarriagestatus', 'SpouseController@updatemarriagestatus')->name('spouseinfo.updatemarriagestatus');
     Route::get('spouse/getmarriagestatus', 'SpouseController@getmarriagestatus')->name('spouseinfo.getmarriagestatus');
+    Route::delete('spouse/{id}/removespouse', 'SpouseController@destroy')->name('spouseinfo.removespouse');
 
     //Previous Spouse information route
     Route::get('getprevspouseinfo', 'PreviousspouseController@getpreviousspouseinfo')->name('prevspouseinfo.getdata');
@@ -54,6 +55,7 @@ Route::middleware(['auth'])->group(function(){
     Route::post('previousspouse/updatemarriagestatus', 'PreviousspouseController@updatemarriagestatus')->name('prevspouseinfo.updatemarriagestatus');
     Route::get('previousspouse/getpreviousmarriagestatus', 'PreviousspouseController@getpreviousmarriagestatus')->name('prevspouseinfo.getpreviousmarriagestatus');
     Route::post('removedivorcefile', 'PreviousspouseController@removedivorcefile')->name('prevspouseinfo.removedivorcefile');
+    Route::delete('previousspouse/{id}/removespouse', 'PreviousspouseController@destroy')->name('prevspouseinfo.removespouse');
 
     //get left navigation list
     Route::get('getpersonalinfonav', 'LeftnavController@getpersonalinfoleftnavigation')->name('getpersonalinfonav.getdata');

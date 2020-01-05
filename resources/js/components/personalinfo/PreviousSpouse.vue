@@ -88,7 +88,7 @@
                     </div>
 
                     <div class="field-group">
-                        <label for="current_address">current Address</label>
+                        <label for="current_address">Current Address</label>
                         <textarea
                             rows="2"
                             name="address"

@@ -3095,6 +3095,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -4825,14 +4827,88 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      formData: []
+      formData: [],
+      showPreviousSpouseDetails: false,
+      spouseDetails: [],
+      userId: ''
     };
   },
   mounted: function mounted() {
     this.updatestepinfo();
+    this.getPreviousSpouseInfo();
   },
   methods: {
     prevmarriagestatus: function prevmarriagestatus(status) {
@@ -4869,6 +4945,28 @@ __webpack_require__.r(__webpack_exports__);
         'is_completed': '0'
       };
       axios.post('/updatepersonalstep', data).then(function (response) {})["catch"](function () {});
+    },
+    getPreviousSpouseInfo: function getPreviousSpouseInfo() {
+      var _this2 = this;
+
+      axios.get('/getprevspouseinfo').then(function (response) {
+        if (response.status == 200) {
+          if (response.data.data[0]) {
+            _this2.spouseDetails = JSON.parse(JSON.stringify(response.data.data[0])); //console.log(this.spouseDetails);
+
+            _this2.userId = _this2.spouseDetails.user_id;
+            _this2.showPreviousSpouseDetails = true;
+          }
+        }
+      });
+    },
+    removePreviousSpouse: function removePreviousSpouse() {
+      var _this3 = this;
+
+      axios["delete"]('previousspouse/' + this.userId + '/removespouse').then(function (response) {
+        console.log(response);
+        _this3.showPreviousSpouseDetails = false;
+      })["catch"](function () {});
     }
   }
 });
@@ -4898,21 +4996,112 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       spouseDetails: [],
-      formData: []
+      formData: [],
+      userId: '',
+      showSpouseDetails: false
     };
   },
   created: function created() {
-    console.log("In Created");
+    this.getSpouseInfo();
     this.updatestepinfo();
   },
   mounted: function mounted() {},
   methods: {
-    marriagestatus: function marriagestatus(status) {
+    getSpouseInfo: function getSpouseInfo() {
       var _this = this;
+
+      axios.get('/getspouseinfo').then(function (response) {
+        if (response.status == 200) {
+          if (response.data.data[0]) {
+            _this.spouseDetails = JSON.parse(JSON.stringify(response.data.data[0]));
+            _this.userId = _this.spouseDetails.user_id;
+
+            if (_this.userId) {
+              _this.showSpouseDetails = true;
+            }
+          }
+        }
+      });
+    },
+    marriagestatus: function marriagestatus(status) {
+      var _this2 = this;
 
       if (status == 0) {
         this.formData = {
@@ -4930,9 +5119,9 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.post('spouse/updatemarriagestatus', this.formData).then(function (response) {
         if (status == '1') {
-          _this.$router.push('/spouse');
+          _this2.$router.push('/spouse');
         } else {
-          _this.$router.push('/previous-spouse');
+          _this2.$router.push('/previous-spouse');
         }
       })["catch"](function () {});
     },
@@ -4944,6 +5133,14 @@ __webpack_require__.r(__webpack_exports__);
         'is_completed': '0'
       };
       axios.post('/updatepersonalstep', data).then(function (response) {})["catch"](function () {});
+    },
+    removeSpouse: function removeSpouse() {
+      var _this3 = this;
+
+      axios["delete"]('spouse/' + this.userId + '/removespouse').then(function (response) {
+        console.log(response);
+        _this3.showSpouseDetails = false;
+      })["catch"](function () {});
     }
   }
 });
@@ -55333,22 +55530,10 @@ var render = function() {
                         ])
                       : _vm._e(),
                     _vm._v("  /  \n\n                    "),
-                    _vm.marriageStatus && _vm.marriageStatus.is_married == "0"
-                      ? _c(
-                          "router-link",
-                          { attrs: { to: "/spouse-question" } },
-                          [_vm._v("Edit")]
-                        )
-                      : _vm.marriageStatus &&
-                        _vm.marriageStatus.is_married == "2"
-                      ? _c(
-                          "router-link",
-                          { attrs: { to: "/spouse-question" } },
-                          [_vm._v("Edit")]
-                        )
-                      : _c("router-link", { attrs: { to: "/spouse" } }, [
-                          _vm._v("Edit")
-                        ])
+                    _vm._v(" "),
+                    _c("router-link", { attrs: { to: "/spouse-question" } }, [
+                      _vm._v("Edit")
+                    ])
                   ],
                   1
                 )
@@ -55531,25 +55716,12 @@ var render = function() {
                         ])
                       : _vm._e(),
                     _vm._v("  /  \n\n                    "),
-                    _vm.previousMarriageStatus &&
-                    _vm.previousMarriageStatus.is_previously_married == "0"
-                      ? _c(
-                          "router-link",
-                          { attrs: { to: "/previous-spouse-question" } },
-                          [_vm._v("Edit")]
-                        )
-                      : _vm.previousMarriageStatus &&
-                        _vm.previousMarriageStatus.is_previously_married == "2"
-                      ? _c(
-                          "router-link",
-                          { attrs: { to: "/previous-spouse-question" } },
-                          [_vm._v("Edit")]
-                        )
-                      : _c(
-                          "router-link",
-                          { attrs: { to: "/previous-spouse" } },
-                          [_vm._v("Edit")]
-                        )
+                    _vm._v(" "),
+                    _c(
+                      "router-link",
+                      { attrs: { to: "/previous-spouse-question" } },
+                      [_vm._v("Edit")]
+                    )
                   ],
                   1
                 )
@@ -57805,7 +57977,7 @@ var render = function() {
                               _c(
                                 "label",
                                 { attrs: { for: "current_address" } },
-                                [_vm._v("current Address")]
+                                [_vm._v("Current Address")]
                               ),
                               _vm._v(" "),
                               _c("textarea", {
@@ -59878,68 +60050,221 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "c" }, [
-    _c(
-      "div",
-      {
-        staticClass: "question-item",
-        attrs: {
-          "data-nextpage": "questions/family-members.php",
-          "data-viewpage": "views/previous-spouse.php"
-        }
-      },
-      [
-        _c("div", { staticClass: "question-header" }, [
-          _c("h3", [_vm._v("Were you previously married?")]),
+    _vm.showPreviousSpouseDetails
+      ? _c("div", [
+          _c("h3", { staticClass: "heading3" }, [
+            _vm._v("Former spouse details")
+          ]),
           _vm._v(" "),
-          _c("div", { staticClass: "yesno" }, [
-            _c(
-              "a",
-              {
-                staticClass: "btn-yes",
-                attrs: { href: "javascript:void(0)" },
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    return _vm.prevmarriagestatus(1)
-                  }
-                }
-              },
-              [_vm._v("Yes")]
-            ),
+          _c("div", { staticClass: "spouse-details" }, [
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-4 col-sm-12" }, [
+                _c("div", { staticClass: "item" }, [
+                  _c("h4", { staticClass: "item__title" }, [
+                    _vm._v("Legal Name")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "item__content" }, [
+                    _vm._v(_vm._s(_vm.spouseDetails.legal_name))
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-4 col-sm-12" }, [
+                _c("div", { staticClass: "item" }, [
+                  _c("h4", { staticClass: "item__title" }, [
+                    _vm._v("Marriage Date")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "item__content" }, [
+                    _vm._v(_vm._s(_vm.spouseDetails.marriage_date))
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-4 col-sm-12" }, [
+                _c("div", { staticClass: "item" }, [
+                  _c("h4", { staticClass: "item__title" }, [
+                    _vm._v("Marriage Location")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "item__content" }, [
+                    _vm._v(_vm._s(_vm.spouseDetails.marriage_location))
+                  ])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-4 col-sm-12" }, [
+                _c("div", { staticClass: "item" }, [
+                  _c("h4", { staticClass: "item__title" }, [
+                    _vm._v("Divorce Date")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "item__content" }, [
+                    _vm._v(_vm._s(_vm.spouseDetails.divorce_date))
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-4 col-sm-12" }, [
+                _c("div", { staticClass: "item" }, [
+                  _c("h4", { staticClass: "item__title" }, [
+                    _vm._v("Divorce Location")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "item__content" }, [
+                    _vm._v(_vm._s(_vm.spouseDetails.divorce_location))
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-4 col-sm-12" }, [
+                _c("div", { staticClass: "item" }, [
+                  _c("h4", { staticClass: "item__title" }, [
+                    _vm._v("Current Address")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "item__content" }, [
+                    _vm._v(_vm._s(_vm.spouseDetails.address))
+                  ])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-4 col-sm-12" }, [
+                _c("div", { staticClass: "item" }, [
+                  _c("h4", { staticClass: "item__title" }, [
+                    _vm._v("Phone Numbers")
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "item__content" },
+                    _vm._l(_vm.spouseDetails.previous_spouse_phone, function(
+                      phone,
+                      index
+                    ) {
+                      return _c("span", { key: index }, [
+                        _vm._v(
+                          "\n                            " + _vm._s(phone.phone)
+                        ),
+                        _c("br")
+                      ])
+                    }),
+                    0
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-4 col-sm-12" }, [
+                _c("div", { staticClass: "item" }, [
+                  _c("h4", { staticClass: "item__title" }, [
+                    _vm._v("Email Addresses")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "item__content" }, [
+                    _c("span", [
+                      _vm._v(
+                        "\n                            " +
+                          _vm._s(_vm.spouseDetails.email)
+                      ),
+                      _c("br")
+                    ])
+                  ])
+                ])
+              ])
+            ]),
             _vm._v(" "),
             _c(
-              "a",
-              {
-                staticClass: "btn-no",
-                attrs: { href: "javascript:void(0)" },
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    return _vm.prevmarriagestatus(0)
-                  }
-                }
-              },
-              [_vm._v("No")]
+              "div",
+              { staticClass: "item__actions" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "btn-primary btn-editinfo",
+                    attrs: { to: "/previous-spouse" }
+                  },
+                  [_vm._v("Edit Information")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  {
+                    staticClass: "btn-primary btn-danger delete-item",
+                    attrs: { href: "javascript:voi();" },
+                    on: {
+                      click: function($event) {
+                        return _vm.removePreviousSpouse()
+                      }
+                    }
+                  },
+                  [_vm._v("Delete")]
+                )
+              ],
+              1
             )
           ])
-        ]),
-        _vm._v(" "),
-        _c(
-          "a",
-          {
-            staticClass: "btn-skip",
-            attrs: { href: "javascript:void(0)" },
-            on: {
-              click: function($event) {
-                $event.preventDefault()
-                return _vm.prevmarriagestatus(2)
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    !_vm.showPreviousSpouseDetails
+      ? _c("div", { staticClass: "question-item" }, [
+          _c("div", { staticClass: "question-header" }, [
+            _c("h3", [_vm._v("Were you previously married?")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "yesno" }, [
+              _c(
+                "a",
+                {
+                  staticClass: "btn-yes",
+                  attrs: { href: "javascript:void(0)" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.prevmarriagestatus(1)
+                    }
+                  }
+                },
+                [_vm._v("Yes")]
+              ),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  staticClass: "btn-no",
+                  attrs: { href: "javascript:void(0)" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.prevmarriagestatus(0)
+                    }
+                  }
+                },
+                [_vm._v("No")]
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c(
+            "a",
+            {
+              staticClass: "btn-skip",
+              attrs: { href: "javascript:void(0)" },
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  return _vm.prevmarriagestatus(2)
+                }
               }
-            }
-          },
-          [_vm._v("Skip")]
-        )
-      ]
-    )
+            },
+            [_vm._v("Skip")]
+          )
+        ])
+      : _vm._e()
   ])
 }
 var staticRenderFns = []
@@ -59965,58 +60290,228 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "c" }, [
-    _c("div", { staticClass: "question-item" }, [
-      _c("div", { staticClass: "question-header" }, [
-        _c("h3", [_vm._v("Are you married?")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "yesno" }, [
-          _c(
-            "a",
-            {
-              staticClass: "btn-yes",
-              attrs: { href: "javascript:void(0)" },
-              on: {
-                click: function($event) {
-                  $event.preventDefault()
-                  return _vm.marriagestatus(1)
-                }
-              }
-            },
-            [_vm._v("Yes")]
-          ),
+    _vm.showSpouseDetails
+      ? _c("div", [
+          _c("h3", { staticClass: "heading3" }, [
+            _vm._v("Your spouse details")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "spouse-details" }, [
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-4 col-sm-12" }, [
+                _c("div", { staticClass: "item" }, [
+                  _c("h4", { staticClass: "item__title" }, [
+                    _vm._v("Legal Name")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "item__content" }, [
+                    _vm._v(_vm._s(_vm.spouseDetails.legal_name))
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-4 col-sm-12" }, [
+                _c("div", { staticClass: "item" }, [
+                  _c("h4", { staticClass: "item__title" }, [
+                    _vm._v("Nickname or Prior Name")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "item__content" }, [
+                    _vm._v(_vm._s(_vm.spouseDetails.nickname))
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-4 col-sm-12" }, [
+                _c("div", { staticClass: "item" }, [
+                  _c("h4", { staticClass: "item__title" }, [
+                    _vm._v("Date of Birth")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "item__content" }, [
+                    _vm._v(_vm._s(_vm.spouseDetails.dob))
+                  ])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-4 col-sm-12" }, [
+                _c("div", { staticClass: "item" }, [
+                  _c("h4", { staticClass: "item__title" }, [
+                    _vm._v("Home Address")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "item__content" }, [
+                    _vm._v(_vm._s(_vm.spouseDetails.home_address))
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-4 col-sm-12" }, [
+                _c("div", { staticClass: "item" }, [
+                  _c("h4", { staticClass: "item__title" }, [
+                    _vm._v("Citizenship")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "item__content" }, [
+                    _vm._v(_vm._s(_vm.spouseDetails.countries.country_name))
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-4 col-sm-12" }, [
+                _c("div", { staticClass: "item" }, [
+                  _c("h4", { staticClass: "item__title" }, [
+                    _vm._v("Passport Number")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "item__content" }, [
+                    _vm._v(_vm._s(_vm.spouseDetails.passport_number))
+                  ])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-4 col-sm-12" }, [
+                _c("div", { staticClass: "item" }, [
+                  _c("h4", { staticClass: "item__title" }, [
+                    _vm._v("Phone Numbers")
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "item__content" },
+                    _vm._l(_vm.spouseDetails.spouse_phone, function(
+                      phone,
+                      index
+                    ) {
+                      return _c("span", { key: index }, [
+                        _vm._v(
+                          "\n                            " + _vm._s(phone.phone)
+                        ),
+                        _c("br")
+                      ])
+                    }),
+                    0
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-4 col-sm-12" }, [
+                _c("div", { staticClass: "item" }, [
+                  _c("h4", { staticClass: "item__title" }, [
+                    _vm._v("Email Addresses")
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "item__content" },
+                    _vm._l(_vm.spouseDetails.spouse_email, function(
+                      email,
+                      index
+                    ) {
+                      return _c("span", { key: index }, [
+                        _vm._v(
+                          "\n                            " + _vm._s(email.email)
+                        ),
+                        _c("br")
+                      ])
+                    }),
+                    0
+                  )
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "item__actions" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "btn-primary btn-editinfo",
+                    attrs: { to: "/spouse" }
+                  },
+                  [_vm._v("Edit Information")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  {
+                    staticClass: "btn-primary btn-danger delete-item",
+                    attrs: { href: "javascript:voi();" },
+                    on: {
+                      click: function($event) {
+                        return _vm.removeSpouse()
+                      }
+                    }
+                  },
+                  [_vm._v("Delete")]
+                )
+              ],
+              1
+            )
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    !_vm.showSpouseDetails
+      ? _c("div", { staticClass: "question-item" }, [
+          _c("div", { staticClass: "question-header" }, [
+            _c("h3", [_vm._v("Are you married?")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "yesno" }, [
+              _c(
+                "a",
+                {
+                  staticClass: "btn-yes",
+                  attrs: { href: "javascript:void(0)" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.marriagestatus(1)
+                    }
+                  }
+                },
+                [_vm._v("Yes")]
+              ),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  staticClass: "btn-no",
+                  attrs: { href: "javascript:void(0)" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.marriagestatus(0)
+                    }
+                  }
+                },
+                [_vm._v("No")]
+              )
+            ])
+          ]),
           _vm._v(" "),
           _c(
             "a",
             {
-              staticClass: "btn-no",
+              staticClass: "btn-skip",
               attrs: { href: "javascript:void(0)" },
               on: {
                 click: function($event) {
                   $event.preventDefault()
-                  return _vm.marriagestatus(0)
+                  return _vm.marriagestatus(2)
                 }
               }
             },
-            [_vm._v("No")]
+            [_vm._v("Skip")]
           )
         ])
-      ]),
-      _vm._v(" "),
-      _c(
-        "a",
-        {
-          staticClass: "btn-skip",
-          attrs: { href: "javascript:void(0)" },
-          on: {
-            click: function($event) {
-              $event.preventDefault()
-              return _vm.marriagestatus(2)
-            }
-          }
-        },
-        [_vm._v("Skip")]
-      )
-    ])
+      : _vm._e()
   ])
 }
 var staticRenderFns = []

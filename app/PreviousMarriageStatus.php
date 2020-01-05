@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class PreviousMarriageStatus extends Model
 {
+    protected $primaryKey = 'user_id';
+    
     protected $fillable = ['user_id', 'is_previously_married'];
 
     public function getRouteKeyName() {

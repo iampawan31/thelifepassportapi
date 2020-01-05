@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class PreviousSpouseInfo extends Model
 {
+    protected $primaryKey = 'user_id';
+    
     protected $fillable = [
         'user_id', 
         'legal_name', 

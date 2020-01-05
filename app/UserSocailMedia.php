@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserSocailMedia extends Model
 {
+    protected $primaryKey = 'user_id';
+    
     protected $fillable = ['user_id', 'social_id', 'username', 'password', 'is_primary'];
 
     public function getRouteKeyName() {

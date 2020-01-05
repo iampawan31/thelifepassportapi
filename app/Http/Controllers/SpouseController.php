@@ -118,14 +118,14 @@ class SpouseController extends Controller
             'legal_name'        => $legal_name ? $legal_name : "",
             'nickname'          => $nick_name ? $nick_name : "",
             'home_address'      => $home_address ? $home_address : "",
-            'dob'               => $dob ? date('Y-m-d', strtotime($dob)) : "",
-            'country_id'        => $country_id ? $country_id : "",
+            'dob'               => $dob ? date('Y-m-d', strtotime($dob)) : null,
+            'country_id'        => $country_id ? $country_id : 0,
             'passport_number'   => $passport_number ? $passport_number : "",
             'father_name'       => $father_name ? $father_name : "",
             'father_birth_place'    => $father_birth_place ? $father_birth_place : "",
             'mother_name'           => $mother_name ? $mother_name : "",
             'mother_birth_place'    => $mother_birth_place ? $mother_birth_place : "",
-            'marriage_date'        => $marriage_date ? date('Y-m-d', strtotime($marriage_date)) : "",
+            'marriage_date'        => $marriage_date ? date('Y-m-d', strtotime($marriage_date)) : null,
             'marriage_location'    => $marriage_location ? $marriage_location: ""
         ];
         
@@ -134,9 +134,9 @@ class SpouseController extends Controller
             $objSpouseInfo = \App\SpouseInfo::create($arrSpouseInfo);
             
             // //insert record in user personal details completion
-            // \App\UsersPersonalDetailsCompletion::where('step_id', 2)
-            //                                     ->where('user_id', Auth::user()->id)
-            //                                     ->update(['is_filled' => '1']);
+            \App\UsersPersonalDetailsCompletion::where('step_id', 2)
+                                                ->where('user_id', Auth::user()->id)
+                                                ->update(['is_visited' => '1', 'is_filled' => '1']);
 
             //insert phone information
             if (!empty($arrPhone)) {
@@ -289,21 +289,21 @@ class SpouseController extends Controller
             $objSpouseInfo->legal_name    = $legal_name ? $legal_name : "";
             $objSpouseInfo->nickname      = $nick_name ? $nick_name : "";
             $objSpouseInfo->home_address  = $home_address ? $home_address : "";
-            $objSpouseInfo->dob           = $dob ? date('Y-m-d', strtotime($dob)) : "";
-            $objSpouseInfo->country_id    = $country_id ? $country_id : "";
+            $objSpouseInfo->dob           = $dob ? date('Y-m-d', strtotime($dob)) : null;
+            $objSpouseInfo->country_id    = $country_id ? $country_id : 0;
             $objSpouseInfo->passport_number = $passport_number ? $passport_number : "";
             $objSpouseInfo->father_name     = $father_name ? $father_name : "";
             $objSpouseInfo->father_birth_place  = $father_birth_place ? $father_birth_place : "";
             $objSpouseInfo->mother_name         = $mother_name ? $mother_name : "";
             $objSpouseInfo->mother_birth_place  = $mother_birth_place ? $mother_birth_place : "";
-            $objSpouseInfo->marriage_date       = $marriage_date ? date('Y-m-d', strtotime($marriage_date)) : "";
+            $objSpouseInfo->marriage_date       = $marriage_date ? date('Y-m-d', strtotime($marriage_date)) : null;
             $objSpouseInfo->marriage_location   = $marriage_location ? $marriage_location : "";
             $objSpouseInfo->save();
 
             //insert record in user personal details completion
             \App\UsersPersonalDetailsCompletion::where('step_id', 2)
                                                 ->where('user_id', Auth::user()->id)
-                                                ->update(['is_filled' => '1']);
+                                                ->update(['is_visited' => '1', 'is_filled' => '1']);
 
             //insert phone information
             if (!empty($arrPhone)) {
@@ -358,7 +358,38 @@ class SpouseController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            \DB::transaction(function () {
+                
+                //remove sopuse information
+                \App\SpouseInfo::where('user_id', Auth::user()->id)->delete();
+    
+                //remove spouse phone
+                \App\SpousePhone::where('user_id', Auth::user()->id)->delete();
+    
+                //remove spouse email
+                \App\SpouseEmail::where('user_id', Auth::user()->id)->delete();
+    
+                //remove spouse social media
+                \App\SpouseSocialMedia::where('user_id', Auth::user()->id)->delete();
+    
+                //remove spouse employer
+                \App\SpouseEmployer::where('user_id', Auth::user()->id)->delete();
+
+                //remove marriage status
+                \App\MarriageStatus::where('user_id', Auth::user()->id)->delete();
+
+                //update step table
+                \App\UsersPersonalDetailsCompletion::where('step_id', 2)
+                                                ->where('user_id', Auth::user()->id)
+                                                ->update(['is_visited' => '1', 'is_filled' => '0', 'is_completed' => '0']);
+            });
+
+            return response()->json(['status' => 200, 'msg' => 'Spouse information has removed successfully'], 200);
+        } catch(Exception $e) {
+            dd($e);
+            return response()->json(['status' => 200, 'msg' => 'Error'], 500);
+        }
     }
     
     /**
@@ -370,12 +401,14 @@ class SpouseController extends Controller
     public function getspouseinfo() {
         $user_id = Auth::user()->id;
         $count = \App\SpouseInfo::where('user_id', $user_id)->get()->count();
+        
         if ($count > 0) {
             $spouse_info = \App\SpouseInfo::find($user_id)
                 ->with('SpousePhone')
                 ->with('SpouseEmail')
                 ->with('SpouseSocailMedia')
                 ->with('SpouseEmployer')
+                ->with('Countries')
                 ->get();
             
             return response()->json(['status' => 200, 'data' => $spouse_info]);
@@ -399,9 +432,9 @@ class SpouseController extends Controller
 
         try {
             //check for record
-            $objMarriageStatus = \App\MarriageStatus::find($user_id);
-
-            if ($objMarriageStatus) {
+            $objMarriageStatus = \App\MarriageStatus::where('user_id', $user_id)->get();
+            
+            if ($objMarriageStatus->count()) {
                 $objMarriageStatus->is_married = $is_married;
                 $objMarriageStatus->save();
             } else {
