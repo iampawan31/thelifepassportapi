@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class SpouseInfo extends Model
 {
+    protected $primaryKey = 'user_id';
+
     protected $fillable = [
         'user_id', 
         'legal_name', 
@@ -48,6 +50,10 @@ class SpouseInfo extends Model
 
     public function SpouseEmployer() {
         return $this->hasMany(\App\SpouseEmployer::class, 'user_id');
+    }
+
+    public function Countries() {
+        return $this->hasOne(\App\Countries::class, 'id', 'country_id')->select(['id', 'country_name']);
     }
 
     //Table Name

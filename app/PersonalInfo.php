@@ -14,6 +14,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class PersonalInfo extends Model
 {
+    protected $primaryKey = 'user_id';
+    
     protected $fillable = [
                             'user_id', 
                             'legal_name', 
@@ -58,7 +60,6 @@ class PersonalInfo extends Model
     public function UserEmployer() {
         return $this->hasMany(UserEmployer::class, 'user_id');
     }
-
 
     //Table Name
     static function tableName() {

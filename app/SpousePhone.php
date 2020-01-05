@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class SpousePhone extends Model
 {
+    protected $primaryKey = 'user_id';
+    
     protected $fillable = ['user_id', 'phone', 'is_primary'];
 
     public function getRouteKeyName() {

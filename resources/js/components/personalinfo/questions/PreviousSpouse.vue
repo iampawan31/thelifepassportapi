@@ -1,10 +1,80 @@
 <template>
     <div class="c">
-        <div
-            class="question-item"
-            data-nextpage="questions/family-members.php"
-            data-viewpage="views/previous-spouse.php"
-        >
+        <div v-if="showPreviousSpouseDetails">
+            <h3 class="heading3">Former spouse details</h3>
+            <div class="spouse-details">
+                <div class="row">
+                    <div class="col-md-4 col-sm-12">
+                        <div class="item">
+                        <h4 class="item__title">Legal Name</h4>
+                        <div class="item__content">{{ spouseDetails.legal_name }}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-12">
+                        <div class="item">
+                        <h4 class="item__title">Marriage Date</h4>
+                        <div class="item__content">{{ spouseDetails.marriage_date }}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-12">
+                        <div class="item">
+                        <h4 class="item__title">Marriage Location</h4>
+                        <div class="item__content">{{ spouseDetails.marriage_location }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 col-sm-12">
+                        <div class="item">
+                        <h4 class="item__title">Divorce Date</h4>
+                        <div class="item__content">{{ spouseDetails.divorce_date }}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-12">
+                        <div class="item">
+                        <h4 class="item__title">Divorce Location</h4>
+                        <div class="item__content">{{ spouseDetails.divorce_location }}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-12">
+                        <div class="item">
+                        <h4 class="item__title">Current Address</h4>
+                        <div class="item__content">{{ spouseDetails.address }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 col-sm-12">
+                        <div class="item">
+                        <h4 class="item__title">Phone Numbers</h4>
+                        <div class="item__content">
+                            <span v-for="(phone, index) in spouseDetails.previous_spouse_phone" v-bind:key="index">
+                                {{ phone.phone }}<br>
+                            </span>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-12">
+                        <div class="item">
+                        <h4 class="item__title">Email Addresses</h4>
+                        <div class="item__content">
+                            <span>
+                                {{ spouseDetails.email }}<br>
+                            </span>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item__actions">
+                    <router-link to="/previous-spouse" class="btn-primary btn-editinfo">Edit Information</router-link>
+                    <a href="javascript:voi();" @click="removePreviousSpouse()" class="btn-primary btn-danger delete-item">Delete</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="question-item" v-if="!showPreviousSpouseDetails">
             <div class="question-header">
                 <h3>Were you previously married?</h3>
                 <div class="yesno">
@@ -20,11 +90,15 @@
 export default {
     data() {
         return {
-            formData: []
+            formData: [],
+            showPreviousSpouseDetails: false,
+            spouseDetails: [],
+            userId: '',
         };
     },
     mounted() {
         this.updatestepinfo();
+        this.getPreviousSpouseInfo();
     },
     methods: {
         prevmarriagestatus(status) {
@@ -53,6 +127,28 @@ export default {
             axios.post('/updatepersonalstep', data)
                 .then((response) => {
                     
+                })
+                .catch(function(){
+
+                });
+        },
+        getPreviousSpouseInfo() {
+            axios.get('/getprevspouseinfo').then((response) => {
+                if (response.status == 200) {
+                    if (response.data.data[0]) {
+                        this.spouseDetails = JSON.parse(JSON.stringify(response.data.data[0]));
+                        //console.log(this.spouseDetails);
+                        this.userId = this.spouseDetails.user_id;
+                        this.showPreviousSpouseDetails = true;
+                    }
+                }
+            });
+        },
+        removePreviousSpouse() {
+            axios.delete('previousspouse/'+this.userId+'/removespouse')
+                .then((response) => {
+                   console.log(response);
+                   this.showPreviousSpouseDetails = false;
                 })
                 .catch(function(){
 

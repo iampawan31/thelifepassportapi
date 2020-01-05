@@ -51,9 +51,10 @@
 
                         <span class="item__last-updated" v-if="spouse.updated_at != ''">Last Updated: {{ spouse.updated_at }}</span> &nbsp;/&nbsp; 
 
-                        <router-link v-if="marriageStatus && marriageStatus.is_married == '0'" to="/spouse-question">Edit</router-link>
+                        <!-- <router-link v-if="marriageStatus && marriageStatus.is_married == '0'" to="/spouse-question">Edit</router-link>
                         <router-link v-else-if="marriageStatus && marriageStatus.is_married == '2'" to="/spouse-question">Edit</router-link>
-                        <router-link v-else to="/spouse">Edit</router-link>
+                        <router-link v-else to="/spouse">Edit</router-link> -->
+                        <router-link to="/spouse-question">Edit</router-link>
                     </div>
                     <div class="item__meta" v-else>
                         <span class="item__last-updated">Not Visited</span>
@@ -84,9 +85,10 @@
 
                         <span class="item__last-updated" v-if="previousSpouse.updated_at != ''">Last Updated: {{ previousSpouse.updated_at }}</span> &nbsp;/&nbsp; 
 
-                        <router-link v-if="previousMarriageStatus && previousMarriageStatus.is_previously_married == '0'" to="/previous-spouse-question">Edit</router-link>
+                        <!-- <router-link v-if="previousMarriageStatus && previousMarriageStatus.is_previously_married == '0'" to="/previous-spouse-question">Edit</router-link>
                         <router-link v-else-if="previousMarriageStatus && previousMarriageStatus.is_previously_married == '2'" to="/previous-spouse-question">Edit</router-link>
-                        <router-link v-else to="/previous-spouse">Edit</router-link>
+                        <router-link v-else to="/previous-spouse">Edit</router-link> -->
+                        <router-link to="/previous-spouse-question">Edit</router-link>
                     </div>
                     <div class="item__meta" v-else>
                         <span class="item__last-updated">Not Visited</span>

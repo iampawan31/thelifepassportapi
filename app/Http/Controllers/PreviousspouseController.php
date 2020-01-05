@@ -124,7 +124,7 @@ class PreviousspouseController extends Controller
                 }
             }
             
-            return response()->json(['status' => 200, 'message' => 'Previous Spouse information has been saved successfully'], 500);
+            return response()->json(['status' => 200, 'message' => 'Previous Spouse information has been saved successfully'], 200);
         } catch(Exception $e) {
             dd($e);
             return response()->json(['status' => 500, 'message' => 'Error'], 500);
@@ -259,7 +259,47 @@ class PreviousspouseController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            \DB::transaction(function () {
+                
+                //remove sopuse information
+                \App\PreviousSpouseInfo::where('user_id', Auth::user()->id)->delete();
+    
+                //remove spouse phone
+                \App\PreviousSpousePhone::where('user_id', Auth::user()->id)->delete();
+    
+                //remove spouse email
+                //\App\SpouseEmail::where('user_id', Auth::user()->id)->delete();
+    
+                //remove spouse social media
+                //\App\SpouseSocialMedia::where('user_id', Auth::user()->id)->delete();
+    
+                //remove spouse employer
+                //\App\SpouseEmployer::where('user_id', Auth::user()->id)->delete();
+
+                //remove marriage status
+                \App\PreviousMarriageStatus::where('user_id', Auth::user()->id)->delete();
+
+                $objDivorceFile = \App\DivorceDoc::where('user_id', Auth::user()->id)->get();
+                
+                if ($objDivorceFile->count()) {
+                    //remove previous divorce documents
+                    File::delete($objDivorceFile[0]->url);
+                    
+                    \App\DivorceDoc::where('user_id', Auth::user()->id)->delete();
+                }
+
+                //update step table
+                \App\UsersPersonalDetailsCompletion::where('step_id', 3)
+                                                ->where('user_id', Auth::user()->id)
+                                                ->update(['is_visited' => '1', 'is_filled' => '0', 'is_completed' => '0']);
+            });
+
+            return response()->json(['status' => 200, 'msg' => 'Previous Spouse information has removed successfully'], 200);
+        } catch(Exception $e) {
+            dd($e);
+            return response()->json(['status' => 200, 'msg' => 'Error'], 500);
+        }
     }
 
     public function getpreviousspouseinfo() {
