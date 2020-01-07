@@ -17122,7 +17122,6 @@ body.page-login a.btn:hover {
 }
 
 .input-file-wrapper .input-file-name {
-  display: none;
   float: left;
   margin-left: 20px;
   padding: 3px 30px 5px 0;
