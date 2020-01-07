@@ -34,10 +34,18 @@
 
 					<div class="field-group">
 						<label for="dob" class="input-label">Date of Birth</label>
-						<date-picker name="dob" id="dob" v-model="personalDetail.dob" valueType="format" :first-day-of-week="1"
+						<datepicker 
+                            name="date" 
+                            format="MM/d/yyyy" 
+                            placeholder="MM/DD/YYYY" 
+                            v-model="personalDetail.dob"
+                            class="field-datepicker field-input"
+                            >
+                        </datepicker>
+						<!-- <date-picker name="dob" id="dob" v-model="personalDetail.dob" valueType="format" :first-day-of-week="1"
 							:lang="lang" format="MM/DD/YYYY" placeholder="MM/DD/YYYY" width="100%"
 							class="field-datepicker field-input">
-						</date-picker>
+						</date-picker> -->
 					</div>
 
 					<div class="row">
@@ -104,7 +112,8 @@
 	</div>
 </template>
 <script>
-	import DatePicker from 'vue2-datepicker';
+	import Datepicker from 'vuejs-datepicker';
+	//import DatePicker from 'vue2-datepicker';
 	import Select2 from 'v-select2-component';
 	import Phone from './Phone.vue';
 	import Email from './Email.vue';
@@ -119,7 +128,7 @@
 		components: {
 			Phone,
 			Email,
-			DatePicker,
+			Datepicker,
 			Social,
 			Employee,
 			Select2,
@@ -137,15 +146,15 @@
 				employers:[],
 				userId: 0,
 				result2: "",
-				lang: {
-					days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-					months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-					pickers: ['next 7 days', 'next 30 days', 'previous 7 days', 'previous 30 days'],
-					placeholder: {
-						date: 'Select Date',
-						dateRange: 'Select Date Range'
-					}
-				},
+				// lang: {
+				// 	days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+				// 	months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+				// 	pickers: ['next 7 days', 'next 30 days', 'previous 7 days', 'previous 30 days'],
+				// 	placeholder: {
+				// 		date: 'Select Date',
+				// 		dateRange: 'Select Date Range'
+				// 	}
+				// },
 				submitted: false
 			};
 		},
