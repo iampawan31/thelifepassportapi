@@ -17,7 +17,7 @@
 <body>
   <div id="page" class="page__home">
       
-      @if (!\Request::is(['login', 'dashboard']) )  
+      @if (!\Request::is(['login', 'register', 'password/reset', 'dashboard']) )  
         @include('partials.header')
       @endif
     <div id="content">

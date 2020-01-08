@@ -15,7 +15,7 @@
                     </h1>
                     <div class="login-block">
                         <h2>{{ __('Login to your account.') }}</h2>
-                        {{-- <div class="login-error-message">
+                        <!-- <div class="login-error-message">
                             @if ($errors->any())
                                 <div class="alert alert-danger">
                                     <ul>
@@ -25,7 +25,7 @@
                                     </ul>
                                 </div>
                             @endif
-                        </div> --}}
+                        </div> -->
                         <div class="login-success-message">
                             @if ($message = Session::get('success'))
                             <div class="alert alert-success alert-block">
@@ -81,7 +81,7 @@
                         <ul class="clearfix">
                           <li>
                             <div class="item personal-information current">
-                              <a href="{{ route('personal-info') }}">
+                              <span>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                                   class="feather feather-feather">
@@ -90,7 +90,15 @@
                                   <line x1="17.5" y1="15" x2="9" y2="15"></line>
                                 </svg>
                                 {{ __('Personal Information') }}
-                              </a>
+                              </span>
+                              <div class="locked">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                  class="feather feather-lock">
+                                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                              </div>
                             </div>
                           </li>
                           <li>
