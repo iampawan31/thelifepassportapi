@@ -1,65 +1,54 @@
 <template>
-    <div class="field-group">
-        <label for="phone_nubmer">Phone Numbers</label>
-        <div class="add-anohter-field">
-            <div class="field-wrapper" v-for="(phone, index) in phones" v-bind:key="index">
-                <input
-                    type="text"
-                    v-model="phone.number"
-                    numeric-keyboard-toggle
-                    class="field-input input-mobile"
-                    placeholder="Phone number"
-                    value=""
-                    name="phone[]"
-                />
-                <a href="javascript:void(0);" v-if="index != 0" class="btn-remove" @click="removePhone(index)">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                </a>
+    <ValidationProvider rules="is_phone" v-slot="{ errors }">
+        <div class="field-group">
+            <div class="add-anohter-field">
+                <div class="field-wrapper">
+                    <input
+                        type="text"
+                        v-model="number"
+                        numeric-keyboard-toggle
+                        class="field-input input-mobile"
+                        placeholder="Phone number"
+                        value=""
+                        name="phone[]"
+                    />
+                </div>
             </div>
-            <div class="btn-add">
-                <a href="javascript:void(0);" @click="addPhone">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Add another
-                </a>
-            </div>
+            <span class="invalid-feedback d-block">{{ errors[0] }}</span>
         </div>
-    </div>
+    </ValidationProvider>
 </template>
+
 <script>
+import { ValidationProvider } from "vee-validate";
+import { extend } from "vee-validate";
 export default {
-    props: ['userPhones'],
-    data () {
+    components: {
+        ValidationProvider
+    },
+    props: ["phoneNumber", "phoneKey"],
+    data() {
         return {
-            phones: [],
-            blockRemoval: true,
-        }
+            number: "",
+            key: ""
+        };
     },
     watch: {
-        phones () {
-            this.blockRemoval = this.phones.length <= 1
+        number() {
+            this.$emit("phone-number-update", this.key, this.number);
         }
     },
-    methods: {
-        addPhone () {
-            this.phones.push({number: null})
-        },
-        populatePhone () {
-            if (this.userPhones.length > 0) {
-                this.userPhones.forEach(data => {
-                    this.phones.push({number: data.phone})
-                });
-            } else {
-                this.phones.push({number: null})
-            }
-        },
-        removePhone (lineId) {
-            if (!this.blockRemoval) this.phones.splice(lineId, 1)
-        }
-    },
-    mounted () {
-        this.$nextTick(()=>{
-            //this.addPhone()
-            this.populatePhone();
-        })
+    mounted() {
+        this.number = this.phoneNumber;
+        this.key = this.phoneKey;
     }
-}
+};
+
+extend("is_phone", value => {
+    var phoneRegex = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/;
+    if (value.match(phoneRegex)) {
+        // return value >= 0;
+    }
+    return "Phone Number should be valid and should contain 10 digits";
+});
 </script>

@@ -1,69 +1,93 @@
 <template>
-  <div class="field-group">
-    <div class="add-anohter-field">
-        <div class="field-wrapper" v-for="(email, index) in emails" v-bind:key="index">
-            <div class="fields-group clearfix">
+    <div class="row clearfix">
+        <div class="field-group nopadding col-md-6 col-sm-12">
+            <validation-provider
+                name="Email"
+                rules="email"
+                vid="email"
+                v-slot="{ errors }"
+            >
                 <input
-                  type="text"
-                  name="email[]"
-                  class="field-input field-input__first email"
-                  placeholder="Email address"
-                  v-model="email.email"
-                  value=""
+                    type="text"
+                    name="email[]"
+                    class="field-input field-input__first email"
+                    placeholder="Email address"
+                    v-model="tempEmail"
+                    value=""
                 />
-                <input
-                  type="password"
-                  name="email_password[]"
-                  class="field-input field-input__last"
-                  placeholder="password"
-                  v-model="email.password"
-                  value=""
-                />
-            </div>
-            <a href="javascript:void(0);" class="btn-remove" v-if="index != 0" @click="removeEmail(index)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg></a>
+                <span
+                    v-if="errors != undefined && errors"
+                    class="invalid-feedback d-block"
+                    >{{ errors[0] }}</span
+                >
+            </validation-provider>
         </div>
-        <div class="btn-add">
-            <a href="javascript:void(0);" @click="addEmail"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Add another</a>
+        <div class="field-group nopadding col-md-6 col-sm-12">
+            <validation-provider
+                name="Password"
+                :rules="'required_if:email|max:30'"
+                v-slot="{ errors }"
+            >
+                <input
+                    type="password"
+                    name="email_password[]"
+                    class="field-input field-input__last"
+                    placeholder="password"
+                    v-model="tempPassword"
+                    value=""
+                />
+                <span
+                    v-if="errors != undefined && errors"
+                    class="invalid-feedback d-block"
+                    >{{ errors[0] }}</span
+                >
+            </validation-provider>
         </div>
     </div>
-</div>
 </template>
+
 <script>
+import { ValidationProvider } from "vee-validate";
+import { extend } from "vee-validate";
+import { email, required_if, alpha_num, max } from "vee-validate/dist/rules";
 export default {
-  props: ['userEmails'],
-  data() {
-    return {
-      emails: [],
-      blockRemoval: true
-    };
-  },
-  watch: {
-    emails() {
-      this.blockRemoval = this.emails.length <= 1;
-    }
-  },
-  methods: {
-    addEmail() {
-      this.emails.push({email: null, password: null});
+    components: {
+        ValidationProvider
     },
-    populateEmail () {
-        if (this.userEmails.length > 0) {
-            this.userEmails.forEach(data => {
-                this.emails.push({email: data.email, password: data.password})
-            });
-        } else {
-            this.emails.push({email: null, password: null})
+    props: ["email", "password", "emailKey"],
+    data() {
+        return {
+            errors: [],
+            tempEmail: "",
+            tempPassword: "",
+            key: ""
+        };
+    },
+    watch: {
+        email() {
+            this.$emit(
+                "email-update",
+                this.key,
+                this.tempEmail,
+                this.tempPassword
+            );
         }
     },
-    removeEmail(lineId) {
-      if (!this.blockRemoval) this.emails.splice(lineId, 1);
+    mounted() {
+        this.tempEmail = this.email;
+        this.tempPassword = this.password;
+        this.key = this.emailKey;
     }
-  },
-  mounted() {
-    this.$nextTick(()=>{
-      //this.addEmail();
-      this.populateEmail();
-    });
-  }
 };
+
+extend("email", email);
+extend("max", max);
+extend("required_if", required_if);
 </script>
+
+<style>
+.nopadding {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+</style>
