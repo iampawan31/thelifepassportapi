@@ -3922,6 +3922,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
 
 
 
@@ -4166,6 +4169,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     updateEmails: function updateEmails(data) {
       this.emails = data;
+    },
+    updateSocialMedia: function updateSocialMedia(data) {
+      this.socials = data;
     }
   }
 });
@@ -4829,8 +4835,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
-/* harmony import */ var vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vee-validate/dist/rules */ "./node_modules/vee-validate/dist/rules.js");
+/* harmony import */ var v_select2_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! v-select2-component */ "./node_modules/v-select2-component/dist/Select2.esm.js");
+/* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
+/* harmony import */ var vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vee-validate/dist/rules */ "./node_modules/vee-validate/dist/rules.js");
 //
 //
 //
@@ -4895,61 +4902,43 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_0__["ValidationProvider"]
+    ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_1__["ValidationProvider"],
+    Select2: v_select2_component__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  props: ["key", "socialMediaType", "socialMediaEmail", "socialMediaPassword"],
+  props: ["socialMediaKey", "socialMediaOptions", "socialMediaType", "socialMediaUsername", "socialMediaPassword"],
   data: function data() {
     return {
       errors: [],
-      tempEmail: "",
-      tempPassword: "",
-      key: ""
+      tempSocialMediaType: "",
+      tempUsername: "",
+      tempPassword: ""
     };
   },
   watch: {
-    email: function email() {
-      this.$emit("email-update", this.key, this.tempEmail, this.tempPassword);
+    tempSocialMediaType: function tempSocialMediaType() {
+      this.$emit("social-media-update", this.socialMediaKey, this.tempSocialMediaType, this.tempUsername, this.tempPassword);
+    },
+    tempUsername: function tempUsername() {
+      this.$emit("social-media-update", this.socialMediaKey, this.tempSocialMediaType, this.tempUsername, this.tempPassword);
+    },
+    tempPassword: function tempPassword() {
+      this.$emit("social-media-update", this.socialMediaKey, this.tempSocialMediaType, this.tempUsername, this.tempPassword);
     }
   },
   mounted: function mounted() {
-    this.tempEmail = this.email;
-    this.tempPassword = this.password;
-    this.key = this.emailKey;
+    this.tempSocialMediaType = this.socialMediaType;
+    this.tempUsername = this.socialMediaUsername;
+    this.tempPassword = this.socialMediaPassword;
   }
 });
-Object(vee_validate__WEBPACK_IMPORTED_MODULE_0__["extend"])("email", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_1__["email"]);
-Object(vee_validate__WEBPACK_IMPORTED_MODULE_0__["extend"])("max", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_1__["max"]);
-Object(vee_validate__WEBPACK_IMPORTED_MODULE_0__["extend"])("required_if", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_1__["required_if"]);
+Object(vee_validate__WEBPACK_IMPORTED_MODULE_1__["extend"])("max", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_2__["max"]);
+Object(vee_validate__WEBPACK_IMPORTED_MODULE_1__["extend"])("required_if", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_2__["required_if"]);
 
 /***/ }),
 
@@ -4964,6 +4953,29 @@ Object(vee_validate__WEBPACK_IMPORTED_MODULE_0__["extend"])("required_if", vee_v
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var v_select2_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! v-select2-component */ "./node_modules/v-select2-component/dist/Select2.esm.js");
 /* harmony import */ var _SocialMedia__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SocialMedia */ "./resources/js/components/personalinfo/SocialMedia.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5086,6 +5098,12 @@ __webpack_require__.r(__webpack_exports__);
     },
     removeSocialMedia: function removeSocialMedia(lineId) {
       if (!this.blockRemoval) this.socialMedia.splice(lineId, 1);
+    },
+    updateSocialMedia: function updateSocialMedia(index, socialMediaType, username, password) {
+      this.socialMedia[index].social = socialMediaType;
+      this.socialMedia[index].username = username;
+      this.socialMedia[index].password = password;
+      this.$emit("social-media-details-updates", this.socialMedia);
     }
   },
   mounted: function mounted() {
@@ -10441,7 +10459,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.mb-2 {\n    margin-bottom: 2px;\n}\n", ""]);
+exports.push([module.i, "\n.mb-2 {\n  margin-bottom: 2px;\n}\n", ""]);
 
 // exports
 
@@ -10460,7 +10478,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.nopadding {\n    padding: 0 !important;\n    margin: 0 !important;\n}\n", ""]);
+exports.push([module.i, "\n.nopadding {\n  padding: 0 !important;\n  margin: 0 !important;\n}\n", ""]);
 
 // exports
 
@@ -57995,9 +58013,9 @@ var render = function() {
                                                     },
                                                     [
                                                       _vm._v(
-                                                        "\n                                        " +
+                                                        "\n                    " +
                                                           _vm._s(errors[0]) +
-                                                          "\n                                    "
+                                                          "\n                  "
                                                       )
                                                     ]
                                                   )
@@ -58095,9 +58113,9 @@ var render = function() {
                                                     },
                                                     [
                                                       _vm._v(
-                                                        "\n                                        " +
+                                                        "\n                    " +
                                                           _vm._s(errors[0]) +
-                                                          "\n                                    "
+                                                          "\n                  "
                                                       )
                                                     ]
                                                   )
@@ -58239,9 +58257,9 @@ var render = function() {
                                                     },
                                                     [
                                                       _vm._v(
-                                                        "\n                                        " +
+                                                        "\n                    " +
                                                           _vm._s(errors[0]) +
-                                                          "\n                                    "
+                                                          "\n                  "
                                                       )
                                                     ]
                                                   )
@@ -58336,9 +58354,9 @@ var render = function() {
                                                     },
                                                     [
                                                       _vm._v(
-                                                        "\n                                        " +
+                                                        "\n                    " +
                                                           _vm._s(errors[0]) +
-                                                          "\n                                    "
+                                                          "\n                  "
                                                       )
                                                     ]
                                                   )
@@ -58395,7 +58413,7 @@ var render = function() {
                                                       _vm.personalDetail
                                                         .passport_number,
                                                     expression:
-                                                      "\n                                            personalDetail.passport_number\n                                        "
+                                                      "\n                                              personalDetail.passport_number\n                                          "
                                                   }
                                                 ],
                                                 staticClass: "field-input",
@@ -58436,9 +58454,9 @@ var render = function() {
                                                     },
                                                     [
                                                       _vm._v(
-                                                        "\n                                        " +
+                                                        "\n                    " +
                                                           _vm._s(errors[0]) +
-                                                          "\n                                    "
+                                                          "\n                  "
                                                       )
                                                     ]
                                                   )
@@ -58541,9 +58559,9 @@ var render = function() {
                                                     },
                                                     [
                                                       _vm._v(
-                                                        "\n                                        " +
+                                                        "\n                    " +
                                                           _vm._s(errors[0]) +
-                                                          "\n                                    "
+                                                          "\n                  "
                                                       )
                                                     ]
                                                   )
@@ -58600,7 +58618,7 @@ var render = function() {
                                                       _vm.personalDetail
                                                         .father_birth_place,
                                                     expression:
-                                                      "\n                                            personalDetail.father_birth_place\n                                        "
+                                                      "\n                                              personalDetail.father_birth_place\n                                          "
                                                   }
                                                 ],
                                                 staticClass: "field-input",
@@ -58641,9 +58659,9 @@ var render = function() {
                                                     },
                                                     [
                                                       _vm._v(
-                                                        "\n                                        " +
+                                                        "\n                    " +
                                                           _vm._s(errors[0]) +
-                                                          "\n                                    "
+                                                          "\n                  "
                                                       )
                                                     ]
                                                   )
@@ -58743,9 +58761,9 @@ var render = function() {
                                                     },
                                                     [
                                                       _vm._v(
-                                                        "\n                                        " +
+                                                        "\n                    " +
                                                           _vm._s(errors[0]) +
-                                                          "\n                                    "
+                                                          "\n                  "
                                                       )
                                                     ]
                                                   )
@@ -58802,7 +58820,7 @@ var render = function() {
                                                       _vm.personalDetail
                                                         .mother_birth_place,
                                                     expression:
-                                                      "\n                                            personalDetail.mother_birth_place\n                                        "
+                                                      "\n                                              personalDetail.mother_birth_place\n                                          "
                                                   }
                                                 ],
                                                 staticClass: "field-input",
@@ -58843,9 +58861,9 @@ var render = function() {
                                                     },
                                                     [
                                                       _vm._v(
-                                                        "\n                                        " +
+                                                        "\n                    " +
                                                           _vm._s(errors[0]) +
-                                                          "\n                                    "
+                                                          "\n                  "
                                                       )
                                                     ]
                                                   )
@@ -58874,7 +58892,11 @@ var render = function() {
                         _vm._v(" "),
                         _vm.socials !== undefined && _vm.socials.length
                           ? _c("social-media-details", {
-                              attrs: { "user-socials": _vm.socials }
+                              attrs: { "user-socials": _vm.socials },
+                              on: {
+                                "social-media-details-updates":
+                                  _vm.updateSocialMedia
+                              }
                             })
                           : _vm._e(),
                         _vm._v(" "),
@@ -58885,7 +58907,7 @@ var render = function() {
                             [
                               _c("h4", { staticClass: "form-subhead" }, [
                                 _vm._v(
-                                  "\n                                Current Employers including self employment\n                            "
+                                  "\n                Current Employers including self employment\n              "
                                 )
                               ]),
                               _vm._v(" "),
@@ -60058,7 +60080,7 @@ var render = function() {
   return _c("div", { staticClass: "row" }, [
     _c(
       "div",
-      { staticClass: "field-group nopadding col-md-6 col-sm-12" },
+      { staticClass: "col-md-4 col-sm-12" },
       [
         _c("validation-provider", {
           attrs: { name: "Social Media Type", vid: "social_media_type" },
@@ -60068,28 +60090,21 @@ var render = function() {
               fn: function(ref) {
                 var errors = ref.errors
                 return [
-                  _c(
-                    "div",
-                    { staticClass: "col-md-5" },
-                    [
-                      _c("Select2", {
-                        attrs: {
-                          width: "resolve",
-                          name: "social_media_type[]",
-                          placeholder: "Select an Options",
-                          options: _vm.socialOptions
-                        },
-                        model: {
-                          value: _vm.social.social,
-                          callback: function($$v) {
-                            _vm.$set(_vm.social, "social", $$v)
-                          },
-                          expression: "social.social"
-                        }
-                      })
-                    ],
-                    1
-                  ),
+                  _c("Select2", {
+                    attrs: {
+                      width: "resolve",
+                      name: "social_media_type[]",
+                      placeholder: "Select an Options",
+                      options: _vm.socialMediaOptions
+                    },
+                    model: {
+                      value: _vm.tempSocialMediaType,
+                      callback: function($$v) {
+                        _vm.tempSocialMediaType = $$v
+                      },
+                      expression: "tempSocialMediaType"
+                    }
+                  }),
                   _vm._v(" "),
                   errors != undefined && errors
                     ? _c("span", { staticClass: "invalid-feedback d-block" }, [
@@ -60107,10 +60122,70 @@ var render = function() {
     _vm._v(" "),
     _c(
       "div",
-      { staticClass: "field-group nopadding col-md-6 col-sm-12" },
+      { staticClass: "col-md-4 col-sm-12 nopadding" },
       [
         _c("validation-provider", {
-          attrs: { name: "Password", rules: "required_if:email|max:30" },
+          attrs: {
+            name: "Email Address",
+            vid: "social_media_username",
+            rules: "required_if:social_media_type|alpha_num|max:30"
+          },
+          scopedSlots: _vm._u([
+            {
+              key: "default",
+              fn: function(ref) {
+                var errors = ref.errors
+                return [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.tempUsername,
+                        expression: "tempUsername"
+                      }
+                    ],
+                    staticClass: "field-input",
+                    attrs: {
+                      type: "text",
+                      name: "social_username[]",
+                      placeholder: "Username",
+                      value: ""
+                    },
+                    domProps: { value: _vm.tempUsername },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.tempUsername = $event.target.value
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  errors != undefined && errors
+                    ? _c("span", { staticClass: "invalid-feedback d-block" }, [
+                        _vm._v(_vm._s(errors[0]))
+                      ])
+                    : _vm._e()
+                ]
+              }
+            }
+          ])
+        })
+      ],
+      1
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "col-md-4 col-sm-12 nopadding" },
+      [
+        _c("validation-provider", {
+          attrs: {
+            name: "Password",
+            rules: "required_if:social_media_username|alpha_num|max:30"
+          },
           scopedSlots: _vm._u([
             {
               key: "default",
@@ -60129,8 +60204,8 @@ var render = function() {
                     staticClass: "field-input field-input__last",
                     attrs: {
                       type: "password",
-                      name: "email_password[]",
-                      placeholder: "password",
+                      name: "social_password[]",
+                      placeholder: "Password",
                       value: ""
                     },
                     domProps: { value: _vm.tempPassword },
@@ -60156,111 +60231,7 @@ var render = function() {
         })
       ],
       1
-    ),
-    _vm._v(" "),
-    _c("div", { staticClass: "col-md-7 col-sm-12" }, [
-      _c(
-        "div",
-        { staticClass: "fields-group clearfix" },
-        [
-          _c("validation-provider", {
-            attrs: { name: "Password", rules: "required_if:email|max:30" },
-            scopedSlots: _vm._u([
-              {
-                key: "default",
-                fn: function(ref) {
-                  var errors = ref.errors
-                  return [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.social.username,
-                          expression: "social.username"
-                        }
-                      ],
-                      staticClass: "field-input",
-                      attrs: {
-                        type: "text",
-                        name: "social_username[]",
-                        placeholder: "Username",
-                        value: ""
-                      },
-                      domProps: { value: _vm.social.username },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.social, "username", $event.target.value)
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    errors != undefined && errors
-                      ? _c(
-                          "span",
-                          { staticClass: "invalid-feedback d-block" },
-                          [_vm._v(_vm._s(errors[0]))]
-                        )
-                      : _vm._e()
-                  ]
-                }
-              }
-            ])
-          }),
-          _c("validation-provider", {
-            attrs: { name: "Password", rules: "required_if:email|max:30" },
-            scopedSlots: _vm._u([
-              {
-                key: "default",
-                fn: function(ref) {
-                  var errors = ref.errors
-                  return [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.social.password,
-                          expression: "social.password"
-                        }
-                      ],
-                      staticClass: "field-input field-input__last",
-                      attrs: {
-                        type: "password",
-                        name: "social_password[]",
-                        placeholder: "Password",
-                        value: ""
-                      },
-                      domProps: { value: _vm.social.password },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.social, "password", $event.target.value)
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    errors != undefined && errors
-                      ? _c(
-                          "span",
-                          { staticClass: "invalid-feedback d-block" },
-                          [_vm._v(_vm._s(errors[0]))]
-                        )
-                      : _vm._e()
-                  ]
-                }
-              }
-            ])
-          })
-        ],
-        1
-      )
-    ])
+    )
   ])
 }
 var staticRenderFns = []
@@ -60290,7 +60261,7 @@ var render = function() {
     _vm._v(" "),
     _c(
       "div",
-      { staticClass: "add-another-field" },
+      { staticClass: "add-anohter-field" },
       [
         _vm._l(_vm.socialMedia, function(social, index) {
           return _c(
@@ -60298,11 +60269,12 @@ var render = function() {
             { key: index, staticClass: "field-wrapper" },
             [
               _c("social-media", {
-                key: index,
                 attrs: {
-                  "social-media-type": _vm.socialOptions,
-                  "social-media-email": _vm.email.email,
-                  "social-media-password": _vm.email.password
+                  "social-media-key": index,
+                  "social-media-options": _vm.socialOptions,
+                  "social-media-type": social.social,
+                  "social-media-username": social.username,
+                  "social-media-password": social.password
                 },
                 on: { "social-media-update": _vm.updateSocialMedia }
               }),
@@ -60388,7 +60360,7 @@ var render = function() {
                   })
                 ]
               ),
-              _vm._v("\n                Add another\n            ")
+              _vm._v("\n        Add another\n      ")
             ]
           )
         ])
