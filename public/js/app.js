@@ -2314,15 +2314,23 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/Employee.vue?vue&type=script&lang=js&":
-/*!********************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/personalinfo/Employee.vue?vue&type=script&lang=js& ***!
-  \********************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/EmploymentDetail.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/personalinfo/EmploymentDetail.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
+/* harmony import */ var vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vee-validate/dist/rules */ "./node_modules/vee-validate/dist/rules.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -2445,8 +2453,185 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['userEmployers'],
+  components: {
+    ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_0__["ValidationProvider"]
+  },
+  props: ["employer", "employmentDetailKey"],
+  data: function data() {
+    return {
+      employmentDetail: []
+    };
+  },
+  watch: {
+    employmentDetail: {
+      handler: function handler() {
+        this.$emit("employment-detail-updated", this.employmentDetailKey, this.employmentDetail);
+      },
+      deep: true
+    }
+  },
+  mounted: function mounted() {
+    this.employmentDetail = this.employer;
+  }
+});
+Object(vee_validate__WEBPACK_IMPORTED_MODULE_0__["extend"])("alpha_spaces", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_1__["alpha_spaces"]);
+Object(vee_validate__WEBPACK_IMPORTED_MODULE_0__["extend"])("max", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_1__["max"]);
+Object(vee_validate__WEBPACK_IMPORTED_MODULE_0__["extend"])("required_if", _objectSpread({}, vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_1__["required_if"], {
+  message: "Phone Number cannot be empty"
+}));
+Object(vee_validate__WEBPACK_IMPORTED_MODULE_0__["extend"])("alpha_num", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_1__["alpha_num"]);
+Object(vee_validate__WEBPACK_IMPORTED_MODULE_0__["extend"])("is_phone", function (value) {
+  var phoneRegex = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/;
+
+  if (value.match(phoneRegex)) {// return value >= 0;
+  }
+
+  return "Phone Number should be valid and should contain 10 digits";
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/EmploymentDetails.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/personalinfo/EmploymentDetails.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _EmploymentDetail__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EmploymentDetail */ "./resources/js/components/personalinfo/EmploymentDetail.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    EmploymentDetail: _EmploymentDetail__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  props: ["userEmployers"],
   data: function data() {
     return {
       employers: [],
@@ -2496,6 +2681,16 @@ __webpack_require__.r(__webpack_exports__);
     },
     removeEmployers: function removeEmployers(lineId) {
       if (!this.blockRemoval) this.employers.splice(lineId, 1);
+    },
+    updateEmploymentDetail: function updateEmploymentDetail(index, data) {
+      console.log("Called");
+      this.employers[index].employer_name = data.employer_name;
+      this.employers[index].employer_phone = data.employer_phone;
+      this.employers[index].employer_address = data.employer_address;
+      this.employers[index].computer_username = data.computer_username;
+      this.employers[index].computer_password = data.computer_password;
+      this.employers[index].employee_benefits = data.employee_benefits;
+      this.$emit("employment-details-updated", index, data);
     }
   },
   mounted: function mounted() {
@@ -3528,7 +3723,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _PhoneDetails_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./PhoneDetails.vue */ "./resources/js/components/personalinfo/PhoneDetails.vue");
 /* harmony import */ var _EmailDetails_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./EmailDetails.vue */ "./resources/js/components/personalinfo/EmailDetails.vue");
 /* harmony import */ var _SocialMediaDetails_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./SocialMediaDetails.vue */ "./resources/js/components/personalinfo/SocialMediaDetails.vue");
-/* harmony import */ var _Employee_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Employee.vue */ "./resources/js/components/personalinfo/Employee.vue");
+/* harmony import */ var _EmploymentDetails_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./EmploymentDetails.vue */ "./resources/js/components/personalinfo/EmploymentDetails.vue");
 /* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
 /* harmony import */ var vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vee-validate/dist/rules */ "./node_modules/vee-validate/dist/rules.js");
 /* harmony import */ var q__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! q */ "./node_modules/q/q.js");
@@ -3540,16 +3735,6 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -3942,7 +4127,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     EmailDetails: _EmailDetails_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
     DatePicker: vuejs_datepicker__WEBPACK_IMPORTED_MODULE_1__["default"],
     SocialMediaDetails: _SocialMediaDetails_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
-    Employee: _Employee_vue__WEBPACK_IMPORTED_MODULE_6__["default"],
+    EmploymentDetails: _EmploymentDetails_vue__WEBPACK_IMPORTED_MODULE_6__["default"],
     Select2: v_select2_component__WEBPACK_IMPORTED_MODULE_2__["default"],
     ValidationObserver: vee_validate__WEBPACK_IMPORTED_MODULE_7__["ValidationObserver"],
     ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_7__["ValidationProvider"]
@@ -4172,6 +4357,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     updateSocialMedia: function updateSocialMedia(data) {
       this.socials = data;
+    },
+    updateEmploymentDetails: function updateEmploymentDetails(index, data) {
+      this.employers[index] = data;
     }
   }
 });
@@ -4179,12 +4367,6 @@ Object(vee_validate__WEBPACK_IMPORTED_MODULE_7__["extend"])("alpha_spaces", vee_
 Object(vee_validate__WEBPACK_IMPORTED_MODULE_7__["extend"])("max", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_8__["max"]);
 Object(vee_validate__WEBPACK_IMPORTED_MODULE_7__["extend"])("required_if", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_8__["required_if"]);
 Object(vee_validate__WEBPACK_IMPORTED_MODULE_7__["extend"])("alpha_num", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_8__["alpha_num"]);
-Object(vee_validate__WEBPACK_IMPORTED_MODULE_7__["extend"])("date_of_birth", function (value) {// var phoneRegex = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/;
-  // if (value.match(phoneRegex)) {
-  //     return;
-  // }
-  // return "Phone Number should be valid and should contain 10 digits";
-});
 
 /***/ }),
 
@@ -4397,7 +4579,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _PhoneDetails_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./PhoneDetails.vue */ "./resources/js/components/personalinfo/PhoneDetails.vue");
 /* harmony import */ var _Email_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Email.vue */ "./resources/js/components/personalinfo/Email.vue");
 /* harmony import */ var _SocialMediaDetails_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./SocialMediaDetails.vue */ "./resources/js/components/personalinfo/SocialMediaDetails.vue");
-/* harmony import */ var _Employee_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Employee.vue */ "./resources/js/components/personalinfo/Employee.vue");
+/* harmony import */ var _EmploymentDetails_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./EmploymentDetails.vue */ "./resources/js/components/personalinfo/EmploymentDetails.vue");
 /* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
 
 
@@ -4405,17 +4587,6 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -4700,7 +4871,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     Email: _Email_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
     Datepicker: vuejs_datepicker__WEBPACK_IMPORTED_MODULE_2__["default"],
     SocialMediaDetails: _SocialMediaDetails_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
-    Employee: _Employee_vue__WEBPACK_IMPORTED_MODULE_6__["default"],
+    EmploymentDetails: _EmploymentDetails_vue__WEBPACK_IMPORTED_MODULE_6__["default"],
     Select2: v_select2_component__WEBPACK_IMPORTED_MODULE_1__["default"],
     ValidationObserver: vee_validate__WEBPACK_IMPORTED_MODULE_7__["ValidationObserver"],
     ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_7__["ValidationProvider"]
@@ -5145,7 +5316,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _PhoneDetails_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./PhoneDetails.vue */ "./resources/js/components/personalinfo/PhoneDetails.vue");
 /* harmony import */ var _Email_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Email.vue */ "./resources/js/components/personalinfo/Email.vue");
 /* harmony import */ var _SocialMediaDetails_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./SocialMediaDetails.vue */ "./resources/js/components/personalinfo/SocialMediaDetails.vue");
-/* harmony import */ var _Employee_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Employee.vue */ "./resources/js/components/personalinfo/Employee.vue");
+/* harmony import */ var _EmploymentDetails_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./EmploymentDetails.vue */ "./resources/js/components/personalinfo/EmploymentDetails.vue");
 /* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
 
 
@@ -5153,6 +5324,15 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5408,7 +5588,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     Email: _Email_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
     Datepicker: vuejs_datepicker__WEBPACK_IMPORTED_MODULE_2__["default"],
     SocialMediaDetails: _SocialMediaDetails_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
-    Employee: _Employee_vue__WEBPACK_IMPORTED_MODULE_6__["default"],
+    EmploymentDetails: _EmploymentDetails_vue__WEBPACK_IMPORTED_MODULE_6__["default"],
     Select2: v_select2_component__WEBPACK_IMPORTED_MODULE_1__["default"],
     ValidationObserver: vee_validate__WEBPACK_IMPORTED_MODULE_7__["ValidationObserver"],
     ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_7__["ValidationProvider"]
@@ -55199,10 +55379,460 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/Employee.vue?vue&type=template&id=394de7d8&":
-/*!************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/personalinfo/Employee.vue?vue&type=template&id=394de7d8& ***!
-  \************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/EmploymentDetail.vue?vue&type=template&id=2adf8f43&":
+/*!********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/personalinfo/EmploymentDetail.vue?vue&type=template&id=2adf8f43& ***!
+  \********************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "form-subgroup" }, [
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-6 col-sm-12" }, [
+        _c(
+          "div",
+          { staticClass: "field-group" },
+          [
+            _c(
+              "label",
+              { staticClass: "input-label", attrs: { for: "employer_name" } },
+              [_vm._v("Employer Name")]
+            ),
+            _vm._v(" "),
+            _c("ValidationProvider", {
+              attrs: {
+                name: "Legal Name",
+                vid: "employer_name",
+                rules: "alpha_spaces|max:50"
+              },
+              scopedSlots: _vm._u([
+                {
+                  key: "default",
+                  fn: function(ref) {
+                    var errors = ref.errors
+                    return [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.employmentDetail.employer_name,
+                            expression: "employmentDetail.employer_name"
+                          }
+                        ],
+                        staticClass: "field-input",
+                        attrs: {
+                          type: "text",
+                          name: "employer_name[]",
+                          placeholder: "Employer Name",
+                          value: ""
+                        },
+                        domProps: { value: _vm.employmentDetail.employer_name },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.employmentDetail,
+                              "employer_name",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      errors != undefined && errors.length
+                        ? _c(
+                            "span",
+                            { staticClass: "invalid-feedback d-block" },
+                            [
+                              _vm._v(
+                                "\n            " +
+                                  _vm._s(errors[0]) +
+                                  "\n          "
+                              )
+                            ]
+                          )
+                        : _vm._e()
+                    ]
+                  }
+                }
+              ])
+            })
+          ],
+          1
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-6 col-sm-12" }, [
+        _c(
+          "div",
+          { staticClass: "field-group" },
+          [
+            _c(
+              "label",
+              { staticClass: "input-label", attrs: { for: "employer_phone" } },
+              [_vm._v("Employer Phone")]
+            ),
+            _vm._v(" "),
+            _c("ValidationProvider", {
+              attrs: {
+                name: "Employer Phone Number",
+                rules: "required_if:employer_name|is_phone"
+              },
+              scopedSlots: _vm._u([
+                {
+                  key: "default",
+                  fn: function(ref) {
+                    var errors = ref.errors
+                    return [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.employmentDetail.employer_phone,
+                            expression: "employmentDetail.employer_phone"
+                          }
+                        ],
+                        staticClass: "field-input",
+                        attrs: {
+                          type: "text",
+                          name: "employer_phone[]",
+                          placeholder: "Phone number",
+                          value: ""
+                        },
+                        domProps: {
+                          value: _vm.employmentDetail.employer_phone
+                        },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.employmentDetail,
+                              "employer_phone",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      errors != undefined && errors.length
+                        ? _c(
+                            "span",
+                            { staticClass: "invalid-feedback d-block" },
+                            [
+                              _vm._v(
+                                "\n            " +
+                                  _vm._s(errors[0]) +
+                                  "\n          "
+                              )
+                            ]
+                          )
+                        : _vm._e()
+                    ]
+                  }
+                }
+              ])
+            })
+          ],
+          1
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "field-group" },
+      [
+        _c("label", { attrs: { for: "employer_address" } }, [
+          _vm._v("Employer Address")
+        ]),
+        _vm._v(" "),
+        _c("ValidationProvider", {
+          attrs: { name: "Employer Address", rules: "max:80" },
+          scopedSlots: _vm._u([
+            {
+              key: "default",
+              fn: function(ref) {
+                var errors = ref.errors
+                return [
+                  _c("textarea", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.employmentDetail.employer_address,
+                        expression: "employmentDetail.employer_address"
+                      }
+                    ],
+                    staticClass: "field-input",
+                    attrs: {
+                      rows: "2",
+                      name: "employer_address[]",
+                      placeholder:
+                        "Street Address, Town, City, State, Zipcode and country",
+                      value: ""
+                    },
+                    domProps: { value: _vm.employmentDetail.employer_address },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.employmentDetail,
+                          "employer_address",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  errors != undefined && errors.length
+                    ? _c("span", { staticClass: "invalid-feedback d-block" }, [
+                        _vm._v("\n        " + _vm._s(errors[0]) + "\n      ")
+                      ])
+                    : _vm._e()
+                ]
+              }
+            }
+          ])
+        })
+      ],
+      1
+    ),
+    _vm._v(" "),
+    _c("div", { staticClass: "field-group" }, [
+      _c("label", { attrs: { for: "company_computer_username" } }, [
+        _vm._v("Company computer user name and password")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c(
+          "div",
+          { staticClass: "col-md-6 col-sm-12" },
+          [
+            _c("ValidationProvider", {
+              attrs: {
+                name: "Username",
+                vid: "username",
+                rules: "alpha_num|max:30"
+              },
+              scopedSlots: _vm._u([
+                {
+                  key: "default",
+                  fn: function(ref) {
+                    var errors = ref.errors
+                    return [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.employmentDetail.computer_username,
+                            expression: "employmentDetail.computer_username"
+                          }
+                        ],
+                        staticClass: "field-input",
+                        attrs: {
+                          type: "text",
+                          name: "company_computer_username[]",
+                          placeholder: "Username",
+                          value: ""
+                        },
+                        domProps: {
+                          value: _vm.employmentDetail.computer_username
+                        },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.employmentDetail,
+                              "computer_username",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      errors != undefined && errors.length
+                        ? _c(
+                            "span",
+                            { staticClass: "invalid-feedback d-block" },
+                            [
+                              _vm._v(
+                                "\n            " +
+                                  _vm._s(errors[0]) +
+                                  "\n          "
+                              )
+                            ]
+                          )
+                        : _vm._e()
+                    ]
+                  }
+                }
+              ])
+            })
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col-md-6 col-sm-12" },
+          [
+            _c("ValidationProvider", {
+              attrs: { name: "Password", rules: "required_if:username|max:30" },
+              scopedSlots: _vm._u([
+                {
+                  key: "default",
+                  fn: function(ref) {
+                    var errors = ref.errors
+                    return [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.employmentDetail.computer_password,
+                            expression: "employmentDetail.computer_password"
+                          }
+                        ],
+                        staticClass: "field-input",
+                        attrs: {
+                          type: "text",
+                          name: "company_computer_password[]",
+                          placeholder: "Password",
+                          value: ""
+                        },
+                        domProps: {
+                          value: _vm.employmentDetail.computer_password
+                        },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.employmentDetail,
+                              "computer_password",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      errors != undefined && errors.length
+                        ? _c(
+                            "span",
+                            { staticClass: "invalid-feedback d-block" },
+                            [
+                              _vm._v(
+                                "\n            " +
+                                  _vm._s(errors[0]) +
+                                  "\n          "
+                              )
+                            ]
+                          )
+                        : _vm._e()
+                    ]
+                  }
+                }
+              ])
+            })
+          ],
+          1
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "field-group field-group__last" },
+      [
+        _c("label", { attrs: { for: "employee_benifits" } }, [
+          _vm._v("Benefits used")
+        ]),
+        _vm._v(" "),
+        _c("ValidationProvider", {
+          attrs: { name: "Benefits used", rules: "max:200" },
+          scopedSlots: _vm._u([
+            {
+              key: "default",
+              fn: function(ref) {
+                var errors = ref.errors
+                return [
+                  _c("textarea", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.employmentDetail.employee_benefits,
+                        expression: "employmentDetail.employee_benefits"
+                      }
+                    ],
+                    staticClass: "field-input",
+                    attrs: {
+                      rows: "2",
+                      name: "employee_benifits[]",
+                      placeholder: "Benefits used",
+                      value: ""
+                    },
+                    domProps: { value: _vm.employmentDetail.employee_benefits },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.employmentDetail,
+                          "employee_benefits",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  errors != undefined && errors.length
+                    ? _c("span", { staticClass: "invalid-feedback d-block" }, [
+                        _vm._v("\n        " + _vm._s(errors[0]) + "\n      ")
+                      ])
+                    : _vm._e()
+                ]
+              }
+            }
+          ])
+        })
+      ],
+      1
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/EmploymentDetails.vue?vue&type=template&id=34bdfa40&":
+/*!*********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/personalinfo/EmploymentDetails.vue?vue&type=template&id=34bdfa40& ***!
+  \*********************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -55219,277 +55849,60 @@ var render = function() {
     { staticClass: "add-anohter-field" },
     [
       _vm._l(_vm.employers, function(employer, index) {
-        return _c("div", { key: index, staticClass: "field-wrapper" }, [
-          _c("div", { staticClass: "form-subgroup" }, [
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-md-6 col-sm-12" }, [
-                _c("div", { staticClass: "field-group" }, [
-                  _c(
-                    "label",
-                    {
-                      staticClass: "input-label",
-                      attrs: { for: "employer_name" }
-                    },
-                    [_vm._v("Employer Name")]
-                  ),
-                  _vm._v(" "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: employer.employer_name,
-                        expression: "employer.employer_name"
-                      }
-                    ],
-                    staticClass: "field-input",
-                    attrs: {
-                      type: "text",
-                      name: "employer_name[]",
-                      placeholder: "Employer Name",
-                      value: ""
-                    },
-                    domProps: { value: employer.employer_name },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(employer, "employer_name", $event.target.value)
-                      }
-                    }
-                  })
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-md-6 col-sm-12" }, [
-                _c("div", { staticClass: "field-group" }, [
-                  _c(
-                    "label",
-                    {
-                      staticClass: "input-label",
-                      attrs: { for: "employer_phone" }
-                    },
-                    [_vm._v("Employer Phone")]
-                  ),
-                  _vm._v(" "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: employer.employer_phone,
-                        expression: "employer.employer_phone"
-                      }
-                    ],
-                    staticClass: "field-input",
-                    attrs: {
-                      type: "text",
-                      name: "employer_phone[]",
-                      placeholder: "Phone number",
-                      value: ""
-                    },
-                    domProps: { value: employer.employer_phone },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(
-                          employer,
-                          "employer_phone",
-                          $event.target.value
-                        )
-                      }
-                    }
-                  })
-                ])
-              ])
-            ]),
+        return _c(
+          "div",
+          { key: index, staticClass: "field-wrapper" },
+          [
+            _c("employment-detail", {
+              attrs: { "employment-detail-key": index, employer: employer },
+              on: { "employment-detail-updated": _vm.updateEmploymentDetail }
+            }),
             _vm._v(" "),
-            _c("div", { staticClass: "field-group" }, [
-              _c("label", { attrs: { for: "employer_address" } }, [
-                _vm._v("Employer Address")
-              ]),
-              _vm._v(" "),
-              _c("textarea", {
-                directives: [
+            index != 0
+              ? _c(
+                  "a",
                   {
-                    name: "model",
-                    rawName: "v-model",
-                    value: employer.employer_address,
-                    expression: "employer.employer_address"
-                  }
-                ],
-                staticClass: "field-input",
-                attrs: {
-                  rows: "2",
-                  name: "employer_address[]",
-                  placeholder:
-                    "Street Address, Town, City, State, Zipcode and country",
-                  value: ""
-                },
-                domProps: { value: employer.employer_address },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(employer, "employer_address", $event.target.value)
-                  }
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "field-group" }, [
-              _c("label", { attrs: { for: "company_computer_username" } }, [
-                _vm._v("Company computer user name and password")
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-md-6 col-sm-12" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: employer.computer_username,
-                        expression: "employer.computer_username"
-                      }
-                    ],
-                    staticClass: "field-input",
-                    attrs: {
-                      type: "text",
-                      name: "company_computer_username[]",
-                      placeholder: "Username",
-                      value: ""
-                    },
-                    domProps: { value: employer.computer_username },
+                    staticClass: "btn-remove",
+                    attrs: { href: "javascript:void(0);" },
                     on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(
-                          employer,
-                          "computer_username",
-                          $event.target.value
-                        )
+                      click: function($event) {
+                        return _vm.removeEmployers(index)
                       }
                     }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-md-6 col-sm-12" }, [
-                  _c("input", {
-                    directives: [
+                  },
+                  [
+                    _c(
+                      "svg",
                       {
-                        name: "model",
-                        rawName: "v-model",
-                        value: employer.computer_password,
-                        expression: "employer.computer_password"
-                      }
-                    ],
-                    staticClass: "field-input",
-                    attrs: {
-                      type: "text",
-                      name: "company_computer_password[]",
-                      placeholder: "Password",
-                      value: ""
-                    },
-                    domProps: { value: employer.computer_password },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                        staticClass: "feather feather-minus-circle",
+                        attrs: {
+                          xmlns: "http://www.w3.org/2000/svg",
+                          width: "24",
+                          height: "24",
+                          viewBox: "0 0 24 24",
+                          fill: "none",
+                          stroke: "currentColor",
+                          "stroke-width": "2",
+                          "stroke-linecap": "round",
+                          "stroke-linejoin": "round"
                         }
-                        _vm.$set(
-                          employer,
-                          "computer_password",
-                          $event.target.value
-                        )
-                      }
-                    }
-                  })
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "field-group field-group__last" }, [
-              _c("label", { attrs: { for: "employee_benifits" } }, [
-                _vm._v("Benefits used")
-              ]),
-              _vm._v(" "),
-              _c("textarea", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: employer.employee_benefits,
-                    expression: "employer.employee_benefits"
-                  }
-                ],
-                staticClass: "field-input",
-                attrs: {
-                  rows: "2",
-                  name: "employee_benifits[]",
-                  placeholder: "Benefits used",
-                  value: ""
-                },
-                domProps: { value: employer.employee_benefits },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(employer, "employee_benefits", $event.target.value)
-                  }
-                }
-              })
-            ])
-          ]),
-          _vm._v(" "),
-          index != 0
-            ? _c(
-                "a",
-                {
-                  staticClass: "btn-remove",
-                  attrs: { href: "javascript:void(0);" },
-                  on: {
-                    click: function($event) {
-                      return _vm.removeEmployers(index)
-                    }
-                  }
-                },
-                [
-                  _c(
-                    "svg",
-                    {
-                      staticClass: "feather feather-minus-circle",
-                      attrs: {
-                        xmlns: "http://www.w3.org/2000/svg",
-                        width: "24",
-                        height: "24",
-                        viewBox: "0 0 24 24",
-                        fill: "none",
-                        stroke: "currentColor",
-                        "stroke-width": "2",
-                        "stroke-linecap": "round",
-                        "stroke-linejoin": "round"
-                      }
-                    },
-                    [
-                      _c("circle", { attrs: { cx: "12", cy: "12", r: "10" } }),
-                      _vm._v(" "),
-                      _c("line", {
-                        attrs: { x1: "8", y1: "12", x2: "16", y2: "12" }
-                      })
-                    ]
-                  )
-                ]
-              )
-            : _vm._e()
-        ])
+                      },
+                      [
+                        _c("circle", {
+                          attrs: { cx: "12", cy: "12", r: "10" }
+                        }),
+                        _vm._v(" "),
+                        _c("line", {
+                          attrs: { x1: "8", y1: "12", x2: "16", y2: "12" }
+                        })
+                      ]
+                    )
+                  ]
+                )
+              : _vm._e()
+          ],
+          1
+        )
       }),
       _vm._v(" "),
       _c("div", { staticClass: "btn-add", on: { click: _vm.addEmployers } }, [
@@ -58216,61 +58629,20 @@ var render = function() {
                                     [_vm._v("Date of Birth")]
                                   ),
                                   _vm._v(" "),
-                                  _c("validation-provider", {
-                                    attrs: { rules: "date_of_birth" },
-                                    scopedSlots: _vm._u(
-                                      [
-                                        {
-                                          key: "default",
-                                          fn: function(ref) {
-                                            var errors = ref.errors
-                                            return [
-                                              _c("date-picker", {
-                                                staticClass:
-                                                  "field-datepicker field-input",
-                                                attrs: {
-                                                  name: "date",
-                                                  "disabled-dates":
-                                                    _vm.disabledDates,
-                                                  placeholder: "MM/DD/YYYY"
-                                                },
-                                                model: {
-                                                  value: _vm.personalDetail.dob,
-                                                  callback: function($$v) {
-                                                    _vm.$set(
-                                                      _vm.personalDetail,
-                                                      "dob",
-                                                      $$v
-                                                    )
-                                                  },
-                                                  expression:
-                                                    "personalDetail.dob"
-                                                }
-                                              }),
-                                              _vm._v(" "),
-                                              errors != undefined && errors
-                                                ? _c(
-                                                    "span",
-                                                    {
-                                                      staticClass:
-                                                        "invalid-feedback d-block"
-                                                    },
-                                                    [
-                                                      _vm._v(
-                                                        "\n                    " +
-                                                          _vm._s(errors[0]) +
-                                                          "\n                  "
-                                                      )
-                                                    ]
-                                                  )
-                                                : _vm._e()
-                                            ]
-                                          }
-                                        }
-                                      ],
-                                      null,
-                                      true
-                                    )
+                                  _c("date-picker", {
+                                    staticClass: "field-datepicker field-input",
+                                    attrs: {
+                                      name: "date",
+                                      "disabled-dates": _vm.disabledDates,
+                                      placeholder: "MM/DD/YYYY"
+                                    },
+                                    model: {
+                                      value: _vm.personalDetail.dob,
+                                      callback: function($$v) {
+                                        _vm.$set(_vm.personalDetail, "dob", $$v)
+                                      },
+                                      expression: "personalDetail.dob"
+                                    }
                                   })
                                 ],
                                 1
@@ -58911,9 +59283,14 @@ var render = function() {
                                 )
                               ]),
                               _vm._v(" "),
+                              _vm.employers !== undefined &&
                               _vm.employers.length > 0
-                                ? _c("employee", {
-                                    attrs: { "user-employers": _vm.employers }
+                                ? _c("employment-details", {
+                                    attrs: { "user-employers": _vm.employers },
+                                    on: {
+                                      "employment-details-updated":
+                                        _vm.updateEmploymentDetails
+                                    }
                                   })
                                 : _vm._e()
                             ],
@@ -59378,9 +59755,9 @@ var render = function() {
                                                 },
                                                 [
                                                   _vm._v(
-                                                    "\n                                    " +
+                                                    "\n                  " +
                                                       _vm._s(error) +
-                                                      "\n                                "
+                                                      "\n                "
                                                   )
                                                 ]
                                               )
@@ -59430,7 +59807,7 @@ var render = function() {
                                           )
                                         },
                                         expression:
-                                          "\n                                            spouseDetails.marriage_date\n                                        "
+                                          "\n                                              spouseDetails.marriage_date\n                                          "
                                       }
                                     })
                                   ],
@@ -59457,7 +59834,7 @@ var render = function() {
                                         value:
                                           _vm.spouseDetails.marriage_location,
                                         expression:
-                                          "\n                                            spouseDetails.marriage_location\n                                        "
+                                          "\n                                              spouseDetails.marriage_location\n                                          "
                                       }
                                     ],
                                     staticClass: "field-input required",
@@ -59546,7 +59923,7 @@ var render = function() {
                                         value:
                                           _vm.spouseDetails.divorce_location,
                                         expression:
-                                          "\n                                            spouseDetails.divorce_location\n                                        "
+                                          "\n                                              spouseDetails.divorce_location\n                                          "
                                       }
                                     ],
                                     staticClass: "field-input required",
@@ -59740,7 +60117,7 @@ var render = function() {
                                           },
                                           [
                                             _vm._v(
-                                              "\n                                        Do you owe alimony to this previous\n                                        spouse?\n                                    "
+                                              "\n                    Do you owe alimony to this previous\n                    spouse?\n                  "
                                             )
                                           ]
                                         ),
@@ -59921,7 +60298,7 @@ var render = function() {
                                                           _vm.spouseDetails
                                                             .alimony_amount,
                                                         expression:
-                                                          "\n                                                    spouseDetails.alimony_amount\n                                                "
+                                                          "\n                                                      spouseDetails.alimony_amount\n                                                  "
                                                       }
                                                     ],
                                                     staticClass:
@@ -60589,9 +60966,9 @@ var render = function() {
                                                   },
                                                   [
                                                     _vm._v(
-                                                      "\n                                        " +
+                                                      "\n                    " +
                                                         _vm._s(error) +
-                                                        "\n                                    "
+                                                        "\n                  "
                                                     )
                                                   ]
                                                 )
@@ -61026,7 +61403,7 @@ var render = function() {
                           _vm._v(" "),
                           _c("h4", { staticClass: "form-subhead" }, [
                             _vm._v(
-                              "\n                        Current Employers including self employment\n                    "
+                              "\n            Current Employers including self employment\n          "
                             )
                           ]),
                           _vm._v(" "),
@@ -80468,17 +80845,17 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/personalinfo/Employee.vue":
-/*!***********************************************************!*\
-  !*** ./resources/js/components/personalinfo/Employee.vue ***!
-  \***********************************************************/
+/***/ "./resources/js/components/personalinfo/EmploymentDetail.vue":
+/*!*******************************************************************!*\
+  !*** ./resources/js/components/personalinfo/EmploymentDetail.vue ***!
+  \*******************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Employee_vue_vue_type_template_id_394de7d8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Employee.vue?vue&type=template&id=394de7d8& */ "./resources/js/components/personalinfo/Employee.vue?vue&type=template&id=394de7d8&");
-/* harmony import */ var _Employee_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Employee.vue?vue&type=script&lang=js& */ "./resources/js/components/personalinfo/Employee.vue?vue&type=script&lang=js&");
+/* harmony import */ var _EmploymentDetail_vue_vue_type_template_id_2adf8f43___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EmploymentDetail.vue?vue&type=template&id=2adf8f43& */ "./resources/js/components/personalinfo/EmploymentDetail.vue?vue&type=template&id=2adf8f43&");
+/* harmony import */ var _EmploymentDetail_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./EmploymentDetail.vue?vue&type=script&lang=js& */ "./resources/js/components/personalinfo/EmploymentDetail.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -80488,9 +80865,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _Employee_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Employee_vue_vue_type_template_id_394de7d8___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _Employee_vue_vue_type_template_id_394de7d8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _EmploymentDetail_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _EmploymentDetail_vue_vue_type_template_id_2adf8f43___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _EmploymentDetail_vue_vue_type_template_id_2adf8f43___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -80500,38 +80877,107 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/components/personalinfo/Employee.vue"
+component.options.__file = "resources/js/components/personalinfo/EmploymentDetail.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/js/components/personalinfo/Employee.vue?vue&type=script&lang=js&":
-/*!************************************************************************************!*\
-  !*** ./resources/js/components/personalinfo/Employee.vue?vue&type=script&lang=js& ***!
-  \************************************************************************************/
+/***/ "./resources/js/components/personalinfo/EmploymentDetail.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************!*\
+  !*** ./resources/js/components/personalinfo/EmploymentDetail.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Employee_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Employee.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/Employee.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Employee_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EmploymentDetail_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./EmploymentDetail.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/EmploymentDetail.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EmploymentDetail_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/js/components/personalinfo/Employee.vue?vue&type=template&id=394de7d8&":
-/*!******************************************************************************************!*\
-  !*** ./resources/js/components/personalinfo/Employee.vue?vue&type=template&id=394de7d8& ***!
-  \******************************************************************************************/
+/***/ "./resources/js/components/personalinfo/EmploymentDetail.vue?vue&type=template&id=2adf8f43&":
+/*!**************************************************************************************************!*\
+  !*** ./resources/js/components/personalinfo/EmploymentDetail.vue?vue&type=template&id=2adf8f43& ***!
+  \**************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Employee_vue_vue_type_template_id_394de7d8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Employee.vue?vue&type=template&id=394de7d8& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/Employee.vue?vue&type=template&id=394de7d8&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Employee_vue_vue_type_template_id_394de7d8___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EmploymentDetail_vue_vue_type_template_id_2adf8f43___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./EmploymentDetail.vue?vue&type=template&id=2adf8f43& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/EmploymentDetail.vue?vue&type=template&id=2adf8f43&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EmploymentDetail_vue_vue_type_template_id_2adf8f43___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Employee_vue_vue_type_template_id_394de7d8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EmploymentDetail_vue_vue_type_template_id_2adf8f43___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/personalinfo/EmploymentDetails.vue":
+/*!********************************************************************!*\
+  !*** ./resources/js/components/personalinfo/EmploymentDetails.vue ***!
+  \********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _EmploymentDetails_vue_vue_type_template_id_34bdfa40___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EmploymentDetails.vue?vue&type=template&id=34bdfa40& */ "./resources/js/components/personalinfo/EmploymentDetails.vue?vue&type=template&id=34bdfa40&");
+/* harmony import */ var _EmploymentDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./EmploymentDetails.vue?vue&type=script&lang=js& */ "./resources/js/components/personalinfo/EmploymentDetails.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _EmploymentDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _EmploymentDetails_vue_vue_type_template_id_34bdfa40___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _EmploymentDetails_vue_vue_type_template_id_34bdfa40___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/personalinfo/EmploymentDetails.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/personalinfo/EmploymentDetails.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************!*\
+  !*** ./resources/js/components/personalinfo/EmploymentDetails.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EmploymentDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./EmploymentDetails.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/EmploymentDetails.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EmploymentDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/personalinfo/EmploymentDetails.vue?vue&type=template&id=34bdfa40&":
+/*!***************************************************************************************************!*\
+  !*** ./resources/js/components/personalinfo/EmploymentDetails.vue?vue&type=template&id=34bdfa40& ***!
+  \***************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EmploymentDetails_vue_vue_type_template_id_34bdfa40___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./EmploymentDetails.vue?vue&type=template&id=34bdfa40& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/EmploymentDetails.vue?vue&type=template&id=34bdfa40&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EmploymentDetails_vue_vue_type_template_id_34bdfa40___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EmploymentDetails_vue_vue_type_template_id_34bdfa40___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

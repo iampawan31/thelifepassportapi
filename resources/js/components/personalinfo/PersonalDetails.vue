@@ -111,25 +111,14 @@
                     for="dob"
                     class="input-label"
                   >Date of Birth</label>
-                  <validation-provider
-                    rules="date_of_birth"
-                    v-slot="{ errors }"
+                  <date-picker
+                    name="date"
+                    :disabled-dates="disabledDates"
+                    placeholder="MM/DD/YYYY"
+                    v-model="personalDetail.dob"
+                    class="field-datepicker field-input"
                   >
-                    <date-picker
-                      name="date"
-                      :disabled-dates="disabledDates"
-                      placeholder="MM/DD/YYYY"
-                      v-model="personalDetail.dob"
-                      class="field-datepicker field-input"
-                    >
-                    </date-picker>
-                    <span
-                      v-if="errors != undefined && errors"
-                      class="invalid-feedback d-block"
-                    >
-                      {{ errors[0] }}
-                    </span>
-                  </validation-provider>
+                  </date-picker>
                 </div>
               </div>
             </div>
@@ -351,10 +340,11 @@
                 <h4 class="form-subhead">
                   Current Employers including self employment
                 </h4>
-                <employee
+                <employment-details
+                  v-on:employment-details-updated="updateEmploymentDetails"
                   :user-employers="employers"
-                  v-if="employers.length > 0"
-                ></employee>
+                  v-if="employers !== undefined && employers.length > 0"
+                ></employment-details>
               </div>
             </div>
 
@@ -389,7 +379,7 @@ import Select2 from "v-select2-component";
 import PhoneDetails from "./PhoneDetails.vue";
 import EmailDetails from "./EmailDetails.vue";
 import SocialMediaDetails from "./SocialMediaDetails.vue";
-import Employee from "./Employee.vue";
+import EmploymentDetails from "./EmploymentDetails.vue";
 import { ValidationObserver, ValidationProvider } from "vee-validate";
 import { extend } from "vee-validate";
 import {
@@ -407,7 +397,7 @@ export default {
     EmailDetails,
     DatePicker,
     SocialMediaDetails,
-    Employee,
+    EmploymentDetails,
     Select2,
     ValidationObserver,
     ValidationProvider
@@ -573,6 +563,9 @@ export default {
     },
     updateSocialMedia(data) {
       this.socials = data;
+    },
+    updateEmploymentDetails(index, data) {
+      this.employers[index] = data;
     }
   }
 };
@@ -581,14 +574,6 @@ extend("alpha_spaces", alpha_spaces);
 extend("max", max);
 extend("required_if", required_if);
 extend("alpha_num", alpha_num);
-
-extend("date_of_birth", value => {
-  // var phoneRegex = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/;
-  // if (value.match(phoneRegex)) {
-  //     return;
-  // }
-  // return "Phone Number should be valid and should contain 10 digits";
-});
 </script>
 <style>
 .mb-2 {
