@@ -19,36 +19,69 @@
             class="custom-form"
             @submit.prevent="handleSubmit"
           >
-            <div class="field-group">
-              <label
-                for="marriage_date"
-                class="input-label"
-              >Marriage Date and location</label>
-              <div class="fields-group clearfix">
-                <datepicker
-                  name="marriage_date"
-                  format="MM/d/yyyy"
-                  placeholder="MM/DD/YYYY"
-                  v-model="spouseDetails.marriage_date"
-                  class="field-datepicker field-input"
-                >
-                </datepicker>
-
-                <input
-                  type="text"
-                  name="marriage_location"
-                  id="marriage_location"
-                  class="field-input required"
-                  placeholder="Location"
-                  v-model="spouseDetails.marriage_location"
-                />
+            <div class="row">
+              <div class="col-md-6 col-sm-12 nopadding">
+                <div class="field-group">
+                  <label
+                    for="marriage_date"
+                    class="input-label"
+                  >Marriage Date</label>
+                  <validation-provider
+                    name="Marriage Location"
+                    rules="required"
+                    v-slot="{ errors }"
+                  >
+                    <datepicker
+                      name="marriage_date"
+                      placeholder="M/dd/YYYY"
+                      :format="'M/dd/yyyy'"
+                      :disabled-dates="disabledDates"
+                      v-model="spouseDetails.marriage_date"
+                      class="field-datepicker field-input"
+                    >
+                    </datepicker>
+                    <div
+                      v-if="errors != undefined && errors.length"
+                      class="invalid-feedback d-block"
+                    >
+                      {{ errors[0] }}
+                    </div>
+                  </validation-provider>
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-12 nopadding">
+                <div class="field-group">
+                  <label
+                    for="marriage_location"
+                    class="input-label"
+                  >Marriage Date</label>
+                  <validation-provider
+                    name="Marriage Location"
+                    rules="required|alpha_spaces"
+                    v-slot="{ errors }"
+                  >
+                    <input
+                      type="text"
+                      name="marriage_location"
+                      id="marriage_location"
+                      class="field-input required"
+                      placeholder="Location"
+                      v-model="spouseDetails.marriage_location"
+                    />
+                    <div
+                      v-if="errors != undefined && errors.length"
+                      class="invalid-feedback d-block"
+                    >
+                      {{ errors[0] }}
+                    </div>
+                  </validation-provider>
+                </div>
               </div>
             </div>
 
             <h4 class="form-subhead">Spouse Details</h4>
-
             <div class="row">
-              <div class="col-md-6 col-sm-12">
+              <div class="col-md-6 col-sm-12 nopadding">
                 <div class="field-group">
                   <label
                     for="legal_name"
@@ -77,162 +110,280 @@
                   </ValidationProvider>
                 </div>
               </div>
-              <div class="col-md-6 col-sm-12">
+              <div class="col-md-6 col-sm-12 nopadding">
                 <div class="field-group">
                   <label
                     for="nickname"
                     class="input-label"
                   >Nickname or Prior Name</label>
-                  <input
-                    type="text"
-                    name="nickname"
-                    id="nickname"
-                    class="field-input"
-                    placeholder="Nickname or prior name"
-                    v-model="spouseDetails.nickname"
-                  />
+                  <ValidationProvider
+                    name="Nick Name"
+                    rules="alpha_spaces|max:30"
+                    v-slot="{ errors }"
+                  >
+                    <input
+                      type="text"
+                      name="nickname"
+                      id="nickname"
+                      class="field-input"
+                      placeholder="Nickname or prior name"
+                      v-model="spouseDetails.nickname"
+                    />
+                    <span
+                      v-if="errors != undefined && errors.length"
+                      class="invalid-feedback d-block"
+                    >
+                      {{ errors[0] }}
+                    </span>
+                  </ValidationProvider>
                 </div>
               </div>
             </div>
-
-            <div class="field-group">
-              <label for="home_address">Home Address</label>
-              <textarea
-                rows="2"
-                name="home_address"
-                id="home_address"
-                v-model="spouseDetails.home_address"
-                class="field-input"
-                placeholder="Street Address, Town, City, State, Zipcode and country"
-              ></textarea>
-            </div>
-
-            <phone-details
-              :user-phones="phones"
-              v-if="phones.length > 0"
-            ></phone-details>
-
-            <div class="field-group">
-              <label
-                for="dob"
-                class="input-label"
-              >Date of Birth</label>
-              <datepicker
-                name="dob"
-                format="MM/d/yyyy"
-                placeholder="MM/DD/YYYY"
-                v-model="spouseDetails.dob"
-                class="field-datepicker field-input"
-              >
-              </datepicker>
-            </div>
-
             <div class="row">
-              <div class="col-md-6 col-sm-12">
+              <div class="col nopadding">
+                <div class="field-group">
+                  <label for="home_address">Home Address</label>
+                  <ValidationProvider
+                    name="Home Address"
+                    rules="max:200"
+                    v-slot="{ errors }"
+                  >
+                    <textarea
+                      rows="2"
+                      name="home_address"
+                      id="home_address"
+                      v-model="spouseDetails.home_address"
+                      class="field-input"
+                      placeholder="Street Address, Town, City, State, Zipcode and country"
+                    ></textarea>
+                    <span
+                      v-if="errors != undefined && errors.length"
+                      class="invalid-feedback d-block"
+                    >
+                      {{ errors[0] }}
+                    </span>
+                  </ValidationProvider>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col nopadding">
+                <phone-details
+                  v-on:phone-details-updates="updatePhoneNumbers"
+                  :user-phones="phones"
+                  v-if="phones.length > 0"
+                ></phone-details>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col nopadding">
+                <div class="field-group">
+                  <label
+                    for="dob"
+                    class="input-label"
+                  >Date of Birth</label>
+                  <datepicker
+                    name="dob"
+                    format="MM/d/yyyy"
+                    placeholder="MM/DD/YYYY"
+                    :disabled-dates="disabledDates"
+                    v-model="spouseDetails.dob"
+                    class="field-datepicker field-input"
+                  >
+                  </datepicker>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 col-sm-12 nopadding">
                 <div class="field-group">
                   <label
                     for="citizenship"
                     class="input-label"
                   >Citizenship</label>
-                  <Select2
-                    name="citizenship"
-                    id="citizenship"
-                    width="resolve"
-                    data-placeholder="Select an Options"
-                    v-model="spouseDetails.country_id"
-                    :options="citizenshipOptions"
-                    @change="citizenshipChangeEvent($event)"
-                    @select="citizenshipSelectEvent($event)"
-                  />
+                  <validation-provider
+                    vid="citizenship"
+                    v-slot="{ errors }"
+                  >
+                    <Select2
+                      name="citizenship"
+                      id="citizenship"
+                      width="resolve"
+                      data-placeholder="Select an Options"
+                      v-model="spouseDetails.country_id"
+                      :options="citizenshipOptions"
+                      @change="citizenshipChangeEvent($event)"
+                      @select="citizenshipSelectEvent($event)"
+                    />
+                    <span
+                      v-if="errors != undefined && errors.length"
+                      class="invalid-feedback d-block"
+                    >
+                      {{ errors[0] }}
+                    </span>
+                  </validation-provider>
                 </div>
               </div>
-              <div class="col-md-6 col-sm-12">
+              <div class="col-md-6 col-sm-12 nopadding">
                 <div class="field-group">
                   <label
                     for="passport_number"
                     class="input-label"
                   >Passport Number</label>
-                  <input
-                    type="text"
-                    name="passport_number"
-                    id="passport_number"
-                    class="field-input"
-                    placeholder="Passport Number"
-                    v-model="spouseDetails.passport_number"
-                  />
+                  <validation-provider
+                    name="Passport Number"
+                    rules="required_if:citizenship"
+                    v-slot="{ errors }"
+                  >
+                    <input
+                      type="text"
+                      name="passport_number"
+                      id="passport_number"
+                      class="field-input"
+                      placeholder="Passport Number"
+                      v-model="spouseDetails.passport_number"
+                    />
+                    <span
+                      v-if="errors != undefined && errors.length"
+                      class="invalid-feedback d-block"
+                    >
+                      {{ errors[0] }}
+                    </span>
+                  </validation-provider>
                 </div>
               </div>
             </div>
-
-            <div class="field-group">
-              <label
-                for="father_name"
-                class="input-label"
-              >Father's name and birth place</label>
-              <div class="fields-group clearfix">
-                <input
-                  type="text"
-                  name="father_name"
-                  id="father_name"
-                  class="field-input"
-                  placeholder="Father's Name"
-                  v-model="spouseDetails.father_name"
-                />
-                <input
-                  type="text"
-                  name="father_birth_place"
-                  id="father_birth_place"
-                  class="field-input field-input__last"
-                  placeholder="Birth place"
-                  v-model="spouseDetails.father_birth_place"
-                />
+            <div class="row">
+              <div class="col-md-6 col-sm-12 nopadding">
+                <div class="field-group">
+                  <validation-provider
+                    name="Father's Name"
+                    rules="alpha_spaces"
+                    v-slot="{ errors }"
+                  >
+                    <label
+                      for="father_name"
+                      class="input-label"
+                    >Father's name</label>
+                    <input
+                      type="text"
+                      name="father_name"
+                      id="father_name"
+                      class="field-input"
+                      placeholder="Father's Name"
+                      v-model="spouseDetails.father_name"
+                    />
+                    <div
+                      v-if="errors != undefined && errors.length"
+                      class="invalid-feedback d-block"
+                    >
+                      {{ errors[0] }}
+                    </div>
+                  </validation-provider>
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-12 nopadding">
+                <div class="field-group">
+                  <label
+                    for="father_birth_place"
+                    class="input-label"
+                  >Father's Birthplace</label>
+                  <validation-provider
+                    name="Father's Birthplace"
+                    rules="alpha_num"
+                    v-slot="{ errors }"
+                  >
+                    <input
+                      type="text"
+                      name="father_birth_place"
+                      id="father_birth_place"
+                      class="field-input field-input__last"
+                      placeholder="Birth place"
+                      v-model="spouseDetails.father_birth_place"
+                    />
+                    <div
+                      v-if="errors != undefined && errors.length"
+                      class="invalid-feedback d-block"
+                    >
+                      {{ errors[0] }}
+                    </div>
+                  </validation-provider>
+                </div>
               </div>
             </div>
-
-            <div class="field-group">
-              <label
-                for="mother_name"
-                class="input-label"
-              >Mother's name and birth place</label>
-              <div class="fields-group clearfix">
-                <input
-                  type="text"
-                  name="mother_name"
-                  id="mother_name"
-                  class="field-input"
-                  placeholder="Mother's Name"
-                  v-model="spouseDetails.mother_name"
-                />
-                <input
-                  type="text"
-                  name="mother_birth_place"
-                  id="mother_birth_place"
-                  class="field-input field-input__last"
-                  placeholder="Birth place"
-                  v-model="spouseDetails.mother_birth_place"
-                />
+            <div class="row">
+              <div class="col-md-6 col-sm-12 nopadding">
+                <div class="field-group">
+                  <label
+                    for="mother_name"
+                    class="input-label"
+                  >Mother's Name</label>
+                  <validation-provider
+                    name="Mother's Name"
+                    rules="alpha_spaces"
+                    v-slot="{ errors }"
+                  >
+                    <input
+                      type="text"
+                      name="mother_name"
+                      id="mother_name"
+                      class="field-input"
+                      placeholder="Mother's Name"
+                      v-model="spouseDetails.mother_name"
+                    />
+                    <div
+                      v-if="errors != undefined && errors.length"
+                      class="invalid-feedback d-block"
+                    >
+                      {{ errors[0] }}
+                    </div>
+                  </validation-provider>
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-12 nopadding">
+                <div class="field-group">
+                  <label
+                    for="mother_birth_place"
+                    class="input-label"
+                  >Mother's Birthplace</label>
+                  <validation-provider
+                    name="Mother's Birthplace"
+                    rules="alpha_num"
+                    v-slot="{ errors }"
+                  >
+                    <input
+                      type="text"
+                      name="mother_birth_place"
+                      id="mother_birth_place"
+                      class="field-input field-input__last"
+                      placeholder="Birth place"
+                      v-model="spouseDetails.mother_birth_place"
+                    />
+                    <div
+                      v-if="errors != undefined && errors.length"
+                      class="invalid-feedback d-block"
+                    >
+                      {{ errors[0] }}
+                    </div>
+                  </validation-provider>
+                </div>
               </div>
             </div>
-
-            <h4 class="form-subhead">Email Addresses</h4>
-            <email
+            <email-details
+              v-on:email-details-updates="updateEmails"
               :user-emails="emails"
-              v-if="emails.length > 0"
-            ></email>
-
-            <h4 class="form-subhead">Social Media</h4>
+              v-if="emails !== undefined && emails.length"
+            ></email-details>
             <social-media-details
+              v-on:social-media-details-updates="updateSocialMedia"
               :user-socials="socials"
-              v-if="socials.length > 0"
+              v-if="socials !== undefined && socials.length"
             ></social-media-details>
-
-            <h4 class="form-subhead">
-              Current Employers including self employment
-            </h4>
-            <employee
+            <employment-details
+              v-on:employment-details-updated="updateEmploymentDetails"
               :user-employers="employers"
-              v-if="employers.length > 0"
-            ></employee>
+              v-if="employers !== undefined && employers.length > 0"
+            ></employment-details>
 
             <div class="field-group field-group__action clearfix">
               <input
@@ -249,19 +400,25 @@
   </div>
 </template>
 <script>
-//import DatePicker from 'vue2-datepicker';
 import Select2 from "v-select2-component";
 import Datepicker from "vuejs-datepicker";
 import PhoneDetails from "./PhoneDetails.vue";
-import Email from "./Email.vue";
+import EmailDetails from "./EmailDetails.vue";
 import SocialMediaDetails from "./SocialMediaDetails.vue";
 import EmploymentDetails from "./EmploymentDetails.vue";
 import { ValidationObserver, ValidationProvider } from "vee-validate";
+import { extend } from "vee-validate";
+import {
+  alpha_spaces,
+  alpha_num,
+  max,
+  required_if
+} from "vee-validate/dist/rules";
 
 export default {
   components: {
     PhoneDetails,
-    Email,
+    EmailDetails,
     Datepicker,
     SocialMediaDetails,
     EmploymentDetails,
@@ -280,6 +437,11 @@ export default {
       submitted: false,
       citizenshipOptions: []
     };
+  },
+  computed: {
+    disabledDates() {
+      return { from: new Date() };
+    }
   },
   created() {
     axios.get("/countrylist").then(response => {
@@ -346,7 +508,6 @@ export default {
       }
     });
   },
-  mounted() {},
   methods: {
     async handleSubmit(e) {
       this.submitted = true;
@@ -372,7 +533,29 @@ export default {
             .catch(function() {});
         }
       }
+    },
+    updatePhoneNumbers(data) {
+      this.phones = data;
+    },
+    updateEmails(data) {
+      this.emails = data;
+    },
+    updateSocialMedia(data) {
+      this.socials = data;
+    },
+    updateEmploymentDetails(index, data) {
+      this.employers[index] = data;
     }
   }
 };
+
+extend("alpha_spaces", alpha_spaces);
+extend("max", max);
+extend("required_if", required_if);
+extend("alpha_num", alpha_num);
 </script>
+<style>
+.mb-2 {
+  margin-bottom: 2px;
+}
+</style>

@@ -35,10 +35,7 @@
                       placeholder="Legal Name"
                     />
                     <span
-                      v-if="
-                                                errors != undefined &&
-                                                    errors.length
-                                            "
+                      v-if="errors != undefined && errors.length"
                       class="invalid-feedback d-block"
                     >
                       {{ errors[0] }}
@@ -66,10 +63,7 @@
                       placeholder="Nickname or prior name"
                     />
                     <span
-                      v-if="
-                                                errors != undefined &&
-                                                    errors.length
-                                            "
+                      v-if="errors != undefined && errors.length"
                       class="invalid-feedback d-block"
                     >
                       {{ errors[0] }}
@@ -82,30 +76,40 @@
               <div class="col nopadding">
                 <div class="field-group">
                   <label for="home_address">Home Address</label>
-                  <textarea
-                    rows="2"
-                    name="home_address"
-                    id="home_address"
-                    v-model="personalDetail.home_address"
-                    class="field-input"
-                    placeholder="Street Address, Town, City, State, Zipcode and country"
-                  ></textarea>
+                  <ValidationProvider
+                    name="Home Address"
+                    rules="max:200"
+                    v-slot="{ errors }"
+                  >
+                    <textarea
+                      rows="2"
+                      name="home_address"
+                      id="home_address"
+                      v-model="personalDetail.home_address"
+                      class="field-input"
+                      placeholder="Street Address, Town, City, State, Zipcode and country"
+                    ></textarea>
+                    <span
+                      v-if="errors != undefined && errors.length"
+                      class="invalid-feedback d-block"
+                    >
+                      {{ errors[0] }}
+                    </span>
+                  </ValidationProvider>
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="col nopadding">
                 <phone-details
-                  v-on:phone-details-updates="
-                                        updatePhoneNumbers
-                                    "
+                  v-on:phone-details-updates="updatePhoneNumbers"
                   :user-phones="phones"
                   v-if="phones.length > 0"
                 ></phone-details>
               </div>
             </div>
             <div class="row">
-              <div class="col-md-6 col-sm-12 nopadding">
+              <div class="col nopadding">
                 <div class="field-group">
                   <label
                     for="dob"
@@ -114,7 +118,9 @@
                   <date-picker
                     name="date"
                     :disabled-dates="disabledDates"
-                    placeholder="MM/DD/YYYY"
+                    placeholder="M/dd/YYYY"
+                    :format="'M/dd/yyyy'"
+                    @selected="updateBirthDateFormat"
                     v-model="personalDetail.dob"
                     class="field-datepicker field-input"
                   >
@@ -140,18 +146,11 @@
                       data-placeholder="Select an Options"
                       v-model="personalDetail.country_id"
                       :options="citizenshipOptions"
-                      @change="
-                                                citizenshipChangeEvent($event)
-                                            "
-                      @select="
-                                                citizenshipSelectEvent($event)
-                                            "
+                      @change="citizenshipChangeEvent($event)"
+                      @select="citizenshipSelectEvent($event)"
                     />
                     <span
-                      v-if="
-                                                errors != undefined &&
-                                                    errors.length
-                                            "
+                      v-if="errors != undefined && errors.length"
                       class="invalid-feedback d-block"
                     >
                       {{ errors[0] }}
@@ -174,17 +173,12 @@
                       type="text"
                       name="passport_number"
                       id="passport_number"
-                      v-model="
-                                                personalDetail.passport_number
-                                            "
+                      v-model="personalDetail.passport_number"
                       class="field-input"
                       placeholder="Passport Number"
                     />
                     <span
-                      v-if="
-                                                errors != undefined &&
-                                                    errors.length
-                                            "
+                      v-if="errors != undefined && errors.length"
                       class="invalid-feedback d-block"
                     >
                       {{ errors[0] }}
@@ -214,10 +208,7 @@
                       placeholder="Father's Name"
                     />
                     <div
-                      v-if="
-                                                errors != undefined &&
-                                                    errors.length
-                                            "
+                      v-if="errors != undefined && errors.length"
                       class="invalid-feedback d-block"
                     >
                       {{ errors[0] }}
@@ -240,17 +231,12 @@
                       type="text"
                       name="father_birth_place"
                       id="father_birth_place"
-                      v-model="
-                                                personalDetail.father_birth_place
-                                            "
+                      v-model="personalDetail.father_birth_place"
                       class="field-input"
                       placeholder="Birth place"
                     />
                     <div
-                      v-if="
-                                                errors != undefined &&
-                                                    errors.length
-                                            "
+                      v-if="errors != undefined && errors.length"
                       class="invalid-feedback d-block"
                     >
                       {{ errors[0] }}
@@ -280,10 +266,7 @@
                       placeholder="Mother's Name"
                     />
                     <div
-                      v-if="
-                                                errors != undefined &&
-                                                    errors.length
-                                            "
+                      v-if="errors != undefined && errors.length"
                       class="invalid-feedback d-block"
                     >
                       {{ errors[0] }}
@@ -306,17 +289,12 @@
                       type="text"
                       name="mother_birth_place"
                       id="mother_birth_place"
-                      v-model="
-                                                personalDetail.mother_birth_place
-                                            "
+                      v-model="personalDetail.mother_birth_place"
                       class="field-input"
                       placeholder="Birth place"
                     />
                     <div
-                      v-if="
-                                                errors != undefined &&
-                                                    errors.length
-                                            "
+                      v-if="errors != undefined && errors.length"
                       class="invalid-feedback d-block"
                     >
                       {{ errors[0] }}
@@ -337,9 +315,6 @@
             ></social-media-details>
             <div class="row">
               <div class="col nopadding">
-                <h4 class="form-subhead">
-                  Current Employers including self employment
-                </h4>
                 <employment-details
                   v-on:employment-details-updated="updateEmploymentDetails"
                   :user-employers="employers"
@@ -566,6 +541,9 @@ export default {
     },
     updateEmploymentDetails(index, data) {
       this.employers[index] = data;
+    },
+    updateBirthDateFormat() {
+      this.personalDetail.dob = new Date(this.personalDetail.dob).toString;
     }
   }
 };

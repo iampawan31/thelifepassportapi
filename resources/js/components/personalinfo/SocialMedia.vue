@@ -21,9 +21,9 @@
     </div>
     <div class="col-md-4 col-sm-12 nopadding">
       <validation-provider
-        name="Email Address"
+        name="Username"
         vid="social_media_username"
-        :rules="'required_if:social_media_type|alpha_num|max:30'"
+        :rules="'required_if:social_media_type|max:30'"
         v-slot="{ errors }"
       >
         <input
@@ -42,7 +42,7 @@
     <div class="col-md-4 col-sm-12 nopadding">
       <validation-provider
         name="Password"
-        :rules="'required_if:social_media_username|alpha_num|max:30'"
+        :rules="'required_if:social_media_username|max:30'"
         v-slot="{ errors }"
       >
         <input
