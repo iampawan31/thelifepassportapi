@@ -21,34 +21,39 @@
               enctype="multipart/form-data"
               @submit.prevent="handleSubmit"
             >
-              <div class="field-group">
-                <label
-                  for="former_spouse_name"
-                  class="input-label"
-                >Former Spouse Name</label>
-                <ValidationProvider
-                  name="Legal Name"
-                  rules="required"
-                  v-slot="{ errors }"
-                >
-                  <input
-                    type="text"
-                    name="legal_name"
-                    id="legal_name"
-                    class="field-input required"
-                    placeholder="Former Spouse Name"
-                    v-model="spouseDetails.legal_name"
-                  />
-                  <div
-                    class="invalid-feedback d-block"
-                    v-for="(error, index) in errors"
-                    v-bind:key="index"
-                  >
-                    {{ error }}
+              <!-- Former spouse's name section -->
+              <div class="row">
+                <div class="col-md-6 col-sm-12 nopadding">
+                  <div class="field-group">
+                    <label
+                      for="former_spouse_name"
+                      class="input-label"
+                    >Former Spouse Name</label>
+                    <ValidationProvider
+                      name="Legal Name"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <input
+                        type="text"
+                        name="legal_name"
+                        id="legal_name"
+                        class="field-input required"
+                        placeholder="Former Spouse Name"
+                        v-model="spouseDetails.legal_name"
+                      />
+                      <div
+                        class="invalid-feedback d-block"
+                        v-for="(error, index) in errors"
+                        v-bind:key="index"
+                      >
+                        {{ error }}
+                      </div>
+                    </ValidationProvider>
                   </div>
-                </ValidationProvider>
+                </div>
               </div>
-
+              <!-- Marriage date and location Section -->
               <div class="row">
                 <div class="col-md-6 col-sm-12">
                   <div class="field-group">
@@ -56,39 +61,60 @@
                       for="marriage_date"
                       class="input-label"
                     >Marriage Date</label>
-                    <datepicker
-                      name="marriage_date"
-                      format="MM/d/yyyy"
-                      placeholder="MM/DD/YYYY"
-                      v-model="
-                                                spouseDetails.marriage_date
-                                            "
-                      class="field-datepicker field-input"
+                    <validation-provider
+                      name="Marriage Location"
+                      rules="required"
+                      v-slot="{ errors }"
                     >
-                    </datepicker>
+                      <datepicker
+                        name="marriage_date"
+                        placeholder="M/dd/YYYY"
+                        :format="'M/dd/yyyy'"
+                        :disabled-dates="disabledDates"
+                        v-model="spouseDetails.marriage_date"
+                        class="field-datepicker field-input"
+                      >
+                      </datepicker>
+                      <div
+                        v-if="errors != undefined && errors.length"
+                        class="invalid-feedback d-block"
+                      >
+                        {{ errors[0] }}
+                      </div>
+                    </validation-provider>
                   </div>
                 </div>
-
                 <div class="col-md-6 col-sm-12">
                   <div class="field-group">
                     <label
                       for="marriage_location"
                       class="input-label"
                     >Marriage Location</label>
-                    <input
-                      type="text"
-                      name="marriage_location"
-                      id="marriage_location"
-                      class="field-input required"
-                      placeholder="Marriage Location"
-                      v-model="
-                                                spouseDetails.marriage_location
-                                            "
-                    />
+                    <validation-provider
+                      name="Marriage Location"
+                      rules="required|alpha_spaces"
+                      v-slot="{ errors }"
+                    >
+                      <input
+                        type="text"
+                        name="marriage_location"
+                        id="marriage_location"
+                        class="field-input required"
+                        placeholder="Marriage Location"
+                        v-model="spouseDetails.marriage_location"
+                      />
+                      <div
+                        v-if="errors != undefined && errors.length"
+                        class="invalid-feedback d-block"
+                      >
+                        {{ errors[0] }}
+                      </div>
+                    </validation-provider>
                   </div>
                 </div>
               </div>
 
+              <!-- Divorce Date and location section -->
               <div class="row">
                 <div class="col-md-6 col-sm-12">
                   <div class="field-group">
@@ -96,14 +122,27 @@
                       for="divorce_date"
                       class="input-label"
                     >Divorce Date</label>
-                    <datepicker
-                      name="divorce_date"
-                      format="MM/d/yyyy"
-                      placeholder="MM/DD/YYYY"
-                      v-model="spouseDetails.divorce_date"
-                      class="field-datepicker field-input"
+                    <validation-provider
+                      name="Marriage Location"
+                      rules="required"
+                      v-slot="{ errors }"
                     >
-                    </datepicker>
+                      <datepicker
+                        name="divorce_date"
+                        placeholder="M/dd/YYYY"
+                        :format="'M/dd/yyyy'"
+                        :disabled-dates="disabledDates"
+                        v-model="spouseDetails.divorce_date"
+                        class="field-datepicker field-input"
+                      >
+                      </datepicker>
+                      <div
+                        v-if="errors != undefined && errors.length"
+                        class="invalid-feedback d-block"
+                      >
+                        {{ errors[0] }}
+                      </div>
+                    </validation-provider>
                   </div>
                 </div>
                 <div class="col-md-6 col-sm-12">
@@ -112,52 +151,97 @@
                       for="divorce_location"
                       class="input-label"
                     >Divorce Location</label>
-                    <input
-                      type="text"
-                      name="divorce_location"
-                      id="divorce_location"
-                      class="field-input required"
-                      placeholder="Divorce Location"
-                      v-model="
-                                                spouseDetails.divorce_location
-                                            "
-                    />
+                    <validation-provider
+                      name="Marriage Location"
+                      rules="required|alpha_spaces"
+                      v-slot="{ errors }"
+                    >
+                      <input
+                        type="text"
+                        name="divorce_location"
+                        id="divorce_location"
+                        class="field-input required"
+                        placeholder="Divorce Location"
+                        v-model="spouseDetails.divorce_location"
+                      />
+                      <div
+                        v-if="errors != undefined && errors.length"
+                        class="invalid-feedback d-block"
+                      >
+                        {{ errors[0] }}
+                      </div>
+                    </validation-provider>
+                  </div>
+                </div>
+              </div>
+              <!-- Former spouse's current address -->
+              <div class="field-group">
+                <label for="current_address">Current Address</label>
+                <ValidationProvider
+                  name="Home Address"
+                  rules="max:200"
+                  v-slot="{ errors }"
+                >
+                  <textarea
+                    rows="2"
+                    name="address"
+                    id="address"
+                    class="field-input"
+                    placeholder="Street Address, Town, City, State, Zipcode and country"
+                    v-model="spouseDetails.address"
+                  ></textarea>
+                  <span
+                    v-if="errors != undefined && errors.length"
+                    class="invalid-feedback d-block"
+                  >
+                    {{ errors[0] }}
+                  </span>
+                </ValidationProvider>
+              </div>
+
+              <!-- Former spouse's Phone number(s) section -->
+              <div class="row">
+                <div class="col nopadding">
+                  <phone-details
+                    :user-phones="phones"
+                    v-if="phones.length > 0"
+                  ></phone-details>
+                </div>
+              </div>
+
+              <!-- Former spouse's Email address section -->
+              <div class="row">
+                <div class="col nopadding">
+                  <div class="field-group">
+                    <label
+                      for="email"
+                      class="input-label"
+                    >Email</label>
+                    <ValidationProvider
+                      name="Email address"
+                      rules="email"
+                      v-slot="{ errors }"
+                    >
+                      <input
+                        type="text"
+                        name="email"
+                        id="email"
+                        class="field-input required email"
+                        placeholder="Email address"
+                        v-model="spouseDetails.email"
+                      />
+                      <span
+                        v-if="errors != undefined && errors.length"
+                        class="invalid-feedback d-block"
+                      >
+                        {{ errors[0] }}
+                      </span>
+                    </ValidationProvider>
                   </div>
                 </div>
               </div>
 
-              <div class="field-group">
-                <label for="current_address">Current Address</label>
-                <textarea
-                  rows="2"
-                  name="address"
-                  id="address"
-                  class="field-input"
-                  placeholder="Street Address, Town, City, State, Zipcode and country"
-                  v-model="spouseDetails.address"
-                ></textarea>
-              </div>
-
-              <phone-details
-                :user-phones="phones"
-                v-if="phones.length > 0"
-              ></phone-details>
-
-              <div class="field-group">
-                <label
-                  for="email"
-                  class="input-label"
-                >Email</label>
-                <input
-                  type="text"
-                  name="email"
-                  id="email"
-                  class="field-input required email"
-                  placeholder="Email address"
-                  v-model="spouseDetails.email"
-                />
-              </div>
-
+              <!-- Alimony section -->
               <div class="switch-wrapper clearfix">
                 <div class="field-group can-toggle can-toggle--size-small">
                   <input
@@ -196,36 +280,24 @@
                         <div class="input-file-wrapper clearfix">
                           <div
                             class="input-browse"
-                            v-if="
-                                                            divorceDoc.length ==
-                                                                0
-                                                        "
+                            v-if="divorceDoc !== undefined && divorceDoc.length"
                           >
                             <span class="btn-link">Add file</span>
                             <input
                               type="file"
                               id="alimony_agreement"
                               name="alimony_agreement"
-                              @change="
-                                                                handleFileUpload
-                                                            "
+                              @change="handleFileUpload"
                             />
                           </div>
-
                           <div
                             class="input-file-name"
                             v-if="divorceDoc.title"
                           >
-                            <span><a :href="
-                                                                    divorceDoc.url
-                                                                ">{{
-                                                                    divorceDoc.title
-                                                                }}</a></span>
+                            <span><a :href="divorceDoc.url">{{divorceDoc.title}}</a></span>
                             <a
                               href="javascript:void(0);"
-                              @click="
-                                                                removeDivorceFile()
-                                                            "
+                              @click="removeDivorceFile()"
                               class="removefile"
                             >&times;</a>
                           </div>
@@ -244,9 +316,7 @@
                           id="alimony_amount"
                           class="field-input required"
                           placeholder="Amount"
-                          v-model="
-                                                        spouseDetails.alimony_amount
-                                                    "
+                          v-model="spouseDetails.alimony_amount"
                         />
                       </div>
                     </div>
@@ -277,6 +347,14 @@ import Email from "./Email.vue";
 import SocialMediaDetails from "./SocialMediaDetails.vue";
 import EmploymentDetails from "./EmploymentDetails.vue";
 import { ValidationObserver, ValidationProvider } from "vee-validate";
+import { extend } from "vee-validate";
+import {
+  email,
+  required_if,
+  alpha_spaces,
+  alpha_num,
+  max
+} from "vee-validate/dist/rules";
 
 export default {
   components: {
@@ -303,6 +381,11 @@ export default {
       isAlimonyPaid: false,
       divorceDoc: []
     };
+  },
+  computed: {
+    disabledDates() {
+      return { from: new Date() };
+    }
   },
   created() {
     axios.get("/getprevspouseinfo").then(response => {
@@ -381,4 +464,10 @@ export default {
     }
   }
 };
+
+extend("email", email);
+extend("max", max);
+extend("alpha_num", alpha_num);
+extend("alpha_spaces", alpha_spaces);
+extend("required_if", required_if);
 </script>

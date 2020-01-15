@@ -4088,6 +4088,36 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -4562,6 +4592,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _SocialMediaDetails_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./SocialMediaDetails.vue */ "./resources/js/components/personalinfo/SocialMediaDetails.vue");
 /* harmony import */ var _EmploymentDetails_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./EmploymentDetails.vue */ "./resources/js/components/personalinfo/EmploymentDetails.vue");
 /* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
+/* harmony import */ var vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vee-validate/dist/rules */ "./node_modules/vee-validate/dist/rules.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -4839,6 +4870,78 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 
 
 
@@ -4871,6 +4974,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       isAlimonyPaid: false,
       divorceDoc: []
     };
+  },
+  computed: {
+    disabledDates: function disabledDates() {
+      return {
+        from: new Date()
+      };
+    }
   },
   created: function created() {
     var _this = this;
@@ -4975,6 +5085,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   }
 });
+Object(vee_validate__WEBPACK_IMPORTED_MODULE_7__["extend"])("email", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_8__["email"]);
+Object(vee_validate__WEBPACK_IMPORTED_MODULE_7__["extend"])("max", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_8__["max"]);
+Object(vee_validate__WEBPACK_IMPORTED_MODULE_7__["extend"])("alpha_num", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_8__["alpha_num"]);
+Object(vee_validate__WEBPACK_IMPORTED_MODULE_7__["extend"])("alpha_spaces", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_8__["alpha_spaces"]);
+Object(vee_validate__WEBPACK_IMPORTED_MODULE_7__["extend"])("required_if", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_8__["required_if"]);
 
 /***/ }),
 
@@ -5306,6 +5421,42 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -59511,22 +59662,42 @@ var render = function() {
                           )
                         ]),
                         _vm._v(" "),
-                        _vm.emails.length
-                          ? _c("email-details", {
-                              attrs: { "user-emails": _vm.emails },
-                              on: { "email-details-updates": _vm.updateEmails }
-                            })
-                          : _vm._e(),
+                        _c("div", { staticClass: "row" }, [
+                          _c(
+                            "div",
+                            { staticClass: "col nopadding" },
+                            [
+                              _vm.emails.length
+                                ? _c("email-details", {
+                                    attrs: { "user-emails": _vm.emails },
+                                    on: {
+                                      "email-details-updates": _vm.updateEmails
+                                    }
+                                  })
+                                : _vm._e()
+                            ],
+                            1
+                          )
+                        ]),
                         _vm._v(" "),
-                        _vm.socials !== undefined && _vm.socials.length
-                          ? _c("social-media-details", {
-                              attrs: { "user-socials": _vm.socials },
-                              on: {
-                                "social-media-details-updates":
-                                  _vm.updateSocialMedia
-                              }
-                            })
-                          : _vm._e(),
+                        _c("div", { staticClass: "row" }, [
+                          _c(
+                            "div",
+                            { staticClass: "col nopadding" },
+                            [
+                              _vm.socials !== undefined && _vm.socials.length
+                                ? _c("social-media-details", {
+                                    attrs: { "user-socials": _vm.socials },
+                                    on: {
+                                      "social-media-details-updates":
+                                        _vm.updateSocialMedia
+                                    }
+                                  })
+                                : _vm._e()
+                            ],
+                            1
+                          )
+                        ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "row" }, [
                           _c(
@@ -59587,8 +59758,7 @@ var render = function() {
                             })
                           ]
                         )
-                      ],
-                      1
+                      ]
                     )
                   ]
                 }
@@ -59928,101 +60098,113 @@ var render = function() {
                             }
                           },
                           [
-                            _c(
-                              "div",
-                              { staticClass: "field-group" },
-                              [
-                                _c(
-                                  "label",
-                                  {
-                                    staticClass: "input-label",
-                                    attrs: { for: "former_spouse_name" }
-                                  },
-                                  [_vm._v("Former Spouse Name")]
-                                ),
-                                _vm._v(" "),
-                                _c("ValidationProvider", {
-                                  attrs: {
-                                    name: "Legal Name",
-                                    rules: "required"
-                                  },
-                                  scopedSlots: _vm._u(
+                            _c("div", { staticClass: "row" }, [
+                              _c(
+                                "div",
+                                { staticClass: "col-md-6 col-sm-12 nopadding" },
+                                [
+                                  _c(
+                                    "div",
+                                    { staticClass: "field-group" },
                                     [
-                                      {
-                                        key: "default",
-                                        fn: function(ref) {
-                                          var errors = ref.errors
-                                          return [
-                                            _c("input", {
-                                              directives: [
-                                                {
-                                                  name: "model",
-                                                  rawName: "v-model",
-                                                  value:
-                                                    _vm.spouseDetails
-                                                      .legal_name,
-                                                  expression:
-                                                    "spouseDetails.legal_name"
-                                                }
-                                              ],
-                                              staticClass:
-                                                "field-input required",
-                                              attrs: {
-                                                type: "text",
-                                                name: "legal_name",
-                                                id: "legal_name",
-                                                placeholder:
-                                                  "Former Spouse Name"
-                                              },
-                                              domProps: {
-                                                value:
-                                                  _vm.spouseDetails.legal_name
-                                              },
-                                              on: {
-                                                input: function($event) {
-                                                  if ($event.target.composing) {
-                                                    return
-                                                  }
-                                                  _vm.$set(
-                                                    _vm.spouseDetails,
-                                                    "legal_name",
-                                                    $event.target.value
-                                                  )
-                                                }
-                                              }
-                                            }),
-                                            _vm._v(" "),
-                                            _vm._l(errors, function(
-                                              error,
-                                              index
-                                            ) {
-                                              return _c(
-                                                "div",
-                                                {
-                                                  key: index,
-                                                  staticClass:
-                                                    "invalid-feedback d-block"
-                                                },
-                                                [
-                                                  _vm._v(
-                                                    "\n                  " +
-                                                      _vm._s(error) +
-                                                      "\n                "
-                                                  )
+                                      _c(
+                                        "label",
+                                        {
+                                          staticClass: "input-label",
+                                          attrs: { for: "former_spouse_name" }
+                                        },
+                                        [_vm._v("Former Spouse Name")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("ValidationProvider", {
+                                        attrs: {
+                                          name: "Legal Name",
+                                          rules: "required"
+                                        },
+                                        scopedSlots: _vm._u(
+                                          [
+                                            {
+                                              key: "default",
+                                              fn: function(ref) {
+                                                var errors = ref.errors
+                                                return [
+                                                  _c("input", {
+                                                    directives: [
+                                                      {
+                                                        name: "model",
+                                                        rawName: "v-model",
+                                                        value:
+                                                          _vm.spouseDetails
+                                                            .legal_name,
+                                                        expression:
+                                                          "spouseDetails.legal_name"
+                                                      }
+                                                    ],
+                                                    staticClass:
+                                                      "field-input required",
+                                                    attrs: {
+                                                      type: "text",
+                                                      name: "legal_name",
+                                                      id: "legal_name",
+                                                      placeholder:
+                                                        "Former Spouse Name"
+                                                    },
+                                                    domProps: {
+                                                      value:
+                                                        _vm.spouseDetails
+                                                          .legal_name
+                                                    },
+                                                    on: {
+                                                      input: function($event) {
+                                                        if (
+                                                          $event.target
+                                                            .composing
+                                                        ) {
+                                                          return
+                                                        }
+                                                        _vm.$set(
+                                                          _vm.spouseDetails,
+                                                          "legal_name",
+                                                          $event.target.value
+                                                        )
+                                                      }
+                                                    }
+                                                  }),
+                                                  _vm._v(" "),
+                                                  _vm._l(errors, function(
+                                                    error,
+                                                    index
+                                                  ) {
+                                                    return _c(
+                                                      "div",
+                                                      {
+                                                        key: index,
+                                                        staticClass:
+                                                          "invalid-feedback d-block"
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "\n                      " +
+                                                            _vm._s(error) +
+                                                            "\n                    "
+                                                        )
+                                                      ]
+                                                    )
+                                                  })
                                                 ]
-                                              )
-                                            })
-                                          ]
-                                        }
-                                      }
+                                              }
+                                            }
+                                          ],
+                                          null,
+                                          true
+                                        )
+                                      })
                                     ],
-                                    null,
-                                    true
+                                    1
                                   )
-                                })
-                              ],
-                              1
-                            ),
+                                ]
+                              )
+                            ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "row" }, [
                               _c("div", { staticClass: "col-md-6 col-sm-12" }, [
@@ -60039,26 +60221,68 @@ var render = function() {
                                       [_vm._v("Marriage Date")]
                                     ),
                                     _vm._v(" "),
-                                    _c("datepicker", {
-                                      staticClass:
-                                        "field-datepicker field-input",
+                                    _c("validation-provider", {
                                       attrs: {
-                                        name: "marriage_date",
-                                        format: "MM/d/yyyy",
-                                        placeholder: "MM/DD/YYYY"
+                                        name: "Marriage Location",
+                                        rules: "required"
                                       },
-                                      model: {
-                                        value: _vm.spouseDetails.marriage_date,
-                                        callback: function($$v) {
-                                          _vm.$set(
-                                            _vm.spouseDetails,
-                                            "marriage_date",
-                                            $$v
-                                          )
-                                        },
-                                        expression:
-                                          "\n                                              spouseDetails.marriage_date\n                                          "
-                                      }
+                                      scopedSlots: _vm._u(
+                                        [
+                                          {
+                                            key: "default",
+                                            fn: function(ref) {
+                                              var errors = ref.errors
+                                              return [
+                                                _c("datepicker", {
+                                                  staticClass:
+                                                    "field-datepicker field-input",
+                                                  attrs: {
+                                                    name: "marriage_date",
+                                                    placeholder: "M/dd/YYYY",
+                                                    format: "M/dd/yyyy",
+                                                    "disabled-dates":
+                                                      _vm.disabledDates
+                                                  },
+                                                  model: {
+                                                    value:
+                                                      _vm.spouseDetails
+                                                        .marriage_date,
+                                                    callback: function($$v) {
+                                                      _vm.$set(
+                                                        _vm.spouseDetails,
+                                                        "marriage_date",
+                                                        $$v
+                                                      )
+                                                    },
+                                                    expression:
+                                                      "spouseDetails.marriage_date"
+                                                  }
+                                                }),
+                                                _vm._v(" "),
+                                                errors != undefined &&
+                                                errors.length
+                                                  ? _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "invalid-feedback d-block"
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "\n                      " +
+                                                            _vm._s(errors[0]) +
+                                                            "\n                    "
+                                                        )
+                                                      ]
+                                                    )
+                                                  : _vm._e()
+                                              ]
+                                            }
+                                          }
+                                        ],
+                                        null,
+                                        true
+                                      )
                                     })
                                   ],
                                   1
@@ -60066,51 +60290,101 @@ var render = function() {
                               ]),
                               _vm._v(" "),
                               _c("div", { staticClass: "col-md-6 col-sm-12" }, [
-                                _c("div", { staticClass: "field-group" }, [
-                                  _c(
-                                    "label",
-                                    {
-                                      staticClass: "input-label",
-                                      attrs: { for: "marriage_location" }
-                                    },
-                                    [_vm._v("Marriage Location")]
-                                  ),
-                                  _vm._v(" "),
-                                  _c("input", {
-                                    directives: [
+                                _c(
+                                  "div",
+                                  { staticClass: "field-group" },
+                                  [
+                                    _c(
+                                      "label",
                                       {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value:
-                                          _vm.spouseDetails.marriage_location,
-                                        expression:
-                                          "\n                                              spouseDetails.marriage_location\n                                          "
-                                      }
-                                    ],
-                                    staticClass: "field-input required",
-                                    attrs: {
-                                      type: "text",
-                                      name: "marriage_location",
-                                      id: "marriage_location",
-                                      placeholder: "Marriage Location"
-                                    },
-                                    domProps: {
-                                      value: _vm.spouseDetails.marriage_location
-                                    },
-                                    on: {
-                                      input: function($event) {
-                                        if ($event.target.composing) {
-                                          return
-                                        }
-                                        _vm.$set(
-                                          _vm.spouseDetails,
-                                          "marriage_location",
-                                          $event.target.value
-                                        )
-                                      }
-                                    }
-                                  })
-                                ])
+                                        staticClass: "input-label",
+                                        attrs: { for: "marriage_location" }
+                                      },
+                                      [_vm._v("Marriage Location")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c("validation-provider", {
+                                      attrs: {
+                                        name: "Marriage Location",
+                                        rules: "required|alpha_spaces"
+                                      },
+                                      scopedSlots: _vm._u(
+                                        [
+                                          {
+                                            key: "default",
+                                            fn: function(ref) {
+                                              var errors = ref.errors
+                                              return [
+                                                _c("input", {
+                                                  directives: [
+                                                    {
+                                                      name: "model",
+                                                      rawName: "v-model",
+                                                      value:
+                                                        _vm.spouseDetails
+                                                          .marriage_location,
+                                                      expression:
+                                                        "spouseDetails.marriage_location"
+                                                    }
+                                                  ],
+                                                  staticClass:
+                                                    "field-input required",
+                                                  attrs: {
+                                                    type: "text",
+                                                    name: "marriage_location",
+                                                    id: "marriage_location",
+                                                    placeholder:
+                                                      "Marriage Location"
+                                                  },
+                                                  domProps: {
+                                                    value:
+                                                      _vm.spouseDetails
+                                                        .marriage_location
+                                                  },
+                                                  on: {
+                                                    input: function($event) {
+                                                      if (
+                                                        $event.target.composing
+                                                      ) {
+                                                        return
+                                                      }
+                                                      _vm.$set(
+                                                        _vm.spouseDetails,
+                                                        "marriage_location",
+                                                        $event.target.value
+                                                      )
+                                                    }
+                                                  }
+                                                }),
+                                                _vm._v(" "),
+                                                errors != undefined &&
+                                                errors.length
+                                                  ? _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "invalid-feedback d-block"
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "\n                      " +
+                                                            _vm._s(errors[0]) +
+                                                            "\n                    "
+                                                        )
+                                                      ]
+                                                    )
+                                                  : _vm._e()
+                                              ]
+                                            }
+                                          }
+                                        ],
+                                        null,
+                                        true
+                                      )
+                                    })
+                                  ],
+                                  1
+                                )
                               ])
                             ]),
                             _vm._v(" "),
@@ -60129,25 +60403,68 @@ var render = function() {
                                       [_vm._v("Divorce Date")]
                                     ),
                                     _vm._v(" "),
-                                    _c("datepicker", {
-                                      staticClass:
-                                        "field-datepicker field-input",
+                                    _c("validation-provider", {
                                       attrs: {
-                                        name: "divorce_date",
-                                        format: "MM/d/yyyy",
-                                        placeholder: "MM/DD/YYYY"
+                                        name: "Marriage Location",
+                                        rules: "required"
                                       },
-                                      model: {
-                                        value: _vm.spouseDetails.divorce_date,
-                                        callback: function($$v) {
-                                          _vm.$set(
-                                            _vm.spouseDetails,
-                                            "divorce_date",
-                                            $$v
-                                          )
-                                        },
-                                        expression: "spouseDetails.divorce_date"
-                                      }
+                                      scopedSlots: _vm._u(
+                                        [
+                                          {
+                                            key: "default",
+                                            fn: function(ref) {
+                                              var errors = ref.errors
+                                              return [
+                                                _c("datepicker", {
+                                                  staticClass:
+                                                    "field-datepicker field-input",
+                                                  attrs: {
+                                                    name: "divorce_date",
+                                                    placeholder: "M/dd/YYYY",
+                                                    format: "M/dd/yyyy",
+                                                    "disabled-dates":
+                                                      _vm.disabledDates
+                                                  },
+                                                  model: {
+                                                    value:
+                                                      _vm.spouseDetails
+                                                        .divorce_date,
+                                                    callback: function($$v) {
+                                                      _vm.$set(
+                                                        _vm.spouseDetails,
+                                                        "divorce_date",
+                                                        $$v
+                                                      )
+                                                    },
+                                                    expression:
+                                                      "spouseDetails.divorce_date"
+                                                  }
+                                                }),
+                                                _vm._v(" "),
+                                                errors != undefined &&
+                                                errors.length
+                                                  ? _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "invalid-feedback d-block"
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "\n                      " +
+                                                            _vm._s(errors[0]) +
+                                                            "\n                    "
+                                                        )
+                                                      ]
+                                                    )
+                                                  : _vm._e()
+                                              ]
+                                            }
+                                          }
+                                        ],
+                                        null,
+                                        true
+                                      )
                                     })
                                   ],
                                   1
@@ -60155,140 +60472,300 @@ var render = function() {
                               ]),
                               _vm._v(" "),
                               _c("div", { staticClass: "col-md-6 col-sm-12" }, [
-                                _c("div", { staticClass: "field-group" }, [
-                                  _c(
-                                    "label",
-                                    {
-                                      staticClass: "input-label",
-                                      attrs: { for: "divorce_location" }
-                                    },
-                                    [_vm._v("Divorce Location")]
-                                  ),
-                                  _vm._v(" "),
-                                  _c("input", {
-                                    directives: [
+                                _c(
+                                  "div",
+                                  { staticClass: "field-group" },
+                                  [
+                                    _c(
+                                      "label",
                                       {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value:
-                                          _vm.spouseDetails.divorce_location,
-                                        expression:
-                                          "\n                                              spouseDetails.divorce_location\n                                          "
-                                      }
-                                    ],
-                                    staticClass: "field-input required",
-                                    attrs: {
-                                      type: "text",
-                                      name: "divorce_location",
-                                      id: "divorce_location",
-                                      placeholder: "Divorce Location"
-                                    },
-                                    domProps: {
-                                      value: _vm.spouseDetails.divorce_location
-                                    },
-                                    on: {
-                                      input: function($event) {
-                                        if ($event.target.composing) {
-                                          return
-                                        }
-                                        _vm.$set(
-                                          _vm.spouseDetails,
-                                          "divorce_location",
-                                          $event.target.value
-                                        )
-                                      }
-                                    }
-                                  })
-                                ])
+                                        staticClass: "input-label",
+                                        attrs: { for: "divorce_location" }
+                                      },
+                                      [_vm._v("Divorce Location")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c("validation-provider", {
+                                      attrs: {
+                                        name: "Marriage Location",
+                                        rules: "required|alpha_spaces"
+                                      },
+                                      scopedSlots: _vm._u(
+                                        [
+                                          {
+                                            key: "default",
+                                            fn: function(ref) {
+                                              var errors = ref.errors
+                                              return [
+                                                _c("input", {
+                                                  directives: [
+                                                    {
+                                                      name: "model",
+                                                      rawName: "v-model",
+                                                      value:
+                                                        _vm.spouseDetails
+                                                          .divorce_location,
+                                                      expression:
+                                                        "spouseDetails.divorce_location"
+                                                    }
+                                                  ],
+                                                  staticClass:
+                                                    "field-input required",
+                                                  attrs: {
+                                                    type: "text",
+                                                    name: "divorce_location",
+                                                    id: "divorce_location",
+                                                    placeholder:
+                                                      "Divorce Location"
+                                                  },
+                                                  domProps: {
+                                                    value:
+                                                      _vm.spouseDetails
+                                                        .divorce_location
+                                                  },
+                                                  on: {
+                                                    input: function($event) {
+                                                      if (
+                                                        $event.target.composing
+                                                      ) {
+                                                        return
+                                                      }
+                                                      _vm.$set(
+                                                        _vm.spouseDetails,
+                                                        "divorce_location",
+                                                        $event.target.value
+                                                      )
+                                                    }
+                                                  }
+                                                }),
+                                                _vm._v(" "),
+                                                errors != undefined &&
+                                                errors.length
+                                                  ? _c(
+                                                      "div",
+                                                      {
+                                                        staticClass:
+                                                          "invalid-feedback d-block"
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "\n                      " +
+                                                            _vm._s(errors[0]) +
+                                                            "\n                    "
+                                                        )
+                                                      ]
+                                                    )
+                                                  : _vm._e()
+                                              ]
+                                            }
+                                          }
+                                        ],
+                                        null,
+                                        true
+                                      )
+                                    })
+                                  ],
+                                  1
+                                )
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("div", { staticClass: "field-group" }, [
+                            _c(
+                              "div",
+                              { staticClass: "field-group" },
+                              [
+                                _c(
+                                  "label",
+                                  { attrs: { for: "current_address" } },
+                                  [_vm._v("Current Address")]
+                                ),
+                                _vm._v(" "),
+                                _c("ValidationProvider", {
+                                  attrs: {
+                                    name: "Home Address",
+                                    rules: "max:200"
+                                  },
+                                  scopedSlots: _vm._u(
+                                    [
+                                      {
+                                        key: "default",
+                                        fn: function(ref) {
+                                          var errors = ref.errors
+                                          return [
+                                            _c("textarea", {
+                                              directives: [
+                                                {
+                                                  name: "model",
+                                                  rawName: "v-model",
+                                                  value:
+                                                    _vm.spouseDetails.address,
+                                                  expression:
+                                                    "spouseDetails.address"
+                                                }
+                                              ],
+                                              staticClass: "field-input",
+                                              attrs: {
+                                                rows: "2",
+                                                name: "address",
+                                                id: "address",
+                                                placeholder:
+                                                  "Street Address, Town, City, State, Zipcode and country"
+                                              },
+                                              domProps: {
+                                                value: _vm.spouseDetails.address
+                                              },
+                                              on: {
+                                                input: function($event) {
+                                                  if ($event.target.composing) {
+                                                    return
+                                                  }
+                                                  _vm.$set(
+                                                    _vm.spouseDetails,
+                                                    "address",
+                                                    $event.target.value
+                                                  )
+                                                }
+                                              }
+                                            }),
+                                            _vm._v(" "),
+                                            errors != undefined && errors.length
+                                              ? _c(
+                                                  "span",
+                                                  {
+                                                    staticClass:
+                                                      "invalid-feedback d-block"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      "\n                  " +
+                                                        _vm._s(errors[0]) +
+                                                        "\n                "
+                                                    )
+                                                  ]
+                                                )
+                                              : _vm._e()
+                                          ]
+                                        }
+                                      }
+                                    ],
+                                    null,
+                                    true
+                                  )
+                                })
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "row" }, [
                               _c(
-                                "label",
-                                { attrs: { for: "current_address" } },
-                                [_vm._v("Current Address")]
-                              ),
-                              _vm._v(" "),
-                              _c("textarea", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.spouseDetails.address,
-                                    expression: "spouseDetails.address"
-                                  }
+                                "div",
+                                { staticClass: "col nopadding" },
+                                [
+                                  _vm.phones.length > 0
+                                    ? _c("phone-details", {
+                                        attrs: { "user-phones": _vm.phones }
+                                      })
+                                    : _vm._e()
                                 ],
-                                staticClass: "field-input",
-                                attrs: {
-                                  rows: "2",
-                                  name: "address",
-                                  id: "address",
-                                  placeholder:
-                                    "Street Address, Town, City, State, Zipcode and country"
-                                },
-                                domProps: { value: _vm.spouseDetails.address },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.spouseDetails,
-                                      "address",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              })
+                                1
+                              )
                             ]),
                             _vm._v(" "),
-                            _vm.phones.length > 0
-                              ? _c("phone-details", {
-                                  attrs: { "user-phones": _vm.phones }
-                                })
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "field-group" }, [
-                              _c(
-                                "label",
-                                {
-                                  staticClass: "input-label",
-                                  attrs: { for: "email" }
-                                },
-                                [_vm._v("Email")]
-                              ),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.spouseDetails.email,
-                                    expression: "spouseDetails.email"
-                                  }
-                                ],
-                                staticClass: "field-input required email",
-                                attrs: {
-                                  type: "text",
-                                  name: "email",
-                                  id: "email",
-                                  placeholder: "Email address"
-                                },
-                                domProps: { value: _vm.spouseDetails.email },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.spouseDetails,
-                                      "email",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              })
+                            _c("div", { staticClass: "row" }, [
+                              _c("div", { staticClass: "col nopadding" }, [
+                                _c(
+                                  "div",
+                                  { staticClass: "field-group" },
+                                  [
+                                    _c(
+                                      "label",
+                                      {
+                                        staticClass: "input-label",
+                                        attrs: { for: "email" }
+                                      },
+                                      [_vm._v("Email")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c("ValidationProvider", {
+                                      attrs: {
+                                        name: "Email address",
+                                        rules: "email"
+                                      },
+                                      scopedSlots: _vm._u(
+                                        [
+                                          {
+                                            key: "default",
+                                            fn: function(ref) {
+                                              var errors = ref.errors
+                                              return [
+                                                _c("input", {
+                                                  directives: [
+                                                    {
+                                                      name: "model",
+                                                      rawName: "v-model",
+                                                      value:
+                                                        _vm.spouseDetails.email,
+                                                      expression:
+                                                        "spouseDetails.email"
+                                                    }
+                                                  ],
+                                                  staticClass:
+                                                    "field-input required email",
+                                                  attrs: {
+                                                    type: "text",
+                                                    name: "email",
+                                                    id: "email",
+                                                    placeholder: "Email address"
+                                                  },
+                                                  domProps: {
+                                                    value:
+                                                      _vm.spouseDetails.email
+                                                  },
+                                                  on: {
+                                                    input: function($event) {
+                                                      if (
+                                                        $event.target.composing
+                                                      ) {
+                                                        return
+                                                      }
+                                                      _vm.$set(
+                                                        _vm.spouseDetails,
+                                                        "email",
+                                                        $event.target.value
+                                                      )
+                                                    }
+                                                  }
+                                                }),
+                                                _vm._v(" "),
+                                                errors != undefined &&
+                                                errors.length
+                                                  ? _c(
+                                                      "span",
+                                                      {
+                                                        staticClass:
+                                                          "invalid-feedback d-block"
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "\n                      " +
+                                                            _vm._s(errors[0]) +
+                                                            "\n                    "
+                                                        )
+                                                      ]
+                                                    )
+                                                  : _vm._e()
+                                              ]
+                                            }
+                                          }
+                                        ],
+                                        null,
+                                        true
+                                      )
+                                    })
+                                  ],
+                                  1
+                                )
+                              ])
                             ]),
                             _vm._v(" "),
                             _c(
@@ -60419,7 +60896,9 @@ var render = function() {
                                                         "input-file-wrapper clearfix"
                                                     },
                                                     [
-                                                      _vm.divorceDoc.length == 0
+                                                      _vm.divorceDoc !==
+                                                        undefined &&
+                                                      _vm.divorceDoc.length
                                                         ? _c(
                                                             "div",
                                                             {
@@ -60548,7 +61027,7 @@ var render = function() {
                                                           _vm.spouseDetails
                                                             .alimony_amount,
                                                         expression:
-                                                          "\n                                                      spouseDetails.alimony_amount\n                                                  "
+                                                          "spouseDetails.alimony_amount"
                                                       }
                                                     ],
                                                     staticClass:
@@ -60600,8 +61079,7 @@ var render = function() {
                                 }
                               })
                             ])
-                          ],
-                          1
+                          ]
                         )
                       ]
                     }
@@ -61160,7 +61638,7 @@ var render = function() {
                                         staticClass: "input-label",
                                         attrs: { for: "marriage_location" }
                                       },
-                                      [_vm._v("Marriage Date")]
+                                      [_vm._v("Marriage Location")]
                                     ),
                                     _vm._v(" "),
                                     _c("validation-provider", {
@@ -61931,7 +62409,7 @@ var render = function() {
                                     _c("validation-provider", {
                                       attrs: {
                                         name: "Father's Birthplace",
-                                        rules: "alpha_num"
+                                        rules: "alpha_spaces"
                                       },
                                       scopedSlots: _vm._u(
                                         [
@@ -62134,7 +62612,7 @@ var render = function() {
                                     _c("validation-provider", {
                                       attrs: {
                                         name: "Mother's Birthplace",
-                                        rules: "alpha_num"
+                                        rules: "alpha_spaces"
                                       },
                                       scopedSlots: _vm._u(
                                         [
@@ -62216,35 +62694,65 @@ var render = function() {
                             )
                           ]),
                           _vm._v(" "),
-                          _vm.emails !== undefined && _vm.emails.length
-                            ? _c("email-details", {
-                                attrs: { "user-emails": _vm.emails },
-                                on: {
-                                  "email-details-updates": _vm.updateEmails
-                                }
-                              })
-                            : _vm._e(),
+                          _c("div", { staticClass: "row" }, [
+                            _c(
+                              "div",
+                              { staticClass: "col nopadding" },
+                              [
+                                _vm.emails !== undefined && _vm.emails.length
+                                  ? _c("email-details", {
+                                      attrs: { "user-emails": _vm.emails },
+                                      on: {
+                                        "email-details-updates":
+                                          _vm.updateEmails
+                                      }
+                                    })
+                                  : _vm._e()
+                              ],
+                              1
+                            )
+                          ]),
                           _vm._v(" "),
-                          _vm.socials !== undefined && _vm.socials.length
-                            ? _c("social-media-details", {
-                                attrs: { "user-socials": _vm.socials },
-                                on: {
-                                  "social-media-details-updates":
-                                    _vm.updateSocialMedia
-                                }
-                              })
-                            : _vm._e(),
+                          _c("div", { staticClass: "row" }, [
+                            _c(
+                              "div",
+                              { staticClass: "col nopadding" },
+                              [
+                                _vm.socials !== undefined && _vm.socials.length
+                                  ? _c("social-media-details", {
+                                      attrs: { "user-socials": _vm.socials },
+                                      on: {
+                                        "social-media-details-updates":
+                                          _vm.updateSocialMedia
+                                      }
+                                    })
+                                  : _vm._e()
+                              ],
+                              1
+                            )
+                          ]),
                           _vm._v(" "),
-                          _vm.employers !== undefined &&
-                          _vm.employers.length > 0
-                            ? _c("employment-details", {
-                                attrs: { "user-employers": _vm.employers },
-                                on: {
-                                  "employment-details-updated":
-                                    _vm.updateEmploymentDetails
-                                }
-                              })
-                            : _vm._e(),
+                          _c("div", { staticClass: "row" }, [
+                            _c(
+                              "div",
+                              { staticClass: "col nopadding" },
+                              [
+                                _vm.employers !== undefined &&
+                                _vm.employers.length > 0
+                                  ? _c("employment-details", {
+                                      attrs: {
+                                        "user-employers": _vm.employers
+                                      },
+                                      on: {
+                                        "employment-details-updated":
+                                          _vm.updateEmploymentDetails
+                                      }
+                                    })
+                                  : _vm._e()
+                              ],
+                              1
+                            )
+                          ]),
                           _vm._v(" "),
                           _c(
                             "div",
@@ -62262,8 +62770,7 @@ var render = function() {
                               })
                             ]
                           )
-                        ],
-                        1
+                        ]
                       )
                     ]
                   }

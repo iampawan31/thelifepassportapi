@@ -14,6 +14,8 @@
             class="custom-form"
             @submit.prevent="handleSubmit"
           >
+
+            <!-- Legal name and Nick name section -->
             <div class="row">
               <div class="col-md-6 col-sm-12 nopadding">
                 <div class="field-group">
@@ -72,6 +74,8 @@
                 </div>
               </div>
             </div>
+
+            <!-- Home Address Section -->
             <div class="row">
               <div class="col nopadding">
                 <div class="field-group">
@@ -99,6 +103,8 @@
                 </div>
               </div>
             </div>
+
+            <!-- Phone Number(s) section -->
             <div class="row">
               <div class="col nopadding">
                 <phone-details
@@ -108,6 +114,8 @@
                 ></phone-details>
               </div>
             </div>
+
+            <!-- Date of birth Section -->
             <div class="row">
               <div class="col nopadding">
                 <div class="field-group">
@@ -128,6 +136,8 @@
                 </div>
               </div>
             </div>
+
+            <!-- Citizenship and Passport Number Section -->
             <div class="row">
               <div class="col-md-6 col-sm-12 nopadding">
                 <div class="field-group">
@@ -187,6 +197,8 @@
                 </div>
               </div>
             </div>
+
+            <!-- Father's name and birthplace section -->
             <div class="row">
               <div class="col-md-6 col-sm-12 clearfix nopadding">
                 <div class="field-group">
@@ -245,6 +257,8 @@
                 </div>
               </div>
             </div>
+
+            <!-- Mother's Name and birthplace section -->
             <div class="row">
               <div class="col-md-6 col-sm-12 nopadding">
                 <div class="field-group">
@@ -303,16 +317,30 @@
                 </div>
               </div>
             </div>
-            <email-details
-              v-on:email-details-updates="updateEmails"
-              :user-emails="emails"
-              v-if="emails.length"
-            ></email-details>
-            <social-media-details
-              v-on:social-media-details-updates="updateSocialMedia"
-              :user-socials="socials"
-              v-if="socials !== undefined && socials.length"
-            ></social-media-details>
+
+            <!-- Email(s) credentials section -->
+            <div class="row">
+              <div class="col nopadding">
+                <email-details
+                  v-on:email-details-updates="updateEmails"
+                  :user-emails="emails"
+                  v-if="emails.length"
+                ></email-details>
+              </div>
+            </div>
+
+            <!-- Social media login credentials section -->
+            <div class="row">
+              <div class="col nopadding">
+                <social-media-details
+                  v-on:social-media-details-updates="updateSocialMedia"
+                  :user-socials="socials"
+                  v-if="socials !== undefined && socials.length"
+                ></social-media-details>
+              </div>
+            </div>
+
+            <!-- Employment Details section -->
             <div class="row">
               <div class="col nopadding">
                 <employment-details
@@ -323,6 +351,7 @@
               </div>
             </div>
 
+            <!-- Mark as complete button section -->
             <div class="field-group form-group-checkbox clearfix">
               <label for="chk_complete">
                 <input
@@ -334,6 +363,7 @@
               </label>
             </div>
 
+            <!-- Save and Continue button section -->
             <div class="field-group field-group__action clearfix">
               <input
                 type="submit"

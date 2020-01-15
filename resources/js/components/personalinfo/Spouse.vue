@@ -19,6 +19,8 @@
             class="custom-form"
             @submit.prevent="handleSubmit"
           >
+
+            <!-- Marriage Date and Location Section -->
             <div class="row">
               <div class="col-md-6 col-sm-12 nopadding">
                 <div class="field-group">
@@ -54,7 +56,7 @@
                   <label
                     for="marriage_location"
                     class="input-label"
-                  >Marriage Date</label>
+                  >Marriage Location</label>
                   <validation-provider
                     name="Marriage Location"
                     rules="required|alpha_spaces"
@@ -79,7 +81,10 @@
               </div>
             </div>
 
+            <!-- Spouse Details Heading -->
             <h4 class="form-subhead">Spouse Details</h4>
+
+            <!-- Legal name and nick name section -->
             <div class="row">
               <div class="col-md-6 col-sm-12 nopadding">
                 <div class="field-group">
@@ -139,6 +144,8 @@
                 </div>
               </div>
             </div>
+
+            <!-- Spouse Home Address Section -->
             <div class="row">
               <div class="col nopadding">
                 <div class="field-group">
@@ -166,6 +173,8 @@
                 </div>
               </div>
             </div>
+
+            <!-- Spouse's Phone number(s) section -->
             <div class="row">
               <div class="col nopadding">
                 <phone-details
@@ -175,6 +184,8 @@
                 ></phone-details>
               </div>
             </div>
+
+            <!-- Spouse's Date of birth section -->
             <div class="row">
               <div class="col nopadding">
                 <div class="field-group">
@@ -194,6 +205,8 @@
                 </div>
               </div>
             </div>
+
+            <!-- Spouse's Citizsenship and Passport section -->
             <div class="row">
               <div class="col-md-6 col-sm-12 nopadding">
                 <div class="field-group">
@@ -253,6 +266,8 @@
                 </div>
               </div>
             </div>
+
+            <!-- Spouse's Father name and birth place section -->
             <div class="row">
               <div class="col-md-6 col-sm-12 nopadding">
                 <div class="field-group">
@@ -290,7 +305,7 @@
                   >Father's Birthplace</label>
                   <validation-provider
                     name="Father's Birthplace"
-                    rules="alpha_num"
+                    rules="alpha_spaces"
                     v-slot="{ errors }"
                   >
                     <input
@@ -311,6 +326,8 @@
                 </div>
               </div>
             </div>
+
+            <!-- Spouse's Mother name and birth place section -->
             <div class="row">
               <div class="col-md-6 col-sm-12 nopadding">
                 <div class="field-group">
@@ -348,7 +365,7 @@
                   >Mother's Birthplace</label>
                   <validation-provider
                     name="Mother's Birthplace"
-                    rules="alpha_num"
+                    rules="alpha_spaces"
                     v-slot="{ errors }"
                   >
                     <input
@@ -369,22 +386,41 @@
                 </div>
               </div>
             </div>
-            <email-details
-              v-on:email-details-updates="updateEmails"
-              :user-emails="emails"
-              v-if="emails !== undefined && emails.length"
-            ></email-details>
-            <social-media-details
-              v-on:social-media-details-updates="updateSocialMedia"
-              :user-socials="socials"
-              v-if="socials !== undefined && socials.length"
-            ></social-media-details>
-            <employment-details
-              v-on:employment-details-updated="updateEmploymentDetails"
-              :user-employers="employers"
-              v-if="employers !== undefined && employers.length > 0"
-            ></employment-details>
 
+            <!-- Spouse's email(s) credentials section -->
+            <div class="row">
+              <div class="col nopadding">
+                <email-details
+                  v-on:email-details-updates="updateEmails"
+                  :user-emails="emails"
+                  v-if="emails !== undefined && emails.length"
+                ></email-details>
+              </div>
+            </div>
+
+            <!-- Spouse's Social media credentials section -->
+            <div class="row">
+              <div class="col nopadding">
+                <social-media-details
+                  v-on:social-media-details-updates="updateSocialMedia"
+                  :user-socials="socials"
+                  v-if="socials !== undefined && socials.length"
+                ></social-media-details>
+              </div>
+            </div>
+
+            <!-- Spouse's Employment Details section -->
+            <div class="row">
+              <div class="col nopadding">
+                <employment-details
+                  v-on:employment-details-updated="updateEmploymentDetails"
+                  :user-employers="employers"
+                  v-if="employers !== undefined && employers.length > 0"
+                ></employment-details>
+              </div>
+            </div>
+
+            <!-- Save and Continue Button section -->
             <div class="field-group field-group__action clearfix">
               <input
                 type="submit"
