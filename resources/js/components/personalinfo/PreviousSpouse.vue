@@ -178,7 +178,7 @@
               <div class="field-group">
                 <label for="current_address">Current Address</label>
                 <ValidationProvider
-                  name="Home Address"
+                  name="Current Address"
                   rules="max:200"
                   v-slot="{ errors }"
                 >
@@ -310,14 +310,26 @@
                           for="alimony_amount"
                           class="input-label"
                         >Amount</label>
-                        <input
-                          type="text"
-                          name="alimony_amount"
-                          id="alimony_amount"
-                          class="field-input required"
-                          placeholder="Amount"
-                          v-model="spouseDetails.alimony_amount"
-                        />
+                        <ValidationProvider
+                          name="Alimony amount"
+                          :rules="{ regex: /^[0-9]+$/ }"
+                          v-slot="{ errors }"
+                        >
+                          <input
+                            type="text"
+                            name="alimony_amount"
+                            id="alimony_amount"
+                            class="field-input required"
+                            placeholder="Amount"
+                            v-model="spouseDetails.alimony_amount"
+                          />
+                          <span
+                            v-if="errors != undefined && errors.length"
+                            class="invalid-feedback d-block"
+                          >
+                            {{ errors[0] }}
+                          </span>
+                        </ValidationProvider>
                       </div>
                     </div>
                   </div>
@@ -353,7 +365,8 @@ import {
   required_if,
   alpha_spaces,
   alpha_num,
-  max
+  max,
+  regex
 } from "vee-validate/dist/rules";
 
 export default {
@@ -467,6 +480,7 @@ export default {
 
 extend("email", email);
 extend("max", max);
+extend("regex", regex);
 extend("alpha_num", alpha_num);
 extend("alpha_spaces", alpha_spaces);
 extend("required_if", required_if);
