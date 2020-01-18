@@ -59,7 +59,7 @@
                   >Marriage Location</label>
                   <validation-provider
                     name="Marriage Location"
-                    rules="required|alpha_spaces"
+                    rules="required|address|max:200"
                     v-slot="{ errors }"
                   >
                     <input
@@ -94,7 +94,7 @@
                   >Legal Name</label>
                   <ValidationProvider
                     name="Legal Name"
-                    rules="required"
+                    rules="required|max:50"
                     v-slot="{ errors }"
                   >
                     <input
@@ -152,7 +152,7 @@
                   <label for="home_address">Home Address</label>
                   <ValidationProvider
                     name="Home Address"
-                    rules="max:200"
+                    rules="address|max:200"
                     v-slot="{ errors }"
                   >
                     <textarea
@@ -215,6 +215,7 @@
                     class="input-label"
                   >Citizenship</label>
                   <validation-provider
+                    name="Citizenship"
                     vid="citizenship"
                     v-slot="{ errors }"
                   >
@@ -245,7 +246,7 @@
                   >Passport Number</label>
                   <validation-provider
                     name="Passport Number"
-                    rules="required_if:citizenship"
+                    rules="required_if:citizenship|max:20"
                     v-slot="{ errors }"
                   >
                     <input
@@ -273,7 +274,7 @@
                 <div class="field-group">
                   <validation-provider
                     name="Father's Name"
-                    rules="alpha_spaces"
+                    rules="alpha_spaces|max:50"
                     v-slot="{ errors }"
                   >
                     <label
@@ -305,7 +306,7 @@
                   >Father's Birthplace</label>
                   <validation-provider
                     name="Father's Birthplace"
-                    rules="alpha_spaces"
+                    rules="address|max:200"
                     v-slot="{ errors }"
                   >
                     <input
@@ -337,7 +338,7 @@
                   >Mother's Name</label>
                   <validation-provider
                     name="Mother's Name"
-                    rules="alpha_spaces"
+                    rules="alpha_spaces|max:50"
                     v-slot="{ errors }"
                   >
                     <input
@@ -365,7 +366,7 @@
                   >Mother's Birthplace</label>
                   <validation-provider
                     name="Mother's Birthplace"
-                    rules="alpha_spaces"
+                    rules="address|max:200"
                     v-slot="{ errors }"
                   >
                     <input
@@ -443,13 +444,7 @@ import EmailDetails from "./EmailDetails.vue";
 import SocialMediaDetails from "./SocialMediaDetails.vue";
 import EmploymentDetails from "./EmploymentDetails.vue";
 import { ValidationObserver, ValidationProvider } from "vee-validate";
-import { extend } from "vee-validate";
-import {
-  alpha_spaces,
-  alpha_num,
-  max,
-  required_if
-} from "vee-validate/dist/rules";
+
 
 export default {
   components: {
@@ -584,12 +579,8 @@ export default {
     }
   }
 };
-
-extend("alpha_spaces", alpha_spaces);
-extend("max", max);
-extend("required_if", required_if);
-extend("alpha_num", alpha_num);
 </script>
+
 <style>
 .mb-2 {
   margin-bottom: 2px;

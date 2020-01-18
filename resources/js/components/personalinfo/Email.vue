@@ -2,7 +2,7 @@
     <div class="row clearfix">
         <div class="field-group nopadding col-md-6 col-sm-12">
             <validation-provider
-                name="Email"
+                name="Email Address"
                 rules="email"
                 vid="email"
                 v-slot="{ errors }"
@@ -25,7 +25,7 @@
         <div class="field-group nopadding col-md-6 col-sm-12">
             <validation-provider
                 name="Password"
-                :rules="'required_if:email|max:30'"
+                :rules="'required_if:email|max:50'"
                 v-slot="{ errors }"
             >
                 <input
@@ -49,7 +49,7 @@
 <script>
 import { ValidationProvider } from "vee-validate";
 import { extend } from "vee-validate";
-import { email, required_if, alpha_num, max } from "vee-validate/dist/rules";
+
 export default {
     components: {
         ValidationProvider
@@ -79,10 +79,6 @@ export default {
         this.key = this.emailKey;
     }
 };
-
-extend("email", email);
-extend("max", max);
-extend("required_if", required_if);
 </script>
 
 <style>

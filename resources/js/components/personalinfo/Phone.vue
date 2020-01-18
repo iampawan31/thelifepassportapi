@@ -1,5 +1,9 @@
 <template>
-    <ValidationProvider rules="is_phone" v-slot="{ errors }">
+    <ValidationProvider
+        name="Phone Number"
+        rules="is_phone"
+        v-slot="{ errors }"
+    >
         <div class="field-group">
             <div class="add-anohter-field">
                 <div class="field-wrapper">
@@ -21,7 +25,7 @@
 
 <script>
 import { ValidationProvider } from "vee-validate";
-import { extend } from "vee-validate";
+
 export default {
     components: {
         ValidationProvider
@@ -43,12 +47,4 @@ export default {
         this.key = this.phoneKey;
     }
 };
-
-extend("is_phone", value => {
-    var phoneRegex = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/;
-    if (value.match(phoneRegex)) {
-        // return value >= 0;
-    }
-    return "Phone Number should be valid and should contain 10 digits";
-});
 </script>
