@@ -12,30 +12,29 @@
                     <form
                         id="frmFriends"
                         name="frmFriends"
-                        action="#"
                         method="post"
                         class="custom-form"
-                        @submit.prevent="handleSubmit()"
+                        @submit.prevent="handleSubmit"
                     >
                         <!-- Name section -->
                         <div class="row">
                             <div class="col">
                                 <div class="field-group">
-                                    <label for="friend_name" class="input-label"
+                                    <label for="legal_name" class="input-label"
                                         >Name</label
                                     >
                                     <ValidationProvider
                                         name="Friend Name"
-                                        rules="required|alpha_spaces|max:50"
+                                        rules="required|max:50"
                                         v-slot="{ errors }"
                                     >
                                         <input
                                             type="text"
-                                            name="friend_name"
-                                            id="friend_name"
-                                            data-id="friend_name"
+                                            name="legal_name"
+                                            id="legal_name"
                                             class="field-input required"
                                             placeholder="Name"
+                                            v-model="friendsDetails.legal_name"
                                         />
                                         <div
                                             class="invalid-feedback d-block"
@@ -58,15 +57,16 @@
                                     >
                                     <ValidationProvider
                                         name="Home Address"
-                                        rules="address|max:200"
+                                        rules="max:1000"
                                         v-slot="{ errors }"
                                     >
                                         <textarea
                                             rows="2"
-                                            name="home_address"
-                                            id="home_address"
+                                            name="address"
+                                            id="address"
                                             class="field-input"
                                             placeholder="Street Address, Town, City, State, Zipcode and country"
+                                            v-model="friendsDetails.address"
                                         ></textarea>
                                         <span
                                             v-if="
@@ -90,6 +90,7 @@
                                         updatePhoneNumbers
                                     "
                                     :user-phones="phoneNumbers"
+                                    v-if="phoneNumbers.length > 0"
                                 ></phone-details>
                             </div>
                         </div>
@@ -108,11 +109,11 @@
                                     >
                                         <input
                                             type="text"
-                                            name="user_email"
-                                            id="user_email"
+                                            name="email"
+                                            id="email"
                                             class="field-input required email"
                                             placeholder="Email address"
-                                            v-model="emailAddress"
+                                            v-model="friendsDetails.email"
                                         />
                                         <span
                                             v-if="
@@ -184,16 +185,61 @@ export default {
                 { id: 3, text: "Son" },
                 { id: 4, text: "Daughter" },
                 { id: 5, text: "Other" }
-            ]
+            ],
+            friendsDetails: [],
+            submitted: false,
+            friendId: 0,
         };
     },
     mounted() {},
+    created() {
+        this.friendId = this.$route.params.id;
+        this.getFriendsInfo();
+    },
     methods: {
-        handleSubmit(e) {
-            this.$router.push("/close-friends-question");
+        async handleSubmit(e) {
+            this.submitted = true;
+
+            const isValid = await this.$refs.observer.validate();
+            if (!isValid) {
+
+            } else {
+                const form = e.target;
+                const formData = new FormData(form);
+
+                if (this.friendId) {
+                    axios.post("/friendsinfo/" + this.friendId + "/updatedata", formData)
+                        .then(response => {
+                            this.$router.push("/close-friends-question");
+                        })
+                        .catch(function() {});
+                } else {
+                    axios.post("/friendsinfo/postdata", formData)
+                        .then(response => {
+                            this.$router.push("/close-friends-question");
+                        })
+                        .catch(function() {});
+                }
+            }
+
+            //this.$router.push("/close-friends-question");
         },
         updatePhoneNumbers(data) {
             this.phoneNumbers = data;
+        },
+        getFriendsInfo() {
+            if (this.friendId) {
+                axios.get("/friendsinfo/" + this.friendId + "/getfriendsinfo").then(response => {
+                    if (response.status == 200) {
+                        this.friendsDetails = JSON.parse(JSON.stringify(response.data.data[0]));
+                        if (this.friendsDetails.friends_phone.length > 0) {
+                            this.phoneNumbers = this.friendsDetails.friends_phone;
+                        } else {
+                            this.phoneNumbers = [{ number: null }];
+                        }
+                    }
+                });
+            }
         }
     }
 };

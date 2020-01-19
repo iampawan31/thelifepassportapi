@@ -36,6 +36,7 @@ export const routes = [
     { path: "/family-members", component: FamilyMembers },
     { path: "/family-members/:id", component: FamilyMembers },
     { path: "/close-friends", component: CloseFriends },
+    { path: "/close-friends/:id", component: CloseFriends },
     { path: "/home-assistants", component: HomeAssistants },
     { path: "/estate-representative", component: EstateRepresentative },
     {

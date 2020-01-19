@@ -68,6 +68,16 @@ Route::middleware(['auth'])->group(function(){
     Route::delete('familyinfo/{id}/removefamilymember', 'FamilyController@destroy')->name('familyinfo.removefamilymember');
     Route::post('familyinfo/updatestatus', 'FamilyController@updatestatus')->name('familyinfo.updatestatus');
 
+    //Close friends info
+    Route::get('friendsinfo/getfriendsinfo', 'FriendsController@getfriendsinfo')->name('friendsinfo.getfriendsinfo');
+    Route::post('friendsinfo/updatefriendsstatus', 'FriendsController@updatefriendsstatus')->name('friendsinfo.updatefriendsstatus');
+    Route::get('friendsinfo/getfriendsstatus', 'FriendsController@getfriendsstatus')->name('friendsinfo.getfamilymembersstatus');
+    Route::post('friendsinfo/postdata', 'FriendsController@store')->name('friendsinfo.postdata');
+    Route::get('friendsinfo/{id}/getfriendsinfo', 'FriendsController@edit')->name('friendsinfo.getfamilymemberinfo');
+    Route::post('friendsinfo/{id}/updatedata', 'FriendsController@update')->name('friendsinfo.updatedata');
+    Route::delete('friendsinfo/{id}/removefriends', 'FriendsController@destroy')->name('friendsinfo.removefamilymember');
+    Route::post('friendsinfo/updatestatus', 'FriendsController@updatestatus')->name('friendsinfo.updatestatus');
+
     //get left navigation list
     Route::get('getpersonalinfonav', 'LeftnavController@getpersonalinfoleftnavigation')->name('getpersonalinfonav.getdata');
     

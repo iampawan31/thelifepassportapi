@@ -1843,10 +1843,19 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _PhoneDetails_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PhoneDetails.vue */ "./resources/js/components/personalinfo/PhoneDetails.vue");
-/* harmony import */ var _Email_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Email.vue */ "./resources/js/components/personalinfo/Email.vue");
-/* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
-/* harmony import */ var vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vee-validate/dist/rules */ "./node_modules/vee-validate/dist/rules.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _PhoneDetails_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PhoneDetails.vue */ "./resources/js/components/personalinfo/PhoneDetails.vue");
+/* harmony import */ var _Email_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Email.vue */ "./resources/js/components/personalinfo/Email.vue");
+/* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
+/* harmony import */ var vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vee-validate/dist/rules */ "./node_modules/vee-validate/dist/rules.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
 //
 //
 //
@@ -1998,10 +2007,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    PhoneDetails: _PhoneDetails_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    Email: _Email_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-    ValidationObserver: vee_validate__WEBPACK_IMPORTED_MODULE_2__["ValidationObserver"],
-    ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_2__["ValidationProvider"]
+    PhoneDetails: _PhoneDetails_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    Email: _Email_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    ValidationObserver: vee_validate__WEBPACK_IMPORTED_MODULE_3__["ValidationObserver"],
+    ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_3__["ValidationProvider"]
   },
   computed: {
     isOtherSelected: function isOtherSelected() {
@@ -2036,25 +2045,96 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         id: 5,
         text: "Other"
-      }]
+      }],
+      friendsDetails: [],
+      submitted: false,
+      friendId: 0
     };
   },
   mounted: function mounted() {},
+  created: function created() {
+    this.friendId = this.$route.params.id;
+    this.getFriendsInfo();
+  },
   methods: {
-    handleSubmit: function handleSubmit(e) {
-      this.$router.push("/close-friends-question");
-    },
+    handleSubmit: function () {
+      var _handleSubmit = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(e) {
+        var _this = this;
+
+        var isValid, form, formData;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                this.submitted = true;
+                _context.next = 3;
+                return this.$refs.observer.validate();
+
+              case 3:
+                isValid = _context.sent;
+
+                if (!isValid) {} else {
+                  form = e.target;
+                  formData = new FormData(form);
+
+                  if (this.friendId) {
+                    axios.post("/friendsinfo/" + this.friendId + "/updatedata", formData).then(function (response) {
+                      _this.$router.push("/close-friends-question");
+                    })["catch"](function () {});
+                  } else {
+                    axios.post("/friendsinfo/postdata", formData).then(function (response) {
+                      _this.$router.push("/close-friends-question");
+                    })["catch"](function () {});
+                  }
+                } //this.$router.push("/close-friends-question");
+
+
+              case 5:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function handleSubmit(_x) {
+        return _handleSubmit.apply(this, arguments);
+      }
+
+      return handleSubmit;
+    }(),
     updatePhoneNumbers: function updatePhoneNumbers(data) {
       this.phoneNumbers = data;
+    },
+    getFriendsInfo: function getFriendsInfo() {
+      var _this2 = this;
+
+      if (this.friendId) {
+        axios.get("/friendsinfo/" + this.friendId + "/getfriendsinfo").then(function (response) {
+          if (response.status == 200) {
+            _this2.friendsDetails = JSON.parse(JSON.stringify(response.data.data[0]));
+
+            if (_this2.friendsDetails.friends_phone.length > 0) {
+              _this2.phoneNumbers = _this2.friendsDetails.friends_phone;
+            } else {
+              _this2.phoneNumbers = [{
+                number: null
+              }];
+            }
+          }
+        });
+      }
     }
   }
 });
-Object(vee_validate__WEBPACK_IMPORTED_MODULE_2__["extend"])("email", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_3__["email"]);
-Object(vee_validate__WEBPACK_IMPORTED_MODULE_2__["extend"])("max", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_3__["max"]);
-Object(vee_validate__WEBPACK_IMPORTED_MODULE_2__["extend"])("regex", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_3__["regex"]);
-Object(vee_validate__WEBPACK_IMPORTED_MODULE_2__["extend"])("alpha_num", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_3__["alpha_num"]);
-Object(vee_validate__WEBPACK_IMPORTED_MODULE_2__["extend"])("alpha_spaces", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_3__["alpha_spaces"]);
-Object(vee_validate__WEBPACK_IMPORTED_MODULE_2__["extend"])("required_if", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_3__["required_if"]);
+Object(vee_validate__WEBPACK_IMPORTED_MODULE_3__["extend"])("email", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_4__["email"]);
+Object(vee_validate__WEBPACK_IMPORTED_MODULE_3__["extend"])("max", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_4__["max"]);
+Object(vee_validate__WEBPACK_IMPORTED_MODULE_3__["extend"])("regex", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_4__["regex"]);
+Object(vee_validate__WEBPACK_IMPORTED_MODULE_3__["extend"])("alpha_num", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_4__["alpha_num"]);
+Object(vee_validate__WEBPACK_IMPORTED_MODULE_3__["extend"])("alpha_spaces", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_4__["alpha_spaces"]);
+Object(vee_validate__WEBPACK_IMPORTED_MODULE_3__["extend"])("required_if", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_4__["required_if"]);
 
 /***/ }),
 
@@ -4023,6 +4103,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -4039,7 +4124,8 @@ __webpack_require__.r(__webpack_exports__);
       religiousOrganization: [],
       marriageStatus: [],
       previousMarriageStatus: [],
-      familyMembersStatus: []
+      familyMembersStatus: [],
+      friendsStatus: []
     };
   },
   created: function created() {
@@ -4047,6 +4133,7 @@ __webpack_require__.r(__webpack_exports__);
     this.getSpouseMarriageStatus();
     this.getPreviousSpouseMarriageStatus();
     this.getFamilyMembersStatus();
+    this.getFriendsStatus();
   },
   mounted: function mounted() {
     $("#b").mCustomScrollbar({
@@ -4065,6 +4152,7 @@ __webpack_require__.r(__webpack_exports__);
       this.getSpouseMarriageStatus();
       this.getPreviousSpouseMarriageStatus();
       this.getFamilyMembersStatus();
+      this.getFriendsStatus();
     }
   },
   methods: {
@@ -4135,6 +4223,15 @@ __webpack_require__.r(__webpack_exports__);
         if (response.status == 200) {
           _this5.familyMembersStatus = response.data.data; // console.log("Family Members");
           // console.log(this.familyMembersStatus);
+        }
+      })["catch"](function () {});
+    },
+    getFriendsStatus: function getFriendsStatus() {
+      var _this6 = this;
+
+      axios.get('friendsinfo/getfriendsstatus').then(function (response) {
+        if (response.status == 200) {
+          _this6.friendsStatus = response.data.data;
         }
       })["catch"](function () {});
     }
@@ -6953,6 +7050,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 //
 //
 //
@@ -6970,7 +7075,153 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      formData: [],
+      showFriendsDetails: false,
+      friendsDetails: [],
+      userId: '',
+      is_completed: false
+    };
+  },
+  mounted: function mounted() {
+    this.updatestepinfo();
+    this.getFriendsInfo();
+  },
+  methods: {
+    handleSubmit: function () {
+      var _handleSubmit = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(e) {
+        var _this = this;
+
+        var form, formData;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                form = e.target;
+                formData = new FormData(form);
+                axios.post("/friendsinfo/updatestatus", formData).then(function (response) {
+                  if (response.status == 200) {
+                    _this.$router.push("/home-assistants-question");
+                  }
+                })["catch"](function () {});
+
+              case 3:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      function handleSubmit(_x) {
+        return _handleSubmit.apply(this, arguments);
+      }
+
+      return handleSubmit;
+    }(),
+    updatestepinfo: function updatestepinfo() {
+      var data = {
+        'step_id': 5,
+        'is_visited': '1'
+      };
+      axios.post('/updatepersonalstep', data).then(function (response) {
+        console.log(response);
+      })["catch"](function () {});
+    },
+    friendsstatus: function friendsstatus(status) {
+      var _this2 = this;
+
+      if (status == 0) {
+        this.formData = {
+          has_friends: "0"
+        };
+      } else if (status == 1) {
+        this.formData = {
+          has_friends: "1"
+        };
+      } else if (status == 2) {
+        this.formData = {
+          has_friends: "2"
+        };
+      }
+
+      axios.post('friendsinfo/updatefriendsstatus', this.formData).then(function (response) {
+        if (status == '1') {
+          _this2.$router.push('/close-friends');
+        } else {
+          _this2.$router.push('/home-assistants-question');
+        }
+      })["catch"](function () {});
+    },
+    getFriendsInfo: function getFriendsInfo() {
+      var _this3 = this;
+
+      axios.get('/friendsinfo/getfriendsinfo').then(function (response) {
+        if (response.status == 200) {
+          if (response.data.data[0]) {
+            _this3.friendsDetails = JSON.parse(JSON.stringify(response.data.data));
+            _this3.userId = _this3.friendsDetails.user_id;
+            _this3.showFriendsDetails = true;
+          } else {
+            _this3.showFriendsDetails = false;
+          }
+        }
+      });
+    },
+    removeFriend: function removeFriend(id) {
+      var _this4 = this;
+
+      axios["delete"]('friendsinfo/' + id + '/removefriends').then(function (response) {
+        if (response.status == 200) {
+          _this4.getFriendsInfo();
+        }
+      })["catch"](function () {});
+    }
+  }
+});
 
 /***/ }),
 
@@ -56213,13 +56464,12 @@ var render = function() {
                           attrs: {
                             id: "frmFriends",
                             name: "frmFriends",
-                            action: "#",
                             method: "post"
                           },
                           on: {
                             submit: function($event) {
                               $event.preventDefault()
-                              return _vm.handleSubmit()
+                              return _vm.handleSubmit($event)
                             }
                           }
                         },
@@ -56234,7 +56484,7 @@ var render = function() {
                                     "label",
                                     {
                                       staticClass: "input-label",
-                                      attrs: { for: "friend_name" }
+                                      attrs: { for: "legal_name" }
                                     },
                                     [_vm._v("Name")]
                                   ),
@@ -56242,7 +56492,7 @@ var render = function() {
                                   _c("ValidationProvider", {
                                     attrs: {
                                       name: "Friend Name",
-                                      rules: "required|alpha_spaces|max:50"
+                                      rules: "required|max:50"
                                     },
                                     scopedSlots: _vm._u(
                                       [
@@ -56252,14 +56502,43 @@ var render = function() {
                                             var errors = ref.errors
                                             return [
                                               _c("input", {
+                                                directives: [
+                                                  {
+                                                    name: "model",
+                                                    rawName: "v-model",
+                                                    value:
+                                                      _vm.friendsDetails
+                                                        .legal_name,
+                                                    expression:
+                                                      "friendsDetails.legal_name"
+                                                  }
+                                                ],
                                                 staticClass:
                                                   "field-input required",
                                                 attrs: {
                                                   type: "text",
-                                                  name: "friend_name",
-                                                  id: "friend_name",
-                                                  "data-id": "friend_name",
+                                                  name: "legal_name",
+                                                  id: "legal_name",
                                                   placeholder: "Name"
+                                                },
+                                                domProps: {
+                                                  value:
+                                                    _vm.friendsDetails
+                                                      .legal_name
+                                                },
+                                                on: {
+                                                  input: function($event) {
+                                                    if (
+                                                      $event.target.composing
+                                                    ) {
+                                                      return
+                                                    }
+                                                    _vm.$set(
+                                                      _vm.friendsDetails,
+                                                      "legal_name",
+                                                      $event.target.value
+                                                    )
+                                                  }
                                                 }
                                               }),
                                               _vm._v(" "),
@@ -56312,7 +56591,7 @@ var render = function() {
                                   _c("ValidationProvider", {
                                     attrs: {
                                       name: "Home Address",
-                                      rules: "address|max:200"
+                                      rules: "max:1000"
                                     },
                                     scopedSlots: _vm._u(
                                       [
@@ -56322,13 +56601,42 @@ var render = function() {
                                             var errors = ref.errors
                                             return [
                                               _c("textarea", {
+                                                directives: [
+                                                  {
+                                                    name: "model",
+                                                    rawName: "v-model",
+                                                    value:
+                                                      _vm.friendsDetails
+                                                        .address,
+                                                    expression:
+                                                      "friendsDetails.address"
+                                                  }
+                                                ],
                                                 staticClass: "field-input",
                                                 attrs: {
                                                   rows: "2",
-                                                  name: "home_address",
-                                                  id: "home_address",
+                                                  name: "address",
+                                                  id: "address",
                                                   placeholder:
                                                     "Street Address, Town, City, State, Zipcode and country"
+                                                },
+                                                domProps: {
+                                                  value:
+                                                    _vm.friendsDetails.address
+                                                },
+                                                on: {
+                                                  input: function($event) {
+                                                    if (
+                                                      $event.target.composing
+                                                    ) {
+                                                      return
+                                                    }
+                                                    _vm.$set(
+                                                      _vm.friendsDetails,
+                                                      "address",
+                                                      $event.target.value
+                                                    )
+                                                  }
                                                 }
                                               }),
                                               _vm._v(" "),
@@ -56368,13 +56676,17 @@ var render = function() {
                               "div",
                               { staticClass: "col" },
                               [
-                                _c("phone-details", {
-                                  attrs: { "user-phones": _vm.phoneNumbers },
-                                  on: {
-                                    "phone-details-updates":
-                                      _vm.updatePhoneNumbers
-                                  }
-                                })
+                                _vm.phoneNumbers.length > 0
+                                  ? _c("phone-details", {
+                                      attrs: {
+                                        "user-phones": _vm.phoneNumbers
+                                      },
+                                      on: {
+                                        "phone-details-updates":
+                                          _vm.updatePhoneNumbers
+                                      }
+                                    })
+                                  : _vm._e()
                               ],
                               1
                             )
@@ -56412,20 +56724,23 @@ var render = function() {
                                                   {
                                                     name: "model",
                                                     rawName: "v-model",
-                                                    value: _vm.emailAddress,
-                                                    expression: "emailAddress"
+                                                    value:
+                                                      _vm.friendsDetails.email,
+                                                    expression:
+                                                      "friendsDetails.email"
                                                   }
                                                 ],
                                                 staticClass:
                                                   "field-input required email",
                                                 attrs: {
                                                   type: "text",
-                                                  name: "user_email",
-                                                  id: "user_email",
+                                                  name: "email",
+                                                  id: "email",
                                                   placeholder: "Email address"
                                                 },
                                                 domProps: {
-                                                  value: _vm.emailAddress
+                                                  value:
+                                                    _vm.friendsDetails.email
                                                 },
                                                 on: {
                                                   input: function($event) {
@@ -56434,8 +56749,11 @@ var render = function() {
                                                     ) {
                                                       return
                                                     }
-                                                    _vm.emailAddress =
+                                                    _vm.$set(
+                                                      _vm.friendsDetails,
+                                                      "email",
                                                       $event.target.value
+                                                    )
                                                   }
                                                 }
                                               }),
@@ -60178,7 +60496,7 @@ var render = function() {
                         fill: "none",
                         stroke: "currentColor",
                         "stroke-width": "2",
-                        "stroke-linecap": "round",
+                        "stroke-linecax": "round",
                         "stroke-linejoin": "round"
                       }
                     },
@@ -60457,20 +60775,50 @@ var render = function() {
               1
             ),
             _vm._v(" "),
-            _vm.closeFriends.is_filled
+            _vm.closeFriends.is_visited != "0"
               ? _c(
                   "div",
                   { staticClass: "item__meta" },
                   [
-                    _c("span", { staticClass: "item__last-updated" }, [
-                      _vm._v(
-                        "Last Updated: " + _vm._s(_vm.closeFriends.updated_at)
-                      )
-                    ]),
+                    _vm.friendsStatus && _vm.friendsStatus.has_friends == "0"
+                      ? _c("span", [
+                          _vm._v("You answered: "),
+                          _c("strong", [_vm._v("No")])
+                        ])
+                      : _vm.friendsStatus &&
+                        _vm.friendsStatus.has_friends == "1"
+                      ? _c("span", [
+                          _vm._v("MEMBER ADDED: "),
+                          _c("strong", [
+                            _vm._v(_vm._s(_vm.friendsStatus.count))
+                          ])
+                        ])
+                      : _vm.friendsStatus &&
+                        _vm.friendsStatus.has_friends == "2"
+                      ? _c("span", [
+                          _vm._v("You answered: "),
+                          _c("strong", [_vm._v("SKIPPED")])
+                        ])
+                      : _c("span", [
+                          _vm._v("You answered: "),
+                          _c("strong", [_vm._v("NONE")])
+                        ]),
+                    _c("br"),
+                    _vm._v(" "),
+                    _vm.closeFriends.updated_at != ""
+                      ? _c("span", { staticClass: "item__last-updated" }, [
+                          _vm._v(
+                            "Last Updated: " +
+                              _vm._s(_vm.closeFriends.updated_at)
+                          )
+                        ])
+                      : _vm._e(),
                     _vm._v("  /  \n                    "),
-                    _c("router-link", { attrs: { to: "/close-friends" } }, [
-                      _vm._v("Edit")
-                    ])
+                    _c(
+                      "router-link",
+                      { attrs: { to: "/close-friends-question" } },
+                      [_vm._v("Edit")]
+                    )
                   ],
                   1
                 )
@@ -66380,41 +66728,310 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "c" }, [
-    _c(
-      "div",
-      {
-        staticClass: "question-item",
-        attrs: {
-          "data-nextpage": "questions/home-assistants.php",
-          "data-viewpage": "views/close-friends.php"
-        }
-      },
-      [
-        _c("div", { staticClass: "question-header" }, [
-          _c("h3", [_vm._v("Would you like any close friends contacted?")]),
+    _vm.showFriendsDetails
+      ? _c("div", [
+          _c("h3", { staticClass: "heading3" }, [_vm._v("Close friends")]),
           _vm._v(" "),
           _c(
             "div",
-            { staticClass: "yesno" },
+            { staticClass: "data" },
+            [
+              _vm._m(0),
+              _vm._v(" "),
+              _vm._l(_vm.friendsDetails, function(friend, index) {
+                return _c("div", { key: index, staticClass: "item clearfix" }, [
+                  _c("div", { staticClass: "item__name" }, [
+                    _c("strong", [_vm._v(_vm._s(friend.legal_name))])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "item__email" }, [
+                    _vm._v(" " + _vm._s(friend.email) + " ")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "item__phone" }),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "item__action" },
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          staticClass: "btn-edit",
+                          attrs: { to: { path: "/close-friends/" + friend.id } }
+                        },
+                        [
+                          _c(
+                            "svg",
+                            {
+                              staticClass: "feather feather-edit",
+                              attrs: {
+                                xmlns: "http://www.w3.org/2000/svg",
+                                width: "24",
+                                height: "24",
+                                viewBox: "0 0 24 24",
+                                fill: "none",
+                                stroke: "currentColor",
+                                "stroke-width": "2",
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round"
+                              }
+                            },
+                            [
+                              _c("path", {
+                                attrs: {
+                                  d:
+                                    "M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+                                }
+                              }),
+                              _c("path", {
+                                attrs: {
+                                  d:
+                                    "M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+                                }
+                              })
+                            ]
+                          )
+                        ]
+                      ),
+                      _vm._v(" \n                    "),
+                      _c(
+                        "a",
+                        {
+                          staticClass: "btn-delete",
+                          attrs: { href: "javascript:void();" },
+                          on: {
+                            click: function($event) {
+                              return _vm.removeFriend(friend.id)
+                            }
+                          }
+                        },
+                        [
+                          _c(
+                            "svg",
+                            {
+                              staticClass: "feather feather-trash-2",
+                              attrs: {
+                                xmlns: "http://www.w3.org/2000/svg",
+                                width: "24",
+                                height: "24",
+                                viewBox: "0 0 24 24",
+                                fill: "none",
+                                stroke: "currentColor",
+                                "stroke-width": "2",
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round"
+                              }
+                            },
+                            [
+                              _c("polyline", {
+                                attrs: { points: "3 6 5 6 21 6" }
+                              }),
+                              _c("path", {
+                                attrs: {
+                                  d:
+                                    "M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                                }
+                              }),
+                              _c("line", {
+                                attrs: {
+                                  x1: "10",
+                                  y1: "11",
+                                  x2: "10",
+                                  y2: "17"
+                                }
+                              }),
+                              _c("line", {
+                                attrs: {
+                                  x1: "14",
+                                  y1: "11",
+                                  x2: "14",
+                                  y2: "17"
+                                }
+                              })
+                            ]
+                          )
+                        ]
+                      )
+                    ],
+                    1
+                  )
+                ])
+              })
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _c(
+            "form",
+            {
+              staticClass: "custom-form",
+              attrs: {
+                id: "frmFriendsSection",
+                name: "frmFriendsSection",
+                method: "post"
+              },
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.handleSubmit($event)
+                }
+              }
+            },
             [
               _c(
-                "router-link",
-                { staticClass: "btn-yes", attrs: { to: "/close-friends" } },
-                [_vm._v("Add")]
+                "div",
+                { staticClass: "field-group form-group-checkbox clearfix" },
+                [
+                  _c("label", { attrs: { for: "chk_complete" } }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.is_completed,
+                          expression: "is_completed"
+                        }
+                      ],
+                      attrs: {
+                        type: "checkbox",
+                        name: "chk_complete",
+                        id: "chk_complete"
+                      },
+                      domProps: {
+                        value: _vm.is_completed,
+                        checked: Array.isArray(_vm.is_completed)
+                          ? _vm._i(_vm.is_completed, _vm.is_completed) > -1
+                          : _vm.is_completed
+                      },
+                      on: {
+                        change: function($event) {
+                          var $$a = _vm.is_completed,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = _vm.is_completed,
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 && (_vm.is_completed = $$a.concat([$$v]))
+                            } else {
+                              $$i > -1 &&
+                                (_vm.is_completed = $$a
+                                  .slice(0, $$i)
+                                  .concat($$a.slice($$i + 1)))
+                            }
+                          } else {
+                            _vm.is_completed = $$c
+                          }
+                        }
+                      }
+                    }),
+                    _c("i"),
+                    _vm._v(" "),
+                    _c("span", [_vm._v("Mark as complete")])
+                  ])
+                ]
               ),
               _vm._v(" "),
-              _c("router-link", { staticClass: "btn-no", attrs: { to: "" } }, [
-                _vm._v("No")
-              ])
-            ],
-            1
+              _c(
+                "div",
+                { staticClass: "field-group clearfix" },
+                [
+                  _c("input", {
+                    staticClass: "field-submit btn-primary",
+                    attrs: { type: "submit", value: "Save and Continue" }
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "router-link",
+                    {
+                      staticClass: "btn-primary btn-editinfo",
+                      attrs: { to: "/close-friends" }
+                    },
+                    [_vm._v("Add Member")]
+                  )
+                ],
+                1
+              )
+            ]
           )
         ])
-      ]
-    )
+      : _vm._e(),
+    _vm._v(" "),
+    !_vm.showFriendsDetails
+      ? _c("div", { staticClass: "question-item" }, [
+          _c("div", { staticClass: "question-header" }, [
+            _c("h3", [_vm._v("Would you like any close friends contacted?")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "yesno" }, [
+              _c(
+                "a",
+                {
+                  staticClass: "btn-yes",
+                  attrs: { href: "javascript:void(0)" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.friendsstatus(1)
+                    }
+                  }
+                },
+                [_vm._v("Yes")]
+              ),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  staticClass: "btn-no",
+                  attrs: { href: "javascript:void(0)" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.friendsstatus(0)
+                    }
+                  }
+                },
+                [_vm._v("No")]
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c(
+            "a",
+            {
+              staticClass: "btn-skip",
+              attrs: { href: "javascript:void(0)" },
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  return _vm.friendsstatus(2)
+                }
+              }
+            },
+            [_vm._v("Skip")]
+          )
+        ])
+      : _vm._e()
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "item item__header clearfix" }, [
+      _c("div", { staticClass: "item__name" }, [_vm._v("Name")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "item__relationship" }, [_vm._v("Email")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "item__email" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "item__phone" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "item__action" })
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -103230,6 +103847,9 @@ var routes = [// Main Routes
   component: _components_personalinfo_FamilyMembers_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
 }, {
   path: "/close-friends",
+  component: _components_personalinfo_CloseFriends_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
+}, {
+  path: "/close-friends/:id",
   component: _components_personalinfo_CloseFriends_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
 }, {
   path: "/home-assistants",
