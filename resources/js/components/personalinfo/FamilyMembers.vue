@@ -27,7 +27,7 @@
                                         >
                                         <ValidationProvider
                                             name="Name"
-                                            rules="required|alpha_spaces"
+                                            rules="required|alpha_spaces|max:50"
                                             v-slot="{ errors }"
                                         >
                                             <input
@@ -101,7 +101,7 @@
                                             >Relationship</label
                                         >
                                         <validation-provider
-                                            rules="required_if:relationship_selection,5"
+                                            rules="required_if:relationship_selection,5|alpha_spaces|max:50"
                                             v-slot="{ errors }"
                                         >
                                             <input
@@ -134,7 +134,7 @@
                                         >
                                         <ValidationProvider
                                             name="Home Address"
-                                            rules="max:200"
+                                            rules="address|max:200"
                                             v-slot="{ errors }"
                                         >
                                             <textarea

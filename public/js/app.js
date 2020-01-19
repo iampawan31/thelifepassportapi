@@ -1988,6 +1988,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -2718,6 +2721,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
 //
 //
 //
@@ -2833,9 +2837,195 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    ValidationObserver: vee_validate__WEBPACK_IMPORTED_MODULE_0__["ValidationObserver"],
+    ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_0__["ValidationProvider"]
+  },
   data: function data() {
-    return {};
+    return {
+      name: "",
+      relationship: "",
+      company: "",
+      address: "",
+      emailAddress: "",
+      phoneNumber: "",
+      website: ""
+    };
   },
   mounted: function mounted() {},
   methods: {
@@ -3183,12 +3373,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuejs_datepicker__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuejs-datepicker */ "./node_modules/vuejs-datepicker/dist/vuejs-datepicker.esm.js");
 /* harmony import */ var vue2_timepicker__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue2-timepicker */ "./node_modules/vue2-timepicker/dist/VueTimepicker.common.js");
 /* harmony import */ var vue2_timepicker__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue2_timepicker__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var vue_datetime_picker__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-datetime-picker */ "./node_modules/vue-datetime-picker/dist/vue-datetime-picker.min.js");
-/* harmony import */ var vue_datetime_picker__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_datetime_picker__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var vue2_timepicker_dist_VueTimepicker_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue2-timepicker/dist/VueTimepicker.css */ "./node_modules/vue2-timepicker/dist/VueTimepicker.css");
-/* harmony import */ var vue2_timepicker_dist_VueTimepicker_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue2_timepicker_dist_VueTimepicker_css__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var v_select2_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! v-select2-component */ "./node_modules/v-select2-component/dist/Select2.esm.js");
-/* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
+/* harmony import */ var vue2_timepicker_dist_VueTimepicker_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue2-timepicker/dist/VueTimepicker.css */ "./node_modules/vue2-timepicker/dist/VueTimepicker.css");
+/* harmony import */ var vue2_timepicker_dist_VueTimepicker_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue2_timepicker_dist_VueTimepicker_css__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var v_select2_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! v-select2-component */ "./node_modules/v-select2-component/dist/Select2.esm.js");
+/* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
 //
 //
 //
@@ -3413,7 +3601,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3421,18 +3616,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    ValidationObserver: vee_validate__WEBPACK_IMPORTED_MODULE_5__["ValidationObserver"],
-    ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_5__["ValidationProvider"],
+    ValidationObserver: vee_validate__WEBPACK_IMPORTED_MODULE_4__["ValidationObserver"],
+    ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_4__["ValidationProvider"],
+    Select2: v_select2_component__WEBPACK_IMPORTED_MODULE_3__["default"],
     DatePicker: vuejs_datepicker__WEBPACK_IMPORTED_MODULE_0__["default"],
-    VueTimepicker: vue2_timepicker__WEBPACK_IMPORTED_MODULE_1___default.a,
-    Select2: v_select2_component__WEBPACK_IMPORTED_MODULE_4__["default"],
-    VueDatetimePicker: vue_datetime_picker__WEBPACK_IMPORTED_MODULE_2___default.a
+    VueTimepicker: vue2_timepicker__WEBPACK_IMPORTED_MODULE_1___default.a
   },
   data: function data() {
     return {
       personAssetCared: "",
       homeAddress: "",
       errors: [],
+      providerName: "",
+      dayCareFrequencySelected: false,
       careDayTimeFrequency: "",
       careTime: "",
       careDay: "",
@@ -3460,15 +3656,16 @@ __webpack_require__.r(__webpack_exports__);
       }]
     };
   },
-  computed: {
-    isCareDayTimeSelected: function isCareDayTimeSelected() {
-      return this.careDayTimeFrequency === "" ? false : true;
-    }
-  },
   mounted: function mounted() {},
   methods: {
     handleSubmit: function handleSubmit(e) {
       this.$router.push("/estate-representative-question");
+    },
+    careDayTimeChangeEvent: function careDayTimeChangeEvent($event) {
+      this.dayCareFrequencySelected = true;
+    },
+    careDayTimeSelectEvent: function careDayTimeSelectEvent($event) {
+      this.dayCareFrequencySelected = true;
     }
   }
 });
@@ -3911,6 +4108,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
 //
 //
 //
@@ -4039,9 +4237,179 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    ValidationObserver: vee_validate__WEBPACK_IMPORTED_MODULE_0__["ValidationObserver"],
+    ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_0__["ValidationProvider"]
+  },
   data: function data() {
-    return {};
+    return {
+      name: "",
+      relationship: "",
+      company: "",
+      address: "",
+      emailAddress: "",
+      phoneNumber: "",
+      website: ""
+    };
   },
   mounted: function mounted() {},
   methods: {
@@ -11329,6 +11697,25 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 // module
 exports.push([module.i, "\n.nopadding {\n    padding: 0 !important;\n    margin: 0 !important;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/HomeAssistants.vue?vue&type=style&index=0&lang=css&":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/personalinfo/HomeAssistants.vue?vue&type=style&index=0&lang=css& ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.vue__time-picker input.display-time {\n    padding: 0;\n    line-height: 18px;\n    height: 1em;\n}\n", ""]);
 
 // exports
 
@@ -51838,6 +52225,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/HomeAssistants.vue?vue&type=style&index=0&lang=css&":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/personalinfo/HomeAssistants.vue?vue&type=style&index=0&lang=css& ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./HomeAssistants.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/HomeAssistants.vue?vue&type=style&index=0&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/PersonalDetails.vue?vue&type=style&index=0&lang=css&":
 /*!**************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/personalinfo/PersonalDetails.vue?vue&type=style&index=0&lang=css& ***!
@@ -55243,22 +55660,6 @@ var version = '3.0.11';
 
 /***/ }),
 
-/***/ "./node_modules/vue-datetime-picker/dist/vue-datetime-picker.min.js":
-/*!**************************************************************************!*\
-  !*** ./node_modules/vue-datetime-picker/dist/vue-datetime-picker.min.js ***!
-  \**************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-/*!
- * vue-datetime-picker v0.2.0
- * (c) 2016 Haixing Hu
- * Released under the MIT License.
- */
-!function(e){function t(n){if(a[n])return a[n].exports;var r=a[n]={exports:{},id:n,loaded:!1};return e[n].call(r.exports,r,r.exports,t),r.loaded=!0,r.exports}var a={};return t.m=e,t.c=a,t.p="",t(0)}([function(e,t){var a=["today","clear","close","selectMonth","prevMonth","nextMonth","selectYear","prevYear","nextYear","selectDecade","prevDecade","nextDecade","prevCentury","nextCentury","pickHour","incrementHour","decrementHour","pickMinute","incrementMinute","decrementMinute","pickSecond","incrementSecond","decrementSecond","togglePeriod","selectTime"],n="en-US";e.exports={replace:!0,inherit:!1,template:"<div class='input-group date'><input class='form-control' :name='name' type='text' /><span class='input-group-addon'><i class='fa fa-fw fa-calendar'></i></span></div>",props:{model:{required:!0,twoWay:!0},type:{type:String,required:!1,"default":"datetime"},language:{type:String,required:!1,"default":""},datetimeFormat:{type:String,required:!1,"default":"YYYY-MM-DD HH:mm:ss"},dateFormat:{type:String,required:!1,"default":"YYYY-MM-DD"},timeFormat:{type:String,required:!1,"default":"HH:mm:ss"},name:{type:String,required:!1,"default":""},onChange:{required:!1,"default":null}},beforeCompile:function(){this.isChanging=!1,this.control=null},ready:function(){var e={useCurrent:!1,showClear:!0,showClose:!1,icons:{time:"fa fa-clock-o",date:"fa fa-calendar",up:"fa fa-chevron-up",down:"fa fa-chevron-down",previous:"fa fa-chevron-left",next:"fa fa-chevron-right",today:"fa fa-dot-circle-o",clear:"fa fa-trash",close:"fa fa-times"}},t=this.language;switch(null!==t&&""!==t||(this.$language?t=this.$language:langauge=n),e.locale=this.getLanguageCode(t),this.type){case"date":e.format=this.dateFormat;break;case"time":e.format=this.timeFormat;break;case"datetime":default:e.format=this.datetimeFormat}if(this.$i18n&&this.$i18n.datetime_picker){for(var r=this.$i18n.datetime_picker,i=$.fn.datetimepicker.defaults.tooltips,s=0;s<a.length;++s){var o=a[s];r[o]&&(i[o]=r[o])}e.tooltips=i}$(this.$el).datetimepicker(e),this.control=$(this.$el).data("DateTimePicker"),this.control.date(this.model);var c=this;$(this.$el).on("dp.change",function(){c.isChanging||(c.isChanging=!0,c.model=c.control.date(),c.$nextTick(function(){c.isChanging=!1,c.onChange&&c.onChange(c.model)}))})},watch:{model:function(e,t){this.isChanging||(this.isChanging=!0,this.control.date(e),this.isChanging=!1,this.onChange&&this.onChange(e))}},methods:{getLanguageCode:function(e){if(null===e||0===e.length)return"en";if(e.length<=2)return e;switch(e){case"zh-CN":case"zh-TW":case"ar-MA":case"ar-SA":case"ar-TN":case"de-AT":case"en-AU":case"en-CA":case"en-GB":case"fr-CA":case"hy-AM":case"ms-MY":case"pt-BR":case"sr-CYRL":case"tl-PH":case"tzm-LATN":case"tzm":return e.toLowerCase();default:return e.substr(0,2)}}}}}]);
-
-/***/ }),
-
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/Belong.vue?vue&type=template&id=71b4ecb6&":
 /*!**********************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/personalinfo/Belong.vue?vue&type=template&id=71b4ecb6& ***!
@@ -55539,8 +55940,8 @@ var render = function() {
                                   _vm._v(" "),
                                   _c("ValidationProvider", {
                                     attrs: {
-                                      name: "friend_name",
-                                      rules: "required|alpha_spaces"
+                                      name: "Friend Name",
+                                      rules: "required|alpha_spaces|max:50"
                                     },
                                     scopedSlots: _vm._u(
                                       [
@@ -55574,9 +55975,9 @@ var render = function() {
                                                   },
                                                   [
                                                     _vm._v(
-                                                      "\n                    " +
+                                                      "\n                                        " +
                                                         _vm._s(error) +
-                                                        "\n                  "
+                                                        "\n                                    "
                                                     )
                                                   ]
                                                 )
@@ -55610,7 +56011,7 @@ var render = function() {
                                   _c("ValidationProvider", {
                                     attrs: {
                                       name: "Home Address",
-                                      rules: "max:200"
+                                      rules: "address|max:200"
                                     },
                                     scopedSlots: _vm._u(
                                       [
@@ -55640,9 +56041,9 @@ var render = function() {
                                                     },
                                                     [
                                                       _vm._v(
-                                                        "\n                    " +
+                                                        "\n                                        " +
                                                           _vm._s(errors[0]) +
-                                                          "\n                  "
+                                                          "\n                                    "
                                                       )
                                                     ]
                                                   )
@@ -55748,9 +56149,9 @@ var render = function() {
                                                     },
                                                     [
                                                       _vm._v(
-                                                        "\n                    " +
+                                                        "\n                                        " +
                                                           _vm._s(errors[0]) +
-                                                          "\n                  "
+                                                          "\n                                    "
                                                       )
                                                     ]
                                                   )
@@ -56801,177 +57202,731 @@ var render = function() {
       },
       [
         _c("div", { staticClass: "section-form" }, [
-          _c("div", { staticClass: "form-wrapper form-family-member" }, [
-            _c(
-              "form",
-              {
-                staticClass: "custom-form",
-                attrs: { name: "frmFamilyMember", action: "#", method: "post" },
-                on: {
-                  submit: function($event) {
-                    $event.preventDefault()
-                    return _vm.handleSubmit()
+          _c(
+            "div",
+            { staticClass: "form-wrapper form-family-member" },
+            [
+              _c("ValidationObserver", {
+                ref: "observer",
+                scopedSlots: _vm._u([
+                  {
+                    key: "default",
+                    fn: function(ref) {
+                      var invalid = ref.invalid
+                      return [
+                        _c(
+                          "form",
+                          {
+                            staticClass: "custom-form",
+                            attrs: {
+                              name: "frmFamilyMember",
+                              action: "#",
+                              method: "post"
+                            },
+                            on: {
+                              submit: function($event) {
+                                $event.preventDefault()
+                                return _vm.handleSubmit()
+                              }
+                            }
+                          },
+                          [
+                            _c("div", { staticClass: "staff-members-fields" }, [
+                              _c("div", { staticClass: "row" }, [
+                                _c("div", { staticClass: "col" }, [
+                                  _c(
+                                    "div",
+                                    { staticClass: "field-group" },
+                                    [
+                                      _c(
+                                        "label",
+                                        {
+                                          staticClass: "input-label",
+                                          attrs: { for: "name" }
+                                        },
+                                        [_vm._v("Name")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("ValidationProvider", {
+                                        attrs: {
+                                          name: "Name",
+                                          rules: "required|alpha_spaces|max:50"
+                                        },
+                                        scopedSlots: _vm._u(
+                                          [
+                                            {
+                                              key: "default",
+                                              fn: function(ref) {
+                                                var errors = ref.errors
+                                                return [
+                                                  _c("input", {
+                                                    directives: [
+                                                      {
+                                                        name: "model",
+                                                        rawName: "v-model",
+                                                        value: _vm.name,
+                                                        expression: "name"
+                                                      }
+                                                    ],
+                                                    staticClass:
+                                                      "field-input required",
+                                                    attrs: {
+                                                      type: "text",
+                                                      name: "name",
+                                                      id: "name",
+                                                      "data-id": "name",
+                                                      placeholder: "Name"
+                                                    },
+                                                    domProps: {
+                                                      value: _vm.name
+                                                    },
+                                                    on: {
+                                                      input: function($event) {
+                                                        if (
+                                                          $event.target
+                                                            .composing
+                                                        ) {
+                                                          return
+                                                        }
+                                                        _vm.name =
+                                                          $event.target.value
+                                                      }
+                                                    }
+                                                  }),
+                                                  _vm._v(" "),
+                                                  errors != undefined &&
+                                                  errors.length
+                                                    ? _c(
+                                                        "span",
+                                                        {
+                                                          staticClass:
+                                                            "invalid-feedback d-block"
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                                                " +
+                                                              _vm._s(
+                                                                errors[0]
+                                                              ) +
+                                                              "\n                                            "
+                                                          )
+                                                        ]
+                                                      )
+                                                    : _vm._e()
+                                                ]
+                                              }
+                                            }
+                                          ],
+                                          null,
+                                          true
+                                        )
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "row" }, [
+                                _c("div", { staticClass: "col" }, [
+                                  _c(
+                                    "div",
+                                    { staticClass: "field-group" },
+                                    [
+                                      _c(
+                                        "label",
+                                        {
+                                          staticClass: "input-label",
+                                          attrs: { for: "relationship" }
+                                        },
+                                        [_vm._v("Relationship")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("ValidationProvider", {
+                                        attrs: {
+                                          name: "Relationship",
+                                          rules: "alpha_spaces|max:50"
+                                        },
+                                        scopedSlots: _vm._u(
+                                          [
+                                            {
+                                              key: "default",
+                                              fn: function(ref) {
+                                                var errors = ref.errors
+                                                return [
+                                                  _c("input", {
+                                                    directives: [
+                                                      {
+                                                        name: "model",
+                                                        rawName: "v-model",
+                                                        value: _vm.relationship,
+                                                        expression:
+                                                          "relationship"
+                                                      }
+                                                    ],
+                                                    staticClass:
+                                                      "field-input required",
+                                                    attrs: {
+                                                      type: "text",
+                                                      name: "relationship",
+                                                      id: "relationship",
+                                                      "data-id": "relationship",
+                                                      placeholder:
+                                                        "Relationship"
+                                                    },
+                                                    domProps: {
+                                                      value: _vm.relationship
+                                                    },
+                                                    on: {
+                                                      input: function($event) {
+                                                        if (
+                                                          $event.target
+                                                            .composing
+                                                        ) {
+                                                          return
+                                                        }
+                                                        _vm.relationship =
+                                                          $event.target.value
+                                                      }
+                                                    }
+                                                  }),
+                                                  _vm._v(" "),
+                                                  errors != undefined &&
+                                                  errors.length
+                                                    ? _c(
+                                                        "span",
+                                                        {
+                                                          staticClass:
+                                                            "invalid-feedback d-block"
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                                                " +
+                                                              _vm._s(
+                                                                errors[0]
+                                                              ) +
+                                                              "\n                                            "
+                                                          )
+                                                        ]
+                                                      )
+                                                    : _vm._e()
+                                                ]
+                                              }
+                                            }
+                                          ],
+                                          null,
+                                          true
+                                        )
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "row" }, [
+                                _c("div", { staticClass: "col" }, [
+                                  _c(
+                                    "div",
+                                    { staticClass: "field-group" },
+                                    [
+                                      _c(
+                                        "label",
+                                        {
+                                          staticClass: "input-label",
+                                          attrs: { for: "txt_name" }
+                                        },
+                                        [_vm._v("Company")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("ValidationProvider", {
+                                        attrs: {
+                                          name: "Company",
+                                          rules: "alpha_spaces|max:50"
+                                        },
+                                        scopedSlots: _vm._u(
+                                          [
+                                            {
+                                              key: "default",
+                                              fn: function(ref) {
+                                                var errors = ref.errors
+                                                return [
+                                                  _c("input", {
+                                                    directives: [
+                                                      {
+                                                        name: "model",
+                                                        rawName: "v-model",
+                                                        value: _vm.company,
+                                                        expression: "company"
+                                                      }
+                                                    ],
+                                                    staticClass:
+                                                      "field-input required",
+                                                    attrs: {
+                                                      type: "text",
+                                                      name: "company",
+                                                      id: "company",
+                                                      "data-id": "company",
+                                                      placeholder: "Company"
+                                                    },
+                                                    domProps: {
+                                                      value: _vm.company
+                                                    },
+                                                    on: {
+                                                      input: function($event) {
+                                                        if (
+                                                          $event.target
+                                                            .composing
+                                                        ) {
+                                                          return
+                                                        }
+                                                        _vm.company =
+                                                          $event.target.value
+                                                      }
+                                                    }
+                                                  }),
+                                                  _vm._v(" "),
+                                                  errors != undefined &&
+                                                  errors.length
+                                                    ? _c(
+                                                        "span",
+                                                        {
+                                                          staticClass:
+                                                            "invalid-feedback d-block"
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                                                " +
+                                                              _vm._s(
+                                                                errors[0]
+                                                              ) +
+                                                              "\n                                            "
+                                                          )
+                                                        ]
+                                                      )
+                                                    : _vm._e()
+                                                ]
+                                              }
+                                            }
+                                          ],
+                                          null,
+                                          true
+                                        )
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "row" }, [
+                                _c("div", { staticClass: "col" }, [
+                                  _c(
+                                    "div",
+                                    { staticClass: "field-group" },
+                                    [
+                                      _c(
+                                        "label",
+                                        { attrs: { for: "home_address" } },
+                                        [_vm._v("Address")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("ValidationProvider", {
+                                        attrs: {
+                                          name: "Address",
+                                          rules: "address|max:200"
+                                        },
+                                        scopedSlots: _vm._u(
+                                          [
+                                            {
+                                              key: "default",
+                                              fn: function(ref) {
+                                                var errors = ref.errors
+                                                return [
+                                                  _c("textarea", {
+                                                    directives: [
+                                                      {
+                                                        name: "model",
+                                                        rawName: "v-model",
+                                                        value: _vm.address,
+                                                        expression: "address"
+                                                      }
+                                                    ],
+                                                    staticClass: "field-input",
+                                                    attrs: {
+                                                      rows: "2",
+                                                      name: "home_address",
+                                                      id: "home_address",
+                                                      placeholder:
+                                                        "Street Address, Town, City, State, Zipcode and country"
+                                                    },
+                                                    domProps: {
+                                                      value: _vm.address
+                                                    },
+                                                    on: {
+                                                      input: function($event) {
+                                                        if (
+                                                          $event.target
+                                                            .composing
+                                                        ) {
+                                                          return
+                                                        }
+                                                        _vm.address =
+                                                          $event.target.value
+                                                      }
+                                                    }
+                                                  }),
+                                                  _vm._v(" "),
+                                                  errors != undefined &&
+                                                  errors.length
+                                                    ? _c(
+                                                        "span",
+                                                        {
+                                                          staticClass:
+                                                            "invalid-feedback d-block"
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                                                " +
+                                                              _vm._s(
+                                                                errors[0]
+                                                              ) +
+                                                              "\n                                            "
+                                                          )
+                                                        ]
+                                                      )
+                                                    : _vm._e()
+                                                ]
+                                              }
+                                            }
+                                          ],
+                                          null,
+                                          true
+                                        )
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "row" }, [
+                                _c("div", { staticClass: "col" }, [
+                                  _c(
+                                    "div",
+                                    { staticClass: "field-group" },
+                                    [
+                                      _c(
+                                        "label",
+                                        {
+                                          staticClass: "input-label",
+                                          attrs: { for: "phone_number" }
+                                        },
+                                        [_vm._v("Phone Number")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("ValidationProvider", {
+                                        attrs: {
+                                          name: "Phone Number",
+                                          rules: "is_phone"
+                                        },
+                                        scopedSlots: _vm._u(
+                                          [
+                                            {
+                                              key: "default",
+                                              fn: function(ref) {
+                                                var errors = ref.errors
+                                                return [
+                                                  _c("input", {
+                                                    directives: [
+                                                      {
+                                                        name: "model",
+                                                        rawName: "v-model",
+                                                        value: _vm.phoneNumber,
+                                                        expression:
+                                                          "phoneNumber"
+                                                      }
+                                                    ],
+                                                    staticClass:
+                                                      "field-input required",
+                                                    attrs: {
+                                                      type: "text",
+                                                      name: "phone_number",
+                                                      id: "phone_number",
+                                                      "data-id": "phone_number",
+                                                      placeholder:
+                                                        "Phone Number"
+                                                    },
+                                                    domProps: {
+                                                      value: _vm.phoneNumber
+                                                    },
+                                                    on: {
+                                                      input: function($event) {
+                                                        if (
+                                                          $event.target
+                                                            .composing
+                                                        ) {
+                                                          return
+                                                        }
+                                                        _vm.phoneNumber =
+                                                          $event.target.value
+                                                      }
+                                                    }
+                                                  }),
+                                                  _vm._v(" "),
+                                                  errors != undefined &&
+                                                  errors.length
+                                                    ? _c(
+                                                        "span",
+                                                        {
+                                                          staticClass:
+                                                            "invalid-feedback d-block"
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                                                " +
+                                                              _vm._s(
+                                                                errors[0]
+                                                              ) +
+                                                              "\n                                            "
+                                                          )
+                                                        ]
+                                                      )
+                                                    : _vm._e()
+                                                ]
+                                              }
+                                            }
+                                          ],
+                                          null,
+                                          true
+                                        )
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "row" }, [
+                                _c("div", { staticClass: "col" }, [
+                                  _c(
+                                    "div",
+                                    { staticClass: "field-group" },
+                                    [
+                                      _c(
+                                        "label",
+                                        {
+                                          staticClass: "input-label",
+                                          attrs: { for: "email_address" }
+                                        },
+                                        [_vm._v("Email")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("ValidationProvider", {
+                                        attrs: {
+                                          name: "Email Address",
+                                          rules: "email"
+                                        },
+                                        scopedSlots: _vm._u(
+                                          [
+                                            {
+                                              key: "default",
+                                              fn: function(ref) {
+                                                var errors = ref.errors
+                                                return [
+                                                  _c("input", {
+                                                    directives: [
+                                                      {
+                                                        name: "model",
+                                                        rawName: "v-model",
+                                                        value: _vm.emailAddress,
+                                                        expression:
+                                                          "emailAddress"
+                                                      }
+                                                    ],
+                                                    staticClass:
+                                                      "field-input required",
+                                                    attrs: {
+                                                      type: "text",
+                                                      name: "email_address",
+                                                      id: "email_address",
+                                                      "data-id":
+                                                        "email_address",
+                                                      placeholder: "Email"
+                                                    },
+                                                    domProps: {
+                                                      value: _vm.emailAddress
+                                                    },
+                                                    on: {
+                                                      input: function($event) {
+                                                        if (
+                                                          $event.target
+                                                            .composing
+                                                        ) {
+                                                          return
+                                                        }
+                                                        _vm.emailAddress =
+                                                          $event.target.value
+                                                      }
+                                                    }
+                                                  }),
+                                                  _vm._v(" "),
+                                                  errors != undefined &&
+                                                  errors.length
+                                                    ? _c(
+                                                        "span",
+                                                        {
+                                                          staticClass:
+                                                            "invalid-feedback d-block"
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                                                " +
+                                                              _vm._s(
+                                                                errors[0]
+                                                              ) +
+                                                              "\n                                            "
+                                                          )
+                                                        ]
+                                                      )
+                                                    : _vm._e()
+                                                ]
+                                              }
+                                            }
+                                          ],
+                                          null,
+                                          true
+                                        )
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "row" }, [
+                                _c("div", { staticClass: "col" }, [
+                                  _c(
+                                    "div",
+                                    { staticClass: "field-group" },
+                                    [
+                                      _c(
+                                        "label",
+                                        {
+                                          staticClass: "input-label",
+                                          attrs: { for: "website" }
+                                        },
+                                        [_vm._v("Website")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("ValidationProvider", {
+                                        attrs: {
+                                          name: "Email Address",
+                                          rules: "website"
+                                        },
+                                        scopedSlots: _vm._u(
+                                          [
+                                            {
+                                              key: "default",
+                                              fn: function(ref) {
+                                                var errors = ref.errors
+                                                return [
+                                                  _c("input", {
+                                                    directives: [
+                                                      {
+                                                        name: "model",
+                                                        rawName: "v-model",
+                                                        value: _vm.website,
+                                                        expression: "website"
+                                                      }
+                                                    ],
+                                                    staticClass:
+                                                      "field-input required",
+                                                    attrs: {
+                                                      type: "text",
+                                                      name: "website",
+                                                      id: "website",
+                                                      "data-id": "website",
+                                                      placeholder: "Website"
+                                                    },
+                                                    domProps: {
+                                                      value: _vm.website
+                                                    },
+                                                    on: {
+                                                      input: function($event) {
+                                                        if (
+                                                          $event.target
+                                                            .composing
+                                                        ) {
+                                                          return
+                                                        }
+                                                        _vm.website =
+                                                          $event.target.value
+                                                      }
+                                                    }
+                                                  }),
+                                                  _vm._v(" "),
+                                                  errors != undefined &&
+                                                  errors.length
+                                                    ? _c(
+                                                        "span",
+                                                        {
+                                                          staticClass:
+                                                            "invalid-feedback d-block"
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                                                " +
+                                                              _vm._s(
+                                                                errors[0]
+                                                              ) +
+                                                              "\n                                            "
+                                                          )
+                                                        ]
+                                                      )
+                                                    : _vm._e()
+                                                ]
+                                              }
+                                            }
+                                          ],
+                                          null,
+                                          true
+                                        )
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "field-group clearfix" }, [
+                              _c("input", {
+                                staticClass: "field-submit btn-primary",
+                                attrs: {
+                                  type: "submit",
+                                  value: "Save and continue"
+                                }
+                              })
+                            ])
+                          ]
+                        )
+                      ]
+                    }
                   }
-                }
-              },
-              [_vm._m(0), _vm._v(" "), _vm._m(1)]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "clearfix" })
-          ])
+                ])
+              }),
+              _vm._v(" "),
+              _c("div", { staticClass: "clearfix" })
+            ],
+            1
+          )
         ])
       ]
     )
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "staff-members-fields" }, [
-      _c("div", { staticClass: "field-group" }, [
-        _c(
-          "label",
-          { staticClass: "input-label", attrs: { for: "txt_name" } },
-          [_vm._v("Name")]
-        ),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "field-input required",
-          attrs: {
-            type: "text",
-            name: "txt_name",
-            id: "txt_name",
-            "data-id": "txt_name",
-            placeholder: "Name"
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "field-group" }, [
-        _c(
-          "label",
-          { staticClass: "input-label", attrs: { for: "txt_name" } },
-          [_vm._v("Relationship")]
-        ),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "field-input required",
-          attrs: {
-            type: "text",
-            name: "txt_name",
-            id: "txt_name",
-            "data-id": "txt_name",
-            placeholder: "Relationship"
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "field-group" }, [
-        _c(
-          "label",
-          { staticClass: "input-label", attrs: { for: "txt_name" } },
-          [_vm._v("Company")]
-        ),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "field-input required",
-          attrs: {
-            type: "text",
-            name: "txt_name",
-            id: "txt_name",
-            "data-id": "txt_name",
-            placeholder: "Company"
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "field-group" }, [
-        _c("label", { attrs: { for: "home_address" } }, [_vm._v("Address")]),
-        _vm._v(" "),
-        _c("textarea", {
-          staticClass: "field-input",
-          attrs: {
-            rows: "2",
-            name: "home_address",
-            id: "home_address",
-            placeholder:
-              "Street Address, Town, City, State, Zipcode and country"
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "field-group" }, [
-        _c(
-          "label",
-          { staticClass: "input-label", attrs: { for: "txt_name" } },
-          [_vm._v("Phone Number")]
-        ),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "field-input required",
-          attrs: {
-            type: "text",
-            name: "txt_name",
-            id: "txt_name",
-            "data-id": "txt_name",
-            placeholder: "Phone Number"
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "field-group" }, [
-        _c(
-          "label",
-          { staticClass: "input-label", attrs: { for: "txt_name" } },
-          [_vm._v("Email")]
-        ),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "field-input required",
-          attrs: {
-            type: "text",
-            name: "txt_name",
-            id: "txt_name",
-            "data-id": "txt_name",
-            placeholder: "Email"
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "field-group" }, [
-        _c(
-          "label",
-          { staticClass: "input-label", attrs: { for: "txt_name" } },
-          [_vm._v("Website")]
-        ),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "field-input required",
-          attrs: {
-            type: "text",
-            name: "txt_name",
-            id: "txt_name",
-            "data-id": "txt_name",
-            placeholder: "Website"
-          }
-        })
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "field-group clearfix" }, [
-      _c("input", {
-        staticClass: "field-submit btn-primary",
-        attrs: { type: "submit", value: "Save and continue" }
-      })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -57061,7 +58016,7 @@ var render = function() {
                                       _c("ValidationProvider", {
                                         attrs: {
                                           name: "Name",
-                                          rules: "required|alpha_spaces"
+                                          rules: "required|alpha_spaces|max:50"
                                         },
                                         scopedSlots: _vm._u(
                                           [
@@ -57235,7 +58190,7 @@ var render = function() {
                                         _c("validation-provider", {
                                           attrs: {
                                             rules:
-                                              "required_if:relationship_selection,5"
+                                              "required_if:relationship_selection,5|alpha_spaces|max:50"
                                           },
                                           scopedSlots: _vm._u(
                                             [
@@ -57307,7 +58262,7 @@ var render = function() {
                                       _c("ValidationProvider", {
                                         attrs: {
                                           name: "Home Address",
-                                          rules: "max:200"
+                                          rules: "address|max:200"
                                         },
                                         scopedSlots: _vm._u(
                                           [
@@ -57704,7 +58659,7 @@ var render = function() {
                                           "label",
                                           {
                                             staticClass: "input-label",
-                                            attrs: { for: "txt_name" }
+                                            attrs: { for: "person_asset_cared" }
                                           },
                                           [
                                             _vm._v(
@@ -57716,7 +58671,8 @@ var render = function() {
                                         _c("ValidationProvider", {
                                           attrs: {
                                             name: "Person or asset cared for",
-                                            rules: "required|alpha_spaces"
+                                            rules:
+                                              "required|alpha_spaces|max:50"
                                           },
                                           scopedSlots: _vm._u(
                                             [
@@ -57740,9 +58696,12 @@ var render = function() {
                                                         "field-input required",
                                                       attrs: {
                                                         type: "text",
-                                                        name: "txt_name",
-                                                        id: "txt_name",
-                                                        "data-id": "txt_name",
+                                                        name:
+                                                          "person_asset_cared",
+                                                        id:
+                                                          "person_asset_cared",
+                                                        "data-id":
+                                                          "person_asset_cared",
                                                         placeholder:
                                                           "Person or asset cared for"
                                                       },
@@ -57811,7 +58770,7 @@ var render = function() {
                                       "label",
                                       {
                                         staticClass: "input-label",
-                                        attrs: { for: "txt_name" }
+                                        attrs: { for: "provider_name" }
                                       },
                                       [_vm._v("Provider Name")]
                                     ),
@@ -57819,7 +58778,7 @@ var render = function() {
                                     _c("ValidationProvider", {
                                       attrs: {
                                         name: "Provider Name",
-                                        rules: "required|alpha_spaces"
+                                        rules: "required|alpha_spaces|max:50"
                                       },
                                       scopedSlots: _vm._u(
                                         [
@@ -57841,9 +58800,9 @@ var render = function() {
                                                     "field-input required",
                                                   attrs: {
                                                     type: "text",
-                                                    name: "txt_name",
-                                                    id: "txt_name",
-                                                    "data-id": "txt_name",
+                                                    name: "provider_name",
+                                                    id: "provider_name",
+                                                    "data-id": "provider_name",
                                                     placeholder: "Provider Name"
                                                   },
                                                   domProps: {
@@ -57908,7 +58867,7 @@ var render = function() {
                                     _c("ValidationProvider", {
                                       attrs: {
                                         name: "Home Address",
-                                        rules: "max:200"
+                                        rules: "address|max:200"
                                       },
                                       scopedSlots: _vm._u(
                                         [
@@ -58031,11 +58990,13 @@ var render = function() {
                                                     }
                                                   },
                                                   model: {
-                                                    value: _vm.careDayTime,
+                                                    value:
+                                                      _vm.careDayTimeFrequency,
                                                     callback: function($$v) {
-                                                      _vm.careDayTime = $$v
+                                                      _vm.careDayTimeFrequency = $$v
                                                     },
-                                                    expression: "careDayTime"
+                                                    expression:
+                                                      "careDayTimeFrequency"
                                                   }
                                                 }),
                                                 _vm._v(" "),
@@ -58070,61 +59031,118 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c("div", { staticClass: "row" }, [
-                              _c("div", { staticClass: "col" }, [
-                                _c(
-                                  "div",
-                                  { staticClass: "field-group" },
-                                  [
+                            _vm.dayCareFrequencySelected
+                              ? _c("div", { staticClass: "row" }, [
+                                  _c("div", { staticClass: "col" }, [
                                     _c(
-                                      "label",
-                                      { attrs: { for: "phone_number" } },
+                                      "div",
+                                      { staticClass: "field-group" },
                                       [
-                                        _vm._v(
-                                          "Day and Time of care\n                                        received"
-                                        )
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c("vue-datetime-picker", {
-                                      staticClass: "vue-picker1",
-                                      attrs: { name: "picker1" }
-                                    })
-                                  ],
-                                  1
-                                )
-                              ]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "col" }, [
-                                _c(
-                                  "div",
-                                  { staticClass: "field-group" },
-                                  [
+                                        _c(
+                                          "label",
+                                          {
+                                            staticClass: "input-label",
+                                            attrs: { for: "dob" }
+                                          },
+                                          [_vm._v("Care Day")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c("ValidationProvider", {
+                                          attrs: {
+                                            name: "Home Address",
+                                            rules: "required_if:care_day_time"
+                                          },
+                                          scopedSlots: _vm._u(
+                                            [
+                                              {
+                                                key: "default",
+                                                fn: function(ref) {
+                                                  var errors = ref.errors
+                                                  return [
+                                                    _c("date-picker", {
+                                                      staticClass:
+                                                        "field-datepicker field-input",
+                                                      attrs: {
+                                                        name: "date",
+                                                        placeholder:
+                                                          "M/dd/YYYY",
+                                                        format: "M/dd/yyyy"
+                                                      },
+                                                      model: {
+                                                        value: _vm.careDay,
+                                                        callback: function(
+                                                          $$v
+                                                        ) {
+                                                          _vm.careDay = $$v
+                                                        },
+                                                        expression: "careDay"
+                                                      }
+                                                    }),
+                                                    _vm._v(" "),
+                                                    errors != undefined &&
+                                                    errors.length
+                                                      ? _c(
+                                                          "span",
+                                                          {
+                                                            staticClass:
+                                                              "invalid-feedback d-block"
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              "\n                                            " +
+                                                                _vm._s(
+                                                                  errors[0]
+                                                                ) +
+                                                                "\n                                        "
+                                                            )
+                                                          ]
+                                                        )
+                                                      : _vm._e()
+                                                  ]
+                                                }
+                                              }
+                                            ],
+                                            null,
+                                            true
+                                          )
+                                        })
+                                      ],
+                                      1
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "col" }, [
                                     _c(
-                                      "label",
-                                      { attrs: { for: "phone_number" } },
+                                      "div",
+                                      { staticClass: "field-group" },
                                       [
-                                        _vm._v(
-                                          "Day and Time of care\n                                        received"
-                                        )
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c("vue-timepicker", {
-                                      attrs: { format: "hh:mm A" },
-                                      model: {
-                                        value: _vm.careTime,
-                                        callback: function($$v) {
-                                          _vm.careTime = $$v
-                                        },
-                                        expression: "careTime"
-                                      }
-                                    })
-                                  ],
-                                  1
-                                )
-                              ])
-                            ]),
+                                        _c(
+                                          "label",
+                                          {
+                                            staticClass: "input-label",
+                                            attrs: { for: "dob" }
+                                          },
+                                          [_vm._v("Care Time")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c("vue-timepicker", {
+                                          staticClass:
+                                            "field-datepicker field-input",
+                                          attrs: { "input-width": "100%" },
+                                          model: {
+                                            value: _vm.dayTime,
+                                            callback: function($$v) {
+                                              _vm.dayTime = $$v
+                                            },
+                                            expression: "dayTime"
+                                          }
+                                        })
+                                      ],
+                                      1
+                                    )
+                                  ])
+                                ])
+                              : _vm._e(),
                             _vm._v(" "),
                             _c("div", { staticClass: "field-group clearfix" }, [
                               _c("input", {
@@ -59638,177 +60656,731 @@ var render = function() {
       },
       [
         _c("div", { staticClass: "section-form" }, [
-          _c("div", { staticClass: "form-wrapper form-family-member" }, [
-            _c(
-              "form",
-              {
-                staticClass: "custom-form",
-                attrs: { name: "frmFamilyMember", action: "#", method: "post" },
-                on: {
-                  submit: function($event) {
-                    $event.preventDefault()
-                    return _vm.handleSubmit()
+          _c(
+            "div",
+            { staticClass: "form-wrapper form-family-member" },
+            [
+              _c("ValidationObserver", {
+                ref: "observer",
+                scopedSlots: _vm._u([
+                  {
+                    key: "default",
+                    fn: function(ref) {
+                      var invalid = ref.invalid
+                      return [
+                        _c(
+                          "form",
+                          {
+                            staticClass: "custom-form",
+                            attrs: {
+                              name: "frmFamilyMember",
+                              action: "#",
+                              method: "post"
+                            },
+                            on: {
+                              submit: function($event) {
+                                $event.preventDefault()
+                                return _vm.handleSubmit()
+                              }
+                            }
+                          },
+                          [
+                            _c("div", { staticClass: "staff-members-fields" }, [
+                              _c("div", { staticClass: "row" }, [
+                                _c("div", { staticClass: "col" }, [
+                                  _c(
+                                    "div",
+                                    { staticClass: "field-group" },
+                                    [
+                                      _c(
+                                        "label",
+                                        {
+                                          staticClass: "input-label",
+                                          attrs: { for: "name" }
+                                        },
+                                        [_vm._v("Name")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("ValidationProvider", {
+                                        attrs: {
+                                          name: "Name",
+                                          rules: "required|alpha_spaces|max:50"
+                                        },
+                                        scopedSlots: _vm._u(
+                                          [
+                                            {
+                                              key: "default",
+                                              fn: function(ref) {
+                                                var errors = ref.errors
+                                                return [
+                                                  _c("input", {
+                                                    directives: [
+                                                      {
+                                                        name: "model",
+                                                        rawName: "v-model",
+                                                        value: _vm.name,
+                                                        expression: "name"
+                                                      }
+                                                    ],
+                                                    staticClass:
+                                                      "field-input required",
+                                                    attrs: {
+                                                      type: "text",
+                                                      name: "name",
+                                                      id: "name",
+                                                      "data-id": "name",
+                                                      placeholder: "Name"
+                                                    },
+                                                    domProps: {
+                                                      value: _vm.name
+                                                    },
+                                                    on: {
+                                                      input: function($event) {
+                                                        if (
+                                                          $event.target
+                                                            .composing
+                                                        ) {
+                                                          return
+                                                        }
+                                                        _vm.name =
+                                                          $event.target.value
+                                                      }
+                                                    }
+                                                  }),
+                                                  _vm._v(" "),
+                                                  errors != undefined &&
+                                                  errors.length
+                                                    ? _c(
+                                                        "span",
+                                                        {
+                                                          staticClass:
+                                                            "invalid-feedback d-block"
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                                                " +
+                                                              _vm._s(
+                                                                errors[0]
+                                                              ) +
+                                                              "\n                                            "
+                                                          )
+                                                        ]
+                                                      )
+                                                    : _vm._e()
+                                                ]
+                                              }
+                                            }
+                                          ],
+                                          null,
+                                          true
+                                        )
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "row" }, [
+                                _c("div", { staticClass: "col" }, [
+                                  _c(
+                                    "div",
+                                    { staticClass: "field-group" },
+                                    [
+                                      _c(
+                                        "label",
+                                        {
+                                          staticClass: "input-label",
+                                          attrs: { for: "relationship" }
+                                        },
+                                        [_vm._v("Relationship")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("ValidationProvider", {
+                                        attrs: {
+                                          name: "Relationship",
+                                          rules: "alpha_spaces|max:50"
+                                        },
+                                        scopedSlots: _vm._u(
+                                          [
+                                            {
+                                              key: "default",
+                                              fn: function(ref) {
+                                                var errors = ref.errors
+                                                return [
+                                                  _c("input", {
+                                                    directives: [
+                                                      {
+                                                        name: "model",
+                                                        rawName: "v-model",
+                                                        value: _vm.relationship,
+                                                        expression:
+                                                          "relationship"
+                                                      }
+                                                    ],
+                                                    staticClass:
+                                                      "field-input required",
+                                                    attrs: {
+                                                      type: "text",
+                                                      name: "relationship",
+                                                      id: "relationship",
+                                                      "data-id": "relationship",
+                                                      placeholder:
+                                                        "Relationship"
+                                                    },
+                                                    domProps: {
+                                                      value: _vm.relationship
+                                                    },
+                                                    on: {
+                                                      input: function($event) {
+                                                        if (
+                                                          $event.target
+                                                            .composing
+                                                        ) {
+                                                          return
+                                                        }
+                                                        _vm.relationship =
+                                                          $event.target.value
+                                                      }
+                                                    }
+                                                  }),
+                                                  _vm._v(" "),
+                                                  errors != undefined &&
+                                                  errors.length
+                                                    ? _c(
+                                                        "span",
+                                                        {
+                                                          staticClass:
+                                                            "invalid-feedback d-block"
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                                                " +
+                                                              _vm._s(
+                                                                errors[0]
+                                                              ) +
+                                                              "\n                                            "
+                                                          )
+                                                        ]
+                                                      )
+                                                    : _vm._e()
+                                                ]
+                                              }
+                                            }
+                                          ],
+                                          null,
+                                          true
+                                        )
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "row" }, [
+                                _c("div", { staticClass: "col" }, [
+                                  _c(
+                                    "div",
+                                    { staticClass: "field-group" },
+                                    [
+                                      _c(
+                                        "label",
+                                        {
+                                          staticClass: "input-label",
+                                          attrs: { for: "txt_name" }
+                                        },
+                                        [_vm._v("Company")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("ValidationProvider", {
+                                        attrs: {
+                                          name: "Company",
+                                          rules: "alpha_spaces|max:50"
+                                        },
+                                        scopedSlots: _vm._u(
+                                          [
+                                            {
+                                              key: "default",
+                                              fn: function(ref) {
+                                                var errors = ref.errors
+                                                return [
+                                                  _c("input", {
+                                                    directives: [
+                                                      {
+                                                        name: "model",
+                                                        rawName: "v-model",
+                                                        value: _vm.company,
+                                                        expression: "company"
+                                                      }
+                                                    ],
+                                                    staticClass:
+                                                      "field-input required",
+                                                    attrs: {
+                                                      type: "text",
+                                                      name: "company",
+                                                      id: "company",
+                                                      "data-id": "company",
+                                                      placeholder: "Company"
+                                                    },
+                                                    domProps: {
+                                                      value: _vm.company
+                                                    },
+                                                    on: {
+                                                      input: function($event) {
+                                                        if (
+                                                          $event.target
+                                                            .composing
+                                                        ) {
+                                                          return
+                                                        }
+                                                        _vm.company =
+                                                          $event.target.value
+                                                      }
+                                                    }
+                                                  }),
+                                                  _vm._v(" "),
+                                                  errors != undefined &&
+                                                  errors.length
+                                                    ? _c(
+                                                        "span",
+                                                        {
+                                                          staticClass:
+                                                            "invalid-feedback d-block"
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                                                " +
+                                                              _vm._s(
+                                                                errors[0]
+                                                              ) +
+                                                              "\n                                            "
+                                                          )
+                                                        ]
+                                                      )
+                                                    : _vm._e()
+                                                ]
+                                              }
+                                            }
+                                          ],
+                                          null,
+                                          true
+                                        )
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "row" }, [
+                                _c("div", { staticClass: "col" }, [
+                                  _c(
+                                    "div",
+                                    { staticClass: "field-group" },
+                                    [
+                                      _c(
+                                        "label",
+                                        { attrs: { for: "home_address" } },
+                                        [_vm._v("Address")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("ValidationProvider", {
+                                        attrs: {
+                                          name: "Address",
+                                          rules: "address|max:200"
+                                        },
+                                        scopedSlots: _vm._u(
+                                          [
+                                            {
+                                              key: "default",
+                                              fn: function(ref) {
+                                                var errors = ref.errors
+                                                return [
+                                                  _c("textarea", {
+                                                    directives: [
+                                                      {
+                                                        name: "model",
+                                                        rawName: "v-model",
+                                                        value: _vm.address,
+                                                        expression: "address"
+                                                      }
+                                                    ],
+                                                    staticClass: "field-input",
+                                                    attrs: {
+                                                      rows: "2",
+                                                      name: "home_address",
+                                                      id: "home_address",
+                                                      placeholder:
+                                                        "Street Address, Town, City, State, Zipcode and country"
+                                                    },
+                                                    domProps: {
+                                                      value: _vm.address
+                                                    },
+                                                    on: {
+                                                      input: function($event) {
+                                                        if (
+                                                          $event.target
+                                                            .composing
+                                                        ) {
+                                                          return
+                                                        }
+                                                        _vm.address =
+                                                          $event.target.value
+                                                      }
+                                                    }
+                                                  }),
+                                                  _vm._v(" "),
+                                                  errors != undefined &&
+                                                  errors.length
+                                                    ? _c(
+                                                        "span",
+                                                        {
+                                                          staticClass:
+                                                            "invalid-feedback d-block"
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                                                " +
+                                                              _vm._s(
+                                                                errors[0]
+                                                              ) +
+                                                              "\n                                            "
+                                                          )
+                                                        ]
+                                                      )
+                                                    : _vm._e()
+                                                ]
+                                              }
+                                            }
+                                          ],
+                                          null,
+                                          true
+                                        )
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "row" }, [
+                                _c("div", { staticClass: "col" }, [
+                                  _c(
+                                    "div",
+                                    { staticClass: "field-group" },
+                                    [
+                                      _c(
+                                        "label",
+                                        {
+                                          staticClass: "input-label",
+                                          attrs: { for: "phone_number" }
+                                        },
+                                        [_vm._v("Phone Number")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("ValidationProvider", {
+                                        attrs: {
+                                          name: "Phone Number",
+                                          rules: "is_phone"
+                                        },
+                                        scopedSlots: _vm._u(
+                                          [
+                                            {
+                                              key: "default",
+                                              fn: function(ref) {
+                                                var errors = ref.errors
+                                                return [
+                                                  _c("input", {
+                                                    directives: [
+                                                      {
+                                                        name: "model",
+                                                        rawName: "v-model",
+                                                        value: _vm.phoneNumber,
+                                                        expression:
+                                                          "phoneNumber"
+                                                      }
+                                                    ],
+                                                    staticClass:
+                                                      "field-input required",
+                                                    attrs: {
+                                                      type: "text",
+                                                      name: "phone_number",
+                                                      id: "phone_number",
+                                                      "data-id": "phone_number",
+                                                      placeholder:
+                                                        "Phone Number"
+                                                    },
+                                                    domProps: {
+                                                      value: _vm.phoneNumber
+                                                    },
+                                                    on: {
+                                                      input: function($event) {
+                                                        if (
+                                                          $event.target
+                                                            .composing
+                                                        ) {
+                                                          return
+                                                        }
+                                                        _vm.phoneNumber =
+                                                          $event.target.value
+                                                      }
+                                                    }
+                                                  }),
+                                                  _vm._v(" "),
+                                                  errors != undefined &&
+                                                  errors.length
+                                                    ? _c(
+                                                        "span",
+                                                        {
+                                                          staticClass:
+                                                            "invalid-feedback d-block"
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                                                " +
+                                                              _vm._s(
+                                                                errors[0]
+                                                              ) +
+                                                              "\n                                            "
+                                                          )
+                                                        ]
+                                                      )
+                                                    : _vm._e()
+                                                ]
+                                              }
+                                            }
+                                          ],
+                                          null,
+                                          true
+                                        )
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "row" }, [
+                                _c("div", { staticClass: "col" }, [
+                                  _c(
+                                    "div",
+                                    { staticClass: "field-group" },
+                                    [
+                                      _c(
+                                        "label",
+                                        {
+                                          staticClass: "input-label",
+                                          attrs: { for: "email_address" }
+                                        },
+                                        [_vm._v("Email")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("ValidationProvider", {
+                                        attrs: {
+                                          name: "Email Address",
+                                          rules: "email"
+                                        },
+                                        scopedSlots: _vm._u(
+                                          [
+                                            {
+                                              key: "default",
+                                              fn: function(ref) {
+                                                var errors = ref.errors
+                                                return [
+                                                  _c("input", {
+                                                    directives: [
+                                                      {
+                                                        name: "model",
+                                                        rawName: "v-model",
+                                                        value: _vm.emailAddress,
+                                                        expression:
+                                                          "emailAddress"
+                                                      }
+                                                    ],
+                                                    staticClass:
+                                                      "field-input required",
+                                                    attrs: {
+                                                      type: "text",
+                                                      name: "email_address",
+                                                      id: "email_address",
+                                                      "data-id":
+                                                        "email_address",
+                                                      placeholder: "Email"
+                                                    },
+                                                    domProps: {
+                                                      value: _vm.emailAddress
+                                                    },
+                                                    on: {
+                                                      input: function($event) {
+                                                        if (
+                                                          $event.target
+                                                            .composing
+                                                        ) {
+                                                          return
+                                                        }
+                                                        _vm.emailAddress =
+                                                          $event.target.value
+                                                      }
+                                                    }
+                                                  }),
+                                                  _vm._v(" "),
+                                                  errors != undefined &&
+                                                  errors.length
+                                                    ? _c(
+                                                        "span",
+                                                        {
+                                                          staticClass:
+                                                            "invalid-feedback d-block"
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                                                " +
+                                                              _vm._s(
+                                                                errors[0]
+                                                              ) +
+                                                              "\n                                            "
+                                                          )
+                                                        ]
+                                                      )
+                                                    : _vm._e()
+                                                ]
+                                              }
+                                            }
+                                          ],
+                                          null,
+                                          true
+                                        )
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "row" }, [
+                                _c("div", { staticClass: "col" }, [
+                                  _c(
+                                    "div",
+                                    { staticClass: "field-group" },
+                                    [
+                                      _c(
+                                        "label",
+                                        {
+                                          staticClass: "input-label",
+                                          attrs: { for: "website" }
+                                        },
+                                        [_vm._v("Website")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("ValidationProvider", {
+                                        attrs: {
+                                          name: "Email Address",
+                                          rules: "website"
+                                        },
+                                        scopedSlots: _vm._u(
+                                          [
+                                            {
+                                              key: "default",
+                                              fn: function(ref) {
+                                                var errors = ref.errors
+                                                return [
+                                                  _c("input", {
+                                                    directives: [
+                                                      {
+                                                        name: "model",
+                                                        rawName: "v-model",
+                                                        value: _vm.website,
+                                                        expression: "website"
+                                                      }
+                                                    ],
+                                                    staticClass:
+                                                      "field-input required",
+                                                    attrs: {
+                                                      type: "text",
+                                                      name: "website",
+                                                      id: "website",
+                                                      "data-id": "website",
+                                                      placeholder: "Website"
+                                                    },
+                                                    domProps: {
+                                                      value: _vm.website
+                                                    },
+                                                    on: {
+                                                      input: function($event) {
+                                                        if (
+                                                          $event.target
+                                                            .composing
+                                                        ) {
+                                                          return
+                                                        }
+                                                        _vm.website =
+                                                          $event.target.value
+                                                      }
+                                                    }
+                                                  }),
+                                                  _vm._v(" "),
+                                                  errors != undefined &&
+                                                  errors.length
+                                                    ? _c(
+                                                        "span",
+                                                        {
+                                                          staticClass:
+                                                            "invalid-feedback d-block"
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                                                " +
+                                                              _vm._s(
+                                                                errors[0]
+                                                              ) +
+                                                              "\n                                            "
+                                                          )
+                                                        ]
+                                                      )
+                                                    : _vm._e()
+                                                ]
+                                              }
+                                            }
+                                          ],
+                                          null,
+                                          true
+                                        )
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "field-group clearfix" }, [
+                              _c("input", {
+                                staticClass: "field-submit btn-primary",
+                                attrs: {
+                                  type: "submit",
+                                  value: "Save and continue"
+                                }
+                              })
+                            ])
+                          ]
+                        )
+                      ]
+                    }
                   }
-                }
-              },
-              [_vm._m(0), _vm._v(" "), _vm._m(1)]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "clearfix" })
-          ])
+                ])
+              }),
+              _vm._v(" "),
+              _c("div", { staticClass: "clearfix" })
+            ],
+            1
+          )
         ])
       ]
     )
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "staff-members-fields" }, [
-      _c("div", { staticClass: "field-group" }, [
-        _c(
-          "label",
-          { staticClass: "input-label", attrs: { for: "txt_name" } },
-          [_vm._v("Name")]
-        ),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "field-input required",
-          attrs: {
-            type: "text",
-            name: "txt_name",
-            id: "txt_name",
-            "data-id": "txt_name",
-            placeholder: "Name"
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "field-group" }, [
-        _c(
-          "label",
-          { staticClass: "input-label", attrs: { for: "txt_name" } },
-          [_vm._v("Relationship")]
-        ),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "field-input required",
-          attrs: {
-            type: "text",
-            name: "txt_name",
-            id: "txt_name",
-            "data-id": "txt_name",
-            placeholder: "Relationship"
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "field-group" }, [
-        _c(
-          "label",
-          { staticClass: "input-label", attrs: { for: "txt_name" } },
-          [_vm._v("Company")]
-        ),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "field-input required",
-          attrs: {
-            type: "text",
-            name: "txt_name",
-            id: "txt_name",
-            "data-id": "txt_name",
-            placeholder: "Company"
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "field-group" }, [
-        _c("label", { attrs: { for: "home_address" } }, [_vm._v("Address")]),
-        _vm._v(" "),
-        _c("textarea", {
-          staticClass: "field-input",
-          attrs: {
-            rows: "2",
-            name: "home_address",
-            id: "home_address",
-            placeholder:
-              "Street Address, Town, City, State, Zipcode and country"
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "field-group" }, [
-        _c(
-          "label",
-          { staticClass: "input-label", attrs: { for: "txt_name" } },
-          [_vm._v("Phone Number")]
-        ),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "field-input required",
-          attrs: {
-            type: "text",
-            name: "txt_name",
-            id: "txt_name",
-            "data-id": "txt_name",
-            placeholder: "Phone Number"
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "field-group" }, [
-        _c(
-          "label",
-          { staticClass: "input-label", attrs: { for: "txt_name" } },
-          [_vm._v("Email")]
-        ),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "field-input required",
-          attrs: {
-            type: "text",
-            name: "txt_name",
-            id: "txt_name",
-            "data-id": "txt_name",
-            placeholder: "Email"
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "field-group" }, [
-        _c(
-          "label",
-          { staticClass: "input-label", attrs: { for: "txt_name" } },
-          [_vm._v("Website")]
-        ),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "field-input required",
-          attrs: {
-            type: "text",
-            name: "txt_name",
-            id: "txt_name",
-            "data-id": "txt_name",
-            placeholder: "Website"
-          }
-        })
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "field-group clearfix" }, [
-      _c("input", {
-        staticClass: "field-submit btn-primary",
-        attrs: { type: "submit", value: "Save and continue" }
-      })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -89003,6 +90575,15 @@ Object(vee_validate__WEBPACK_IMPORTED_MODULE_2__["extend"])("address", function 
 
   return "The {_field_} must contain only Alphanumeric and Special Characters (,.-?!)";
 });
+Object(vee_validate__WEBPACK_IMPORTED_MODULE_2__["extend"])("website", function (value) {
+  var addressRegex = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
+
+  if (value.match(addressRegex)) {
+    return true;
+  }
+
+  return "The {_field_} must be a valid URL";
+});
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vee_validate_laravel__WEBPACK_IMPORTED_MODULE_4___default.a);
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
@@ -89950,7 +91531,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _HomeAssistants_vue_vue_type_template_id_69a2c10c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./HomeAssistants.vue?vue&type=template&id=69a2c10c& */ "./resources/js/components/personalinfo/HomeAssistants.vue?vue&type=template&id=69a2c10c&");
 /* harmony import */ var _HomeAssistants_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./HomeAssistants.vue?vue&type=script&lang=js& */ "./resources/js/components/personalinfo/HomeAssistants.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _HomeAssistants_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./HomeAssistants.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/personalinfo/HomeAssistants.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
 
 
 
@@ -89958,7 +91541,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
   _HomeAssistants_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _HomeAssistants_vue_vue_type_template_id_69a2c10c___WEBPACK_IMPORTED_MODULE_0__["render"],
   _HomeAssistants_vue_vue_type_template_id_69a2c10c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
@@ -89987,6 +91570,22 @@ component.options.__file = "resources/js/components/personalinfo/HomeAssistants.
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeAssistants_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./HomeAssistants.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/HomeAssistants.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeAssistants_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/personalinfo/HomeAssistants.vue?vue&type=style&index=0&lang=css&":
+/*!**************************************************************************************************!*\
+  !*** ./resources/js/components/personalinfo/HomeAssistants.vue?vue&type=style&index=0&lang=css& ***!
+  \**************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeAssistants_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./HomeAssistants.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/HomeAssistants.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeAssistants_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeAssistants_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeAssistants_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeAssistants_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeAssistants_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 

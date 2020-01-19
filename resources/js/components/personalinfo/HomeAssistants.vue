@@ -20,22 +20,22 @@
                                     <div class="staff-members-fields">
                                         <div class="field-group">
                                             <label
-                                                for="txt_name"
+                                                for="person_asset_cared"
                                                 class="input-label"
                                                 >Person or asset cared
                                                 for</label
                                             >
                                             <ValidationProvider
                                                 name="Person or asset cared for"
-                                                rules="required|alpha_spaces"
+                                                rules="required|alpha_spaces|max:50"
                                                 v-slot="{ errors }"
                                             >
                                                 <input
                                                     type="text"
-                                                    name="txt_name"
-                                                    id="txt_name"
+                                                    name="person_asset_cared"
+                                                    id="person_asset_cared"
                                                     v-model="personAssetCared"
-                                                    data-id="txt_name"
+                                                    data-id="person_asset_cared"
                                                     class="field-input required"
                                                     placeholder="Person or asset cared for"
                                                 />
@@ -59,21 +59,21 @@
                                 <div class="col">
                                     <div class="field-group">
                                         <label
-                                            for="txt_name"
+                                            for="provider_name"
                                             class="input-label"
                                             >Provider Name</label
                                         >
                                         <ValidationProvider
                                             name="Provider Name"
-                                            rules="required|alpha_spaces"
+                                            rules="required|alpha_spaces|max:50"
                                             v-slot="{ errors }"
                                         >
                                             <input
                                                 type="text"
-                                                name="txt_name"
+                                                name="provider_name"
                                                 v-model="providerName"
-                                                id="txt_name"
-                                                data-id="txt_name"
+                                                id="provider_name"
+                                                data-id="provider_name"
                                                 class="field-input required"
                                                 placeholder="Provider Name"
                                             />
@@ -100,7 +100,7 @@
                                         >
                                         <ValidationProvider
                                             name="Home Address"
-                                            rules="max:200"
+                                            rules="address|max:200"
                                             v-slot="{ errors }"
                                         >
                                             <textarea
@@ -144,7 +144,7 @@
                                                 id="care_day_time"
                                                 placeholder="Relationship"
                                                 width="resolve"
-                                                v-model="careDayTime"
+                                                v-model="careDayTimeFrequency"
                                                 :options="careDayTimeOptions"
                                                 @change="
                                                     careDayTimeChangeEvent(
@@ -170,38 +170,46 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="row">
+                            <div class="row" v-if="dayCareFrequencySelected">
                                 <div class="col">
                                     <div class="field-group">
-                                        <label for="phone_number"
-                                            >Day and Time of care
-                                            received</label
+                                        <label for="dob" class="input-label"
+                                            >Care Day</label
                                         >
-                                        <vue-datetime-picker
-                                            class="vue-picker1"
-                                            name="picker1"
+                                        <ValidationProvider
+                                            name="Home Address"
+                                            rules="required_if:care_day_time"
+                                            v-slot="{ errors }"
                                         >
-                                        </vue-datetime-picker>
-
-                                        <!-- <input
-                                            type="text"
-                                            name="phone_number"
-                                            id="phone_number"
-                                            class="field-input required input-mobile"
-                                            placeholder="Day and Time of care received"
-                                        /> -->
+                                            <date-picker
+                                                name="date"
+                                                placeholder="M/dd/YYYY"
+                                                :format="'M/dd/yyyy'"
+                                                v-model="careDay"
+                                                class="field-datepicker field-input"
+                                            >
+                                            </date-picker>
+                                            <span
+                                                v-if="
+                                                    errors != undefined &&
+                                                        errors.length
+                                                "
+                                                class="invalid-feedback d-block"
+                                            >
+                                                {{ errors[0] }}
+                                            </span>
+                                        </ValidationProvider>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="field-group">
-                                        <label for="phone_number"
-                                            >Day and Time of care
-                                            received</label
+                                        <label for="dob" class="input-label"
+                                            >Care Time</label
                                         >
                                         <vue-timepicker
-                                            v-model="careTime"
-                                            format="hh:mm A"
+                                            v-model="dayTime"
+                                            input-width="100%"
+                                            class="field-datepicker field-input"
                                         ></vue-timepicker>
                                     </div>
                                 </div>
@@ -225,7 +233,6 @@
 <script>
 import DatePicker from "vuejs-datepicker";
 import VueTimepicker from "vue2-timepicker";
-import VueDatetimePicker from "vue-datetime-picker";
 import "vue2-timepicker/dist/VueTimepicker.css";
 import Select2 from "v-select2-component";
 import { ValidationObserver, ValidationProvider } from "vee-validate";
@@ -234,16 +241,17 @@ export default {
     components: {
         ValidationObserver,
         ValidationProvider,
-        DatePicker,
-        VueTimepicker,
         Select2,
-        VueDatetimePicker
+        DatePicker,
+        VueTimepicker
     },
     data() {
         return {
             personAssetCared: "",
             homeAddress: "",
             errors: [],
+            providerName: "",
+            dayCareFrequencySelected: false,
             careDayTimeFrequency: "",
             careTime: "",
             careDay: "",
@@ -258,16 +266,25 @@ export default {
             ]
         };
     },
-    computed: {
-        isCareDayTimeSelected() {
-            return this.careDayTimeFrequency === "" ? false : true;
-        }
-    },
     mounted() {},
     methods: {
         handleSubmit(e) {
             this.$router.push("/estate-representative-question");
+        },
+        careDayTimeChangeEvent($event) {
+            this.dayCareFrequencySelected = true;
+        },
+        careDayTimeSelectEvent($event) {
+            this.dayCareFrequencySelected = true;
         }
     }
 };
 </script>
+
+<style>
+.vue__time-picker input.display-time {
+    padding: 0;
+    line-height: 18px;
+    height: 1em;
+}
+</style>

@@ -50,6 +50,15 @@ extend("address", value => {
     return "The {_field_} must contain only Alphanumeric and Special Characters (,.-?!)";
 });
 
+extend("website", value => {
+    var addressRegex = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
+    if (value.match(addressRegex)) {
+        return true;
+    }
+
+    return "The {_field_} must be a valid URL";
+});
+
 Vue.use(VueRouter);
 Vue.use(VeeValidateLaravel);
 
