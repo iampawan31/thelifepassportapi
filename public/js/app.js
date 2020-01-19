@@ -59278,7 +59278,7 @@ var render = function() {
                       ? _c("span", { staticClass: "item__last-updated" }, [
                           _vm._v(
                             "Last Updated: " +
-                              _vm._s(_vm.familyMembers.updated_at)
+                              _vm._s(_vm.familyMembersStatus.updated_at)
                           )
                         ])
                       : _vm._e(),

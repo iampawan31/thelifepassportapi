@@ -118,7 +118,7 @@
                         <span v-else-if="familyMembersStatus && familyMembersStatus.has_family_member == '2'">You answered: <strong>SKIPPED</strong></span>
                         <span v-else>You answered: <strong>NONE</strong></span><br>
 
-                        <span class="item__last-updated" v-if="familyMembersStatus.updated_at != ''">Last Updated: {{ familyMembers.updated_at }}</span> &nbsp;/&nbsp; 
+                        <span class="item__last-updated" v-if="familyMembersStatus.updated_at != ''">Last Updated: {{ familyMembersStatus.updated_at }}</span> &nbsp;/&nbsp; 
                         <router-link to="/family-members-question">Edit</router-link>
                     </div>
                     <div class="item__meta" v-else>
