@@ -19,16 +19,22 @@
                         <router-link :to="{ path: '/family-members/' + family.id }" class="btn-edit">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                         </router-link>&nbsp;
-                        <a href="javascript:void()" @click="removeFamilyMember(family.id)" class="btn-delete">
+                        <a href="javascript:void();" @click="removeFamilyMember(family.id)" class="btn-delete">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
                         </a>
                     </div>
                 </div>
             </div>
-            <form id="frmFamilyMemberSection" name="frmFamilyMemberSection" method="post" class="custom-form">
+            <form id="frmFamilyMemberSection" name="frmFamilyMemberSection" method="post" class="custom-form" @submit.prevent="handleSubmit">
                 <div class="field-group form-group-checkbox clearfix">
                     <label for="chk_complete">
-                    <input type="checkbox" name="chk_complete" id="chk_complete" value="1"><i></i> <span>Mark as complete</span>
+                    <input 
+                        type="checkbox" 
+                        name="chk_complete" 
+                        id="chk_complete" 
+                        v-model="is_completed"
+                        :value="is_completed"
+                    ><i></i> <span>Mark as complete</span>
                     </label>
                 </div>
                 <div class="field-group clearfix">
@@ -57,6 +63,7 @@ export default {
             showFamilyDetails: false,
             familyDetails: [],
             userId: '',
+            is_completed: false,
         };
     },
     mounted() {
@@ -64,11 +71,24 @@ export default {
         this.getFamilyMemberInfo();
     },
     methods: {
+        async handleSubmit(e) {
+            const form = e.target;
+            const formData = new FormData(form);
+
+            axios.post("/familyinfo/updatestatus", formData)
+                .then(response => {
+                    if (response.status == 200) {
+                        this.$router.push("/close-friends-question");
+                    }
+                })
+                .catch(function() {});
+
+        },
         updatestepinfo() {
             let data = {'step_id':4, 'is_visited': '1'}
             axios.post('/updatepersonalstep', data)
                 .then((response) => {
-                    
+                    console.log(response);
                 })
                 .catch(function(){
 
@@ -102,6 +122,8 @@ export default {
                         this.familyDetails = JSON.parse(JSON.stringify(response.data.data));
                         this.userId = this.familyDetails.user_id;
                         this.showFamilyDetails = true;
+                    } else {
+                        this.showFamilyDetails = false;
                     }
                 }
             });
@@ -109,8 +131,9 @@ export default {
         removeFamilyMember(id) {
             axios.delete('familyinfo/'+id+'/removefamilymember')
                 .then((response) => {
-                    console.log(response);
-                //    this.showSpouseDetails = false;
+                    if (response.status == 200) {
+                        this.getFamilyMemberInfo(); 
+                    }
                 })
                 .catch(function(){
 

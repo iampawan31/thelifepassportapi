@@ -66,6 +66,7 @@ Route::middleware(['auth'])->group(function(){
     Route::get('familyinfo/{id}/getfamilymemberinfo', 'FamilyController@edit')->name('familyinfo.getfamilymemberinfo');
     Route::post('familyinfo/{id}/updatedata', 'FamilyController@update')->name('familyinfo.updatedata');
     Route::delete('familyinfo/{id}/removefamilymember', 'FamilyController@destroy')->name('familyinfo.removefamilymember');
+    Route::post('familyinfo/updatestatus', 'FamilyController@updatestatus')->name('familyinfo.updatestatus');
 
     //get left navigation list
     Route::get('getpersonalinfonav', 'LeftnavController@getpersonalinfoleftnavigation')->name('getpersonalinfonav.getdata');

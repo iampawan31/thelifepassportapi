@@ -6610,6 +6610,20 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -6667,7 +6681,8 @@ __webpack_require__.r(__webpack_exports__);
       formData: [],
       showFamilyDetails: false,
       familyDetails: [],
-      userId: ''
+      userId: '',
+      is_completed: false
     };
   },
   mounted: function mounted() {
@@ -6675,15 +6690,50 @@ __webpack_require__.r(__webpack_exports__);
     this.getFamilyMemberInfo();
   },
   methods: {
+    handleSubmit: function () {
+      var _handleSubmit = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(e) {
+        var _this = this;
+
+        var form, formData;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                form = e.target;
+                formData = new FormData(form);
+                axios.post("/familyinfo/updatestatus", formData).then(function (response) {
+                  if (response.status == 200) {
+                    _this.$router.push("/close-friends-question");
+                  }
+                })["catch"](function () {});
+
+              case 3:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      function handleSubmit(_x) {
+        return _handleSubmit.apply(this, arguments);
+      }
+
+      return handleSubmit;
+    }(),
     updatestepinfo: function updatestepinfo() {
       var data = {
         'step_id': 4,
         'is_visited': '1'
       };
-      axios.post('/updatepersonalstep', data).then(function (response) {})["catch"](function () {});
+      axios.post('/updatepersonalstep', data).then(function (response) {
+        console.log(response);
+      })["catch"](function () {});
     },
     familymemberstatus: function familymemberstatus(status) {
-      var _this = this;
+      var _this2 = this;
 
       if (status == 0) {
         this.formData = {
@@ -6701,28 +6751,34 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.post('familyinfo/updatefamilystatus', this.formData).then(function (response) {
         if (status == '1') {
-          _this.$router.push('/family-members');
+          _this2.$router.push('/family-members');
         } else {
-          _this.$router.push('/close-friends-question');
+          _this2.$router.push('/close-friends-question');
         }
       })["catch"](function () {});
     },
     getFamilyMemberInfo: function getFamilyMemberInfo() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.get('/familyinfo/getfamilymembersinfo').then(function (response) {
         if (response.status == 200) {
           if (response.data.data[0]) {
-            _this2.familyDetails = JSON.parse(JSON.stringify(response.data.data));
-            _this2.userId = _this2.familyDetails.user_id;
-            _this2.showFamilyDetails = true;
+            _this3.familyDetails = JSON.parse(JSON.stringify(response.data.data));
+            _this3.userId = _this3.familyDetails.user_id;
+            _this3.showFamilyDetails = true;
+          } else {
+            _this3.showFamilyDetails = false;
           }
         }
       });
     },
     removeFamilyMember: function removeFamilyMember(id) {
+      var _this4 = this;
+
       axios["delete"]('familyinfo/' + id + '/removefamilymember').then(function (response) {
-        console.log(response); //    this.showSpouseDetails = false;
+        if (response.status == 200) {
+          _this4.getFamilyMemberInfo();
+        }
       })["catch"](function () {});
     }
   }
@@ -65017,7 +65073,7 @@ var render = function() {
                         "a",
                         {
                           staticClass: "btn-delete",
-                          attrs: { href: "javascript:void()" },
+                          attrs: { href: "javascript:void();" },
                           on: {
                             click: function($event) {
                               return _vm.removeFamilyMember(family.id)
@@ -65088,10 +65144,68 @@ var render = function() {
                 id: "frmFamilyMemberSection",
                 name: "frmFamilyMemberSection",
                 method: "post"
+              },
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.handleSubmit($event)
+                }
               }
             },
             [
-              _vm._m(1),
+              _c(
+                "div",
+                { staticClass: "field-group form-group-checkbox clearfix" },
+                [
+                  _c("label", { attrs: { for: "chk_complete" } }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.is_completed,
+                          expression: "is_completed"
+                        }
+                      ],
+                      attrs: {
+                        type: "checkbox",
+                        name: "chk_complete",
+                        id: "chk_complete"
+                      },
+                      domProps: {
+                        value: _vm.is_completed,
+                        checked: Array.isArray(_vm.is_completed)
+                          ? _vm._i(_vm.is_completed, _vm.is_completed) > -1
+                          : _vm.is_completed
+                      },
+                      on: {
+                        change: function($event) {
+                          var $$a = _vm.is_completed,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = _vm.is_completed,
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 && (_vm.is_completed = $$a.concat([$$v]))
+                            } else {
+                              $$i > -1 &&
+                                (_vm.is_completed = $$a
+                                  .slice(0, $$i)
+                                  .concat($$a.slice($$i + 1)))
+                            }
+                          } else {
+                            _vm.is_completed = $$c
+                          }
+                        }
+                      }
+                    }),
+                    _c("i"),
+                    _vm._v(" "),
+                    _c("span", [_vm._v("Mark as complete")])
+                  ])
+                ]
+              ),
               _vm._v(" "),
               _c(
                 "div",
@@ -65196,30 +65310,6 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("div", { staticClass: "item__action" })
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "field-group form-group-checkbox clearfix" },
-      [
-        _c("label", { attrs: { for: "chk_complete" } }, [
-          _c("input", {
-            attrs: {
-              type: "checkbox",
-              name: "chk_complete",
-              id: "chk_complete",
-              value: "1"
-            }
-          }),
-          _c("i"),
-          _vm._v(" "),
-          _c("span", [_vm._v("Mark as complete")])
-        ])
-      ]
-    )
   }
 ]
 render._withStripped = true

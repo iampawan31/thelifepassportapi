@@ -93,9 +93,8 @@ class FamilyController extends Controller
             }
 
             //increase family members count
-            $objFamilyStatus    = \App\FamilyStatus::where('user_id', $user_id)->get();
-            $objFamilyStatus->count = $objFamilyStatus->count + 1;
-            $objFamilyStatus->save();
+            $objFamilyStatus    = \App\FamilyStatus::where('user_id', Auth::user()->id)
+                ->update(['count'=> \DB::raw('count+1')]);
 
             return response()->json(['status' => 200, 'message' => 'Family members information has been saved successfully']);
 
@@ -222,9 +221,14 @@ class FamilyController extends Controller
                 //get count of remaining members
                 $count = \App\FamilyMembers::where('user_id', Auth::user()->id)->get()->count();
 
+                //check members count
+                \App\FamilyStatus::where('user_id', Auth::user()->id)
+                    ->update(['count'=> \DB::raw('count-1')]);
+
                 if ($count == 0) {
                     //check members count
-                    $count = \App\FamilyStatus::where('user_id', Auth::user()->id)->delete();
+                    \App\FamilyStatus::where('user_id', Auth::user()->id)
+                        ->update(['has_family_member' => '0', 'count' => '0']);
 
                     //update step table
                     \App\UsersPersonalDetailsCompletion::where('step_id', 4)
@@ -233,10 +237,10 @@ class FamilyController extends Controller
                 }
             //});
 
-            return response()->json(['status' => 200, 'msg' => 'Family member information has removed successfully'], 200);
+            return response()->json(['status' => 200, 'msg' => 'Family member information has removed successfully', 'family_count' => $count], 200);
         } catch(Exception $e) {
             dd($e);
-            return response()->json(['status' => 500, 'msg' => 'Error'], 500);
+            return response()->json(['status' => 500, 'msg' => 'Error', 'family_count' => 0], 500);
         }
     }
     
@@ -330,5 +334,20 @@ class FamilyController extends Controller
         }
         return response()->json(['relation' => $data]);
 
+    }
+
+    public function updatestatus(Request $request) {
+        $inputs = $request->all();
+        $user_id    = Auth::user()->id;
+        $is_completed = $inputs['chk_complete'] ? '1' : '0';
+
+        //insert record in user personal details completion
+        $arrData = ['is_completed' => $is_completed];
+
+        \App\UsersPersonalDetailsCompletion::where('step_id', 4)
+                                             ->where('user_id', $user_id)
+                                             ->update($arrData);
+
+        return response()->json(['status' => 200, 'msg' => 'Family information has completed successfully']);
     }
 }
