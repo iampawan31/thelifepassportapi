@@ -3299,10 +3299,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
 
 
 
@@ -58317,65 +58313,90 @@ var render = function() {
                                         [_vm._v("Name")]
                                       ),
                                       _vm._v(" "),
-                                      _vm._v(
-                                        '\n<<<<<<< HEAD\n                                            rules="required|max:50"\n=======\n                                            rules="required|alpha_spaces|max:50"\n>>>>>>> refactoring-code\n                                            v-slot="{ errors }"\n                                        >\n                                            '
-                                      ),
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.memberDetails.legal_name,
-                                            expression:
-                                              "memberDetails.legal_name"
-                                          }
-                                        ],
-                                        staticClass: "field-input required",
+                                      _c("ValidationProvider", {
                                         attrs: {
-                                          type: "text",
-                                          name: "legal_name",
-                                          id: "legal_name",
-                                          placeholder: "Name"
+                                          name: "Name",
+                                          rules: "required|max:50"
                                         },
-                                        domProps: {
-                                          value: _vm.memberDetails.legal_name
-                                        },
-                                        on: {
-                                          input: function($event) {
-                                            if ($event.target.composing) {
-                                              return
-                                            }
-                                            _vm.$set(
-                                              _vm.memberDetails,
-                                              "legal_name",
-                                              $event.target.value
-                                            )
-                                          }
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _vm._l(_vm.errors, function(
-                                        error,
-                                        index
-                                      ) {
-                                        return _c(
-                                          "div",
-                                          {
-                                            key: index,
-                                            staticClass:
-                                              "invalid-feedback d-block"
-                                          },
+                                        scopedSlots: _vm._u(
                                           [
-                                            _vm._v(
-                                              "\n                                                " +
-                                                _vm._s(error) +
-                                                "\n                                            "
-                                            )
-                                          ]
+                                            {
+                                              key: "default",
+                                              fn: function(ref) {
+                                                var errors = ref.errors
+                                                return [
+                                                  _c("input", {
+                                                    directives: [
+                                                      {
+                                                        name: "model",
+                                                        rawName: "v-model",
+                                                        value:
+                                                          _vm.memberDetails
+                                                            .legal_name,
+                                                        expression:
+                                                          "memberDetails.legal_name"
+                                                      }
+                                                    ],
+                                                    staticClass:
+                                                      "field-input required",
+                                                    attrs: {
+                                                      type: "text",
+                                                      name: "legal_name",
+                                                      id: "legal_name",
+                                                      placeholder: "Name"
+                                                    },
+                                                    domProps: {
+                                                      value:
+                                                        _vm.memberDetails
+                                                          .legal_name
+                                                    },
+                                                    on: {
+                                                      input: function($event) {
+                                                        if (
+                                                          $event.target
+                                                            .composing
+                                                        ) {
+                                                          return
+                                                        }
+                                                        _vm.$set(
+                                                          _vm.memberDetails,
+                                                          "legal_name",
+                                                          $event.target.value
+                                                        )
+                                                      }
+                                                    }
+                                                  }),
+                                                  _vm._v(" "),
+                                                  _vm._l(errors, function(
+                                                    error,
+                                                    index
+                                                  ) {
+                                                    return _c(
+                                                      "div",
+                                                      {
+                                                        key: index,
+                                                        staticClass:
+                                                          "invalid-feedback d-block"
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "\n                                            " +
+                                                            _vm._s(error) +
+                                                            "\n                                        "
+                                                        )
+                                                      ]
+                                                    )
+                                                  })
+                                                ]
+                                              }
+                                            }
+                                          ],
+                                          null,
+                                          true
                                         )
                                       })
                                     ],
-                                    2
+                                    1
                                   )
                                 ])
                               ]),
@@ -58454,11 +58475,11 @@ var render = function() {
                                                         },
                                                         [
                                                           _vm._v(
-                                                            "\n                                                " +
+                                                            "\n                                            " +
                                                               _vm._s(
                                                                 errors[0]
                                                               ) +
-                                                              "\n                                            "
+                                                              "\n                                        "
                                                           )
                                                         ]
                                                       )
@@ -58572,11 +58593,11 @@ var render = function() {
                                                           },
                                                           [
                                                             _vm._v(
-                                                              "\n                                                " +
+                                                              "\n                                            " +
                                                                 _vm._s(
                                                                   errors[0]
                                                                 ) +
-                                                                "\n                                            "
+                                                                "\n                                        "
                                                             )
                                                           ]
                                                         )
@@ -58672,11 +58693,11 @@ var render = function() {
                                                         },
                                                         [
                                                           _vm._v(
-                                                            "\n                                                " +
+                                                            "\n                                            " +
                                                               _vm._s(
                                                                 errors[0]
                                                               ) +
-                                                              "\n                                            "
+                                                              "\n                                        "
                                                           )
                                                         ]
                                                       )
@@ -58795,11 +58816,11 @@ var render = function() {
                                                         },
                                                         [
                                                           _vm._v(
-                                                            "\n                                                " +
+                                                            "\n                                            " +
                                                               _vm._s(
                                                                 errors[0]
                                                               ) +
-                                                              "\n                                            "
+                                                              "\n                                        "
                                                           )
                                                         ]
                                                       )

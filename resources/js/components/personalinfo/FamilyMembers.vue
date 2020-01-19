@@ -26,11 +26,7 @@
                                         >
                                         <ValidationProvider
                                             name="Name"
-<<<<<<< HEAD
                                             rules="required|max:50"
-=======
-                                            rules="required|alpha_spaces|max:50"
->>>>>>> refactoring-code
                                             v-slot="{ errors }"
                                         >
                                             <input
