@@ -19316,3 +19316,7 @@ body {
   margin-right: 10px;
 }
 
+.invalid-feedback {
+  display: inline !important;
+}
+

@@ -63,6 +63,7 @@ class SpouseController extends Controller
         $mother_birth_place = $inputs['mother_birth_place'];
         $marriage_date      = $inputs['marriage_date'];
         $marriage_location  = $inputs['marriage_location'];
+        $is_completed       = @$inputs['chk_complete'];
 
         //phone info
         $arrPhone = [];
@@ -134,9 +135,10 @@ class SpouseController extends Controller
             $objSpouseInfo = \App\SpouseInfo::create($arrSpouseInfo);
             
             // //insert record in user personal details completion
+            $is_completed = $is_completed ? '1' : '0';
             \App\UsersPersonalDetailsCompletion::where('step_id', 2)
                                                 ->where('user_id', Auth::user()->id)
-                                                ->update(['is_visited' => '1', 'is_filled' => '1']);
+                                                ->update(['is_visited' => '1', 'is_filled' => '1', 'is_completed' => $is_completed]);
 
             //insert phone information
             if (!empty($arrPhone)) {
@@ -231,6 +233,7 @@ class SpouseController extends Controller
         $mother_birth_place = $inputs['mother_birth_place'];
         $marriage_date      = $inputs['marriage_date'];
         $marriage_location  = $inputs['marriage_location'];
+        $is_completed       = @$inputs['chk_complete'];
 
         //phone info
         $arrPhone = [];
@@ -301,9 +304,10 @@ class SpouseController extends Controller
             $objSpouseInfo->save();
 
             //insert record in user personal details completion
+            $is_completed = $is_completed ? '1' : '0';
             \App\UsersPersonalDetailsCompletion::where('step_id', 2)
                                                 ->where('user_id', Auth::user()->id)
-                                                ->update(['is_visited' => '1', 'is_filled' => '1']);
+                                                ->update(['is_visited' => '1', 'is_filled' => '1', 'is_completed' => $is_completed]);
 
             //insert phone information
             if (!empty($arrPhone)) {
@@ -409,6 +413,7 @@ class SpouseController extends Controller
                 ->with('SpouseSocailMedia')
                 ->with('SpouseEmployer')
                 ->with('Countries')
+                ->with('UsersPersonalDetailsCompletion')
                 ->get();
             
             return response()->json(['status' => 200, 'data' => $spouse_info]);
@@ -425,9 +430,7 @@ class SpouseController extends Controller
      */
     public function updatemarriagestatus(Request $request) {
         $inputs = $request->all();
-        
         $user_id    = Auth::user()->id;
-        
         $is_married = $inputs['is_married'];
 
         try {
@@ -435,14 +438,28 @@ class SpouseController extends Controller
             $objMarriageStatus = \App\MarriageStatus::where('user_id', $user_id)->get();
             
             if ($objMarriageStatus->count()) {
-                $objMarriageStatus->is_married = $is_married;
-                $objMarriageStatus->save();
+                \App\MarriageStatus::where('user_id', $user_id)
+                                    ->update(['is_married' => $is_married]);
+                // $objMarriageStatus->is_married = $is_married;
+                // $objMarriageStatus->save();
             } else {
                 \App\MarriageStatus::create(['user_id' => $user_id, 'is_married' => $is_married]);
             }
+             
+            //insert record in user personal details completion
+            if ($is_married == "0") {
+                $arrData = ['is_visited' => '1', 'is_filled' => '1', 'is_completed' => '1'];
+            } else {
+                $arrData = ['is_visited' => '1', 'is_filled' => '0', 'is_completed' => '0'];
+            }
+
+            \App\UsersPersonalDetailsCompletion::where('step_id', 2)
+                                                 ->where('user_id', $user_id)
+                                                 ->update($arrData);
+
 
             return response()->json(['status' => 200, 'msg' => 'Marriage status has been updated successfully']);
-        } catch (Exception $e) {
+        } catch (Exception $e) {dd($e);
             return response()->json(['status' => 503, 'msg' => 'Error']);
         }
     }

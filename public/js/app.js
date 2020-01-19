@@ -4461,6 +4461,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 
 
 
@@ -4490,6 +4491,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       emails: [],
       socials: [],
       employers: [],
+      is_completed: false,
       userId: 0,
       result2: "",
       // lang: {
@@ -4608,6 +4610,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       axios.get("/getpersonalinfo").then(function (response) {
         if (response.status == 200) {
+          console.log("Personal Info");
           console.log(response.data);
 
           if (response.data.data[0]) {
@@ -4653,6 +4656,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 employee_benefits: null
               }];
             }
+
+            if (_this3.personalDetail.users_personal_details_completion.length > 0) {
+              if (_this3.personalDetail.users_personal_details_completion[0].is_completed == 1) {
+                _this3.is_completed = true;
+              }
+            } else {
+              //this.completionStatus = { step_id: null, is_visited: null, is_filled: null, is_completed: null };
+              _this3.is_completed = false;
+            }
           } else {
             _this3.phones = [{
               number: null
@@ -4674,6 +4686,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               computer_password: null,
               employee_benefits: null
             }];
+            _this3.is_completed = false;
           }
         }
       });
@@ -6246,6 +6259,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -6273,7 +6299,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       employers: [],
       userId: 0,
       submitted: false,
-      citizenshipOptions: []
+      citizenshipOptions: [],
+      is_completed: false
     };
   },
   computed: {
@@ -6336,6 +6363,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               employee_benefits: null
             }];
           }
+
+          if (_this.spouseDetails.users_personal_details_completion.length > 0) {
+            if (_this.spouseDetails.users_personal_details_completion[0].is_completed == 1) {
+              _this.is_completed = true;
+            }
+          } else {
+            //this.completionStatus = { step_id: null, is_visited: null, is_filled: null, is_completed: null };
+            _this.is_completed = false;
+          }
         } else {
           _this.phones = [{
             number: null
@@ -6357,6 +6393,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             computer_password: null,
             employee_benefits: null
           }];
+          _this.is_completed = false;
         }
       }
     });
@@ -6807,16 +6844,14 @@ __webpack_require__.r(__webpack_exports__);
         if (status == '1') {
           _this2.$router.push('/spouse');
         } else {
-          _this2.$router.push('/previous-spouse');
+          _this2.$router.push('/previous-spouse-question');
         }
       })["catch"](function () {});
     },
     updatestepinfo: function updatestepinfo() {
       var data = {
         'step_id': 2,
-        'is_visited': '1',
-        'is_filled': '0',
-        'is_completed': '0'
+        'is_visited': '1'
       };
       axios.post('/updatepersonalstep', data).then(function (response) {})["catch"](function () {});
     },
@@ -56381,7 +56416,7 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("ValidationProvider", {
-          attrs: { name: "Employer Address", rules: "max:80" },
+          attrs: { name: "Employer Address", rules: "max:1000" },
           scopedSlots: _vm._u([
             {
               key: "default",
@@ -60083,7 +60118,7 @@ var render = function() {
                                 _c("ValidationProvider", {
                                   attrs: {
                                     name: "Home Address",
-                                    rules: "address|max:200"
+                                    rules: "max:1000"
                                   },
                                   scopedSlots: _vm._u(
                                     [
@@ -60891,11 +60926,49 @@ var render = function() {
                           [
                             _c("label", { attrs: { for: "chk_complete" } }, [
                               _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.is_completed,
+                                    expression: "is_completed"
+                                  }
+                                ],
                                 attrs: {
                                   type: "checkbox",
                                   name: "chk_complete",
-                                  id: "chk_complete",
-                                  value: "1"
+                                  id: "chk_complete"
+                                },
+                                domProps: {
+                                  value: _vm.is_completed,
+                                  checked: Array.isArray(_vm.is_completed)
+                                    ? _vm._i(
+                                        _vm.is_completed,
+                                        _vm.is_completed
+                                      ) > -1
+                                    : _vm.is_completed
+                                },
+                                on: {
+                                  change: function($event) {
+                                    var $$a = _vm.is_completed,
+                                      $$el = $event.target,
+                                      $$c = $$el.checked ? true : false
+                                    if (Array.isArray($$a)) {
+                                      var $$v = _vm.is_completed,
+                                        $$i = _vm._i($$a, $$v)
+                                      if ($$el.checked) {
+                                        $$i < 0 &&
+                                          (_vm.is_completed = $$a.concat([$$v]))
+                                      } else {
+                                        $$i > -1 &&
+                                          (_vm.is_completed = $$a
+                                            .slice(0, $$i)
+                                            .concat($$a.slice($$i + 1)))
+                                      }
+                                    } else {
+                                      _vm.is_completed = $$c
+                                    }
+                                  }
                                 }
                               }),
                               _c("i"),
@@ -63228,7 +63301,7 @@ var render = function() {
                                   _c("ValidationProvider", {
                                     attrs: {
                                       name: "Home Address",
-                                      rules: "address|max:200"
+                                      rules: "max:200"
                                     },
                                     scopedSlots: _vm._u(
                                       [
@@ -64033,6 +64106,69 @@ var render = function() {
                               1
                             )
                           ]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "field-group form-group-checkbox clearfix"
+                            },
+                            [
+                              _c("label", { attrs: { for: "chk_complete" } }, [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.is_completed,
+                                      expression: "is_completed"
+                                    }
+                                  ],
+                                  attrs: {
+                                    type: "checkbox",
+                                    name: "chk_complete",
+                                    id: "chk_complete"
+                                  },
+                                  domProps: {
+                                    value: _vm.is_completed,
+                                    checked: Array.isArray(_vm.is_completed)
+                                      ? _vm._i(
+                                          _vm.is_completed,
+                                          _vm.is_completed
+                                        ) > -1
+                                      : _vm.is_completed
+                                  },
+                                  on: {
+                                    change: function($event) {
+                                      var $$a = _vm.is_completed,
+                                        $$el = $event.target,
+                                        $$c = $$el.checked ? true : false
+                                      if (Array.isArray($$a)) {
+                                        var $$v = _vm.is_completed,
+                                          $$i = _vm._i($$a, $$v)
+                                        if ($$el.checked) {
+                                          $$i < 0 &&
+                                            (_vm.is_completed = $$a.concat([
+                                              $$v
+                                            ]))
+                                        } else {
+                                          $$i > -1 &&
+                                            (_vm.is_completed = $$a
+                                              .slice(0, $$i)
+                                              .concat($$a.slice($$i + 1)))
+                                        }
+                                      } else {
+                                        _vm.is_completed = $$c
+                                      }
+                                    }
+                                  }
+                                }),
+                                _c("i"),
+                                _vm._v(" "),
+                                _c("span", [_vm._v("Mark as complete")])
+                              ])
+                            ]
+                          ),
                           _vm._v(" "),
                           _c(
                             "div",

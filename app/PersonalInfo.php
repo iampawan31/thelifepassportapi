@@ -8,8 +8,9 @@ use Carbon\Carbon;
 use App\UserPhone;
 use App\UserEmail;
 use Session, Auth;  
-use App\UserSocailMedia;
 use App\UserEmployer;
+use App\UserSocailMedia;
+use App\UsersPersonalDetailsCompletion;
 use Illuminate\Database\Eloquent\Model;
 
 class PersonalInfo extends Model
@@ -59,6 +60,10 @@ class PersonalInfo extends Model
 
     public function UserEmployer() {
         return $this->hasMany(UserEmployer::class, 'user_id');
+    }
+
+    public function UsersPersonalDetailsCompletion() {
+        return $this->hasMany(UsersPersonalDetailsCompletion::class, 'user_id')->where('step_id', 1);
     }
 
     //Table Name

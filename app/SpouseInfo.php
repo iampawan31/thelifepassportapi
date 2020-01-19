@@ -56,6 +56,10 @@ class SpouseInfo extends Model
         return $this->hasOne(\App\Countries::class, 'id', 'country_id')->select(['id', 'country_name']);
     }
 
+    public function UsersPersonalDetailsCompletion() {
+        return $this->hasMany(UsersPersonalDetailsCompletion::class, 'user_id')->where('step_id', 2);
+    }
+
     //Table Name
     static function tableName() {
         return with(new static)->getTable();

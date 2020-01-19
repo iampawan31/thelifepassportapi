@@ -82,7 +82,7 @@
                   <label for="home_address">Home Address</label>
                   <ValidationProvider
                     name="Home Address"
-                    rules="address|max:200"
+                    rules="max:1000"
                     v-slot="{ errors }"
                   >
                     <textarea
@@ -359,7 +359,8 @@
                   type="checkbox"
                   name="chk_complete"
                   id="chk_complete"
-                  value="1"
+                  v-model="is_completed"
+                  :value="is_completed"
                 /><i></i> <span>Mark as complete</span>
               </label>
             </div>
@@ -410,6 +411,7 @@ export default {
       emails: [],
       socials: [],
       employers: [],
+      is_completed: false,
       userId: 0,
       result2: "",
       // lang: {
@@ -481,6 +483,7 @@ export default {
     getPersonalInfo() {
       axios.get("/getpersonalinfo").then(response => {
         if (response.status == 200) {
+          console.log("Personal Info");
           console.log(response.data);
           if (response.data.data[0]) {
             this.personalDetail = JSON.parse(
@@ -520,6 +523,15 @@ export default {
                 }
               ];
             }
+
+            if(this.personalDetail.users_personal_details_completion.length > 0) {
+              if (this.personalDetail.users_personal_details_completion[0].is_completed == 1) {
+                this.is_completed = true;
+              }
+            } else {
+              //this.completionStatus = { step_id: null, is_visited: null, is_filled: null, is_completed: null };
+              this.is_completed = false;
+            }
           } else {
             this.phones = [{ number: null }];
             this.emails = [{ email: null, password: null }];
@@ -534,6 +546,7 @@ export default {
                 employee_benefits: null
               }
             ];
+            this.is_completed = false;
           }
         }
       });

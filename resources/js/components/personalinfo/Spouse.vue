@@ -152,7 +152,7 @@
                   <label for="home_address">Home Address</label>
                   <ValidationProvider
                     name="Home Address"
-                    rules="address|max:200"
+                    rules="max:200"
                     v-slot="{ errors }"
                   >
                     <textarea
@@ -421,6 +421,19 @@
               </div>
             </div>
 
+            <!-- Mark as complete button section -->
+            <div class="field-group form-group-checkbox clearfix">
+              <label for="chk_complete">
+                <input
+                  type="checkbox"
+                  name="chk_complete"
+                  id="chk_complete"
+                  v-model="is_completed"
+                  :value="is_completed"
+                /><i></i> <span>Mark as complete</span>
+              </label>
+            </div>
+
             <!-- Save and Continue Button section -->
             <div class="field-group field-group__action clearfix">
               <input
@@ -466,7 +479,8 @@ export default {
       employers: [],
       userId: 0,
       submitted: false,
-      citizenshipOptions: []
+      citizenshipOptions: [],
+      is_completed: false,
     };
   },
   computed: {
@@ -521,6 +535,14 @@ export default {
               }
             ];
           }
+          if(this.spouseDetails.users_personal_details_completion.length > 0) {
+            if (this.spouseDetails.users_personal_details_completion[0].is_completed == 1) {
+              this.is_completed = true;
+            }
+          } else {
+            //this.completionStatus = { step_id: null, is_visited: null, is_filled: null, is_completed: null };
+            this.is_completed = false;
+          }
         } else {
           this.phones = [{ number: null }];
           this.emails = [{ email: null, password: null }];
@@ -535,6 +557,7 @@ export default {
               employee_benefits: null
             }
           ];
+          this.is_completed = false;
         }
       }
     });

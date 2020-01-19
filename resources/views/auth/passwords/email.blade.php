@@ -7,16 +7,27 @@
             <h2>{{ __('Reset Password') }}</h2>
             <form method="POST" action="{{ route('password.email') }}">
                 @csrf
-                <div class="login-success-message">
-                    @if (session('status'))
-                        <div class="alert alert-success alert-block">
-                            <button type="button" class="close" data-dismiss="alert">×</button>	
-                                <strong>{{ session('status') }}</strong>
-                        </div>
-                    @endif
-                </div>
                 <div class="row">
                     <div class="col-xs-6">
+                        <div class="login-success-message">
+                            @if (session('status'))
+                                <div class="alert alert-success alert-block">
+                                    <button type="button" class="close" data-dismiss="alert">×</button>	
+                                        <strong>{{ session('status') }}</strong>
+                                </div>
+                            @endif
+                        </div>
+                        <!-- <div class="login-error-message">
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+                        </div>  -->
                         <div class="field-group">
                             <label for="email" class="input-label">{{ __('E-Mail Address') }}</label>
                             <input 
@@ -38,6 +49,9 @@
                     <input type="submit" class="field-submit" value="{{ __('Send Password Reset Link') }}" />
                 </div>
             </form>
+            <div class="login-links clearfix">
+                <p>{{ __('Already registered') }}? <a href="{{ route('login') }}">{{ __('Login Here') }}</a></p>
+            </div>
         </div>
     </div>
 </main>

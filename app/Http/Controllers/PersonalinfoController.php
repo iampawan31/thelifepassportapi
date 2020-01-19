@@ -198,7 +198,7 @@ class PersonalinfoController extends Controller
             $objPersonalInfo = \App\PersonalInfo::create($arrPersonalInfo);
             
             //insert record in user personal details completion
-            $is_completed = $is_completed ? $is_completed : '0';
+            $is_completed = $is_completed ? '1' : '0';
             $arrData = ['step_id' => 1, 'user_id' => Auth::user()->id, 'is_visited' => '1', 'is_filled' => '1', 'is_completed' => $is_completed];
             $objPercentageCompletion = \App\UsersPersonalDetailsCompletion::Create($arrData);
            
@@ -327,7 +327,7 @@ class PersonalinfoController extends Controller
             $objPersonalInfo->save();
 
             //insert record in user personal details completion
-            $is_completed = $is_completed ? $is_completed : '0';
+            $is_completed = $is_completed ? '1' : '0';
             \App\UsersPersonalDetailsCompletion::where('step_id', 1)
                                                 ->where('user_id', Auth::user()->id)
                                                 ->update([ 'is_visited' => '1', 'is_filled' => '1', 'is_completed' => $is_completed]);
@@ -385,14 +385,17 @@ class PersonalinfoController extends Controller
         $user_id = Auth::user()->id;
         
         $count = \App\PersonalInfo::where('user_id', $user_id)->get()->count();
+        
         if ($count > 0) {
-            $personal_info = \App\PersonalInfo::find($user_id)
+            //\DB::enableQueryLog();
+            $personal_info = \App\PersonalInfo::where('user_id', $user_id)
                 ->with('UserPhone')
                 ->with('UserEmail')
                 ->with('UserSocailMedia')
                 ->with('UserEmployer')
-                ->get();
-            
+                ->with('UsersPersonalDetailsCompletion')
+                ->get(); 
+            //dd(\DB::getQueryLog());
             return response()->json(['status' => 200, 'data' => $personal_info]);
         } else {
             return response()->json(['status' => 200, 'data' => []]);
@@ -413,7 +416,7 @@ class PersonalinfoController extends Controller
     public function updateuserpersonalstepinfo(Request $request) {
         $inputs     = $request->all();
         $user_id    = Auth::user()->id;
-
+        
         try {
             $objPersonalStepCompletion = new \App\UsersPersonalDetailsCompletion();
             $objPersonalStepCompletion->updatestepinfo($inputs, $user_id);

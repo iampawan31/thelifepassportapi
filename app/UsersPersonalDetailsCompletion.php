@@ -22,9 +22,9 @@ class UsersPersonalDetailsCompletion extends Model
     public function updatestepinfo($request, $user_id) {
         $inputs         = $request;
         $step_id        = $inputs['step_id'];
-        $is_visited     = $inputs['is_visited'] ? '1' : '0';
-        $is_filled      = $inputs['is_filled'] ? '1' : '0';
-        $is_completed   = $inputs['is_completed'] ? '1' : '0';
+        $is_visited     = @$inputs['is_visited'] ? '1' : '0';
+        $is_filled      = @$inputs['is_filled'] ? '1' : '0';
+        $is_completed   = @$inputs['is_completed'] ? '1' : '0';
 
         //check if record exists
         $result = self::where('step_id', $step_id)->where('user_id', $user_id)->get();
