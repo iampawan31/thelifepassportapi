@@ -280,7 +280,7 @@ class FamilyController extends Controller
         $has_family_member = $inputs['has_family_member'];
 
         try {
-            \DB::enableQueryLog();
+            //\DB::enableQueryLog();
             //check for record
             $objMarriageStatus = \App\FamilyStatus::where('user_id', $user_id)->get();
             
@@ -292,7 +292,7 @@ class FamilyController extends Controller
             } else {
                 \App\FamilyStatus::create(['user_id' => $user_id, 'has_family_member' => $has_family_member]);
             }
-             dd(\DB::getQueryLog());
+             //dd(\DB::getQueryLog());
             //insert record in user personal details completion
             if ($has_family_member == "0") {
                 $arrData = ['is_visited' => '1', 'is_filled' => '1', 'is_completed' => '1'];
