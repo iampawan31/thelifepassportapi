@@ -111,11 +111,15 @@
                     </span>
 
                     <h3><router-link :event="disableRouter(previousSpouse.is_filled)" to="/family-members-question">Would you like to add close family members including children?</router-link></h3>
+                    
+                    <div class="item__meta" v-if="familyMembers.is_visited != '0'">
+                        <span v-if="familyMembersStatus && familyMembersStatus.has_family_member == '0'">You answered: <strong>No</strong></span>
+                        <span v-else-if="familyMembersStatus && familyMembersStatus.has_family_member == '1'">MEMBER ADDED: <strong>{{ familyMembersStatus.count }}</strong></span>
+                        <span v-else-if="familyMembersStatus && familyMembersStatus.has_family_member == '2'">You answered: <strong>SKIPPED</strong></span>
+                        <span v-else>You answered: <strong>NONE</strong></span><br>
 
-                    <div class="item__meta" v-if="familyMembers.is_filled">
-                        <!-- Member added : <strong>06</strong><br /> -->
-                        <span class="item__last-updated">Last Updated: {{ familyMembers.updated_at }}</span> &nbsp;/&nbsp; 
-                        <router-link to="/family-members">Edit</router-link>
+                        <span class="item__last-updated" v-if="familyMembersStatus.updated_at != ''">Last Updated: {{ familyMembers.updated_at }}</span> &nbsp;/&nbsp; 
+                        <router-link to="/family-members-question">Edit</router-link>
                     </div>
                     <div class="item__meta" v-else>
                         <span class="item__last-updated">Not Visited</span>
@@ -247,12 +251,14 @@ export default {
             religiousOrganization: [],
             marriageStatus: [],
             previousMarriageStatus: [],
+            familyMembersStatus: [],
         };
     },
     created() {
         this.getNavigationInfo();
         this.getSpouseMarriageStatus();
         this.getPreviousSpouseMarriageStatus();
+        this.getFamilyMembersStatus();
     },
     mounted() {
         $("#b").mCustomScrollbar({
@@ -268,6 +274,7 @@ export default {
             this.getNavigationInfo();
             this.getSpouseMarriageStatus();
             this.getPreviousSpouseMarriageStatus();
+            this.getFamilyMembersStatus();
         }
     },
     methods: {
@@ -325,7 +332,19 @@ export default {
                 .then((response) => {
                     if(response.status == 200) {
                         this.previousMarriageStatus = response.data.data;
-                        console.log(this.previousMarriageStatus);
+                    }
+                })
+                .catch(function(){
+
+                });
+        },
+        getFamilyMembersStatus() {
+            axios.get('familyinfo/getfamilymembersstatus')
+                .then((response) => {
+                    if(response.status == 200) {
+                        this.familyMembersStatus = response.data.data;
+                        // console.log("Family Members");
+                        // console.log(this.familyMembersStatus);
                     }
                 })
                 .catch(function(){

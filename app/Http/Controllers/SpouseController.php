@@ -134,7 +134,7 @@ class SpouseController extends Controller
             //insert personal information
             $objSpouseInfo = \App\SpouseInfo::create($arrSpouseInfo);
             
-            // //insert record in user personal details completion
+            //insert record in user personal details completion
             $is_completed = $is_completed ? '1' : '0';
             \App\UsersPersonalDetailsCompletion::where('step_id', 2)
                                                 ->where('user_id', Auth::user()->id)
@@ -450,13 +450,12 @@ class SpouseController extends Controller
             if ($is_married == "0") {
                 $arrData = ['is_visited' => '1', 'is_filled' => '1', 'is_completed' => '1'];
             } else {
-                $arrData = ['is_visited' => '1', 'is_filled' => '0', 'is_completed' => '0'];
+                $arrData = ['is_visited' => '1', 'is_filled' => '1', 'is_completed' => '0'];
             }
 
             \App\UsersPersonalDetailsCompletion::where('step_id', 2)
                                                  ->where('user_id', $user_id)
                                                  ->update($arrData);
-
 
             return response()->json(['status' => 200, 'msg' => 'Marriage status has been updated successfully']);
         } catch (Exception $e) {dd($e);

@@ -152,7 +152,7 @@
                   <label for="home_address">Home Address</label>
                   <ValidationProvider
                     name="Home Address"
-                    rules="max:200"
+                    rules="max:1000"
                     v-slot="{ errors }"
                   >
                     <textarea

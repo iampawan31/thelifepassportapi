@@ -65,6 +65,7 @@ class PreviousspouseController extends Controller
         $is_alimony_paid        = @$inputs['owe_alimony'];
         $divorce_agreement_doc  = "";
         $alimony_amount         = @$inputs['alimony_amount'];
+        $is_completed           = @$inputs['chk_complete'];
 
         //phone info
         $arrPhone = [];
@@ -95,9 +96,10 @@ class PreviousspouseController extends Controller
             $objPreviousSpouseInfo = \App\PreviousSpouseInfo::create($arrPreviousSpouseInfo);
 
             // //insert record in user personal details completion
+            $is_completed = $is_completed ? '1' : '0';
             \App\UsersPersonalDetailsCompletion::where('step_id', 3)
                                                 ->where('user_id', Auth::user()->id)
-                                                ->update(['is_visited' => '1', 'is_filled' => '1']);
+                                                ->update(['is_visited' => '1', 'is_filled' => '1', 'is_completed' => $is_completed]);
 
             //insert previous spouse phone information
             if (!empty($arrPhone)) {
@@ -172,7 +174,7 @@ class PreviousspouseController extends Controller
     public function update(Request $request, $id)
     {
         $inputs = $request->all();
-        
+       
         //personal information
         $user_id            = Auth::user()->id;
         $legal_name         = $inputs['legal_name'];
@@ -185,6 +187,7 @@ class PreviousspouseController extends Controller
         $is_alimony_paid        = @$inputs['owe_alimony'];
         $divorce_agreement_doc  = "";
         $alimony_amount         = @$inputs['alimony_amount'];
+        $is_completed       = @$inputs['chk_complete'];
        
         //phone info
         $arrPhone = [];
@@ -212,9 +215,10 @@ class PreviousspouseController extends Controller
             $objPreviousSpouseInfo->save();
 
             // //insert record in user personal details completion
+            $is_completed = $is_completed ? '1' : '0';
             \App\UsersPersonalDetailsCompletion::where('step_id', 3)
                                                 ->where('user_id', Auth::user()->id)
-                                                ->update(['is_visited' => '1', 'is_filled' => '1']);
+                                                ->update(['is_visited' => '1', 'is_filled' => '1', 'is_completed' => $is_completed]);
 
             //insert previous spouse phone information
             if (!empty($arrPhone)) {
@@ -306,9 +310,10 @@ class PreviousspouseController extends Controller
         $user_id = Auth::user()->id;
         $count = \App\PreviousSpouseInfo::where('user_id', $user_id)->get()->count();
         if ($count > 0) {
-            $previous_spouse_info = \App\PreviousSpouseInfo::find($user_id)
+            $previous_spouse_info = \App\PreviousSpouseInfo::where('user_id', $user_id)
                 ->with('PreviousSpousePhone')
                 ->with('DivorceDoc')
+                ->with('UsersPersonalDetailsCompletion')
                 ->get();
             
             return response()->json(['status' => 200, 'data' => $previous_spouse_info]);
@@ -333,11 +338,24 @@ class PreviousspouseController extends Controller
             //check for record
             $objMarriageStatus = \App\PreviousMarriageStatus::find($user_id);
             if ($objMarriageStatus) {
-                $objMarriageStatus->is_previously_married = $is_married;
-                $objMarriageStatus->save();
+                \App\PreviousMarriageStatus::where('user_id', $user_id)
+                                    ->update(['is_previously_married' => $is_married]);
+                // $objMarriageStatus->is_previously_married = $is_married;
+                // $objMarriageStatus->save();
             } else {
                 \App\PreviousMarriageStatus::create(['user_id' => $user_id, 'is_previously_married' => $is_married]);
             }
+
+            //insert record in user personal details completion
+            if ($is_married == "0") {
+                $arrData = ['is_visited' => '1', 'is_filled' => '1', 'is_completed' => '1'];
+            } else {
+                $arrData = ['is_visited' => '1', 'is_filled' => '1', 'is_completed' => '0'];
+            }
+
+            \App\UsersPersonalDetailsCompletion::where('step_id', 3)
+                                                 ->where('user_id', $user_id)
+                                                 ->update($arrData);
 
             return response()->json(['status' => 200, 'msg' => 'Marriage status has been updated successfully']);
         } catch (Exception $e) {
