@@ -339,7 +339,7 @@ class FamilyController extends Controller
     public function updatestatus(Request $request) {
         $inputs = $request->all();
         $user_id    = Auth::user()->id;
-        $is_completed = $inputs['chk_complete'] ? '1' : '0';
+        $is_completed = @$inputs['chk_complete'] ? '1' : '0';
 
         //insert record in user personal details completion
         $arrData = ['is_completed' => $is_completed];
