@@ -26,7 +26,11 @@
                                         >
                                         <ValidationProvider
                                             name="Name"
+<<<<<<< HEAD
                                             rules="required|max:50"
+=======
+                                            rules="required|alpha_spaces|max:50"
+>>>>>>> refactoring-code
                                             v-slot="{ errors }"
                                         >
                                             <input
@@ -100,7 +104,7 @@
                                             >Relationship</label
                                         >
                                         <validation-provider
-                                            rules="required_if:relationship_selection,5"
+                                            rules="required_if:relationship_selection,5|alpha_spaces|max:50"
                                             v-slot="{ errors }"
                                         >
                                             <input
