@@ -165,6 +165,7 @@
                                     <phone-details
                                         v-on:phone-details-updates="updatePhoneNumbers"
                                         :user-phones="phoneNumbers"
+                                        v-if="phoneNumbers.length > 0"
                                     ></phone-details>
                                 </div>
                             </div>
@@ -334,8 +335,8 @@ export default {
                         this.memberDetails = JSON.parse(JSON.stringify(response.data.data[0]));
                         if (this.memberDetails.family_phone.length > 0) {
                             this.phoneNumbers = this.memberDetails.family_phone;
-                            console.log("phone number");
-                            console.log(this.phoneNumbers);
+                        } else {
+                            this.phoneNumbers = [{ number: null }];
                         }
                     }
                 });

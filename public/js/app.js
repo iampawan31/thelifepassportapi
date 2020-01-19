@@ -3108,6 +3108,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 
 
 
@@ -3229,8 +3230,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
             if (_this3.memberDetails.family_phone.length > 0) {
               _this3.phoneNumbers = _this3.memberDetails.family_phone;
-              console.log("phone number");
-              console.log(_this3.phoneNumbers);
+            } else {
+              _this3.phoneNumbers = [{
+                number: null
+              }];
             }
           }
         });
@@ -4998,6 +5001,8 @@ __webpack_require__.r(__webpack_exports__);
 
     this.$nextTick(function () {
       //this.addPhone()
+      console.log(_this2.userPhones);
+
       _this2.populatePhone();
     });
   }
@@ -57761,15 +57766,17 @@ var render = function() {
                                   "div",
                                   { staticClass: "col" },
                                   [
-                                    _c("phone-details", {
-                                      attrs: {
-                                        "user-phones": _vm.phoneNumbers
-                                      },
-                                      on: {
-                                        "phone-details-updates":
-                                          _vm.updatePhoneNumbers
-                                      }
-                                    })
+                                    _vm.phoneNumbers.length > 0
+                                      ? _c("phone-details", {
+                                          attrs: {
+                                            "user-phones": _vm.phoneNumbers
+                                          },
+                                          on: {
+                                            "phone-details-updates":
+                                              _vm.updatePhoneNumbers
+                                          }
+                                        })
+                                      : _vm._e()
                                   ],
                                   1
                                 )

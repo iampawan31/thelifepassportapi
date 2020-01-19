@@ -101,6 +101,7 @@ export default {
     mounted() {
         this.$nextTick(() => {
             //this.addPhone()
+            console.log(this.userPhones);
             this.populatePhone();
         });
     }
