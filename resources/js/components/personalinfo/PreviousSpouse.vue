@@ -17,7 +17,7 @@
                         >
                             <!-- Former spouse's name section -->
                             <div class="row">
-                                <div class="col-md-12 col-sm-12 nopadding">
+                                <div class="col-md-12 col-sm-12">
                                     <div class="field-group">
                                         <label
                                             for="former_spouse_name"
@@ -196,37 +196,42 @@
                                 </div>
                             </div>
                             <!-- Former spouse's current address -->
-                            <div class="field-group">
-                                <label for="current_address"
-                                    >Current Address</label
-                                >
-                                <ValidationProvider
-                                    name="Current Address"
-                                    rules="max:1000"
-                                    v-slot="{ errors }"
-                                >
-                                    <textarea
-                                        rows="2"
-                                        name="address"
-                                        id="address"
-                                        class="field-input"
-                                        placeholder="Street Address, Town, City, State, Zipcode and country"
-                                        v-model="spouseDetails.address"
-                                    ></textarea>
-                                    <span
-                                        v-if="
-                                            errors != undefined && errors.length
-                                        "
-                                        class="invalid-feedback d-block"
-                                    >
-                                        {{ errors[0] }}
-                                    </span>
-                                </ValidationProvider>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="field-group">
+                                        <label for="current_address"
+                                            >Current Address</label
+                                        >
+                                        <ValidationProvider
+                                            name="Current Address"
+                                            rules="max:1000"
+                                            v-slot="{ errors }"
+                                        >
+                                            <textarea
+                                                rows="2"
+                                                name="address"
+                                                id="address"
+                                                class="field-input"
+                                                placeholder="Street Address, Town, City, State, Zipcode and country"
+                                                v-model="spouseDetails.address"
+                                            ></textarea>
+                                            <span
+                                                v-if="
+                                                    errors != undefined &&
+                                                        errors.length
+                                                "
+                                                class="invalid-feedback d-block"
+                                            >
+                                                {{ errors[0] }}
+                                            </span>
+                                        </ValidationProvider>
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- Former spouse's Phone number(s) section -->
                             <div class="row">
-                                <div class="col nopadding">
+                                <div class="col">
                                     <phone-details
                                         :user-phones="phones"
                                         v-if="phones.length > 0"
@@ -236,7 +241,7 @@
 
                             <!-- Former spouse's Email address section -->
                             <div class="row">
-                                <div class="col nopadding">
+                                <div class="col">
                                     <div class="field-group">
                                         <label for="email" class="input-label"
                                             >Email</label
@@ -351,7 +356,7 @@
                                                                     divorceDoc.url
                                                                 "
                                                                 target="_blank"
-                                                                class="btn btn-success btn-sm"
+                                                                class="btn btn-success btn"
                                                                 >View</a
                                                             >
                                                             <a
@@ -359,7 +364,7 @@
                                                                 @click="
                                                                     removeDivorceFile()
                                                                 "
-                                                                class="btn btn-danger btn-sm"
+                                                                class="btn btn-danger btn"
                                                                 >Remove</a
                                                             >
                                                         </div>
@@ -407,14 +412,16 @@
                                     </div>
                                 </div>
                                 <!-- Mark as complete button section -->
-                                <div class="field-group form-group-checkbox clearfix">
+                                <div
+                                    class="field-group form-group-checkbox clearfix"
+                                >
                                     <label for="chk_complete">
                                         <input
-                                        type="checkbox"
-                                        name="chk_complete"
-                                        id="chk_complete"
-                                        v-model="is_completed"
-                                        :value="is_completed"
+                                            type="checkbox"
+                                            name="chk_complete"
+                                            id="chk_complete"
+                                            v-model="is_completed"
+                                            :value="is_completed"
                                         /><i></i> <span>Mark as complete</span>
                                     </label>
                                 </div>
@@ -467,7 +474,7 @@ export default {
             file: "",
             isAlimonyPaid: false,
             divorceDoc: [],
-            is_completed: false,
+            is_completed: false
         };
     },
     computed: {
@@ -505,9 +512,16 @@ export default {
                         this.divorceDoc = this.spouseDetails.divorce_doc[0];
                     }
 
-                    if(this.spouseDetails.users_personal_details_completion.length > 0) {
-                        if (this.spouseDetails.users_personal_details_completion[0].is_completed == 1) {
-                        this.is_completed = true;
+                    if (
+                        this.spouseDetails.users_personal_details_completion
+                            .length > 0
+                    ) {
+                        if (
+                            this.spouseDetails
+                                .users_personal_details_completion[0]
+                                .is_completed == 1
+                        ) {
+                            this.is_completed = true;
                         }
                     } else {
                         //this.completionStatus = { step_id: null, is_visited: null, is_filled: null, is_completed: null };

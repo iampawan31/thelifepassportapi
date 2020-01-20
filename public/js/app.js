@@ -3016,6 +3016,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -5415,6 +5416,13 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -59469,11 +59477,11 @@ var render = function() {
                                             "field-datepicker field-input",
                                           attrs: { "input-width": "100%" },
                                           model: {
-                                            value: _vm.dayTime,
+                                            value: _vm.careTime,
                                             callback: function($$v) {
-                                              _vm.dayTime = $$v
+                                              _vm.careTime = $$v
                                             },
-                                            expression: "dayTime"
+                                            expression: "careTime"
                                           }
                                         })
                                       ],
@@ -63243,9 +63251,7 @@ var render = function() {
                             _c("div", { staticClass: "row" }, [
                               _c(
                                 "div",
-                                {
-                                  staticClass: "col-md-12 col-sm-12 nopadding"
-                                },
+                                { staticClass: "col-md-12 col-sm-12" },
                                 [
                                   _c(
                                     "div",
@@ -63714,96 +63720,105 @@ var render = function() {
                               ])
                             ]),
                             _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "field-group" },
-                              [
+                            _c("div", { staticClass: "row" }, [
+                              _c("div", { staticClass: "col" }, [
                                 _c(
-                                  "label",
-                                  { attrs: { for: "current_address" } },
-                                  [_vm._v("Current Address")]
-                                ),
-                                _vm._v(" "),
-                                _c("ValidationProvider", {
-                                  attrs: {
-                                    name: "Current Address",
-                                    rules: "max:1000"
-                                  },
-                                  scopedSlots: _vm._u(
-                                    [
-                                      {
-                                        key: "default",
-                                        fn: function(ref) {
-                                          var errors = ref.errors
-                                          return [
-                                            _c("textarea", {
-                                              directives: [
-                                                {
-                                                  name: "model",
-                                                  rawName: "v-model",
-                                                  value:
-                                                    _vm.spouseDetails.address,
-                                                  expression:
-                                                    "spouseDetails.address"
-                                                }
-                                              ],
-                                              staticClass: "field-input",
-                                              attrs: {
-                                                rows: "2",
-                                                name: "address",
-                                                id: "address",
-                                                placeholder:
-                                                  "Street Address, Town, City, State, Zipcode and country"
-                                              },
-                                              domProps: {
-                                                value: _vm.spouseDetails.address
-                                              },
-                                              on: {
-                                                input: function($event) {
-                                                  if ($event.target.composing) {
-                                                    return
-                                                  }
-                                                  _vm.$set(
-                                                    _vm.spouseDetails,
-                                                    "address",
-                                                    $event.target.value
-                                                  )
-                                                }
-                                              }
-                                            }),
-                                            _vm._v(" "),
-                                            errors != undefined && errors.length
-                                              ? _c(
-                                                  "span",
-                                                  {
-                                                    staticClass:
-                                                      "invalid-feedback d-block"
+                                  "div",
+                                  { staticClass: "field-group" },
+                                  [
+                                    _c(
+                                      "label",
+                                      { attrs: { for: "current_address" } },
+                                      [_vm._v("Current Address")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c("ValidationProvider", {
+                                      attrs: {
+                                        name: "Current Address",
+                                        rules: "max:1000"
+                                      },
+                                      scopedSlots: _vm._u(
+                                        [
+                                          {
+                                            key: "default",
+                                            fn: function(ref) {
+                                              var errors = ref.errors
+                                              return [
+                                                _c("textarea", {
+                                                  directives: [
+                                                    {
+                                                      name: "model",
+                                                      rawName: "v-model",
+                                                      value:
+                                                        _vm.spouseDetails
+                                                          .address,
+                                                      expression:
+                                                        "spouseDetails.address"
+                                                    }
+                                                  ],
+                                                  staticClass: "field-input",
+                                                  attrs: {
+                                                    rows: "2",
+                                                    name: "address",
+                                                    id: "address",
+                                                    placeholder:
+                                                      "Street Address, Town, City, State, Zipcode and country"
                                                   },
-                                                  [
-                                                    _vm._v(
-                                                      "\n                                    " +
-                                                        _vm._s(errors[0]) +
-                                                        "\n                                "
+                                                  domProps: {
+                                                    value:
+                                                      _vm.spouseDetails.address
+                                                  },
+                                                  on: {
+                                                    input: function($event) {
+                                                      if (
+                                                        $event.target.composing
+                                                      ) {
+                                                        return
+                                                      }
+                                                      _vm.$set(
+                                                        _vm.spouseDetails,
+                                                        "address",
+                                                        $event.target.value
+                                                      )
+                                                    }
+                                                  }
+                                                }),
+                                                _vm._v(" "),
+                                                errors != undefined &&
+                                                errors.length
+                                                  ? _c(
+                                                      "span",
+                                                      {
+                                                        staticClass:
+                                                          "invalid-feedback d-block"
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "\n                                            " +
+                                                            _vm._s(errors[0]) +
+                                                            "\n                                        "
+                                                        )
+                                                      ]
                                                     )
-                                                  ]
-                                                )
-                                              : _vm._e()
-                                          ]
-                                        }
-                                      }
-                                    ],
-                                    null,
-                                    true
-                                  )
-                                })
-                              ],
-                              1
-                            ),
+                                                  : _vm._e()
+                                              ]
+                                            }
+                                          }
+                                        ],
+                                        null,
+                                        true
+                                      )
+                                    })
+                                  ],
+                                  1
+                                )
+                              ])
+                            ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "row" }, [
                               _c(
                                 "div",
-                                { staticClass: "col nopadding" },
+                                { staticClass: "col" },
                                 [
                                   _vm.phones.length > 0
                                     ? _c("phone-details", {
@@ -63816,7 +63831,7 @@ var render = function() {
                             ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "row" }, [
-                              _c("div", { staticClass: "col nopadding" }, [
+                              _c("div", { staticClass: "col" }, [
                                 _c(
                                   "div",
                                   { staticClass: "field-group" },
@@ -64147,7 +64162,7 @@ var render = function() {
                                                                   "a",
                                                                   {
                                                                     staticClass:
-                                                                      "btn btn-success btn-sm",
+                                                                      "btn btn-success btn",
                                                                     attrs: {
                                                                       href:
                                                                         _vm
@@ -64168,7 +64183,7 @@ var render = function() {
                                                                   "a",
                                                                   {
                                                                     staticClass:
-                                                                      "btn btn-danger btn-sm",
+                                                                      "btn btn-danger btn",
                                                                     attrs: {
                                                                       href:
                                                                         "javascript:void(0);"

@@ -207,7 +207,7 @@
                                             >Care Time</label
                                         >
                                         <vue-timepicker
-                                            v-model="dayTime"
+                                            v-model="careTime"
                                             input-width="100%"
                                             class="field-datepicker field-input"
                                         ></vue-timepicker>
