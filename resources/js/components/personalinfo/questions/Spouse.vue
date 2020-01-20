@@ -130,7 +130,7 @@ export default {
                     if (status == '1') {
                         this.$router.push('/spouse');
                     } else {
-                        this.$router.push('/previous-spouse');
+                        this.$router.push('/previous-spouse-question');
                     }
                 })
                 .catch(function(){
@@ -138,7 +138,7 @@ export default {
                 });
         },
         updatestepinfo() {
-            let data = {'step_id':2, 'is_visited': '1', 'is_filled' : '0', 'is_completed' : '0'}
+            let data = {'step_id':2, 'is_visited': '1'}
             axios.post('/updatepersonalstep', data)
                 .then((response) => {
                     

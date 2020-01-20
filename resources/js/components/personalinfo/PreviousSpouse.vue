@@ -17,7 +17,7 @@
                         >
                             <!-- Former spouse's name section -->
                             <div class="row">
-                                <div class="col-md-6 col-sm-12 nopadding">
+                                <div class="col-md-12 col-sm-12 nopadding">
                                     <div class="field-group">
                                         <label
                                             for="former_spouse_name"
@@ -202,7 +202,7 @@
                                 >
                                 <ValidationProvider
                                     name="Current Address"
-                                    rules="address|max:200"
+                                    rules="max:1000"
                                     v-slot="{ errors }"
                                 >
                                     <textarea
@@ -406,8 +406,19 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- Mark as complete button section -->
+                                <div class="field-group form-group-checkbox clearfix">
+                                    <label for="chk_complete">
+                                        <input
+                                        type="checkbox"
+                                        name="chk_complete"
+                                        id="chk_complete"
+                                        v-model="is_completed"
+                                        :value="is_completed"
+                                        /><i></i> <span>Mark as complete</span>
+                                    </label>
+                                </div>
                             </div>
-
                             <div class="field-group clearfix">
                                 <input
                                     type="submit"
@@ -455,7 +466,8 @@ export default {
             citizenshipOptions: [],
             file: "",
             isAlimonyPaid: false,
-            divorceDoc: []
+            divorceDoc: [],
+            is_completed: false,
         };
     },
     computed: {
@@ -492,8 +504,18 @@ export default {
                     if (this.spouseDetails.divorce_doc.length > 0) {
                         this.divorceDoc = this.spouseDetails.divorce_doc[0];
                     }
+
+                    if(this.spouseDetails.users_personal_details_completion.length > 0) {
+                        if (this.spouseDetails.users_personal_details_completion[0].is_completed == 1) {
+                        this.is_completed = true;
+                        }
+                    } else {
+                        //this.completionStatus = { step_id: null, is_visited: null, is_filled: null, is_completed: null };
+                        this.is_completed = false;
+                    }
                 } else {
                     this.phones = [{ number: null }];
+                    this.is_completed = false;
                 }
             }
         });

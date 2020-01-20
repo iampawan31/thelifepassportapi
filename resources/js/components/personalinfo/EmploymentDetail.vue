@@ -62,7 +62,7 @@
             <label for="employer_address">Employer Address</label>
             <ValidationProvider
                 name="Employer Address"
-                rules="max:80"
+                rules="max:1000"
                 v-slot="{ errors }"
             >
                 <textarea

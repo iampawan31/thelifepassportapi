@@ -11,17 +11,16 @@
                         <form
                             id="frmFamilyMember"
                             name="frmFamilyMember"
-                            action="#"
                             method="post"
                             class="custom-form"
-                            @submit.prevent="handleSubmit()"
+                            @submit.prevent="handleSubmit"
                         >
                             <!-- Name section -->
                             <div class="row">
                                 <div class="col">
                                     <div class="field-group">
                                         <label
-                                            for="txt_name"
+                                            for="legal_name"
                                             class="input-label"
                                             >Name</label
                                         >
@@ -32,11 +31,13 @@
                                         >
                                             <input
                                                 type="text"
-                                                name="txt_name"
-                                                id="txt_name"
-                                                data-id="txt_name"
+                                                name="legal_name"
+                                                id="legal_name"
                                                 class="field-input required"
                                                 placeholder="Name"
+                                                v-model="
+                                                    memberDetails.legal_name
+                                                "
                                             />
                                             <div
                                                 class="invalid-feedback d-block"
@@ -68,7 +69,9 @@
                                                 id="relationship"
                                                 placeholder="Relationship"
                                                 width="resolve"
-                                                v-model="relationship"
+                                                v-model="
+                                                    memberDetails.relationship_id
+                                                "
                                                 :options="relationshipOptions"
                                                 @change="
                                                     relationshipChangeEvent(
@@ -110,6 +113,7 @@
                                                 id="relatiionship_other"
                                                 class="field-input"
                                                 placeholder="Please specify relation"
+                                                v-model="memberDetails.others"
                                             />
                                             <span
                                                 v-if="
@@ -129,7 +133,7 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="field-group">
-                                        <label for="home_address"
+                                        <label for="address"
                                             >Home Address</label
                                         >
                                         <ValidationProvider
@@ -139,9 +143,9 @@
                                         >
                                             <textarea
                                                 rows="2"
-                                                name="home_address"
-                                                id="home_address"
-                                                v-model="homeAddress"
+                                                name="address"
+                                                id="address"
+                                                v-model="memberDetails.address"
                                                 class="field-input"
                                                 placeholder="Street Address, Town, City, State, Zipcode and country"
                                             ></textarea>
@@ -185,11 +189,11 @@
                                         >
                                             <input
                                                 type="text"
-                                                name="user_email"
-                                                id="user_email"
+                                                name="email"
+                                                id="email"
                                                 class="field-input required email"
                                                 placeholder="Email address"
-                                                v-model="emailAddress"
+                                                v-model="memberDetails.email"
                                             />
                                             <span
                                                 v-if="
@@ -213,11 +217,11 @@
                                             >Date of Birth</label
                                         >
                                         <date-picker
-                                            name="date"
+                                            name="dob"
                                             :disabled-dates="disabledDates"
                                             placeholder="M/dd/YYYY"
                                             :format="'M/dd/yyyy'"
-                                            v-model="dateOfBirth"
+                                            v-model="memberDetails.dob"
                                             class="field-datepicker field-input"
                                         >
                                         </date-picker>
@@ -271,19 +275,49 @@ export default {
             phoneNumbers: [],
             emailAddress: "",
             dateOfBirth: "",
-            relationshipOptions: [
-                { id: 1, text: "Brother" },
-                { id: 2, text: "Sister" },
-                { id: 3, text: "Son" },
-                { id: 4, text: "Daughter" },
-                { id: 5, text: "Other" }
-            ]
+            memberDetails: [],
+            relationshipOptions: [],
+            relationId: 0,
+            submitted: false
         };
     },
     mounted() {},
+    created() {
+        this.relationId = this.$route.params.id;
+        this.getFamilyRelations();
+        this.getFamilyMemberInfo();
+    },
     methods: {
-        handleSubmit(e) {
-            this.$router.push("/close-friends-question");
+        async handleSubmit(e) {
+            this.submitted = true;
+
+            const isValid = await this.$refs.observer.validate();
+            if (!isValid) {
+            } else {
+                const form = e.target;
+                const formData = new FormData(form);
+
+                if (this.relationId) {
+                    axios
+                        .post(
+                            "/familyinfo/" + this.relationId + "/updatedata",
+                            formData
+                        )
+                        .then(response => {
+                            this.$router.push("/family-members-question");
+                        })
+                        .catch(function() {});
+                } else {
+                    axios
+                        .post("/familyinfo/postdata", formData)
+                        .then(response => {
+                            this.$router.push("/family-members-question");
+                        })
+                        .catch(function() {});
+                }
+            }
+
+            //this.$router.push("/close-friends-question");
         },
         relationshipChangeEvent(event) {
             console.log(event);
@@ -293,6 +327,35 @@ export default {
         },
         updatePhoneNumbers(data) {
             this.phoneNumbers = data;
+        },
+        getFamilyRelations() {
+            axios.get("/familyrelations").then(response => {
+                if (response.status == 200) {
+                    this.relationshipOptions = response.data.relation;
+                }
+            });
+        },
+        getFamilyMemberInfo() {
+            if (this.relationId) {
+                axios
+                    .get(
+                        "/familyinfo/" +
+                            this.relationId +
+                            "/getfamilymemberinfo"
+                    )
+                    .then(response => {
+                        if (response.status == 200) {
+                            this.memberDetails = JSON.parse(
+                                JSON.stringify(response.data.data[0])
+                            );
+                            if (this.memberDetails.family_phone.length > 0) {
+                                this.phoneNumbers = this.memberDetails.family_phone;
+                                console.log("phone number");
+                                console.log(this.phoneNumbers);
+                            }
+                        }
+                    });
+            }
         }
     }
 };

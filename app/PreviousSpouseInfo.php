@@ -42,6 +42,10 @@ class PreviousSpouseInfo extends Model
         return $this->hasMany(\App\DivorceDoc::class, 'user_id')->select(['user_id', 'title', 'url']);
     }
 
+    public function UsersPersonalDetailsCompletion() {
+        return $this->hasMany(UsersPersonalDetailsCompletion::class, 'user_id')->where('step_id', 3);
+    }
+
     //Table Name
     static function tableName() {
         return with(new static)->getTable();

@@ -57,6 +57,16 @@ Route::middleware(['auth'])->group(function(){
     Route::post('removedivorcefile', 'PreviousspouseController@removedivorcefile')->name('prevspouseinfo.removedivorcefile');
     Route::delete('previousspouse/{id}/removespouse', 'PreviousspouseController@destroy')->name('prevspouseinfo.removespouse');
 
+    //Close family members
+    Route::get('familyinfo/getfamilymembersinfo', 'FamilyController@getfamilymembersinfo')->name('familyinfo.getfamilymembersinfo');
+    Route::post('familyinfo/updatefamilystatus', 'FamilyController@updatefamilystatus')->name('familyinfo.updatefamilystatus');
+    Route::get('familyinfo/getfamilymembersstatus', 'FamilyController@getfamilymembersstatus')->name('familyinfo.getfamilymembersstatus');
+    Route::get('familyrelations', 'FamilyController@familyrelations')->name('familyinfo.familyrelations');
+    Route::post('familyinfo/postdata', 'FamilyController@store')->name('familyinfo.postdata');
+    Route::get('familyinfo/{id}/getfamilymemberinfo', 'FamilyController@edit')->name('familyinfo.getfamilymemberinfo');
+    Route::post('familyinfo/{id}/updatedata', 'FamilyController@update')->name('familyinfo.updatedata');
+    Route::delete('familyinfo/{id}/removefamilymember', 'FamilyController@destroy')->name('familyinfo.removefamilymember');
+
     //get left navigation list
     Route::get('getpersonalinfonav', 'LeftnavController@getpersonalinfoleftnavigation')->name('getpersonalinfonav.getdata');
     
