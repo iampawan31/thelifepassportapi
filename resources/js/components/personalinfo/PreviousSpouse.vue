@@ -575,14 +575,33 @@ export default {
             }
         },
         removeDivorceFile() {
-            axios
-                .post("/removedivorcefile")
-                .then(response => {
-                    if (response.status == 200) {
-                        this.divorceDoc = [];
-                    }
+            this.$swal
+                .fire({
+                    title: "Are you sure?",
+                    text: "Remove Agreement Document?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes"
                 })
-                .catch(function() {});
+                .then(result => {
+                    if (result.value) {
+                        axios
+                            .post("/removedivorcefile")
+                            .then(response => {
+                                if (response.status == 200) {
+                                    this.divorceDoc = [];
+                                    this.$swal.fire(
+                                        "Deleted!",
+                                        "Document is removed",
+                                        "success"
+                                    );
+                                }
+                            })
+                            .catch(function() {});
+                    }
+                });
         }
     }
 };

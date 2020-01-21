@@ -101,7 +101,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
                     </span>
                     <span class="item__status" v-else-if="familyMembers.is_filled == 0">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecax="round" stroke-linejoin="round" class="feather feather-lock"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                     </span>
                     <span class="item__status" v-else-if="familyMembers.is_completed == 0">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bookmark"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
@@ -118,7 +118,7 @@
                         <span v-else-if="familyMembersStatus && familyMembersStatus.has_family_member == '2'">You answered: <strong>SKIPPED</strong></span>
                         <span v-else>You answered: <strong>NONE</strong></span><br>
 
-                        <span class="item__last-updated" v-if="familyMembersStatus.updated_at != ''">Last Updated: {{ familyMembers.updated_at }}</span> &nbsp;/&nbsp; 
+                        <span class="item__last-updated" v-if="familyMembers.updated_at != ''">Last Updated: {{ familyMembers.updated_at }}</span> &nbsp;/&nbsp; 
                         <router-link to="/family-members-question">Edit</router-link>
                     </div>
                     <div class="item__meta" v-else>
@@ -143,9 +143,14 @@
 
                     <h3><router-link :event="disableRouter(familyMembers.is_filled)" to="/close-friends-question">Would you like any close friends contacted?</router-link></h3>
 
-                    <div class="item__meta" v-if="closeFriends.is_filled">
-                        <span class="item__last-updated">Last Updated: {{ closeFriends.updated_at }}</span> &nbsp;/&nbsp; 
-                        <router-link to="/close-friends">Edit</router-link>
+                    <div class="item__meta" v-if="closeFriends.is_visited != '0'">
+                        <span v-if="friendsStatus && friendsStatus.has_friends == '0'">You answered: <strong>No</strong></span>
+                        <span v-else-if="friendsStatus && friendsStatus.has_friends == '1'">MEMBER ADDED: <strong>{{ friendsStatus.count }}</strong></span>
+                        <span v-else-if="friendsStatus && friendsStatus.has_friends == '2'">You answered: <strong>SKIPPED</strong></span>
+                        <span v-else>You answered: <strong>NONE</strong></span><br>
+
+                        <span class="item__last-updated" v-if="closeFriends.updated_at != ''">Last Updated: {{ closeFriends.updated_at }}</span> &nbsp;/&nbsp; 
+                        <router-link to="/close-friends-question">Edit</router-link>
                     </div>
                     <div class="item__meta" v-else>
                         <span class="item__last-updated">Not Visited</span>
@@ -252,6 +257,7 @@ export default {
             marriageStatus: [],
             previousMarriageStatus: [],
             familyMembersStatus: [],
+            friendsStatus: []
         };
     },
     created() {
@@ -259,6 +265,7 @@ export default {
         this.getSpouseMarriageStatus();
         this.getPreviousSpouseMarriageStatus();
         this.getFamilyMembersStatus();
+        this.getFriendsStatus();
     },
     mounted() {
         $("#b").mCustomScrollbar({
@@ -275,6 +282,7 @@ export default {
             this.getSpouseMarriageStatus();
             this.getPreviousSpouseMarriageStatus();
             this.getFamilyMembersStatus();
+            this.getFriendsStatus();
         }
     },
     methods: {
@@ -350,8 +358,18 @@ export default {
                 .catch(function(){
 
                 });
-        }
+        },
+        getFriendsStatus() {
+            axios.get('friendsinfo/getfriendsstatus')
+                .then((response) => {
+                    if(response.status == 200) {
+                        this.friendsStatus = response.data.data;
+                    }
+                })
+                .catch(function(){
 
+                });
+        }
     }
 };
 </script>

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateFamilyStatusesTable extends Migration
+class CreateFriendsPhonesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateFamilyStatusesTable extends Migration
      */
     public function up()
     {
-        Schema::create('family_statuses', function (Blueprint $table) {
+        Schema::create('friends_phones', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
-            $table->enum('has_family_member', [0, 1, 2])->nullable()->comment('0=>No, 1=>Yes, 2=>Skipped');
-            $table->tinyInteger('count');
-            
+            $table->unsignedBigInteger('friend_id');
+            $table->string('phone', 20);
+
+            $table->foreign('friend_id')->references('id')->on('friends');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
@@ -31,6 +32,6 @@ class CreateFamilyStatusesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('family_statuses');
+        Schema::dropIfExists('friends_phones');
     }
 }

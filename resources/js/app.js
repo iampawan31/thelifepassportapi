@@ -26,6 +26,9 @@ import VueRouter from "vue-router";
 import { ValidationProvider, extend } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 import VeeValidateLaravel from "vee-validate-laravel";
+import VueSweetalert2 from "vue-sweetalert2";
+import "sweetalert2/dist/sweetalert2.min.css";
+
 import { routes } from "./routes";
 
 extend("required", {
@@ -61,6 +64,7 @@ extend("website", value => {
 
 Vue.use(VueRouter);
 Vue.use(VeeValidateLaravel);
+Vue.use(VueSweetalert2);
 
 const router = new VueRouter({
     routes

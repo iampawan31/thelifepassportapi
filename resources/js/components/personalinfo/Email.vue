@@ -83,9 +83,35 @@ export default {
             key: ""
         };
     },
+    computed: {
+        emailRemoveText() {
+            return (
+                "You want to remove " + "<strong>" + this.email + "</strong>?"
+            );
+        }
+    },
     methods: {
         removeEmail() {
-            this.$emit("remove-email", this.key);
+            this.$swal
+                .fire({
+                    title: "Are you sure?",
+                    html: this.emailRemoveText,
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes"
+                })
+                .then(result => {
+                    if (result.value) {
+                        this.$emit("remove-email", this.key);
+                        $swal.fire(
+                            "Deleted!",
+                            "Your email is removed",
+                            "success"
+                        );
+                    }
+                });
         }
     },
     watch: {

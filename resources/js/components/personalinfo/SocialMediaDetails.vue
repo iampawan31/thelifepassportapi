@@ -9,6 +9,7 @@
             >
                 <social-media
                     v-on:social-media-update="updateSocialMedia"
+                    v-on:social-media-removal="removeSocialMedia"
                     :social-media-key="index"
                     :social-media-options="socialOptions"
                     :social-media-type="social.social"
@@ -16,7 +17,7 @@
                     :social-media-password="social.password"
                 >
                 </social-media>
-                <a
+                <!-- <a
                     href="javascript:void(0);"
                     class="btn-remove"
                     v-if="index != 0"
@@ -37,7 +38,7 @@
                         <circle cx="12" cy="12" r="10" />
                         <line x1="8" y1="12" x2="16" y2="12" />
                     </svg>
-                </a>
+                </a> -->
             </div>
             <div class="btn-add">
                 <a href="javascript:void(0);" @click="addSocialMedia">

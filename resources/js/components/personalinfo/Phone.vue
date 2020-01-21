@@ -59,9 +59,35 @@ export default {
             key: ""
         };
     },
+    computed: {
+        phoneRemoveText() {
+            return (
+                "You want to remove " + "<strong>" + this.number + "</strong>?"
+            );
+        }
+    },
     methods: {
         removePhone() {
-            this.$emit("remove-phone-number", this.key);
+            this.$swal
+                .fire({
+                    title: "Are you sure?",
+                    html: this.phoneRemoveText,
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes"
+                })
+                .then(result => {
+                    if (result.value) {
+                        this.$emit("remove-phone-number", this.key);
+                        $swal.fire(
+                            "Deleted!",
+                            "Your phone number is deleted",
+                            "success"
+                        );
+                    }
+                });
         }
     },
     watch: {

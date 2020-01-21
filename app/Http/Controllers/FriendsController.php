@@ -8,18 +8,8 @@ use Session, Auth;
 use App\PersonalInfo;
 use Illuminate\Http\Request;
 
-class FamilyController extends Controller
+class FriendsController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware(['auth', 'verified']);
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -51,28 +41,22 @@ class FamilyController extends Controller
         $inputs = $request->all();
         
         //personal information
-        $legal_name         = $inputs['legal_name'];
-        $relationship_id    = $inputs['relationship'];
-        $relatiionship_other= @$inputs['relatiionship_other'];
-        $address            = $inputs['address'];
-        $email              = $inputs['email'];
-        $dob                = $inputs['dob'];
+        $legal_name = $inputs['legal_name'];
+        $address    = $inputs['address'];
+        $email      = $inputs['email'];
 
         try {
             //insert personal information
-            $objMemberInfo = new \App\FamilyMembers();
+            $objFriends = new \App\Friends();
             
-            $objMemberInfo->user_id               = Auth::user()->id;
-            $objMemberInfo->legal_name            = $legal_name ? $legal_name : "";
-            $objMemberInfo->relationship_id       = $relationship_id ? $relationship_id : 0;
-            $objMemberInfo->relatiionship_other   = $relatiionship_other ? $relatiionship_other : "";
-            $objMemberInfo->address               = $address ? $address : "";
-            $objMemberInfo->email                 = $email ? $email : "";
-            $objMemberInfo->dob                   = $dob ? date('Y-m-d', strtotime($dob)) : null;
-            $objMemberInfo->save();
+            $objFriends->user_id    = Auth::user()->id;
+            $objFriends->legal_name = $legal_name ? $legal_name : "";
+            $objFriends->address    = $address ? $address : "";
+            $objFriends->email      = $email ? $email : "";
+            $objFriends->save();
 
             //insert record in user personal details completion
-            \App\UsersPersonalDetailsCompletion::where('step_id', 4)
+            \App\UsersPersonalDetailsCompletion::where('step_id', 5)
                                                 ->where('user_id', Auth::user()->id)
                                                 ->update(['is_visited' => '1', 'is_filled' => '1']);
 
@@ -81,27 +65,26 @@ class FamilyController extends Controller
             if (isset($inputs['phone'])) {
                 foreach($inputs['phone'] as $phone) {
                     if ($phone) {
-                        $arrPhone[] = ['user_id' => Auth::user()->id, 'family_member_id' => $objMemberInfo->user_id, 'phone' => $phone];
+                        $arrPhone[] = ['user_id' => Auth::user()->id, 'friend_id' => $objFriends->id, 'phone' => $phone];
                     }
                 }
             }
             //insert phone information
             if (!empty($arrPhone)) {
                 foreach($arrPhone as $phones){
-                    $objPhone = \App\FamilyPhone::create($phones);
+                    $objPhone = \App\FriendsPhone::create($phones);
                 } 
             }
 
             //increase family members count
-            $objFamilyStatus    = \App\FamilyStatus::where('user_id', Auth::user()->id)
+            $objFamilyStatus    = \App\FriendsStatus::where('user_id', Auth::user()->id)
                 ->update(['count'=> \DB::raw('count+1')]);
 
-            return response()->json(['status' => 200, 'message' => 'Family members information has been saved successfully']);
+            return response()->json(['status' => 200, 'message' => 'Friends information has been saved successfully']);
 
         } catch (Exception $e) {
             return response()->json(['status' => 503, 'message' => 'Error']);
         }
-
     }
 
     /**
@@ -112,7 +95,7 @@ class FamilyController extends Controller
      */
     public function show($id)
     {
-        
+        //
     }
 
     /**
@@ -123,16 +106,15 @@ class FamilyController extends Controller
      */
     public function edit($id)
     {
-        $count = \App\FamilyMembers::where('id', $id)->get()->count();
+        $count = \App\Friends::where('id', $id)->get()->count();
         
         if ($count > 0) {
-            $member_info = \App\FamilyMembers::where('id', $id)
-                        ->with('FamilyPhone')
-                        ->with('FamilyPhone')
+            $friends_info = \App\Friends::where('id', $id)
+                        ->with('FriendsPhone')
                         ->with('UsersPersonalDetailsCompletion')
                         ->get();
             
-            return response()->json(['status' => 200, 'data' => $member_info]);
+            return response()->json(['status' => 200, 'data' => $friends_info]);
         } else {
             return response()->json(['status' => 200, 'data' => []]);
         }
@@ -151,27 +133,20 @@ class FamilyController extends Controller
         
         //personal information
         $legal_name         = $inputs['legal_name'];
-        $relationship_id    = $inputs['relationship'];
-        $relatiionship_other= $inputs['relatiionship_other'];
         $address            = $inputs['address'];
         $email              = $inputs['email'];
-        $dob                = $inputs['dob'];
         
         try {//
             //get spouse information
-            $objMemberInfo = \App\FamilyMembers::find($id);
+            $objFriends = \App\Friends::find($id);
             
-            //$objPersonalInfo->user_id       = Auth::user()->id;
-            $objMemberInfo->legal_name          = $legal_name ? $legal_name : "";
-            $objMemberInfo->relationship_id     = $relationship_id ? $relationship_id : 0;
-            $objMemberInfo->address             = $address ? $address : "";
-            $objMemberInfo->email               = $email ?  $email: "";
-            $objMemberInfo->dob                 = $dob ? date('Y-m-d', strtotime($dob)) : null;
-            $objMemberInfo->relatiionship_other = $relatiionship_other ? $relatiionship_other : "";
-            $objMemberInfo->save();
+            $objFriends->legal_name = $legal_name ? $legal_name : "";
+            $objFriends->address    = $address ? $address : "";
+            $objFriends->email      = $email ?  $email: "";
+            $objFriends->save();
             
             //insert record in user personal details completion
-            \App\UsersPersonalDetailsCompletion::where('step_id', 4)
+            \App\UsersPersonalDetailsCompletion::where('step_id', 5)
                                                 ->where('user_id', Auth::user()->id)
                                                 ->update(['is_visited' => '1', 'is_filled' => '1']);
 
@@ -180,7 +155,7 @@ class FamilyController extends Controller
             if (isset($inputs['phone'])) {
                 foreach($inputs['phone'] as $phone) {
                     if ($phone) {
-                        $arrPhone[] = ['user_id' => Auth::user()->id, 'family_member_id' => $id, 'phone' => $phone];
+                        $arrPhone[] = ['user_id' => Auth::user()->id, 'friend_id' => $id, 'phone' => $phone];
                     }
                 }
             }
@@ -188,13 +163,13 @@ class FamilyController extends Controller
             //insert phone information
             if (!empty($arrPhone)) {
                 //remove all phone details
-                \App\FamilyPhone::where('family_member_id', $id)->delete();
+                \App\FriendsPhone::where('friend_id', $id)->delete();
                 foreach($arrPhone as $phones){
-                    $objPhone = \App\FamilyPhone::create($phones);
+                    $objPhone = \App\FriendsPhone::create($phones);
                 } 
             }
             
-            return response()->json(['status' => 200, 'message' => 'Personal information has been saved successfully']);
+            return response()->json(['status' => 200, 'message' => 'Friends information has been saved successfully']);
         } catch (Exception $e) {
             dd($e);
             return response()->json(['status' => 503, 'message' => 'Error']);
@@ -213,25 +188,25 @@ class FamilyController extends Controller
             //\DB::transaction(function ($id) {
                 
                 //remove family member phone
-                \App\FamilyPhone::where('family_member_id', $id)->delete();
+                \App\FriendsPhone::where('friend_id', $id)->delete();
 
                 //remove 
-                \App\FamilyMembers::where('id', $id)->delete();
+                \App\Friends::where('id', $id)->delete();
 
                 //get count of remaining members
-                $count = \App\FamilyMembers::where('user_id', Auth::user()->id)->get()->count();
+                $count = \App\Friends::where('user_id', Auth::user()->id)->get()->count();
 
                 //check members count
-                \App\FamilyStatus::where('user_id', Auth::user()->id)
+                \App\FriendsStatus::where('user_id', Auth::user()->id)
                     ->update(['count'=> \DB::raw('count-1')]);
 
                 if ($count == 0) {
                     //check members count
-                    \App\FamilyStatus::where('user_id', Auth::user()->id)
-                        ->update(['has_family_member' => '0', 'count' => '0']);
+                    \App\FriendsStatus::where('user_id', Auth::user()->id)
+                        ->update(['has_friends' => '0', 'count' => '0']);
 
                     //update step table
-                    \App\UsersPersonalDetailsCompletion::where('step_id', 4)
+                    \App\UsersPersonalDetailsCompletion::where('step_id', 5)
                         ->where('user_id', Auth::user()->id)
                         ->update(['is_visited' => '1', 'is_filled' => '0', 'is_completed' => '0']);
                 }
@@ -243,26 +218,25 @@ class FamilyController extends Controller
             return response()->json(['status' => 500, 'msg' => 'Error', 'family_count' => 0], 500);
         }
     }
-    
+
     /**
      * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function getfamilymembersinfo() {
+    public function getfriendsinfo() {
         //\DB::enableQueryLog();
         $user_id = Auth::user()->id;
-        $count = \App\FamilyMembers::where('user_id', $user_id)->get()->count();
+        $count = \App\Friends::where('user_id', $user_id)->get()->count();
         
         if ($count > 0) {
-            $spouse_info = \App\FamilyMembers::where('user_id', $user_id)
-                ->with('FamilyPhone')
-                ->with('FamilyRelation')
+            $friends_info = \App\Friends::where('user_id', $user_id)
+                ->with('FriendsPhone')
                 ->with('UsersPersonalDetailsCompletion')
                 ->get();
             //dd(\DB::getQueryLog());
-            return response()->json(['status' => 200, 'data' => $spouse_info]);
+            return response()->json(['status' => 200, 'data' => $friends_info]);
         } else {
             return response()->json(['status' => 200, 'data' => []]);
         }
@@ -274,67 +248,51 @@ class FamilyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function updatefamilystatus(Request $request) {
+    public function updatefriendsstatus(Request $request) {
         $inputs = $request->all();
         $user_id    = Auth::user()->id;
-        $has_family_member = $inputs['has_family_member'];
+        $has_friends = $inputs['has_friends'];
 
         try {
             //\DB::enableQueryLog();
             //check for record
-            $objMarriageStatus = \App\FamilyStatus::where('user_id', $user_id)->get();
+            $objFriendsStatus = \App\FriendsStatus::where('user_id', $user_id)->get();
             
-            if ($objMarriageStatus->count()) {
+            if ($objFriendsStatus->count()) {
                 \App\FamilyStatus::where('user_id', $user_id)
-                                    ->update(['has_family_member' => $has_family_member]);
-                // $objMarriageStatus->is_married = $is_married;
-                // $objMarriageStatus->save();
+                                    ->update(['has_friends' => $has_friends]);
             } else {
-                \App\FamilyStatus::create(['user_id' => $user_id, 'has_family_member' => $has_family_member]);
+                \App\FamilyStatus::create(['user_id' => $user_id, 'has_friends' => $has_friends]);
             }
              //dd(\DB::getQueryLog());
             //insert record in user personal details completion
-            if ($has_family_member == "0") {
+            if ($has_friends == "0") {
                 $arrData = ['is_visited' => '1', 'is_filled' => '1', 'is_completed' => '1'];
             } else {
                 $arrData = ['is_visited' => '1', 'is_filled' => '1', 'is_completed' => '0'];
             }
 
-            \App\UsersPersonalDetailsCompletion::where('step_id', 4)
+            \App\UsersPersonalDetailsCompletion::where('step_id', 5)
                                                  ->where('user_id', $user_id)
                                                  ->update($arrData);
 
-            return response()->json(['status' => 200, 'msg' => 'Marriage status has been updated successfully']);
+            return response()->json(['status' => 200, 'msg' => 'Friends status has been updated successfully']);
         } catch (Exception $e) {dd($e);
             return response()->json(['status' => 503, 'msg' => 'Error']);
         }
     }
 
-    public function getfamilymembersstatus() {
+    public function getfriendsstatus() {
         
         $user_id    = Auth::user()->id;
 
         try {
             //check for record
-            $objFamilyStatus    = \App\FamilyStatus::find($user_id);
-            return response()->json(['status' => 200, 'data' => $objFamilyStatus]);
+            $objFriendsStatus    = \App\FriendsStatus::find($user_id);
+            return response()->json(['status' => 200, 'data' => $objFriendsStatus]);
         } catch (Exception $e) {
             return response()->json(['status' => 503, 'data' => [[]]]);
         }
-    }
-
-    public function familyrelations() {
-
-        $arrFamilyRelation = \App\FamilyRelation::select('id', 'title')->where('status', '1')->get();
-        
-        $data = [];
-        if ($arrFamilyRelation->count()) {
-            foreach( $arrFamilyRelation as $relation ) {
-                $data[] = ['id' => $relation->id, 'text' => $relation->title];
-            }
-        }
-        return response()->json(['relation' => $data]);
-
     }
 
     public function updatestatus(Request $request) {
@@ -345,10 +303,10 @@ class FamilyController extends Controller
         //insert record in user personal details completion
         $arrData = ['is_completed' => $is_completed];
 
-        \App\UsersPersonalDetailsCompletion::where('step_id', 4)
+        \App\UsersPersonalDetailsCompletion::where('step_id', 5)
                                              ->where('user_id', $user_id)
                                              ->update($arrData);
 
-        return response()->json(['status' => 200, 'msg' => 'Family information has completed successfully']);
+        return response()->json(['status' => 200, 'msg' => 'Friends information has completed successfully']);
     }
 }

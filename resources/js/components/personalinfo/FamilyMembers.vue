@@ -171,6 +171,7 @@
                                             updatePhoneNumbers
                                         "
                                         :user-phones="phoneNumbers"
+                                        v-if="phoneNumbers.length > 0"
                                     ></phone-details>
                                 </div>
                             </div>
@@ -243,6 +244,7 @@
         </div>
     </div>
 </template>
+
 <script>
 import Select2 from "v-select2-component";
 import DatePicker from "vuejs-datepicker";
@@ -350,8 +352,8 @@ export default {
                             );
                             if (this.memberDetails.family_phone.length > 0) {
                                 this.phoneNumbers = this.memberDetails.family_phone;
-                                console.log("phone number");
-                                console.log(this.phoneNumbers);
+                            } else {
+                                this.phoneNumbers = [{ number: null }];
                             }
                         }
                     });
