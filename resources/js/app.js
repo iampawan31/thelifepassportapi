@@ -27,6 +27,7 @@ import { ValidationProvider, extend } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 import VeeValidateLaravel from "vee-validate-laravel";
 import VueSweetalert2 from "vue-sweetalert2";
+import VueMask from "v-mask";
 import "sweetalert2/dist/sweetalert2.min.css";
 
 import { routes } from "./routes";
@@ -53,6 +54,15 @@ extend("address", value => {
     return "The {_field_} must contain only Alphanumeric and Special Characters (,.-?!)";
 });
 
+extend("date", value => {
+    var dateRegex = /^(?:(0[1-9]|1[012])[\/.](0[1-9]|[12][0-9]|3[01])[\/.](19|20)[0-9]{2})$/;
+    if (value.match(dateRegex)) {
+        return true;
+    }
+
+    return "The {_field_} must be a valid date (mm/dd/yyyy)";
+});
+
 extend("website", value => {
     var addressRegex = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
     if (value.match(addressRegex)) {
@@ -65,6 +75,7 @@ extend("website", value => {
 Vue.use(VueRouter);
 Vue.use(VeeValidateLaravel);
 Vue.use(VueSweetalert2);
+Vue.use(VueMask);
 
 const router = new VueRouter({
     routes

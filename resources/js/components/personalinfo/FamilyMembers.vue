@@ -248,8 +248,8 @@
 <script>
 import Select2 from "v-select2-component";
 import DatePicker from "vuejs-datepicker";
-import PhoneDetails from "./PhoneDetails.vue";
-import Email from "./Email.vue";
+import PhoneDetails from "./elements/PhoneDetails.vue";
+import Email from "./elements/Email.vue";
 import { ValidationObserver, ValidationProvider } from "vee-validate";
 
 export default {

@@ -76,33 +76,7 @@
             </div>
 
             <!-- Home Address Section -->
-            <div class="row">
-              <div class="col nopadding">
-                <div class="field-group">
-                  <label for="home_address">Home Address</label>
-                  <ValidationProvider
-                    name="Home Address"
-                    rules="max:1000"
-                    v-slot="{ errors }"
-                  >
-                    <textarea
-                      rows="2"
-                      name="home_address"
-                      id="home_address"
-                      v-model="personalDetail.home_address"
-                      class="field-input"
-                      placeholder="Street Address, Town, City, State, Zipcode and country"
-                    ></textarea>
-                    <span
-                      v-if="errors != undefined && errors.length"
-                      class="invalid-feedback d-block"
-                    >
-                      {{ errors[0] }}
-                    </span>
-                  </ValidationProvider>
-                </div>
-              </div>
-            </div>
+            <home-address></home-address>
 
             <!-- Phone Number(s) section -->
             <div class="row">
@@ -117,24 +91,32 @@
 
             <!-- Date of birth Section -->
             <div class="row">
-              <div class="col nopadding">
-                <div class="field-group">
-                  <label
-                    for="dob"
-                    class="input-label"
-                  >Date of Birth</label>
-                  <date-picker
-                    name="date"
-                    :disabled-dates="disabledDates"
-                    placeholder="M/dd/YYYY"
-                    :format="'M/dd/yyyy'"
-                    @selected="updateBirthDateFormat"
-                    v-model="personalDetail.dob"
-                    class="field-datepicker field-input"
-                  >
-                  </date-picker>
+                <div class="col nopadding">
+                    <div class="field-group">
+                        <label for="dob" class="input-label">Date of Birth</label
+                        >
+                        <ValidationProvider
+                            name="Date of Birth"
+                            rules="date"
+                            v-slot="{ errors }"
+                        >
+                            <input
+                                type="text"
+                                v-model="personalDetail.dob"
+                                v-mask="'##/##/####'"
+                                class="field-input"
+                                name="date"
+                                placeholder="mm/dd/yyyy"
+                            />
+                            <span
+                                v-if="errors != undefined && errors.length"
+                                class="invalid-feedback d-block"
+                            >
+                                {{ errors[0] }}
+                            </span>
+                        </ValidationProvider>
+                    </div>
                 </div>
-              </div>
             </div>
 
             <!-- Citizenship and Passport Number Section -->
@@ -381,12 +363,12 @@
   </div>
 </template>
 <script>
-import DatePicker from "vuejs-datepicker";
 import Select2 from "v-select2-component";
-import PhoneDetails from "./PhoneDetails.vue";
-import EmailDetails from "./EmailDetails.vue";
-import SocialMediaDetails from "./SocialMediaDetails.vue";
-import EmploymentDetails from "./EmploymentDetails.vue";
+import PhoneDetails from "./elements/PhoneDetails.vue";
+import EmailDetails from "./elements/EmailDetails.vue";
+import HomeAddress from "./elements/Address";
+import SocialMediaDetails from "./elements/SocialMediaDetails.vue";
+import EmploymentDetails from "./elements/EmploymentDetails.vue";
 import { ValidationObserver, ValidationProvider } from "vee-validate";
 import { async } from "q";
 import VueRouter from "vue-router";
@@ -395,9 +377,9 @@ export default {
   components: {
     PhoneDetails,
     EmailDetails,
-    DatePicker,
     SocialMediaDetails,
     EmploymentDetails,
+    HomeAddress,
     Select2,
     ValidationObserver,
     ValidationProvider
@@ -410,6 +392,7 @@ export default {
       phones: [],
       emails: [],
       socials: [],
+      dateOfBirth: '',
       employers: [],
       is_completed: false,
       userId: 0,
@@ -474,55 +457,11 @@ export default {
     getPersonalInfo() {
       axios.get("/getpersonalinfo").then(response => {
         if (response.status == 200) {
-          console.log("Personal Info");
-          console.log(response.data);
           if (response.data.data[0]) {
             this.personalDetail = JSON.parse(
               JSON.stringify(response.data.data[0])
             );
-            this.userId = this.personalDetail.user_id;
-
-            if (this.personalDetail.user_phone.length > 0) {
-              this.phones = this.personalDetail.user_phone;
-            } else {
-              this.phones = [{ number: null }];
-            }
-
-            if (this.personalDetail.user_email.length > 0) {
-              this.emails = this.personalDetail.user_email;
-            } else {
-              this.emails = [{ email: null, password: null }];
-            }
-
-            if (this.personalDetail.user_socail_media.length > 0) {
-              this.socials = this.personalDetail.user_socail_media;
-            } else {
-              this.socials = [{ social: null, username: null, password: null }];
-            }
-
-            if (this.personalDetail.user_employer.length > 0) {
-              this.employers = this.personalDetail.user_employer;
-            } else {
-              this.employers = [
-                {
-                  employer_name: null,
-                  employer_phone: null,
-                  employer_address: null,
-                  computer_username: null,
-                  computer_password: null,
-                  employee_benefits: null
-                }
-              ];
-            }
-
-            if(this.personalDetail.users_personal_details_completion.length > 0) {
-              if (this.personalDetail.users_personal_details_completion[0].is_completed == 1) {
-                this.is_completed = true;
-              }
-            } else {
-              //this.completionStatus = { step_id: null, is_visited: null, is_filled: null, is_completed: null };
-              this.is_completed = false;
-            }
+            this.populateData(this.personalDetail);
           } else {
             this.phones = [{ number: null }];
             this.emails = [{ email: null, password: null }];
@@ -541,6 +480,51 @@ export default {
           }
         }
       });
+    },
+    populateData (personalDetail) {
+        this.userId = this.personalDetail.user_id;
+
+        if (this.personalDetail.user_phone.length > 0) {
+            this.phones = this.personalDetail.user_phone;
+        } else {
+            this.phones = [{ number: null }];
+        }
+
+        if (this.personalDetail.user_email.length > 0) {
+            this.emails = this.personalDetail.user_email;
+        } else {
+            this.emails = [{ email: null, password: null }];
+        }
+
+        if (this.personalDetail.user_socail_media.length > 0) {
+            this.socials = this.personalDetail.user_socail_media;
+        } else {
+            this.socials = [{ social: null, username: null, password: null }];
+        }
+
+        if (this.personalDetail.user_employer.length > 0) {
+            this.employers = this.personalDetail.user_employer;
+        } else {
+            this.employers = [
+            {
+                employer_name: null,
+                employer_phone: null,
+                employer_address: null,
+                computer_username: null,
+                computer_password: null,
+                employee_benefits: null
+            }
+            ];
+        }
+
+        if(this.personalDetail.users_personal_details_completion.length > 0) {
+            if (this.personalDetail.users_personal_details_completion[0].is_completed == 1) {
+            this.is_completed = true;
+            }
+        } else {
+            //this.completionStatus = { step_id: null, is_visited: null, is_filled: null, is_completed: null };
+            this.is_completed = false;
+        }
     },
     getCountyList() {
       axios.get("/countrylist").then(response => {

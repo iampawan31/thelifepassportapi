@@ -144,8 +144,8 @@
     </div>
 </template>
 <script>
-import PhoneDetails from "./PhoneDetails.vue";
-import Email from "./Email.vue";
+import PhoneDetails from "./elements/PhoneDetails.vue";
+import Email from "./elements/Email.vue";
 import { ValidationObserver, ValidationProvider } from "vee-validate";
 import { extend } from "vee-validate";
 import {
@@ -188,7 +188,7 @@ export default {
             ],
             friendsDetails: [],
             submitted: false,
-            friendId: 0,
+            friendId: 0
         };
     },
     mounted() {},
@@ -202,19 +202,23 @@ export default {
 
             const isValid = await this.$refs.observer.validate();
             if (!isValid) {
-
             } else {
                 const form = e.target;
                 const formData = new FormData(form);
 
                 if (this.friendId) {
-                    axios.post("/friendsinfo/" + this.friendId + "/updatedata", formData)
+                    axios
+                        .post(
+                            "/friendsinfo/" + this.friendId + "/updatedata",
+                            formData
+                        )
                         .then(response => {
                             this.$router.push("/close-friends-question");
                         })
                         .catch(function() {});
                 } else {
-                    axios.post("/friendsinfo/postdata", formData)
+                    axios
+                        .post("/friendsinfo/postdata", formData)
                         .then(response => {
                             this.$router.push("/close-friends-question");
                         })
@@ -229,16 +233,20 @@ export default {
         },
         getFriendsInfo() {
             if (this.friendId) {
-                axios.get("/friendsinfo/" + this.friendId + "/getfriendsinfo").then(response => {
-                    if (response.status == 200) {
-                        this.friendsDetails = JSON.parse(JSON.stringify(response.data.data[0]));
-                        if (this.friendsDetails.friends_phone.length > 0) {
-                            this.phoneNumbers = this.friendsDetails.friends_phone;
-                        } else {
-                            this.phoneNumbers = [{ number: null }];
+                axios
+                    .get("/friendsinfo/" + this.friendId + "/getfriendsinfo")
+                    .then(response => {
+                        if (response.status == 200) {
+                            this.friendsDetails = JSON.parse(
+                                JSON.stringify(response.data.data[0])
+                            );
+                            if (this.friendsDetails.friends_phone.length > 0) {
+                                this.phoneNumbers = this.friendsDetails.friends_phone;
+                            } else {
+                                this.phoneNumbers = [{ number: null }];
+                            }
                         }
-                    }
-                });
+                    });
             }
         }
     }

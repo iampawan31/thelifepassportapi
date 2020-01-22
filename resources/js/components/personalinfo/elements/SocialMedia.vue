@@ -109,7 +109,8 @@ export default {
             errors: [],
             tempSocialMediaType: "",
             tempUsername: "",
-            tempPassword: ""
+            tempPassword: "",
+            index: ""
         };
     },
     watch: {
@@ -177,6 +178,7 @@ export default {
         }
     },
     mounted() {
+        this.index = this.socialMediaKey;
         this.tempSocialMediaType = this.socialMediaType;
         this.tempUsername = this.socialMediaUsername;
         this.tempPassword = this.socialMediaPassword;

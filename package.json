@@ -26,6 +26,7 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "v-mask": "^2.0.2",
         "v-select2-component": "^0.4.1",
         "vee-validate": "^3.0.11",
         "vee-validate-laravel": "^1.1.0",

@@ -115,7 +115,6 @@ export default {
             if (!this.blockRemoval) this.employers.splice(lineId, 1);
         },
         updateEmploymentDetail(index, data) {
-            console.log("Called");
             this.employers[index].employer_name = data.employer_name;
             this.employers[index].employer_phone = data.employer_phone;
             this.employers[index].employer_address = data.employer_address;

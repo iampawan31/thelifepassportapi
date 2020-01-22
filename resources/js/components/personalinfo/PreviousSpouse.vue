@@ -444,10 +444,10 @@
 <script>
 import Select2 from "v-select2-component";
 import Datepicker from "vuejs-datepicker";
-import PhoneDetails from "./PhoneDetails.vue";
-import Email from "./Email.vue";
-import SocialMediaDetails from "./SocialMediaDetails.vue";
-import EmploymentDetails from "./EmploymentDetails.vue";
+import PhoneDetails from "./elements/PhoneDetails.vue";
+import Email from "./elements/Email.vue";
+import SocialMediaDetails from "./elements/SocialMediaDetails.vue";
+import EmploymentDetails from "./elements/EmploymentDetails.vue";
 import { ValidationObserver, ValidationProvider } from "vee-validate";
 
 export default {
