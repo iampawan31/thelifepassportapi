@@ -14,7 +14,7 @@
                     :phone-number="phone.number"
                 ></phone>
             </div>
-            <div class="btn-add">
+            <div class="btn-add" v-show="!singlePhoneNumberIsAdded">
                 <a href="javascript:void(0);" @click="addPhone">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -51,6 +51,15 @@ export default {
             blockRemoval: true
         };
     },
+    computed: {
+        singlePhoneNumberIsAdded() {
+            return (
+                this.phones[0] !== undefined &&
+                (this.phones[0].number === undefined ||
+                    this.phones[0].number === "")
+            );
+        }
+    },
     watch: {
         phones() {
             this.blockRemoval = this.phones.length <= 1;
@@ -58,10 +67,10 @@ export default {
     },
     methods: {
         addPhone() {
-            this.phones.push({ number: "" });
+            this.phones.push({ number: null });
         },
         updatePhoneNumber(index, number) {
-            this.phones[index] = number;
+            this.phones[index].number = number;
             this.$emit("phone-details-updates", this.phones);
         },
         populatePhone() {
@@ -80,7 +89,7 @@ export default {
     mounted() {
         this.$nextTick(() => {
             //this.addPhone()
-            console.log(this.userPhones);
+            console.log("Phone Details" + this.userPhones);
             this.populatePhone();
         });
     }

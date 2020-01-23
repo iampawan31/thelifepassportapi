@@ -50,6 +50,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <!-- Marriage date and location Section -->
                             <div class="row">
                                 <div class="col-md-6 col-sm-12">
@@ -59,23 +60,22 @@
                                             class="input-label"
                                             >Marriage Date</label
                                         >
-                                        <validation-provider
-                                            name="Marriage Location"
-                                            rules="required"
+                                        <ValidationProvider
                                             v-slot="{ errors }"
+                                            name="Marriage Date"
+                                            rules="date"
                                         >
-                                            <datepicker
-                                                name="marriage_date"
-                                                placeholder="M/dd/YYYY"
-                                                :format="'M/dd/yyyy'"
-                                                :disabled-dates="disabledDates"
+                                            <input
                                                 v-model="
                                                     spouseDetails.marriage_date
                                                 "
-                                                class="field-datepicker field-input"
-                                            >
-                                            </datepicker>
-                                            <div
+                                                v-mask="'##/##/####'"
+                                                type="text"
+                                                class="field-input"
+                                                name="date"
+                                                placeholder="mm/dd/yyyy"
+                                            />
+                                            <span
                                                 v-if="
                                                     errors != undefined &&
                                                         errors.length
@@ -83,8 +83,8 @@
                                                 class="invalid-feedback d-block"
                                             >
                                                 {{ errors[0] }}
-                                            </div>
-                                        </validation-provider>
+                                            </span>
+                                        </ValidationProvider>
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-sm-12">
@@ -196,38 +196,10 @@
                                 </div>
                             </div>
                             <!-- Former spouse's current address -->
-                            <div class="row">
-                                <div class="col">
-                                    <div class="field-group">
-                                        <label for="current_address"
-                                            >Current Address</label
-                                        >
-                                        <ValidationProvider
-                                            name="Current Address"
-                                            rules="max:1000"
-                                            v-slot="{ errors }"
-                                        >
-                                            <textarea
-                                                rows="2"
-                                                name="address"
-                                                id="address"
-                                                class="field-input"
-                                                placeholder="Street Address, Town, City, State, Zipcode and country"
-                                                v-model="spouseDetails.address"
-                                            ></textarea>
-                                            <span
-                                                v-if="
-                                                    errors != undefined &&
-                                                        errors.length
-                                                "
-                                                class="invalid-feedback d-block"
-                                            >
-                                                {{ errors[0] }}
-                                            </span>
-                                        </ValidationProvider>
-                                    </div>
-                                </div>
-                            </div>
+                            <home-address
+                                :home-address="address"
+                                @home-address-update="updateHomeAddress"
+                            />
 
                             <!-- Former spouse's Phone number(s) section -->
                             <div class="row">
@@ -445,6 +417,7 @@
 import Select2 from "v-select2-component";
 import Datepicker from "vuejs-datepicker";
 import PhoneDetails from "./elements/PhoneDetails.vue";
+import HomeAddress from "./elements/Address";
 import Email from "./elements/Email.vue";
 import SocialMediaDetails from "./elements/SocialMediaDetails.vue";
 import EmploymentDetails from "./elements/EmploymentDetails.vue";
@@ -455,6 +428,7 @@ export default {
         PhoneDetails,
         Email,
         Datepicker,
+        HomeAddress,
         SocialMediaDetails,
         EmploymentDetails,
         Select2,
@@ -467,6 +441,7 @@ export default {
             phones: [],
             emails: [],
             socials: [],
+            address: [],
             employers: [],
             userId: 0,
             submitted: false,
@@ -544,6 +519,7 @@ export default {
             this.submitted = true;
             const isValid = await this.$refs.observer.validate(e);
             if (!isValid) {
+                // Do Something
             } else {
                 let form = e.target;
                 let formData = new FormData(form);
@@ -561,6 +537,7 @@ export default {
                             }
                         )
                         .then(response => {
+                            console.log(response);
                             this.$router.push("/family-members-question");
                         })
                         .catch(function() {});
@@ -568,7 +545,9 @@ export default {
                     axios
                         .post("/previousspouse/postdata", formData)
                         .then(response => {
-                            this.$router.push("/family-members-question");
+                            if (response.status == 200) {
+                                this.$router.push("/family-members-question");
+                            }
                         })
                         .catch(function() {});
                 }
@@ -602,6 +581,9 @@ export default {
                             .catch(function() {});
                     }
                 });
+        },
+        updateHomeAddress(data) {
+            this.address = data;
         }
     }
 };

@@ -49,38 +49,11 @@
                         </div>
 
                         <!-- Home addresss section -->
-                        <div class="row">
-                            <div class="col">
-                                <div class="field-group">
-                                    <label for="home_address"
-                                        >Home Address</label
-                                    >
-                                    <ValidationProvider
-                                        name="Home Address"
-                                        rules="max:1000"
-                                        v-slot="{ errors }"
-                                    >
-                                        <textarea
-                                            rows="2"
-                                            name="address"
-                                            id="address"
-                                            class="field-input"
-                                            placeholder="Street Address, Town, City, State, Zipcode and country"
-                                            v-model="friendsDetails.address"
-                                        ></textarea>
-                                        <span
-                                            v-if="
-                                                errors != undefined &&
-                                                    errors.length
-                                            "
-                                            class="invalid-feedback d-block"
-                                        >
-                                            {{ errors[0] }}
-                                        </span>
-                                    </ValidationProvider>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Home Address Section -->
+                        <home-address
+                            :home-address="address"
+                            @home-address-update="updateHomeAddress"
+                        />
 
                         <!-- Phone number(s) section -->
                         <div class="row">
@@ -146,19 +119,12 @@
 <script>
 import PhoneDetails from "./elements/PhoneDetails.vue";
 import Email from "./elements/Email.vue";
+import HomeAddress from "./elements/Address";
 import { ValidationObserver, ValidationProvider } from "vee-validate";
-import { extend } from "vee-validate";
-import {
-    email,
-    required_if,
-    alpha_spaces,
-    alpha_num,
-    max,
-    regex
-} from "vee-validate/dist/rules";
 export default {
     components: {
         PhoneDetails,
+        HomeAddress,
         Email,
         ValidationObserver,
         ValidationProvider
@@ -175,7 +141,7 @@ export default {
         return {
             name: "",
             relationship: "",
-            homeAddress: "",
+            address: "",
             phoneNumbers: [],
             emailAddress: "",
             dateOfBirth: "",
@@ -202,6 +168,7 @@ export default {
 
             const isValid = await this.$refs.observer.validate();
             if (!isValid) {
+                // Do Something
             } else {
                 const form = e.target;
                 const formData = new FormData(form);
@@ -213,6 +180,7 @@ export default {
                             formData
                         )
                         .then(response => {
+                            console.log(response);
                             this.$router.push("/close-friends-question");
                         })
                         .catch(function() {});
@@ -220,6 +188,7 @@ export default {
                     axios
                         .post("/friendsinfo/postdata", formData)
                         .then(response => {
+                            console.log(response);
                             this.$router.push("/close-friends-question");
                         })
                         .catch(function() {});
@@ -248,14 +217,10 @@ export default {
                         }
                     });
             }
+        },
+        updateHomeAddress(data) {
+            this.address = data;
         }
     }
 };
-
-extend("email", email);
-extend("max", max);
-extend("regex", regex);
-extend("alpha_num", alpha_num);
-extend("alpha_spaces", alpha_spaces);
-extend("required_if", required_if);
 </script>

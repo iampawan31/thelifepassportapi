@@ -92,6 +92,11 @@
                             </div>
 
                             <!-- Home addresss section -->
+                            <!-- Home addresss section -->
+                            <home-address
+                                :home-address="address"
+                                @home-address-update="updateHomeAddress"
+                            />
                             <div class="row">
                                 <div class="col">
                                     <div class="field-group">
@@ -177,18 +182,18 @@
                                             >Care Day</label
                                         >
                                         <ValidationProvider
-                                            name="Home Address"
-                                            rules="required_if:care_day_time"
                                             v-slot="{ errors }"
+                                            name="Care Day"
+                                            rules="date|required_if:care_day_time"
                                         >
-                                            <date-picker
-                                                name="date"
-                                                placeholder="M/dd/YYYY"
-                                                :format="'M/dd/yyyy'"
+                                            <input
                                                 v-model="careDay"
-                                                class="field-datepicker field-input"
-                                            >
-                                            </date-picker>
+                                                v-mask="'##/##/####'"
+                                                type="text"
+                                                class="field-input"
+                                                name="date"
+                                                placeholder="mm/dd/yyyy"
+                                            />
                                             <span
                                                 v-if="
                                                     errors != undefined &&
@@ -233,6 +238,7 @@
 <script>
 import DatePicker from "vuejs-datepicker";
 import VueTimepicker from "vue2-timepicker";
+import HomeAddress from "./elements/Address";
 import "vue2-timepicker/dist/VueTimepicker.css";
 import Select2 from "v-select2-component";
 import { ValidationObserver, ValidationProvider } from "vee-validate";
@@ -242,6 +248,7 @@ export default {
         ValidationObserver,
         ValidationProvider,
         Select2,
+        HomeAddress,
         DatePicker,
         VueTimepicker
     },
@@ -250,6 +257,8 @@ export default {
             personAssetCared: "",
             homeAddress: "",
             errors: [],
+            address: [],
+
             providerName: "",
             dayCareFrequencySelected: false,
             careDayTimeFrequency: "",
@@ -269,13 +278,19 @@ export default {
     mounted() {},
     methods: {
         handleSubmit(e) {
+            console.log(e);
             this.$router.push("/estate-representative-question");
         },
         careDayTimeChangeEvent($event) {
+            console.log($event);
             this.dayCareFrequencySelected = true;
         },
         careDayTimeSelectEvent($event) {
+            console.log($event);
             this.dayCareFrequencySelected = true;
+        },
+        updateHomeAddress(data) {
+            this.address = data;
         }
     }
 };

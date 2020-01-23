@@ -18,7 +18,7 @@
           >
             <!-- Legal name and Nick name section -->
             <div class="row">
-              <div class="col-md-6 col-sm-12 nopadding">
+              <div class="col-md-6 col-sm-12 pr">
                 <div class="field-group">
                   <label
                     for="legal_name"
@@ -46,7 +46,7 @@
                   </ValidationProvider>
                 </div>
               </div>
-              <div class="col-md-6 col-sm-12 nopadding">
+              <div class="col-md-6 col-sm-12 pl">
                 <div class="field-group">
                   <label
                     for="nickname"
@@ -77,7 +77,8 @@
             </div>
 
             <!-- Home Address Section -->
-            <home-address />
+            <home-address :home-address="address" class="padding"
+                  @home-address-update="updateHomeAddress" />
 
             <!-- Phone Number(s) section -->
             <div class="row">
@@ -392,6 +393,7 @@ export default {
             citizenshipOptions: [],
             phones: [],
             emails: [],
+            address: [],
             socials: [],
             dateOfBirth: '',
             employers: [],
@@ -562,12 +564,10 @@ export default {
         },
         updateBirthDateFormat() {
             this.personalDetail.dob = new Date(this.personalDetail.dob).toString;
+        },
+        updateHomeAddress(data) {
+            this.address = data;
         }
     }
 };
 </script>
-<style>
-.mb-2 {
-  margin-bottom: 2px;
-}
-</style>

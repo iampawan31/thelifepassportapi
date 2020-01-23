@@ -68,7 +68,6 @@
 
 <script>
 import { ValidationProvider } from "vee-validate";
-import { extend } from "vee-validate";
 
 export default {
     components: {
@@ -115,7 +114,15 @@ export default {
         }
     },
     watch: {
-        email() {
+        tempEmail() {
+            this.$emit(
+                "email-update",
+                this.key,
+                this.tempEmail,
+                this.tempPassword
+            );
+        },
+        tempPassword() {
             this.$emit(
                 "email-update",
                 this.key,
