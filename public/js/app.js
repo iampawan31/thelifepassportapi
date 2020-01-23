@@ -5095,6 +5095,150 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -5128,6 +5272,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       citizenshipOptions: [],
       file: "",
       isAlimonyPaid: false,
+      isChildSupportPaid: false,
+      childSupportDoc: [],
       divorceDoc: [],
       is_completed: false
     };
@@ -6445,11 +6591,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
-//
-//
-//
-//
-//
+/* harmony import */ var _Address__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Address */ "./resources/js/components/personalinfo/elements/Address.vue");
 //
 //
 //
@@ -6609,14 +6751,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_0__["ValidationProvider"]
+    ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_0__["ValidationProvider"],
+    HomeAddress: _Address__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   props: ["employer", "employmentDetailKey"],
   data: function data() {
     return {
-      employmentDetail: []
+      employmentDetail: [],
+      address: []
     };
   },
   watch: {
@@ -6625,6 +6770,11 @@ __webpack_require__.r(__webpack_exports__);
         this.$emit("employment-detail-updated", this.employmentDetailKey, this.employmentDetail);
       },
       deep: true
+    }
+  },
+  methods: {
+    updateHomeAddress: function updateHomeAddress(data) {
+      this.address = data;
     }
   },
   mounted: function mounted() {
@@ -65395,6 +65545,433 @@ var render = function() {
                                 _vm._v(" "),
                                 _c(
                                   "div",
+                                  { staticClass: "switch-wrapper clearfix" },
+                                  [
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "field-group can-toggle can-toggle--size-small"
+                                      },
+                                      [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: _vm.isChildSupportPaid,
+                                              expression: "isChildSupportPaid"
+                                            }
+                                          ],
+                                          staticClass: "toggle-fields",
+                                          attrs: {
+                                            id: "owe_child_support",
+                                            name: "owe_child_support",
+                                            type: "checkbox",
+                                            "data-toggle-fields":
+                                              "alimony_details"
+                                          },
+                                          domProps: {
+                                            value: _vm.isChildSupportPaid,
+                                            checked: Array.isArray(
+                                              _vm.isChildSupportPaid
+                                            )
+                                              ? _vm._i(
+                                                  _vm.isChildSupportPaid,
+                                                  _vm.isChildSupportPaid
+                                                ) > -1
+                                              : _vm.isChildSupportPaid
+                                          },
+                                          on: {
+                                            change: function($event) {
+                                              var $$a = _vm.isChildSupportPaid,
+                                                $$el = $event.target,
+                                                $$c = $$el.checked
+                                                  ? true
+                                                  : false
+                                              if (Array.isArray($$a)) {
+                                                var $$v =
+                                                    _vm.isChildSupportPaid,
+                                                  $$i = _vm._i($$a, $$v)
+                                                if ($$el.checked) {
+                                                  $$i < 0 &&
+                                                    (_vm.isChildSupportPaid = $$a.concat(
+                                                      [$$v]
+                                                    ))
+                                                } else {
+                                                  $$i > -1 &&
+                                                    (_vm.isChildSupportPaid = $$a
+                                                      .slice(0, $$i)
+                                                      .concat(
+                                                        $$a.slice($$i + 1)
+                                                      ))
+                                                }
+                                              } else {
+                                                _vm.isChildSupportPaid = $$c
+                                              }
+                                            }
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "label",
+                                          {
+                                            attrs: { for: "owe_child_support" }
+                                          },
+                                          [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "can-toggle__label-text"
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                                            Do you owe child support to this\n                                            previous spouse?\n                                        "
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c("div", {
+                                              staticClass: "can-toggle__switch",
+                                              attrs: {
+                                                "data-checked": "Yes",
+                                                "data-unchecked": "No"
+                                              }
+                                            })
+                                          ]
+                                        )
+                                      ]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _vm.isChildSupportPaid
+                                  ? _c(
+                                      "div",
+                                      {
+                                        attrs: { id: "child_support_details" }
+                                      },
+                                      [
+                                        _c("div", { staticClass: "row" }, [
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass: "col-md-6 col-xs-12"
+                                            },
+                                            [
+                                              _c(
+                                                "div",
+                                                { staticClass: "field-group" },
+                                                [
+                                                  _c(
+                                                    "label",
+                                                    {
+                                                      staticClass:
+                                                        "input-label",
+                                                      attrs: {
+                                                        for:
+                                                          "child_support_agreement"
+                                                      }
+                                                    },
+                                                    [_vm._v("Agreement")]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "div",
+                                                    {
+                                                      staticClass:
+                                                        "input-file-wrapper clearfix"
+                                                    },
+                                                    [
+                                                      !_vm.isDivorceDocumentUploaded
+                                                        ? _c(
+                                                            "div",
+                                                            {
+                                                              staticClass:
+                                                                "input-browse"
+                                                            },
+                                                            [
+                                                              _c(
+                                                                "span",
+                                                                {
+                                                                  staticClass:
+                                                                    "btn-link"
+                                                                },
+                                                                [
+                                                                  _vm._v(
+                                                                    "Add file"
+                                                                  )
+                                                                ]
+                                                              ),
+                                                              _vm._v(" "),
+                                                              _c(
+                                                                "ValidationProvider",
+                                                                {
+                                                                  attrs: {
+                                                                    name:
+                                                                      "Divorce Document",
+                                                                    rules:
+                                                                      "ext:pdf,docx,doc,txt,jpeg,png|size:5000"
+                                                                  },
+                                                                  scopedSlots: _vm._u(
+                                                                    [
+                                                                      {
+                                                                        key:
+                                                                          "default",
+                                                                        fn: function(
+                                                                          ref
+                                                                        ) {
+                                                                          var errors =
+                                                                            ref.errors
+                                                                          var validate =
+                                                                            ref.validate
+                                                                          return [
+                                                                            _c(
+                                                                              "input",
+                                                                              {
+                                                                                attrs: {
+                                                                                  type:
+                                                                                    "file",
+                                                                                  id:
+                                                                                    "child_support_agreement",
+                                                                                  name:
+                                                                                    "child_support_agreement"
+                                                                                },
+                                                                                on: {
+                                                                                  change:
+                                                                                    _vm.handleFileUpload
+                                                                                }
+                                                                              }
+                                                                            ),
+                                                                            _vm._v(
+                                                                              " "
+                                                                            ),
+                                                                            errors !=
+                                                                              undefined &&
+                                                                            errors.length
+                                                                              ? _c(
+                                                                                  "span",
+                                                                                  {
+                                                                                    staticClass:
+                                                                                      "invalid-feedback d-block"
+                                                                                  },
+                                                                                  [
+                                                                                    _vm._v(
+                                                                                      "\n                                                            " +
+                                                                                        _vm._s(
+                                                                                          errors[0]
+                                                                                        ) +
+                                                                                        "\n                                                        "
+                                                                                    )
+                                                                                  ]
+                                                                                )
+                                                                              : _vm._e()
+                                                                          ]
+                                                                        }
+                                                                      }
+                                                                    ],
+                                                                    null,
+                                                                    true
+                                                                  )
+                                                                }
+                                                              )
+                                                            ],
+                                                            1
+                                                          )
+                                                        : _c("div", [
+                                                            _c(
+                                                              "div",
+                                                              {
+                                                                staticClass:
+                                                                  "btn-group"
+                                                              },
+                                                              [
+                                                                _c(
+                                                                  "a",
+                                                                  {
+                                                                    staticClass:
+                                                                      "btn btn-success btn",
+                                                                    attrs: {
+                                                                      href:
+                                                                        _vm
+                                                                          .divorceDoc
+                                                                          .url,
+                                                                      target:
+                                                                        "_blank"
+                                                                    }
+                                                                  },
+                                                                  [
+                                                                    _vm._v(
+                                                                      "View"
+                                                                    )
+                                                                  ]
+                                                                ),
+                                                                _vm._v(" "),
+                                                                _c(
+                                                                  "a",
+                                                                  {
+                                                                    staticClass:
+                                                                      "btn btn-danger btn",
+                                                                    attrs: {
+                                                                      href:
+                                                                        "javascript:void(0);"
+                                                                    },
+                                                                    on: {
+                                                                      click: function(
+                                                                        $event
+                                                                      ) {
+                                                                        return _vm.removeDivorceFile()
+                                                                      }
+                                                                    }
+                                                                  },
+                                                                  [
+                                                                    _vm._v(
+                                                                      "Remove"
+                                                                    )
+                                                                  ]
+                                                                )
+                                                              ]
+                                                            )
+                                                          ])
+                                                    ]
+                                                  )
+                                                ]
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass: "col-sm-6 col-xs-12"
+                                            },
+                                            [
+                                              _c(
+                                                "div",
+                                                { staticClass: "field-group" },
+                                                [
+                                                  _c(
+                                                    "label",
+                                                    {
+                                                      staticClass:
+                                                        "input-label",
+                                                      attrs: {
+                                                        for: "alimony_amount"
+                                                      }
+                                                    },
+                                                    [_vm._v("Amount")]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c("ValidationProvider", {
+                                                    attrs: {
+                                                      name: "Alimony amount",
+                                                      rules: {
+                                                        regex: /^[0-9]*(\.[0-9]{0,2})?$/
+                                                      }
+                                                    },
+                                                    scopedSlots: _vm._u(
+                                                      [
+                                                        {
+                                                          key: "default",
+                                                          fn: function(ref) {
+                                                            var errors =
+                                                              ref.errors
+                                                            return [
+                                                              _c("input", {
+                                                                directives: [
+                                                                  {
+                                                                    name:
+                                                                      "model",
+                                                                    rawName:
+                                                                      "v-model",
+                                                                    value:
+                                                                      _vm
+                                                                        .spouseDetails
+                                                                        .alimony_amount,
+                                                                    expression:
+                                                                      "\n                                                        spouseDetails.alimony_amount\n                                                    "
+                                                                  }
+                                                                ],
+                                                                staticClass:
+                                                                  "field-input required",
+                                                                attrs: {
+                                                                  type: "text",
+                                                                  name:
+                                                                    "alimony_amount",
+                                                                  id:
+                                                                    "alimony_amount",
+                                                                  placeholder:
+                                                                    "Amount"
+                                                                },
+                                                                domProps: {
+                                                                  value:
+                                                                    _vm
+                                                                      .spouseDetails
+                                                                      .alimony_amount
+                                                                },
+                                                                on: {
+                                                                  input: function(
+                                                                    $event
+                                                                  ) {
+                                                                    if (
+                                                                      $event
+                                                                        .target
+                                                                        .composing
+                                                                    ) {
+                                                                      return
+                                                                    }
+                                                                    _vm.$set(
+                                                                      _vm.spouseDetails,
+                                                                      "alimony_amount",
+                                                                      $event
+                                                                        .target
+                                                                        .value
+                                                                    )
+                                                                  }
+                                                                }
+                                                              }),
+                                                              _vm._v(" "),
+                                                              errors !=
+                                                                undefined &&
+                                                              errors.length
+                                                                ? _c(
+                                                                    "span",
+                                                                    {
+                                                                      staticClass:
+                                                                        "invalid-feedback d-block"
+                                                                    },
+                                                                    [
+                                                                      _vm._v(
+                                                                        "\n                                                    " +
+                                                                          _vm._s(
+                                                                            errors[0]
+                                                                          ) +
+                                                                          "\n                                                "
+                                                                      )
+                                                                    ]
+                                                                  )
+                                                                : _vm._e()
+                                                            ]
+                                                          }
+                                                        }
+                                                      ],
+                                                      null,
+                                                      true
+                                                    )
+                                                  })
+                                                ],
+                                                1
+                                              )
+                                            ]
+                                          )
+                                        ])
+                                      ]
+                                    )
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
                                   {
                                     staticClass:
                                       "field-group form-group-checkbox clearfix"
@@ -67659,443 +68236,445 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "form-subgroup" }, [
-    _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-6 col-sm-12" }, [
-        _c(
-          "div",
-          { staticClass: "field-group" },
-          [
-            _c(
-              "label",
-              { staticClass: "input-label", attrs: { for: "employer_name" } },
-              [_vm._v("Employer Name")]
-            ),
-            _vm._v(" "),
-            _c("ValidationProvider", {
-              attrs: {
-                name: "Legal Name",
-                vid: "employer_name",
-                rules: "alpha_spaces|max:50"
-              },
-              scopedSlots: _vm._u([
-                {
-                  key: "default",
-                  fn: function(ref) {
-                    var errors = ref.errors
-                    return [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.employmentDetail.employer_name,
-                            expression: "employmentDetail.employer_name"
-                          }
-                        ],
-                        staticClass: "field-input",
-                        attrs: {
-                          type: "text",
-                          name: "employer_name[]",
-                          placeholder: "Employer Name",
-                          value: ""
-                        },
-                        domProps: { value: _vm.employmentDetail.employer_name },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.employmentDetail,
-                              "employer_name",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      errors != undefined && errors.length
-                        ? _c(
-                            "span",
-                            { staticClass: "invalid-feedback d-block" },
-                            [
-                              _vm._v(
-                                "\n                        " +
-                                  _vm._s(errors[0]) +
-                                  "\n                    "
-                              )
-                            ]
-                          )
-                        : _vm._e()
-                    ]
-                  }
-                }
-              ])
-            })
-          ],
-          1
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-6 col-sm-12" }, [
-        _c(
-          "div",
-          { staticClass: "field-group" },
-          [
-            _c(
-              "label",
-              { staticClass: "input-label", attrs: { for: "employer_phone" } },
-              [_vm._v("Employer Phone")]
-            ),
-            _vm._v(" "),
-            _c("ValidationProvider", {
-              attrs: {
-                name: "Employer Phone Number",
-                rules: "required_if:employer_name|is_phone"
-              },
-              scopedSlots: _vm._u([
-                {
-                  key: "default",
-                  fn: function(ref) {
-                    var errors = ref.errors
-                    return [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.employmentDetail.employer_phone,
-                            expression: "employmentDetail.employer_phone"
-                          }
-                        ],
-                        staticClass: "field-input",
-                        attrs: {
-                          type: "text",
-                          name: "employer_phone[]",
-                          placeholder: "Phone number",
-                          value: ""
-                        },
-                        domProps: {
-                          value: _vm.employmentDetail.employer_phone
-                        },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.employmentDetail,
-                              "employer_phone",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      errors != undefined && errors.length
-                        ? _c(
-                            "span",
-                            { staticClass: "invalid-feedback d-block" },
-                            [
-                              _vm._v(
-                                "\n                        " +
-                                  _vm._s(errors[0]) +
-                                  "\n                    "
-                              )
-                            ]
-                          )
-                        : _vm._e()
-                    ]
-                  }
-                }
-              ])
-            })
-          ],
-          1
-        )
-      ])
-    ]),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "field-group" },
-      [
-        _c("label", { attrs: { for: "employer_address" } }, [
-          _vm._v("Employer Address")
-        ]),
-        _vm._v(" "),
-        _c("ValidationProvider", {
-          attrs: { name: "Employer Address", rules: "max:1000" },
-          scopedSlots: _vm._u([
-            {
-              key: "default",
-              fn: function(ref) {
-                var errors = ref.errors
-                return [
-                  _c("textarea", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.employmentDetail.employer_address,
-                        expression: "employmentDetail.employer_address"
-                      }
-                    ],
-                    staticClass: "field-input",
-                    attrs: {
-                      rows: "2",
-                      name: "employer_address[]",
-                      placeholder:
-                        "Street Address, Town, City, State, Zipcode and country",
-                      value: ""
-                    },
-                    domProps: { value: _vm.employmentDetail.employer_address },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(
-                          _vm.employmentDetail,
-                          "employer_address",
-                          $event.target.value
-                        )
-                      }
-                    }
-                  }),
-                  _vm._v(" "),
-                  errors != undefined && errors.length
-                    ? _c("span", { staticClass: "invalid-feedback d-block" }, [
-                        _vm._v(
-                          "\n                " +
-                            _vm._s(errors[0]) +
-                            "\n            "
-                        )
-                      ])
-                    : _vm._e()
-                ]
-              }
-            }
-          ])
-        })
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c("div", { staticClass: "field-group" }, [
-      _c("label", { attrs: { for: "company_computer_username" } }, [
-        _vm._v("Company computer user name and password")
-      ]),
-      _vm._v(" "),
+  return _c(
+    "div",
+    { staticClass: "form-subgroup" },
+    [
       _c("div", { staticClass: "row" }, [
-        _c(
-          "div",
-          { staticClass: "col-md-6 col-sm-12" },
-          [
-            _c("ValidationProvider", {
-              attrs: {
-                name: "Username",
-                vid: "username",
-                rules: "alpha_num|max:30"
-              },
-              scopedSlots: _vm._u([
-                {
-                  key: "default",
-                  fn: function(ref) {
-                    var errors = ref.errors
-                    return [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.employmentDetail.computer_username,
-                            expression: "employmentDetail.computer_username"
-                          }
-                        ],
-                        staticClass: "field-input",
-                        attrs: {
-                          type: "text",
-                          name: "company_computer_username[]",
-                          placeholder: "Username",
-                          value: ""
-                        },
-                        domProps: {
-                          value: _vm.employmentDetail.computer_username
-                        },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
+        _c("div", { staticClass: "col-md-6 col-sm-12" }, [
+          _c(
+            "div",
+            { staticClass: "field-group" },
+            [
+              _c(
+                "label",
+                { staticClass: "input-label", attrs: { for: "employer_name" } },
+                [_vm._v("Employer Name")]
+              ),
+              _vm._v(" "),
+              _c("ValidationProvider", {
+                attrs: {
+                  name: "Legal Name",
+                  vid: "employer_name",
+                  rules: "alpha_spaces|max:50"
+                },
+                scopedSlots: _vm._u([
+                  {
+                    key: "default",
+                    fn: function(ref) {
+                      var errors = ref.errors
+                      return [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.employmentDetail.employer_name,
+                              expression: "employmentDetail.employer_name"
                             }
-                            _vm.$set(
-                              _vm.employmentDetail,
-                              "computer_username",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      errors != undefined && errors.length
-                        ? _c(
-                            "span",
-                            { staticClass: "invalid-feedback d-block" },
-                            [
-                              _vm._v(
-                                "\n                        " +
-                                  _vm._s(errors[0]) +
-                                  "\n                    "
+                          ],
+                          staticClass: "field-input",
+                          attrs: {
+                            type: "text",
+                            name: "employer_name[]",
+                            placeholder: "Employer Name",
+                            value: ""
+                          },
+                          domProps: {
+                            value: _vm.employmentDetail.employer_name
+                          },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.employmentDetail,
+                                "employer_name",
+                                $event.target.value
                               )
-                            ]
-                          )
-                        : _vm._e()
-                    ]
-                  }
-                }
-              ])
-            })
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "col-md-6 col-sm-12" },
-          [
-            _c("ValidationProvider", {
-              attrs: { name: "Password", rules: "required_if:username|max:30" },
-              scopedSlots: _vm._u([
-                {
-                  key: "default",
-                  fn: function(ref) {
-                    var errors = ref.errors
-                    return [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.employmentDetail.computer_password,
-                            expression: "employmentDetail.computer_password"
-                          }
-                        ],
-                        staticClass: "field-input",
-                        attrs: {
-                          type: "text",
-                          name: "company_computer_password[]",
-                          placeholder: "Password",
-                          value: ""
-                        },
-                        domProps: {
-                          value: _vm.employmentDetail.computer_password
-                        },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
                             }
-                            _vm.$set(
-                              _vm.employmentDetail,
-                              "computer_password",
-                              $event.target.value
-                            )
                           }
-                        }
-                      }),
-                      _vm._v(" "),
-                      errors != undefined && errors.length
-                        ? _c(
-                            "span",
-                            { staticClass: "invalid-feedback d-block" },
-                            [
-                              _vm._v(
-                                "\n                        " +
-                                  _vm._s(errors[0]) +
-                                  "\n                    "
-                              )
-                            ]
-                          )
-                        : _vm._e()
-                    ]
+                        }),
+                        _vm._v(" "),
+                        errors != undefined && errors.length
+                          ? _c(
+                              "span",
+                              { staticClass: "invalid-feedback d-block" },
+                              [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(errors[0]) +
+                                    "\n                    "
+                                )
+                              ]
+                            )
+                          : _vm._e()
+                      ]
+                    }
                   }
-                }
-              ])
-            })
-          ],
-          1
-        )
-      ])
-    ]),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "field-group field-group__last" },
-      [
-        _c("label", { attrs: { for: "employee_benifits" } }, [
-          _vm._v("Benefits used")
+                ])
+              })
+            ],
+            1
+          )
         ]),
         _vm._v(" "),
-        _c("ValidationProvider", {
-          attrs: { name: "Benefits used", rules: "max:400" },
-          scopedSlots: _vm._u([
-            {
-              key: "default",
-              fn: function(ref) {
-                var errors = ref.errors
-                return [
-                  _c("textarea", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.employmentDetail.employee_benefits,
-                        expression: "employmentDetail.employee_benefits"
-                      }
-                    ],
-                    staticClass: "field-input",
-                    attrs: {
-                      rows: "2",
-                      name: "employee_benifits[]",
-                      placeholder: "Benefits used",
-                      value: ""
-                    },
-                    domProps: { value: _vm.employmentDetail.employee_benefits },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(
-                          _vm.employmentDetail,
-                          "employee_benefits",
-                          $event.target.value
-                        )
-                      }
+        _c("div", { staticClass: "col-md-6 col-sm-12" }, [
+          _c(
+            "div",
+            { staticClass: "field-group" },
+            [
+              _c(
+                "label",
+                {
+                  staticClass: "input-label",
+                  attrs: { for: "employer_phone" }
+                },
+                [_vm._v("Employer Phone")]
+              ),
+              _vm._v(" "),
+              _c("ValidationProvider", {
+                attrs: {
+                  name: "Employer Phone Number",
+                  rules: "required_if:employer_name|is_phone"
+                },
+                scopedSlots: _vm._u([
+                  {
+                    key: "default",
+                    fn: function(ref) {
+                      var errors = ref.errors
+                      return [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.employmentDetail.employer_phone,
+                              expression: "employmentDetail.employer_phone"
+                            }
+                          ],
+                          staticClass: "field-input",
+                          attrs: {
+                            type: "text",
+                            name: "employer_phone[]",
+                            placeholder: "Phone number",
+                            value: ""
+                          },
+                          domProps: {
+                            value: _vm.employmentDetail.employer_phone
+                          },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.employmentDetail,
+                                "employer_phone",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        errors != undefined && errors.length
+                          ? _c(
+                              "span",
+                              { staticClass: "invalid-feedback d-block" },
+                              [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(errors[0]) +
+                                    "\n                    "
+                                )
+                              ]
+                            )
+                          : _vm._e()
+                      ]
                     }
-                  }),
-                  _vm._v(" "),
-                  errors != undefined && errors.length
-                    ? _c("span", { staticClass: "invalid-feedback d-block" }, [
-                        _vm._v(
-                          "\n                " +
-                            _vm._s(errors[0]) +
-                            "\n            "
-                        )
-                      ])
-                    : _vm._e()
-                ]
-              }
-            }
-          ])
-        })
-      ],
-      1
-    )
-  ])
+                  }
+                ])
+              })
+            ],
+            1
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c("home-address", {
+        attrs: { "home-address": _vm.address },
+        on: { "home-address-update": _vm.updateHomeAddress }
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "field-group" }, [
+        _c("label", { attrs: { for: "company_computer_username" } }, [
+          _vm._v("Company computer user name and password")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _c(
+            "div",
+            { staticClass: "col-md-6 col-sm-12" },
+            [
+              _c("ValidationProvider", {
+                attrs: {
+                  name: "Username",
+                  vid: "username",
+                  rules: "alpha_num|max:30"
+                },
+                scopedSlots: _vm._u([
+                  {
+                    key: "default",
+                    fn: function(ref) {
+                      var errors = ref.errors
+                      return [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.employmentDetail.computer_username,
+                              expression: "employmentDetail.computer_username"
+                            }
+                          ],
+                          staticClass: "field-input",
+                          attrs: {
+                            type: "text",
+                            name: "company_computer_username[]",
+                            placeholder: "Username",
+                            value: ""
+                          },
+                          domProps: {
+                            value: _vm.employmentDetail.computer_username
+                          },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.employmentDetail,
+                                "computer_username",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        errors != undefined && errors.length
+                          ? _c(
+                              "span",
+                              { staticClass: "invalid-feedback d-block" },
+                              [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(errors[0]) +
+                                    "\n                    "
+                                )
+                              ]
+                            )
+                          : _vm._e()
+                      ]
+                    }
+                  }
+                ])
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-md-6 col-sm-12" },
+            [
+              _c("ValidationProvider", {
+                attrs: {
+                  name: "Password",
+                  rules: "required_if:username|max:30"
+                },
+                scopedSlots: _vm._u([
+                  {
+                    key: "default",
+                    fn: function(ref) {
+                      var errors = ref.errors
+                      return [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.employmentDetail.computer_password,
+                              expression: "employmentDetail.computer_password"
+                            }
+                          ],
+                          staticClass: "field-input",
+                          attrs: {
+                            type: "text",
+                            name: "company_computer_password[]",
+                            placeholder: "Password",
+                            value: ""
+                          },
+                          domProps: {
+                            value: _vm.employmentDetail.computer_password
+                          },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.employmentDetail,
+                                "computer_password",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        errors != undefined && errors.length
+                          ? _c(
+                              "span",
+                              { staticClass: "invalid-feedback d-block" },
+                              [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(errors[0]) +
+                                    "\n                    "
+                                )
+                              ]
+                            )
+                          : _vm._e()
+                      ]
+                    }
+                  }
+                ])
+              })
+            ],
+            1
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _vm._m(0),
+      _vm._v(" "),
+      _vm._m(1)
+    ],
+    1
+  )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "field-group" }, [
+      _c("label", { attrs: { for: "benefits_used" } }, [
+        _vm._v("Benefits used")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col" }, [
+        _c("input", {
+          attrs: { type: "checkbox", name: "vehicle", value: "Bike" }
+        }),
+        _vm._v("\n            Health Insurance "),
+        _c("br"),
+        _vm._v(" "),
+        _c("input", {
+          attrs: { type: "checkbox", name: "vehicle", value: "Bike" }
+        }),
+        _vm._v(" Dental\n            Insurance "),
+        _c("br"),
+        _vm._v(" "),
+        _c("input", {
+          attrs: { type: "checkbox", name: "vehicle", value: "Bike" }
+        }),
+        _vm._v(" Dependent\n            Care Spending Account "),
+        _c("br"),
+        _vm._v(" "),
+        _c("input", {
+          attrs: { type: "checkbox", name: "vehicle", value: "Bike" }
+        }),
+        _vm._v(" Healthcare\n            Flexible Spending Account "),
+        _c("br"),
+        _vm._v(" "),
+        _c("input", {
+          attrs: { type: "checkbox", name: "vehicle", value: "Bike" }
+        }),
+        _vm._v(" Life\n            Insurance - Basic "),
+        _c("br"),
+        _vm._v(" "),
+        _c("input", {
+          attrs: { type: "checkbox", name: "vehicle", value: "Bike" }
+        }),
+        _vm._v(" Life\n            Insurance - Optional "),
+        _c("br"),
+        _vm._v(" "),
+        _c("input", {
+          attrs: { type: "checkbox", name: "vehicle", value: "Bike" }
+        }),
+        _vm._v(" AD&D\n            Insurance "),
+        _c("br"),
+        _vm._v(" "),
+        _c("input", {
+          attrs: { type: "checkbox", name: "vehicle", value: "Bike" }
+        }),
+        _vm._v(" Depending\n            Life Spouse Insurance "),
+        _c("br"),
+        _vm._v(" "),
+        _c("input", {
+          attrs: { type: "checkbox", name: "vehicle", value: "Bike" }
+        }),
+        _vm._v(" Dependent\n            Life Child Insurance "),
+        _c("br"),
+        _vm._v(" "),
+        _c("input", {
+          attrs: { type: "checkbox", name: "vehicle", value: "Bike" }
+        }),
+        _vm._v(" Short-Term\n            Disability Insurance "),
+        _c("br"),
+        _vm._v(" "),
+        _c("input", {
+          attrs: { type: "checkbox", name: "vehicle", value: "Bike" }
+        }),
+        _vm._v(" Long-Term\n            Disability Insurance "),
+        _c("br"),
+        _vm._v(" "),
+        _c("input", {
+          attrs: { type: "checkbox", name: "vehicle", value: "Bike" }
+        }),
+        _vm._v(" Group\n            Legal Benefit "),
+        _c("br"),
+        _vm._v(" "),
+        _c("input", {
+          attrs: { type: "checkbox", name: "vehicle", value: "Bike" }
+        }),
+        _vm._v(" Group\n            Auto/Home Insurance "),
+        _c("br"),
+        _vm._v(" "),
+        _c("input", {
+          attrs: { type: "checkbox", name: "vehicle", value: "Bike" }
+        }),
+        _vm._v(" Pet\n            Insurance "),
+        _c("br"),
+        _vm._v(" "),
+        _c("input", {
+          attrs: { type: "checkbox", name: "vehicle", value: "Bike" }
+        }),
+        _vm._v(
+          " 401K or\n            Other Retirement Savings plan via employer "
+        ),
+        _c("br")
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 

@@ -58,29 +58,10 @@
             </div>
         </div>
 
-        <div class="field-group">
-            <label for="employer_address">Employer Address</label>
-            <ValidationProvider
-                name="Employer Address"
-                rules="max:1000"
-                v-slot="{ errors }"
-            >
-                <textarea
-                    rows="2"
-                    name="employer_address[]"
-                    class="field-input"
-                    placeholder="Street Address, Town, City, State, Zipcode and country"
-                    v-model="employmentDetail.employer_address"
-                    value=""
-                ></textarea>
-                <span
-                    v-if="errors != undefined && errors.length"
-                    class="invalid-feedback d-block"
-                >
-                    {{ errors[0] }}
-                </span>
-            </ValidationProvider>
-        </div>
+        <home-address
+            :home-address="address"
+            @home-address-update="updateHomeAddress"
+        />
 
         <div class="field-group">
             <label for="company_computer_username"
@@ -135,42 +116,58 @@
             </div>
         </div>
 
-        <div class="field-group field-group__last">
-            <label for="employee_benifits">Benefits used</label>
-            <ValidationProvider
-                name="Benefits used"
-                rules="max:400"
-                v-slot="{ errors }"
-            >
-                <textarea
-                    rows="2"
-                    name="employee_benifits[]"
-                    class="field-input"
-                    placeholder="Benefits used"
-                    v-model="employmentDetail.employee_benefits"
-                    value=""
-                ></textarea>
-                <span
-                    v-if="errors != undefined && errors.length"
-                    class="invalid-feedback d-block"
-                >
-                    {{ errors[0] }}
-                </span>
-            </ValidationProvider>
+        <div class="field-group">
+            <label for="benefits_used">Benefits used</label>
+        </div>
+        <div class="row">
+            <div class="col">
+                <input type="checkbox" name="vehicle" value="Bike" />
+                Health Insurance <br />
+                <input type="checkbox" name="vehicle" value="Bike" /> Dental
+                Insurance <br />
+                <input type="checkbox" name="vehicle" value="Bike" /> Dependent
+                Care Spending Account <br />
+                <input type="checkbox" name="vehicle" value="Bike" /> Healthcare
+                Flexible Spending Account <br />
+                <input type="checkbox" name="vehicle" value="Bike" /> Life
+                Insurance - Basic <br />
+                <input type="checkbox" name="vehicle" value="Bike" /> Life
+                Insurance - Optional <br />
+                <input type="checkbox" name="vehicle" value="Bike" /> AD&D
+                Insurance <br />
+                <input type="checkbox" name="vehicle" value="Bike" /> Depending
+                Life Spouse Insurance <br />
+                <input type="checkbox" name="vehicle" value="Bike" /> Dependent
+                Life Child Insurance <br />
+                <input type="checkbox" name="vehicle" value="Bike" /> Short-Term
+                Disability Insurance <br />
+                <input type="checkbox" name="vehicle" value="Bike" /> Long-Term
+                Disability Insurance <br />
+                <input type="checkbox" name="vehicle" value="Bike" /> Group
+                Legal Benefit <br />
+                <input type="checkbox" name="vehicle" value="Bike" /> Group
+                Auto/Home Insurance <br />
+                <input type="checkbox" name="vehicle" value="Bike" /> Pet
+                Insurance <br />
+                <input type="checkbox" name="vehicle" value="Bike" /> 401K or
+                Other Retirement Savings plan via employer <br />
+            </div>
         </div>
     </div>
 </template>
 
 <script>
 import { ValidationProvider } from "vee-validate";
+import HomeAddress from "./Address";
 
 export default {
     components: {
-        ValidationProvider
+        ValidationProvider,
+        HomeAddress
     },
     props: ["employer", "employmentDetailKey"],
     data() {
-        return { employmentDetail: [] };
+        return { employmentDetail: [], address: [] };
     },
     watch: {
         employmentDetail: {
@@ -182,6 +179,11 @@ export default {
                 );
             },
             deep: true
+        }
+    },
+    methods: {
+        updateHomeAddress(data) {
+            this.address = data;
         }
     },
     mounted() {

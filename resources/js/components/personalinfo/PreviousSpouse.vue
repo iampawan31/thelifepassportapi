@@ -383,6 +383,150 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- Child Suppport section -->
+                                <div class="switch-wrapper clearfix">
+                                    <div
+                                        class="field-group can-toggle can-toggle--size-small"
+                                    >
+                                        <input
+                                            id="owe_child_support"
+                                            name="owe_child_support"
+                                            type="checkbox"
+                                            class="toggle-fields"
+                                            :value="isChildSupportPaid"
+                                            data-toggle-fields="alimony_details"
+                                            v-model="isChildSupportPaid"
+                                        />
+                                        <label for="owe_child_support">
+                                            <div class="can-toggle__label-text">
+                                                Do you owe child support to this
+                                                previous spouse?
+                                            </div>
+                                            <div
+                                                class="can-toggle__switch"
+                                                data-checked="Yes"
+                                                data-unchecked="No"
+                                            ></div>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div
+                                    id="child_support_details"
+                                    v-if="isChildSupportPaid"
+                                >
+                                    <div class="row">
+                                        <div class="col-md-6 col-xs-12">
+                                            <div class="field-group">
+                                                <label
+                                                    for="child_support_agreement"
+                                                    class="input-label"
+                                                    >Agreement</label
+                                                >
+                                                <div
+                                                    class="input-file-wrapper clearfix"
+                                                >
+                                                    <div
+                                                        class="input-browse"
+                                                        v-if="
+                                                            !isDivorceDocumentUploaded
+                                                        "
+                                                    >
+                                                        <span class="btn-link"
+                                                            >Add file</span
+                                                        >
+                                                        <ValidationProvider
+                                                            name="Divorce Document"
+                                                            rules="ext:pdf,docx,doc,txt,jpeg,png|size:5000"
+                                                            v-slot="{
+                                                                errors,
+                                                                validate
+                                                            }"
+                                                        >
+                                                            <input
+                                                                type="file"
+                                                                id="child_support_agreement"
+                                                                name="child_support_agreement"
+                                                                @change="
+                                                                    handleFileUpload
+                                                                "
+                                                            />
+                                                            <span
+                                                                v-if="
+                                                                    errors !=
+                                                                        undefined &&
+                                                                        errors.length
+                                                                "
+                                                                class="invalid-feedback d-block"
+                                                            >
+                                                                {{ errors[0] }}
+                                                            </span>
+                                                        </ValidationProvider>
+                                                    </div>
+                                                    <div v-else>
+                                                        <div class="btn-group">
+                                                            <a
+                                                                :href="
+                                                                    divorceDoc.url
+                                                                "
+                                                                target="_blank"
+                                                                class="btn btn-success btn"
+                                                                >View</a
+                                                            >
+                                                            <a
+                                                                href="javascript:void(0);"
+                                                                @click="
+                                                                    removeDivorceFile()
+                                                                "
+                                                                class="btn btn-danger btn"
+                                                                >Remove</a
+                                                            >
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 col-xs-12">
+                                            <div class="field-group">
+                                                <label
+                                                    for="alimony_amount"
+                                                    class="input-label"
+                                                    >Amount</label
+                                                >
+                                                <ValidationProvider
+                                                    name="Alimony amount"
+                                                    :rules="{
+                                                        regex: /^[0-9]*(\.[0-9]{0,2})?$/
+                                                    }"
+                                                    v-slot="{ errors }"
+                                                >
+                                                    <input
+                                                        type="text"
+                                                        name="alimony_amount"
+                                                        id="alimony_amount"
+                                                        class="field-input required"
+                                                        placeholder="Amount"
+                                                        v-model="
+                                                            spouseDetails.alimony_amount
+                                                        "
+                                                    />
+                                                    <span
+                                                        v-if="
+                                                            errors !=
+                                                                undefined &&
+                                                                errors.length
+                                                        "
+                                                        class="invalid-feedback d-block"
+                                                    >
+                                                        {{ errors[0] }}
+                                                    </span>
+                                                </ValidationProvider>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <!-- Mark as complete button section -->
                                 <div
                                     class="field-group form-group-checkbox clearfix"
@@ -448,6 +592,8 @@ export default {
             citizenshipOptions: [],
             file: "",
             isAlimonyPaid: false,
+            isChildSupportPaid: false,
+            childSupportDoc: [],
             divorceDoc: [],
             is_completed: false
         };
