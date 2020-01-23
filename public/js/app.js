@@ -67450,7 +67450,7 @@ var render = function() {
                         staticClass: "field-input",
                         attrs: {
                           type: "text",
-                          name: "street_address_2",
+                          name: "street_address_1",
                           placeholder: "Street Address 1"
                         },
                         domProps: { value: _vm.streetAddress1 },
@@ -67697,7 +67697,7 @@ var render = function() {
             _c("label", { attrs: { for: "zipcode" } }, [_vm._v("Zipcode")]),
             _vm._v(" "),
             _c("ValidationProvider", {
-              attrs: { name: "Zipcode", rules: "alpha_spaces|max:50" },
+              attrs: { name: "Zipcode", rules: "max:6" },
               scopedSlots: _vm._u([
                 {
                   key: "default",
@@ -109423,8 +109423,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/pawankumar/valetcode/thelifepassportapi/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/pawankumar/valetcode/thelifepassportapi/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/mdprawezmusharraf/Sites/thelifepassportapi/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/mdprawezmusharraf/Sites/thelifepassportapi/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

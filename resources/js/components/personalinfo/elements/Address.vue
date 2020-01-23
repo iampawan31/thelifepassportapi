@@ -11,7 +11,7 @@
                     >
                         <input
                             type="text"
-                            name="street_address_2"
+                            name="street_address_1"
                             placeholder="Street Address 1"
                             v-model="streetAddress1"
                             class="field-input"
@@ -110,7 +110,7 @@
                     <label for="zipcode">Zipcode</label>
                     <ValidationProvider
                         name="Zipcode"
-                        rules="alpha_spaces|max:50"
+                        rules="max:6"
                         v-slot="{ errors }"
                     >
                         <input

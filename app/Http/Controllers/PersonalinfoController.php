@@ -121,6 +121,11 @@ class PersonalinfoController extends Controller
         $legal_name         = $inputs['legal_name'];
         $nick_name          = $inputs['nickname'];
         $home_address       = $inputs['home_address'];
+        $street_address_1   = $inputs['street_address_1'];
+        $street_address_2   = $inputs['street_address_2'];
+        $city               = $inputs['city'];
+        $state              = $inputs['state'];
+        $zipcode            = $inputs['zipcode'];
         $dob                = $inputs['date'];
         $country_id         = @$inputs['citizenship'];
         $passport_number    = $inputs['passport_number'];
@@ -184,6 +189,11 @@ class PersonalinfoController extends Controller
             'legal_name'        => $legal_name ? $legal_name : "",
             'nickname'          => $nick_name ? $nick_name : "",
             'home_address'      => $home_address ? $home_address : "",
+            'street_address_1'  => $street_address_1 ? $street_address_1 : "",
+            'street_address_2'  => $street_address_2 ? $street_address_2 : "",
+            'city'              => $city ? $city : "",
+            'state'             => $state ? $state : "",
+            'zipcode'           => $zipcode ? $zipcode : "",
             'dob'               => $dob ? date('Y-m-d', strtotime($dob)) : Null,
             'country_id'        => $country_id ? $country_id : 0,
             'passport_number'   => $passport_number ? $passport_number : "",
@@ -247,11 +257,16 @@ class PersonalinfoController extends Controller
      */
     public function updatepersonaldata(Request $request, $id) {
         $inputs = $request->all();
-        
+       
         //personal information
         $legal_name         = $inputs['legal_name'];
         $nick_name          = $inputs['nickname'];
         $home_address       = $inputs['home_address'];
+        $street_address_1   = $inputs['street_address_1'];
+        $street_address_2   = $inputs['street_address_2'];
+        $city               = $inputs['city'];
+        $state              = $inputs['state'];
+        $zipcode            = $inputs['zipcode'];
         $dob                = $inputs['date'];
         $country_id         = @$inputs['citizenship'];
         $passport_number    = $inputs['passport_number'];
@@ -311,12 +326,18 @@ class PersonalinfoController extends Controller
         }
         
         try {
+            
             //insert personal information
             $objPersonalInfo = \App\PersonalInfo::find($id);
             //$objPersonalInfo->user_id       = Auth::user()->id;
             $objPersonalInfo->legal_name            = $legal_name ? $legal_name : "";
             $objPersonalInfo->nickname              = $nick_name ? $nick_name : "";
             $objPersonalInfo->home_address          = $home_address ? $home_address : "";
+            $objPersonalInfo->street_address1       = $street_address_1 ? $street_address_1 : "";
+            $objPersonalInfo->street_address2       = $street_address_2 ? $street_address_2 : "";
+            $objPersonalInfo->city                  = $city ? $city : "";
+            $objPersonalInfo->state                 = $state ? $state : "";
+            $objPersonalInfo->zipcode               = $zipcode ? $zipcode : "";
             $objPersonalInfo->dob                   = $dob ? date('Y-m-d', strtotime($dob)) : Null;
             $objPersonalInfo->country_id            = $country_id ? $country_id : 0;
             $objPersonalInfo->passport_number       = $passport_number ? $passport_number : "";
