@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePersonalEmployerBenefitsTable extends Migration
+class CreateSpouseEmployerAddressesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,18 @@ class CreatePersonalEmployerBenefitsTable extends Migration
      */
     public function up()
     {
-        Schema::create('personal_employer_benefits', function (Blueprint $table) {
+        Schema::create('spouse_employer_addresses', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('employer_id');
-            $table->unsignedBigInteger('benefit_id');
+            $table->string('street_address1');
+            $table->string('street_address2');
+            $table->string('city');
+            $table->string('state');
+            $table->string('zipcode', 8);
 
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('employer_id')->references('id')->on('user_employers');
-            $table->foreign('benefit_id')->references('id')->on('employer_benefits_masters');
+            $table->foreign('employer_id')->references('id')->on('spouse_employers');
             $table->timestamps();
         });
     }
@@ -33,6 +36,6 @@ class CreatePersonalEmployerBenefitsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('personal_employer_benefits');
+        Schema::dropIfExists('spouse_employer_addresses');
     }
 }

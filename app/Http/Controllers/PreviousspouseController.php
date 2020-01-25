@@ -271,15 +271,6 @@ class PreviousspouseController extends Controller
     
                 //remove spouse phone
                 \App\PreviousSpousePhone::where('user_id', Auth::user()->id)->delete();
-    
-                //remove spouse email
-                //\App\SpouseEmail::where('user_id', Auth::user()->id)->delete();
-    
-                //remove spouse social media
-                //\App\SpouseSocialMedia::where('user_id', Auth::user()->id)->delete();
-    
-                //remove spouse employer
-                //\App\SpouseEmployer::where('user_id', Auth::user()->id)->delete();
 
                 //remove marriage status
                 \App\PreviousMarriageStatus::where('user_id', Auth::user()->id)->delete();
@@ -340,8 +331,6 @@ class PreviousspouseController extends Controller
             if ($objMarriageStatus) {
                 \App\PreviousMarriageStatus::where('user_id', $user_id)
                                     ->update(['is_previously_married' => $is_married]);
-                // $objMarriageStatus->is_previously_married = $is_married;
-                // $objMarriageStatus->save();
             } else {
                 \App\PreviousMarriageStatus::create(['user_id' => $user_id, 'is_previously_married' => $is_married]);
             }

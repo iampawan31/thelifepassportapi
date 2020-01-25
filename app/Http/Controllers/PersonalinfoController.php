@@ -409,11 +409,11 @@ class PersonalinfoController extends Controller
         if ($count > 0) {
             //\DB::enableQueryLog();
             $personal_info = \App\PersonalInfo::where('user_id', $user_id)
-                ->with('PersonalAddress')
+                ->with('Address')
                 ->with('UserPhone')
                 ->with('UserEmail')
                 ->with('UserSocailMedia')
-                ->with('UserEmployer.EmployerAddress')
+                ->with('UserEmployer.Address', 'UserEmployer.Benefits')
                 ->with('UsersPersonalDetailsCompletion')
                 ->get(); 
             //dd(\DB::getQueryLog());
@@ -449,16 +449,16 @@ class PersonalinfoController extends Controller
         }
     }
 
-    public function getemployeraddress() {
-        $user_id = Auth::user()->id;
-        $personal_info = \App\UserEmployer::find($user_id)
-                ->with('EmployerAddress')
-                ->get(); 
-        //\DB::enableQueryLog();
-        //$personal_info = \App\EmployerAddress::find(1)->with('employer')->get();
+    // public function getemployeraddress() {
+    //     $user_id = Auth::user()->id;
+    //     $personal_info = \App\UserEmployer::find($user_id)
+    //             ->with('EmployerAddress')
+    //             ->get(); 
+    //     //\DB::enableQueryLog();
+    //     //$personal_info = \App\EmployerAddress::find(1)->with('employer')->get();
 
-        //dd(\DB::getQueryLog());
+    //     //dd(\DB::getQueryLog());
 
-        dd($personal_info);
-    }
+    //     dd($personal_info);
+    // }
 }

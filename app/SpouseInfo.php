@@ -36,6 +36,10 @@ class SpouseInfo extends Model
         return $this->attributes['dob'] = date('m/d/Y', strtotime($date));
     }
 
+    public function Address () {
+        return $this->hasOne(SpouseAddress::class, 'user_id');
+    }
+
     public function SpousePhone() {
         return $this->hasMany(\App\SpousePhone::class, 'user_id')->select(['user_id', 'phone', 'is_primary']);
     }

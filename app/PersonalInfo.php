@@ -46,7 +46,7 @@ class PersonalInfo extends Model
         }
     }
 
-    public function PersonalAddress () {
+    public function Address () {
         return $this->hasOne(PersonalAddress::class, 'user_id');
     }
 

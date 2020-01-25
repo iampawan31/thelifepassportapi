@@ -189,7 +189,7 @@ export default {
             this.address = data;
         },
         getemployeraddress() {
-            axios.get('/getemployeraddress').then(response => {
+            axios.get('/getemployerbenefitslist').then(response => {
                 if (response.status == 200) {
                     if (response.data) {
                         console.log(response.data);

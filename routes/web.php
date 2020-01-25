@@ -84,7 +84,7 @@ Route::middleware(['auth'])->group(function(){
     //get employer benefits master list
     Route::get('getemployerbenefitslist', 'GeneralController@employerbefefits')->name('getemployerbenefitslist');
 
-    Route::get('getemployeraddress', 'PersonalinfoController@getemployeraddress');
+    //Route::get('getemployeraddress', 'PersonalinfoController@getemployeraddress');
     
     
 });

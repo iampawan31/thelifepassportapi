@@ -18,12 +18,20 @@ class SpouseEmployer extends Model
         'benefits_used'
     ];
 
-public function getRouteKeyName() {
-return 'user_id';
-}
+    public function getRouteKeyName() {
+        return 'user_id';
+    }
 
-//Table Name
-static function tableName() {
-return with(new static)->getTable();
-}
+    //Table Name
+    static function tableName() {
+        return with(new static)->getTable();
+    }
+
+    public function Address() {
+        return $this->hasOne(SpouseEmployerAddress::class, 'employer_id', 'id');
+    }
+
+    public function Benefits() {
+        return $this->hasMany(SpouseEmployerBenefits::class, 'employer_id', 'id');
+    }
 }

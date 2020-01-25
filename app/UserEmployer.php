@@ -27,7 +27,11 @@ class UserEmployer extends Model
         return with(new static)->getTable();
     }
 
-    public function EmployerAddress() {
+    public function Address() {
         return $this->hasOne(EmployerAddress::class, 'employer_id', 'id');
+    }
+
+    public function Benefits() {
+        return $this->hasMany(PersonalEmployerBenefits::class, 'employer_id', 'id');
     }
 }

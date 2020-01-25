@@ -408,10 +408,11 @@ class SpouseController extends Controller
         
         if ($count > 0) {
             $spouse_info = \App\SpouseInfo::find($user_id)
+                ->with('Address')
                 ->with('SpousePhone')
                 ->with('SpouseEmail')
                 ->with('SpouseSocailMedia')
-                ->with('SpouseEmployer')
+                ->with('SpouseEmployer.Address', 'SpouseEmployer.Benefits')
                 ->with('Countries')
                 ->with('UsersPersonalDetailsCompletion')
                 ->get();

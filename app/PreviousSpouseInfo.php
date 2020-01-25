@@ -34,6 +34,10 @@ class PreviousSpouseInfo extends Model
         return $this->attributes['divorce_date'] = date('m/d/Y', strtotime($date));
     }
 
+    public function Address () {
+        return $this->hasOne(PreviousSpouseAddress::class, 'user_id');
+    }
+
     public function PreviousSpousePhone() {
         return $this->hasMany(\App\PreviousSpousePhone::class, 'user_id')->select(['user_id', 'phone', 'is_primary']);
     }

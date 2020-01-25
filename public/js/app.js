@@ -6780,7 +6780,7 @@ __webpack_require__.r(__webpack_exports__);
       this.address = data;
     },
     getemployeraddress: function getemployeraddress() {
-      axios.get('/getemployeraddress').then(function (response) {
+      axios.get('/getemployerbenefitslist').then(function (response) {
         if (response.status == 200) {
           if (response.data) {
             console.log(response.data);

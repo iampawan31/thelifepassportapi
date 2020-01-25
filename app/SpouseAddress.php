@@ -4,16 +4,19 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PersonalEmployerBenefits extends Model
+class SpouseAddress extends Model
 {
     protected $primaryKey = 'user_id';
-
+    
     protected $fillable = [
                             'user_id', 
-                            'employer_id',
-                            'benefit_id'
+                            'street_address1', 
+                            'street_address2', 
+                            'city', 
+                            'state', 
+                            'zipcode'
                         ];
-    
+
     static function tableName() {
         return with(new static)->getTable();
     }
