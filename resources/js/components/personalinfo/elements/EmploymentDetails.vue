@@ -107,7 +107,7 @@ export default {
                     employer_address: null,
                     computer_username: null,
                     computer_password: null,
-                    employee_benefits: null
+                    employee_benefits: []
                 });
             }
         },
@@ -121,8 +121,9 @@ export default {
             this.employers[index].computer_username = data.computer_username;
             this.employers[index].computer_password = data.computer_password;
             this.employers[index].employee_benefits = data.employee_benefits;
+            this.employers[index].address = data.address;
 
-            this.$emit("employment-details-updated", index, data);
+            this.$emit("employment-details-updated", this.employers);
         }
     },
     mounted() {

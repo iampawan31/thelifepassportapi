@@ -13,7 +13,7 @@
                             type="text"
                             name="street_address_1"
                             placeholder="Street Address 1"
-                            v-model="address.streetAddress1"
+                            v-model="streetAddress1"
                             class="field-input"
                         />
                         <span
@@ -39,7 +39,7 @@
                             type="text"
                             name="street_address_2"
                             placeholder="Street Address 2"
-                            v-model="address.streetAddress2"
+                            v-model="streetAddress2"
                             class="field-input"
                         />
                         <span
@@ -65,7 +65,7 @@
                             type="text"
                             name="city"
                             placeholder="City"
-                            v-model="address.city"
+                            v-model="city"
                             class="field-input"
                         />
                         <span
@@ -91,7 +91,7 @@
                             type="text"
                             name="state"
                             placeholder="State"
-                            v-model="address.state"
+                            v-model="state"
                             class="field-input"
                         />
                         <span
@@ -117,7 +117,7 @@
                             type="text"
                             name="zipcode"
                             placeholder="Zipcode"
-                            v-model="address.zipcode"
+                            v-model="zipcode"
                             class="field-input"
                         />
                         <span
@@ -145,26 +145,57 @@ export default {
             errors: [],
             paddingLeft: "",
             paddingRight: "",
-            address: {
-                streetAddress1: "",
-                streetAddress2: "",
-                city: "",
-                state: "",
-                zipcode: "",
-                submitted: false
-            }
+            streetAddress1: "",
+            streetAddress2: "",
+            city: "",
+            state: "",
+            zipcode: "",
+            submitted: false
         };
     },
+    computed: {
+        address() {
+            return {
+                streetAddress1: this.streetAddress1,
+                streetAddress2: this.streetAddress2,
+                city: this.city,
+                state: this.state,
+                zipcode: this.zipcode
+            };
+        }
+    },
     watch: {
-        address: {
-            handler() {
-                this.$emit("home-address-update", this.address);
-            },
-            deep: true
+        streetAddress1() {
+            this.updateData();
+        },
+        streetAddress2() {
+            this.updateData();
+        },
+        city() {
+            this.updateData();
+        },
+        state() {
+            this.updateData();
+        },
+        zipcode() {
+            this.updateData();
+        }
+    },
+    methods: {
+        updateData() {
+            this.$emit("home-address-update", this.address);
         }
     },
     mounted() {
-        this.address = this.homeAddress;
+        if (typeof this.homeAddress == "undefined") {
+            console.log(this.homeAddress);
+        } else {
+            this.streetAddress1 = this.homeAddress.streetAddress1;
+            this.streetAddress2 = this.homeAddress.streetAddress2;
+            this.city = this.homeAddress.city;
+            this.state = this.homeAddress.state;
+            this.zipcode = this.homeAddress.zipcode;
+        }
 
         if (this.padding !== undefined) {
             this.paddingLeft = "pl";

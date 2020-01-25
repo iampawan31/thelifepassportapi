@@ -31,7 +31,7 @@
                   >
                     <input
                       id="legal_name"
-                      v-model="personalDetail.legal_name"
+                      v-model="legalName"
                       type="text"
                       name="legal_name"
                       class="field-input required"
@@ -59,7 +59,7 @@
                   >
                     <input
                       id="nickname"
-                      v-model="personalDetail.nickname"
+                      v-model="nickName"
                       type="text"
                       name="nickname"
                       class="field-input"
@@ -84,8 +84,7 @@
             <div class="row">
               <div class="col nopadding">
                 <phone-details
-                  v-if="phones.length > 0"
-                  :user-phones="phones"
+                  :user-phones="phoneNumbers"
                   @phone-details-updates="updatePhoneNumbers"
                 />
               </div>
@@ -105,7 +104,7 @@
                     rules="date"
                   >
                     <input
-                      v-model="personalDetail.dob"
+                      v-model="dateOfBirth"
                       v-mask="'##/##/####'"
                       type="text"
                       class="field-input"
@@ -138,7 +137,7 @@
                   >
                     <Select2
                       id="citizenship"
-                      v-model="personalDetail.country_id"
+                      v-model="citizenship"
                       name="citizenship"
                       width="resolve"
                       data-placeholder="Select an Options"
@@ -168,7 +167,7 @@
                   >
                     <input
                       id="passport_number"
-                      v-model="personalDetail.passport_number"
+                      v-model="passportNumber"
                       type="text"
                       name="passport_number"
                       class="field-input"
@@ -200,7 +199,7 @@
                     >Father's name</label>
                     <input
                       id="father_name"
-                      v-model="personalDetail.father_name"
+                      v-model="fatherName"
                       type="text"
                       name="father_name"
                       class="field-input"
@@ -228,7 +227,7 @@
                   >
                     <input
                       id="father_birth_place"
-                      v-model="personalDetail.father_birth_place"
+                      v-model="fatherBirthPlace"
                       type="text"
                       name="father_birth_place"
                       class="field-input"
@@ -260,7 +259,7 @@
                   >
                     <input
                       id="mother_name"
-                      v-model="personalDetail.mother_name"
+                      v-model="motherName"
                       type="text"
                       name="mother_name"
                       class="field-input"
@@ -288,7 +287,7 @@
                   >
                     <input
                       id="mother_birth_place"
-                      v-model="personalDetail.mother_birth_place"
+                      v-model="motherBirthPlace"
                       type="text"
                       name="mother_birth_place"
                       class="field-input"
@@ -309,7 +308,6 @@
             <div class="row">
               <div class="col nopadding">
                 <email-details
-                  v-if="emails.length"
                   :user-emails="emails"
                   @email-details-updates="updateEmails"
                 />
@@ -320,8 +318,7 @@
             <div class="row">
               <div class="col nopadding">
                 <social-media-details
-                  v-if="socials !== undefined && socials.length"
-                  :user-socials="socials"
+                  :user-socials="socialMediaDetails"
                   @social-media-details-updates="updateSocialMedia"
                 />
               </div>
@@ -331,8 +328,7 @@
             <div class="row">
               <div class="col nopadding">
                 <employment-details
-                  v-if="employers !== undefined && employers.length > 0"
-                  :user-employers="employers"
+                  :user-employers="employmentDetails"
                   @employment-details-updated="updateEmploymentDetails"
                 />
               </div>
@@ -343,10 +339,10 @@
               <label for="chk_complete">
                 <input
                   id="chk_complete"
-                  v-model="is_completed"
+                  v-model="isCompleted"
                   type="checkbox"
                   name="chk_complete"
-                  :value="is_completed"
+                  :value="isCompleted"
                 ><i /> <span>Mark as complete</span>
               </label>
             </div>
@@ -389,24 +385,26 @@ export default {
     data() {
         return {
             errors: [],
-            personalDetail: [],
-            citizenshipOptions: [],
-            phones: [],
-            emails: [],
+            legalName: "",
+            nickName: "",
             address: [],
-            socials: [],
-            dateOfBirth: '',
-            employers: [],
-            is_completed: false,
+            phoneNumbers: [],
+            dateOfBirth: "",
+            citizenship: "",
+            passportNumber: "",
+            fatherName: "",
+            fatherBirthPlace: "",
+            motherName: "",
+            motherBirthPlace: "",
+            emails: [],
+            socialMediaDetails: [],
+            employmentDetails: [],
+            citizenshipOptions: [],
+            isCompleted: false,
             userId: 0,
             result2: '',
             submitted: false
         };
-    },
-    computed: {
-        disabledDates() {
-            return { from: new Date() };
-        }
     },
     created() {
         this.getCountyList();
@@ -420,8 +418,7 @@ export default {
             if (!isValid) {
                 // Do Something
             } else {
-                const form = e.target;
-                const formData = new FormData(form);
+                const formData = this.getFormData();
 
                 if (this.userId) {
                     axios
@@ -471,31 +468,97 @@ export default {
                         );
                         this.populateData(this.personalDetail);
                     } else {
-                        this.phones = [{ number: null }];
-                        this.emails = [{ email: null, password: null }];
-                        this.socials = [{ social: null, username: null, password: null }];
-                        this.employers = [
-                            {
-                                employer_name: null,
-                                employer_phone: null,
-                                employer_address: null,
-                                computer_username: null,
-                                computer_password: null,
-                                employee_benefits: null
-                            }
-                        ];
-                        this.is_completed = false;
+                        this.populateNewForm();
                     }
                 }
             });
         },
+        getFormData() {
+            const form = e.target;
+            const formData = new FormData(form);
+
+            formData.append('legal_name', this.legalName);
+            formData.append('nickname', this.nickName);
+            formData.append('home_address', this.address);
+            formData.append('user_phones', this.phoneNumbers);
+            formData.append('dob', this.dateOfBirth);
+            formData.append('citizenship', this.citizenship);
+            formData.append('passport_number', this.passportNumber);
+            formData.append('father_name', this.fatherName);
+            formData.append('father_birth_place', this.fatherBirthPlace);
+            formData.append('mother_name', this.motherName);
+            formData.append('mother_birth_place', this.motherBirthPlace);
+            formData.append('emails', this.emails);
+            formData.append('user_socail_media', this.socialMediaDetails);
+            formData.append('user_employer', this.employmentDetails);
+            formData.append('chk_complete', this.isCompleted);
+
+            return formData;
+        },
+        populateNewForm () {
+            this.legalName = "";
+            this.nickName = "";
+            this.address = [];
+            this.phoneNumbers = [];
+            this.dateOfBirth = "";
+            this.citizenship = "";
+            this.passportNumber = "";
+            this.fatherName = "";
+            this.fatherBirthPlace = "";
+            this.motherName = "";
+            this.motherBirthPlace = "";
+            this.emails = [];
+            this.socialMediaDetails = [];
+            this.employmentDetails = [];
+            this.isCompleted = false;
+        },
         populateData (personalDetail) {
             this.userId = personalDetail.user_id;
 
+            if(personalDetail.legal_name) {
+                this.legalName = personalDetail.legal_name;
+            }
+
+            if(personalDetail.nickname) {
+                this.nickName = personalDetail.nickname;
+            }
+
+            if(personalDetail.home_address) {
+                this.address = personalDetail.home_address;
+            }
+
             if (personalDetail.user_phone.length > 0) {
-                this.phones = personalDetail.user_phone;
+                this.phoneNumbers = personalDetail.user_phone;
             } else {
-                this.phones = [{ number: null }];
+                this.phoneNumbers = [{ number: null }];
+            }
+
+            if(personalDetail.dob) {
+                this.dateOfBirth = personalDetail.dob;
+            }
+
+            if(personalDetail.father_name) {
+                this.fatherName = personalDetail.father_name;
+            }
+
+            if(personalDetail.father_birth_place) {
+                this.fatherBirthPlace = personalDetail.father_birth_place;
+            }
+
+            if(personalDetail.mother_name) {
+                this.motherName = personalDetail.mother_name;
+            }
+
+            if(personalDetail.mother_birth_place) {
+                this.motherBirthPlace = personalDetail.mother_birth_place;
+            }
+
+            if(personalDetail.citizenship) {
+                this.citizenship = personalDetail.citizenship;
+            }
+
+            if(personalDetail.passport_number) {
+                this.passportNumber = personalDetail.passport_number;
             }
 
             if (personalDetail.user_email.length > 0) {
@@ -505,33 +568,34 @@ export default {
             }
 
             if (personalDetail.user_socail_media.length > 0) {
-                this.socials = personalDetail.user_socail_media;
+                this.socialMediaDetails = personalDetail.user_socail_media;
             } else {
-                this.socials = [{ social: null, username: null, password: null }];
+                this.socialMediaDetails = [{ social: null, username: null, password: null }];
             }
 
             if (personalDetail.user_employer.length > 0) {
-                this.employers = personalDetail.user_employer;
+                this.employmentDetails = personalDetail.user_employer;
             } else {
-                this.employers = [
+                this.employmentDetails = [
                     {
                         employer_name: null,
                         employer_phone: null,
                         employer_address: null,
                         computer_username: null,
                         computer_password: null,
-                        employee_benefits: null
+                        address: null,
+                        employeeBenefits: null
                     }
                 ];
             }
 
             if(personalDetail.users_personal_details_completion.length > 0) {
                 if (personalDetail.users_personal_details_completion[0].is_completed == 1) {
-                    this.is_completed = true;
+                    this.isCompleted = true;
                 }
             } else {
                 //this.completionStatus = { step_id: null, is_visited: null, is_filled: null, is_completed: null };
-                this.is_completed = false;
+                this.isCompleted = false;
             }
         },
         getCountyList() {
@@ -551,19 +615,16 @@ export default {
             });
         },
         updatePhoneNumbers(data) {
-            this.phones = data;
+            this.phoneNumbers = data;
         },
         updateEmails(data) {
             this.emails = data;
         },
         updateSocialMedia(data) {
-            this.socials = data;
+            this.socialMediaDetails = data;
         },
-        updateEmploymentDetails(index, data) {
-            this.employers[index] = data;
-        },
-        updateBirthDateFormat() {
-            this.personalDetail.dob = new Date(this.personalDetail.dob).toString;
+        updateEmploymentDetails(data) {
+            this.employmentDetails = data;
         },
         updateHomeAddress(data) {
             this.address = data;

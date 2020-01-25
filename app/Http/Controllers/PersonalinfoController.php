@@ -109,14 +109,17 @@ class PersonalinfoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function postpersonaldata(Request $request) {
+    public function postpersonaldata(Request $request)
+    {
         // $request->validate([
         //     'title' => 'required|unique:'.$this->table.'|max:191',
         //     'status' => 'required',
         // ]);
 
         $inputs = $request->all();
-        
+
+        dd($request->all());
+
         //personal information
         $legal_name         = $inputs['legal_name'];
         $nick_name          = $inputs['nickname'];
@@ -138,7 +141,7 @@ class PersonalinfoController extends Controller
         //phone info
         $arrPhone = [];
         if (isset($inputs['phone'])) {
-            foreach($inputs['phone'] as $phone) {
+            foreach ($inputs['phone'] as $phone) {
                 if ($phone) {
                     $arrPhone[] = ['user_id' => Auth::user()->id, 'phone' => $phone];
                 }
@@ -148,33 +151,32 @@ class PersonalinfoController extends Controller
         //email info
         $arrEmail = [];
         if (isset($inputs['email'])) {
-            foreach($inputs['email'] as $key => $value) {
+            foreach ($inputs['email'] as $key => $value) {
                 if ($value) {
                     $arrEmail[] = ['user_id' => Auth::user()->id, 'email' => $value, 'password' => $inputs['email_password'][$key]];
-                } 
+                }
             }
         }
 
         //social media info
         $arrSocial = [];
         if (isset($inputs['social_media_type'])) {
-            foreach($inputs['social_media_type'] as $key => $value) {
+            foreach ($inputs['social_media_type'] as $key => $value) {
                 if ($value) {
                     $arrSocial[] = ['user_id' => Auth::user()->id, 'social_id' => $value, 'username' => $inputs['social_username'][$key], 'password' => $inputs['social_password'][$key]];
                 }
-                
             }
         }
 
         //employer info
         $arrEmployer = [];
         if (isset($inputs['employer_name'])) {
-            foreach($inputs['employer_name'] as $key => $value) {
+            foreach ($inputs['employer_name'] as $key => $value) {
                 if (!empty($value)) {
                     $arrEmployer[] = [
                         'user_id'                   => Auth::user()->id,
-                        'employer_name'             => $value, 
-                        'employer_phone'            => $inputs['employer_phone'][$key], 
+                        'employer_name'             => $value,
+                        'employer_phone'            => $inputs['employer_phone'][$key],
                         'employer_address'          => $inputs['employer_address'][$key],
                         'computer_username'         => $inputs['company_computer_username'][$key],
                         'computer_password'         => $inputs['company_computer_password'][$key],
@@ -202,46 +204,45 @@ class PersonalinfoController extends Controller
             'mother_name'           => $mother_name ? $mother_name : "",
             'mother_birth_place'    => $mother_birth_place ? $mother_birth_place : "",
         ];
-       
+
         try {
             //insert personal information
             $objPersonalInfo = \App\PersonalInfo::create($arrPersonalInfo);
-            
+
             //insert record in user personal details completion
             $is_completed = $is_completed ? '1' : '0';
             $arrData = ['step_id' => 1, 'user_id' => Auth::user()->id, 'is_visited' => '1', 'is_filled' => '1', 'is_completed' => $is_completed];
             $objPercentageCompletion = \App\UsersPersonalDetailsCompletion::Create($arrData);
-           
+
             //insert phone information
             if (!empty($arrPhone)) {
-                foreach($arrPhone as $phones){
+                foreach ($arrPhone as $phones) {
                     $objPhone = \App\UserPhone::create($phones);
-                } 
+                }
             }
 
             //insert email information
             if (!empty($arrEmail)) {
-                foreach($arrEmail as $emails) {
+                foreach ($arrEmail as $emails) {
                     \App\UserEmail::create($emails);
                 }
             }
 
             //insert email information
             if (!empty($arrSocial)) {
-                foreach($arrSocial as $socials) {
+                foreach ($arrSocial as $socials) {
                     \App\UserSocailMedia::create($socials);
                 }
             }
-            
-            if(!empty($arrEmployer)) {
-                foreach($arrEmployer as $employers) {
+
+            if (!empty($arrEmployer)) {
+                foreach ($arrEmployer as $employers) {
                     \App\UserEmployer::create($employers);
                 }
             }
 
             //return response()->json(['response' => $inputs, 'phone' => $arrPhone, 'email' => $arrEmail, 'social' => $arrSocial, 'employer' => $arrEmployer]);
             return response()->json(['status' => 200, 'message' => 'Personal information has been saved successfully'], 200);
-
         } catch (Exception $e) {
             return response()->json(['status' => 500, 'message' => 'Error'], 500);
         }
@@ -254,9 +255,10 @@ class PersonalinfoController extends Controller
      * @param  \App\PersonalInfo  $personalInfo
      * @return \Illuminate\Http\Response
      */
-    public function updatepersonaldata(Request $request, $id) {
+    public function updatepersonaldata(Request $request, $id)
+    {
         $inputs = $request->all();
-       
+
         //personal information
         $legal_name         = $inputs['legal_name'];
         $nick_name          = $inputs['nickname'];
@@ -278,7 +280,7 @@ class PersonalinfoController extends Controller
         //phone info
         $arrPhone = [];
         if (isset($inputs['phone'])) {
-            foreach($inputs['phone'] as $phone) {
+            foreach ($inputs['phone'] as $phone) {
                 if ($phone) {
                     $arrPhone[] = ['user_id' => Auth::user()->id, 'phone' => $phone];
                 }
@@ -288,33 +290,32 @@ class PersonalinfoController extends Controller
         //email info
         $arrEmail = [];
         if (isset($inputs['email'])) {
-            foreach($inputs['email'] as $key => $value) {
+            foreach ($inputs['email'] as $key => $value) {
                 if ($value) {
                     $arrEmail[] = ['user_id' => Auth::user()->id, 'email' => $value, 'password' => $inputs['email_password'][$key]];
-                } 
+                }
             }
         }
 
         //social media info
         $arrSocial = [];
         if (isset($inputs['social_media_type'])) {
-            foreach($inputs['social_media_type'] as $key => $value) {
+            foreach ($inputs['social_media_type'] as $key => $value) {
                 if ($value) {
                     $arrSocial[] = ['user_id' => Auth::user()->id, 'social_id' => $value, 'username' => $inputs['social_username'][$key], 'password' => $inputs['social_password'][$key]];
                 }
-                
             }
         }
 
         //employer info
         $arrEmployer = [];
         if (isset($inputs['employer_name'])) {
-            foreach($inputs['employer_name'] as $key => $value) {
+            foreach ($inputs['employer_name'] as $key => $value) {
                 if (!empty($value)) {
                     $arrEmployer[] = [
                         'user_id'                   => Auth::user()->id,
-                        'employer_name'             => $value, 
-                        'employer_phone'            => $inputs['employer_phone'][$key], 
+                        'employer_name'             => $value,
+                        'employer_phone'            => $inputs['employer_phone'][$key],
                         'employer_address'          => @$inputs['employer_address'][$key],
                         'computer_username'         => $inputs['company_computer_username'][$key],
                         'computer_password'         => $inputs['company_computer_password'][$key],
@@ -323,9 +324,9 @@ class PersonalinfoController extends Controller
                 }
             }
         }
-        
+
         try {
-            
+
             //insert personal information
             $objPersonalInfo = \App\PersonalInfo::find($id);
             //$objPersonalInfo->user_id       = Auth::user()->id;
@@ -349,16 +350,16 @@ class PersonalinfoController extends Controller
             //insert record in user personal details completion
             $is_completed = $is_completed ? '1' : '0';
             \App\UsersPersonalDetailsCompletion::where('step_id', 1)
-                                                ->where('user_id', Auth::user()->id)
-                                                ->update([ 'is_visited' => '1', 'is_filled' => '1', 'is_completed' => $is_completed]);
+                ->where('user_id', Auth::user()->id)
+                ->update(['is_visited' => '1', 'is_filled' => '1', 'is_completed' => $is_completed]);
 
             //insert phone information
             if (!empty($arrPhone)) {
                 //remove all phone details
                 \App\UserPhone::where('user_id', Auth::user()->id)->delete();
-                foreach($arrPhone as $phones){
+                foreach ($arrPhone as $phones) {
                     $objPhone = \App\UserPhone::create($phones);
-                } 
+                }
             }
 
             //insert email information
@@ -366,7 +367,7 @@ class PersonalinfoController extends Controller
                 //remove email details
                 \App\UserEmail::where('user_id', Auth::user()->id)->delete();
 
-                foreach($arrEmail as $emails) {
+                foreach ($arrEmail as $emails) {
                     \App\UserEmail::create($emails);
                 }
             }
@@ -376,22 +377,21 @@ class PersonalinfoController extends Controller
                 //remove social media info
                 \App\UserSocailMedia::where('user_id', Auth::user()->id)->delete();
 
-                foreach($arrSocial as $socials) {
+                foreach ($arrSocial as $socials) {
                     \App\UserSocailMedia::create($socials);
                 }
             }
-            
-            if(!empty($arrEmployer)) {
+
+            if (!empty($arrEmployer)) {
                 //remove employer details
                 \App\UserEmployer::where('user_id', Auth::user()->id)->delete();
 
-                foreach($arrEmployer as $employers) {
+                foreach ($arrEmployer as $employers) {
                     \App\UserEmployer::create($employers);
                 }
             }
 
             return response()->json(['status' => 200, 'message' => 'Personal information has been saved successfully'], 200);
-
         } catch (Exception $e) {
             dd($e);
             return response()->json(['status' => 500, 'message' => 'Error'], 500);
@@ -401,11 +401,12 @@ class PersonalinfoController extends Controller
     /**
      * get user personal info
      */
-    public function getpersonalinfo() {
+    public function getpersonalinfo()
+    {
         $user_id = Auth::user()->id;
-        
+
         $count = \App\PersonalInfo::where('user_id', $user_id)->get()->count();
-        
+
         if ($count > 0) {
             //\DB::enableQueryLog();
             $personal_info = \App\PersonalInfo::where('user_id', $user_id)
@@ -415,7 +416,7 @@ class PersonalinfoController extends Controller
                 ->with('UserSocailMedia')
                 ->with('UserEmployer.Address', 'UserEmployer.Benefits')
                 ->with('UsersPersonalDetailsCompletion')
-                ->get(); 
+                ->get();
             //dd(\DB::getQueryLog());
             return response()->json(['status' => 200, 'data' => $personal_info]);
         } else {
@@ -426,7 +427,8 @@ class PersonalinfoController extends Controller
     /**
      * get user personal info
      */
-    public function getuserphones() {
+    public function getuserphones()
+    {
         $user_id = Auth::user()->id;
         $phones = \App\UserPhone::find($user_id)
             ->get();
@@ -434,16 +436,17 @@ class PersonalinfoController extends Controller
         return response()->json(['status' => 200, 'data' => $phones]);
     }
 
-    public function updateuserpersonalstepinfo(Request $request) {
+    public function updateuserpersonalstepinfo(Request $request)
+    {
         $inputs     = $request->all();
         $user_id    = Auth::user()->id;
-        
+
         try {
             $objPersonalStepCompletion = new \App\UsersPersonalDetailsCompletion();
             $objPersonalStepCompletion->updatestepinfo($inputs, $user_id);
-            
+
             return response()->json(['status' => 200, 'msg' => 'Details updated successfully'], 200);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             dd($e);
             return response()->json(['status' => 500, 'msg' => 'Error'], 500);
         }
@@ -453,7 +456,7 @@ class PersonalinfoController extends Controller
     //     $user_id = Auth::user()->id;
     //     $personal_info = \App\UserEmployer::find($user_id)
     //             ->with('EmployerAddress')
-    //             ->get(); 
+    //             ->get();
     //     //\DB::enableQueryLog();
     //     //$personal_info = \App\EmployerAddress::find(1)->with('employer')->get();
 

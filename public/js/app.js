@@ -4382,10 +4382,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
 
 
 
@@ -4407,26 +4403,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   data: function data() {
     return {
       errors: [],
-      personalDetail: [],
-      citizenshipOptions: [],
-      phones: [],
-      emails: [],
+      legalName: "",
+      nickName: "",
       address: [],
-      socials: [],
-      dateOfBirth: '',
-      employers: [],
-      is_completed: false,
+      phoneNumbers: [],
+      dateOfBirth: "",
+      citizenship: "",
+      passportNumber: "",
+      fatherName: "",
+      fatherBirthPlace: "",
+      motherName: "",
+      motherBirthPlace: "",
+      emails: [],
+      socialMediaDetails: [],
+      employmentDetails: [],
+      citizenshipOptions: [],
+      isCompleted: false,
       userId: 0,
       result2: '',
       submitted: false
     };
-  },
-  computed: {
-    disabledDates: function disabledDates() {
-      return {
-        from: new Date()
-      };
-    }
   },
   created: function created() {
     this.getCountyList();
@@ -4439,7 +4435,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(e) {
         var _this = this;
 
-        var isValid, form, formData;
+        var isValid, formData;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -4453,8 +4449,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 if (!isValid) {// Do Something
                 } else {
-                  form = e.target;
-                  formData = new FormData(form);
+                  formData = this.getFormData();
 
                   if (this.userId) {
                     axios.post('/personal-info/' + this.userId + '/updatedata', formData).then(function (response) {
@@ -4535,40 +4530,97 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
             _this3.populateData(_this3.personalDetail);
           } else {
-            _this3.phones = [{
-              number: null
-            }];
-            _this3.emails = [{
-              email: null,
-              password: null
-            }];
-            _this3.socials = [{
-              social: null,
-              username: null,
-              password: null
-            }];
-            _this3.employers = [{
-              employer_name: null,
-              employer_phone: null,
-              employer_address: null,
-              computer_username: null,
-              computer_password: null,
-              employee_benefits: null
-            }];
-            _this3.is_completed = false;
+            _this3.populateNewForm();
           }
         }
       });
     },
+    getFormData: function getFormData() {
+      var form = e.target;
+      var formData = new FormData(form);
+      formData.append('legal_name', this.legalName);
+      formData.append('nickname', this.nickName);
+      formData.append('home_address', this.address);
+      formData.append('user_phones', this.phoneNumbers);
+      formData.append('dob', this.dateOfBirth);
+      formData.append('citizenship', this.citizenship);
+      formData.append('passport_number', this.passportNumber);
+      formData.append('father_name', this.fatherName);
+      formData.append('father_birth_place', this.fatherBirthPlace);
+      formData.append('mother_name', this.motherName);
+      formData.append('mother_birth_place', this.motherBirthPlace);
+      formData.append('emails', this.emails);
+      formData.append('user_socail_media', this.socialMediaDetails);
+      formData.append('user_employer', this.employmentDetails);
+      formData.append('chk_complete', this.isCompleted);
+      return formData;
+    },
+    populateNewForm: function populateNewForm() {
+      this.legalName = "";
+      this.nickName = "";
+      this.address = [];
+      this.phoneNumbers = [];
+      this.dateOfBirth = "";
+      this.citizenship = "";
+      this.passportNumber = "";
+      this.fatherName = "";
+      this.fatherBirthPlace = "";
+      this.motherName = "";
+      this.motherBirthPlace = "";
+      this.emails = [];
+      this.socialMediaDetails = [];
+      this.employmentDetails = [];
+      this.isCompleted = false;
+    },
     populateData: function populateData(personalDetail) {
       this.userId = personalDetail.user_id;
 
+      if (personalDetail.legal_name) {
+        this.legalName = personalDetail.legal_name;
+      }
+
+      if (personalDetail.nickname) {
+        this.nickName = personalDetail.nickname;
+      }
+
+      if (personalDetail.home_address) {
+        this.address = personalDetail.home_address;
+      }
+
       if (personalDetail.user_phone.length > 0) {
-        this.phones = personalDetail.user_phone;
+        this.phoneNumbers = personalDetail.user_phone;
       } else {
-        this.phones = [{
+        this.phoneNumbers = [{
           number: null
         }];
+      }
+
+      if (personalDetail.dob) {
+        this.dateOfBirth = personalDetail.dob;
+      }
+
+      if (personalDetail.father_name) {
+        this.fatherName = personalDetail.father_name;
+      }
+
+      if (personalDetail.father_birth_place) {
+        this.fatherBirthPlace = personalDetail.father_birth_place;
+      }
+
+      if (personalDetail.mother_name) {
+        this.motherName = personalDetail.mother_name;
+      }
+
+      if (personalDetail.mother_birth_place) {
+        this.motherBirthPlace = personalDetail.mother_birth_place;
+      }
+
+      if (personalDetail.citizenship) {
+        this.citizenship = personalDetail.citizenship;
+      }
+
+      if (personalDetail.passport_number) {
+        this.passportNumber = personalDetail.passport_number;
       }
 
       if (personalDetail.user_email.length > 0) {
@@ -4581,9 +4633,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
 
       if (personalDetail.user_socail_media.length > 0) {
-        this.socials = personalDetail.user_socail_media;
+        this.socialMediaDetails = personalDetail.user_socail_media;
       } else {
-        this.socials = [{
+        this.socialMediaDetails = [{
           social: null,
           username: null,
           password: null
@@ -4591,25 +4643,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
 
       if (personalDetail.user_employer.length > 0) {
-        this.employers = personalDetail.user_employer;
+        this.employmentDetails = personalDetail.user_employer;
       } else {
-        this.employers = [{
+        this.employmentDetails = [{
           employer_name: null,
           employer_phone: null,
           employer_address: null,
           computer_username: null,
           computer_password: null,
-          employee_benefits: null
+          address: null,
+          employeeBenefits: null
         }];
       }
 
       if (personalDetail.users_personal_details_completion.length > 0) {
         if (personalDetail.users_personal_details_completion[0].is_completed == 1) {
-          this.is_completed = true;
+          this.isCompleted = true;
         }
       } else {
         //this.completionStatus = { step_id: null, is_visited: null, is_filled: null, is_completed: null };
-        this.is_completed = false;
+        this.isCompleted = false;
       }
     },
     getCountyList: function getCountyList() {
@@ -4633,19 +4686,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       });
     },
     updatePhoneNumbers: function updatePhoneNumbers(data) {
-      this.phones = data;
+      this.phoneNumbers = data;
     },
     updateEmails: function updateEmails(data) {
       this.emails = data;
     },
     updateSocialMedia: function updateSocialMedia(data) {
-      this.socials = data;
+      this.socialMediaDetails = data;
     },
-    updateEmploymentDetails: function updateEmploymentDetails(index, data) {
-      this.employers[index] = data;
-    },
-    updateBirthDateFormat: function updateBirthDateFormat() {
-      this.personalDetail.dob = new Date(this.personalDetail.dob).toString;
+    updateEmploymentDetails: function updateEmploymentDetails(data) {
+      this.employmentDetails = data;
     },
     updateHomeAddress: function updateHomeAddress(data) {
       this.address = data;
@@ -6298,26 +6348,57 @@ __webpack_require__.r(__webpack_exports__);
       errors: [],
       paddingLeft: "",
       paddingRight: "",
-      address: {
-        streetAddress1: "",
-        streetAddress2: "",
-        city: "",
-        state: "",
-        zipcode: "",
-        submitted: false
-      }
+      streetAddress1: "",
+      streetAddress2: "",
+      city: "",
+      state: "",
+      zipcode: "",
+      submitted: false
     };
   },
+  computed: {
+    address: function address() {
+      return {
+        streetAddress1: this.streetAddress1,
+        streetAddress2: this.streetAddress2,
+        city: this.city,
+        state: this.state,
+        zipcode: this.zipcode
+      };
+    }
+  },
   watch: {
-    address: {
-      handler: function handler() {
-        this.$emit("home-address-update", this.address);
-      },
-      deep: true
+    streetAddress1: function streetAddress1() {
+      this.updateData();
+    },
+    streetAddress2: function streetAddress2() {
+      this.updateData();
+    },
+    city: function city() {
+      this.updateData();
+    },
+    state: function state() {
+      this.updateData();
+    },
+    zipcode: function zipcode() {
+      this.updateData();
+    }
+  },
+  methods: {
+    updateData: function updateData() {
+      this.$emit("home-address-update", this.address);
     }
   },
   mounted: function mounted() {
-    this.address = this.homeAddress;
+    if (typeof this.homeAddress == "undefined") {
+      console.log(this.homeAddress);
+    } else {
+      this.streetAddress1 = this.homeAddress.streetAddress1;
+      this.streetAddress2 = this.homeAddress.streetAddress2;
+      this.city = this.homeAddress.city;
+      this.state = this.homeAddress.state;
+      this.zipcode = this.homeAddress.zipcode;
+    }
 
     if (this.padding !== undefined) {
       this.paddingLeft = "pl";
@@ -6732,24 +6813,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -6764,7 +6827,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       employmentDetail: [],
-      address: []
+      emoployeeBenefitsOptions: []
     };
   },
   watch: {
@@ -6777,13 +6840,15 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     updateHomeAddress: function updateHomeAddress(data) {
-      this.address = data;
+      this.employmentDetail.address = data;
     },
     getemployeraddress: function getemployeraddress() {
-      axios.get('/getemployerbenefitslist').then(function (response) {
+      var _this = this;
+
+      axios.get("/getemployerbenefitslist").then(function (response) {
         if (response.status == 200) {
           if (response.data) {
-            console.log(response.data);
+            _this.emoployeeBenefitsOptions = response.data.data;
           }
         }
       });
@@ -6916,7 +6981,7 @@ __webpack_require__.r(__webpack_exports__);
           employer_address: null,
           computer_username: null,
           computer_password: null,
-          employee_benefits: null
+          employee_benefits: []
         });
       }
     },
@@ -6930,7 +6995,8 @@ __webpack_require__.r(__webpack_exports__);
       this.employers[index].computer_username = data.computer_username;
       this.employers[index].computer_password = data.computer_password;
       this.employers[index].employee_benefits = data.employee_benefits;
-      this.$emit("employment-details-updated", index, data);
+      this.employers[index].address = data.address;
+      this.$emit("employment-details-updated", this.employers);
     }
   },
   mounted: function mounted() {
@@ -63375,11 +63441,8 @@ var render = function() {
                                                 {
                                                   name: "model",
                                                   rawName: "v-model",
-                                                  value:
-                                                    _vm.personalDetail
-                                                      .legal_name,
-                                                  expression:
-                                                    "personalDetail.legal_name"
+                                                  value: _vm.legalName,
+                                                  expression: "legalName"
                                                 }
                                               ],
                                               staticClass:
@@ -63391,19 +63454,15 @@ var render = function() {
                                                 placeholder: "Legal Name"
                                               },
                                               domProps: {
-                                                value:
-                                                  _vm.personalDetail.legal_name
+                                                value: _vm.legalName
                                               },
                                               on: {
                                                 input: function($event) {
                                                   if ($event.target.composing) {
                                                     return
                                                   }
-                                                  _vm.$set(
-                                                    _vm.personalDetail,
-                                                    "legal_name",
+                                                  _vm.legalName =
                                                     $event.target.value
-                                                  )
                                                 }
                                               }
                                             }),
@@ -63468,10 +63527,8 @@ var render = function() {
                                                 {
                                                   name: "model",
                                                   rawName: "v-model",
-                                                  value:
-                                                    _vm.personalDetail.nickname,
-                                                  expression:
-                                                    "personalDetail.nickname"
+                                                  value: _vm.nickName,
+                                                  expression: "nickName"
                                                 }
                                               ],
                                               staticClass: "field-input",
@@ -63482,20 +63539,14 @@ var render = function() {
                                                 placeholder:
                                                   "Nickname or prior name"
                                               },
-                                              domProps: {
-                                                value:
-                                                  _vm.personalDetail.nickname
-                                              },
+                                              domProps: { value: _vm.nickName },
                                               on: {
                                                 input: function($event) {
                                                   if ($event.target.composing) {
                                                     return
                                                   }
-                                                  _vm.$set(
-                                                    _vm.personalDetail,
-                                                    "nickname",
+                                                  _vm.nickName =
                                                     $event.target.value
-                                                  )
                                                 }
                                               }
                                             }),
@@ -63541,15 +63592,13 @@ var render = function() {
                             "div",
                             { staticClass: "col nopadding" },
                             [
-                              _vm.phones.length > 0
-                                ? _c("phone-details", {
-                                    attrs: { "user-phones": _vm.phones },
-                                    on: {
-                                      "phone-details-updates":
-                                        _vm.updatePhoneNumbers
-                                    }
-                                  })
-                                : _vm._e()
+                              _c("phone-details", {
+                                attrs: { "user-phones": _vm.phoneNumbers },
+                                on: {
+                                  "phone-details-updates":
+                                    _vm.updatePhoneNumbers
+                                }
+                              })
                             ],
                             1
                           )
@@ -63587,9 +63636,8 @@ var render = function() {
                                                 {
                                                   name: "model",
                                                   rawName: "v-model",
-                                                  value: _vm.personalDetail.dob,
-                                                  expression:
-                                                    "personalDetail.dob"
+                                                  value: _vm.dateOfBirth,
+                                                  expression: "dateOfBirth"
                                                 },
                                                 {
                                                   name: "mask",
@@ -63605,18 +63653,15 @@ var render = function() {
                                                 placeholder: "mm/dd/yyyy"
                                               },
                                               domProps: {
-                                                value: _vm.personalDetail.dob
+                                                value: _vm.dateOfBirth
                                               },
                                               on: {
                                                 input: function($event) {
                                                   if ($event.target.composing) {
                                                     return
                                                   }
-                                                  _vm.$set(
-                                                    _vm.personalDetail,
-                                                    "dob",
+                                                  _vm.dateOfBirth =
                                                     $event.target.value
-                                                  )
                                                 }
                                               }
                                             }),
@@ -63704,18 +63749,11 @@ var render = function() {
                                                   }
                                                 },
                                                 model: {
-                                                  value:
-                                                    _vm.personalDetail
-                                                      .country_id,
+                                                  value: _vm.citizenship,
                                                   callback: function($$v) {
-                                                    _vm.$set(
-                                                      _vm.personalDetail,
-                                                      "country_id",
-                                                      $$v
-                                                    )
+                                                    _vm.citizenship = $$v
                                                   },
-                                                  expression:
-                                                    "personalDetail.country_id"
+                                                  expression: "citizenship"
                                                 }
                                               }),
                                               _vm._v(" "),
@@ -63784,11 +63822,8 @@ var render = function() {
                                                   {
                                                     name: "model",
                                                     rawName: "v-model",
-                                                    value:
-                                                      _vm.personalDetail
-                                                        .passport_number,
-                                                    expression:
-                                                      "personalDetail.passport_number"
+                                                    value: _vm.passportNumber,
+                                                    expression: "passportNumber"
                                                   }
                                                 ],
                                                 staticClass: "field-input",
@@ -63799,9 +63834,7 @@ var render = function() {
                                                   placeholder: "Passport Number"
                                                 },
                                                 domProps: {
-                                                  value:
-                                                    _vm.personalDetail
-                                                      .passport_number
+                                                  value: _vm.passportNumber
                                                 },
                                                 on: {
                                                   input: function($event) {
@@ -63810,11 +63843,8 @@ var render = function() {
                                                     ) {
                                                       return
                                                     }
-                                                    _vm.$set(
-                                                      _vm.personalDetail,
-                                                      "passport_number",
+                                                    _vm.passportNumber =
                                                       $event.target.value
-                                                    )
                                                   }
                                                 }
                                               }),
@@ -63889,11 +63919,8 @@ var render = function() {
                                                   {
                                                     name: "model",
                                                     rawName: "v-model",
-                                                    value:
-                                                      _vm.personalDetail
-                                                        .father_name,
-                                                    expression:
-                                                      "personalDetail.father_name"
+                                                    value: _vm.fatherName,
+                                                    expression: "fatherName"
                                                   }
                                                 ],
                                                 staticClass: "field-input",
@@ -63904,9 +63931,7 @@ var render = function() {
                                                   placeholder: "Father's Name"
                                                 },
                                                 domProps: {
-                                                  value:
-                                                    _vm.personalDetail
-                                                      .father_name
+                                                  value: _vm.fatherName
                                                 },
                                                 on: {
                                                   input: function($event) {
@@ -63915,11 +63940,8 @@ var render = function() {
                                                     ) {
                                                       return
                                                     }
-                                                    _vm.$set(
-                                                      _vm.personalDetail,
-                                                      "father_name",
+                                                    _vm.fatherName =
                                                       $event.target.value
-                                                    )
                                                   }
                                                 }
                                               }),
@@ -63989,11 +64011,9 @@ var render = function() {
                                                   {
                                                     name: "model",
                                                     rawName: "v-model",
-                                                    value:
-                                                      _vm.personalDetail
-                                                        .father_birth_place,
+                                                    value: _vm.fatherBirthPlace,
                                                     expression:
-                                                      "personalDetail.father_birth_place"
+                                                      "fatherBirthPlace"
                                                   }
                                                 ],
                                                 staticClass: "field-input",
@@ -64004,9 +64024,7 @@ var render = function() {
                                                   placeholder: "Birth place"
                                                 },
                                                 domProps: {
-                                                  value:
-                                                    _vm.personalDetail
-                                                      .father_birth_place
+                                                  value: _vm.fatherBirthPlace
                                                 },
                                                 on: {
                                                   input: function($event) {
@@ -64015,11 +64033,8 @@ var render = function() {
                                                     ) {
                                                       return
                                                     }
-                                                    _vm.$set(
-                                                      _vm.personalDetail,
-                                                      "father_birth_place",
+                                                    _vm.fatherBirthPlace =
                                                       $event.target.value
-                                                    )
                                                   }
                                                 }
                                               }),
@@ -64091,11 +64106,8 @@ var render = function() {
                                                   {
                                                     name: "model",
                                                     rawName: "v-model",
-                                                    value:
-                                                      _vm.personalDetail
-                                                        .mother_name,
-                                                    expression:
-                                                      "personalDetail.mother_name"
+                                                    value: _vm.motherName,
+                                                    expression: "motherName"
                                                   }
                                                 ],
                                                 staticClass: "field-input",
@@ -64106,9 +64118,7 @@ var render = function() {
                                                   placeholder: "Mother's Name"
                                                 },
                                                 domProps: {
-                                                  value:
-                                                    _vm.personalDetail
-                                                      .mother_name
+                                                  value: _vm.motherName
                                                 },
                                                 on: {
                                                   input: function($event) {
@@ -64117,11 +64127,8 @@ var render = function() {
                                                     ) {
                                                       return
                                                     }
-                                                    _vm.$set(
-                                                      _vm.personalDetail,
-                                                      "mother_name",
+                                                    _vm.motherName =
                                                       $event.target.value
-                                                    )
                                                   }
                                                 }
                                               }),
@@ -64191,11 +64198,9 @@ var render = function() {
                                                   {
                                                     name: "model",
                                                     rawName: "v-model",
-                                                    value:
-                                                      _vm.personalDetail
-                                                        .mother_birth_place,
+                                                    value: _vm.motherBirthPlace,
                                                     expression:
-                                                      "personalDetail.mother_birth_place"
+                                                      "motherBirthPlace"
                                                   }
                                                 ],
                                                 staticClass: "field-input",
@@ -64206,9 +64211,7 @@ var render = function() {
                                                   placeholder: "Birth place"
                                                 },
                                                 domProps: {
-                                                  value:
-                                                    _vm.personalDetail
-                                                      .mother_birth_place
+                                                  value: _vm.motherBirthPlace
                                                 },
                                                 on: {
                                                   input: function($event) {
@@ -64217,11 +64220,8 @@ var render = function() {
                                                     ) {
                                                       return
                                                     }
-                                                    _vm.$set(
-                                                      _vm.personalDetail,
-                                                      "mother_birth_place",
+                                                    _vm.motherBirthPlace =
                                                       $event.target.value
-                                                    )
                                                   }
                                                 }
                                               }),
@@ -64263,14 +64263,12 @@ var render = function() {
                             "div",
                             { staticClass: "col nopadding" },
                             [
-                              _vm.emails.length
-                                ? _c("email-details", {
-                                    attrs: { "user-emails": _vm.emails },
-                                    on: {
-                                      "email-details-updates": _vm.updateEmails
-                                    }
-                                  })
-                                : _vm._e()
+                              _c("email-details", {
+                                attrs: { "user-emails": _vm.emails },
+                                on: {
+                                  "email-details-updates": _vm.updateEmails
+                                }
+                              })
                             ],
                             1
                           )
@@ -64281,15 +64279,15 @@ var render = function() {
                             "div",
                             { staticClass: "col nopadding" },
                             [
-                              _vm.socials !== undefined && _vm.socials.length
-                                ? _c("social-media-details", {
-                                    attrs: { "user-socials": _vm.socials },
-                                    on: {
-                                      "social-media-details-updates":
-                                        _vm.updateSocialMedia
-                                    }
-                                  })
-                                : _vm._e()
+                              _c("social-media-details", {
+                                attrs: {
+                                  "user-socials": _vm.socialMediaDetails
+                                },
+                                on: {
+                                  "social-media-details-updates":
+                                    _vm.updateSocialMedia
+                                }
+                              })
                             ],
                             1
                           )
@@ -64300,16 +64298,15 @@ var render = function() {
                             "div",
                             { staticClass: "col nopadding" },
                             [
-                              _vm.employers !== undefined &&
-                              _vm.employers.length > 0
-                                ? _c("employment-details", {
-                                    attrs: { "user-employers": _vm.employers },
-                                    on: {
-                                      "employment-details-updated":
-                                        _vm.updateEmploymentDetails
-                                    }
-                                  })
-                                : _vm._e()
+                              _c("employment-details", {
+                                attrs: {
+                                  "user-employers": _vm.employmentDetails
+                                },
+                                on: {
+                                  "employment-details-updated":
+                                    _vm.updateEmploymentDetails
+                                }
+                              })
                             ],
                             1
                           )
@@ -64328,8 +64325,8 @@ var render = function() {
                                   {
                                     name: "model",
                                     rawName: "v-model",
-                                    value: _vm.is_completed,
-                                    expression: "is_completed"
+                                    value: _vm.isCompleted,
+                                    expression: "isCompleted"
                                   }
                                 ],
                                 attrs: {
@@ -64338,33 +64335,31 @@ var render = function() {
                                   name: "chk_complete"
                                 },
                                 domProps: {
-                                  value: _vm.is_completed,
-                                  checked: Array.isArray(_vm.is_completed)
-                                    ? _vm._i(
-                                        _vm.is_completed,
-                                        _vm.is_completed
-                                      ) > -1
-                                    : _vm.is_completed
+                                  value: _vm.isCompleted,
+                                  checked: Array.isArray(_vm.isCompleted)
+                                    ? _vm._i(_vm.isCompleted, _vm.isCompleted) >
+                                      -1
+                                    : _vm.isCompleted
                                 },
                                 on: {
                                   change: function($event) {
-                                    var $$a = _vm.is_completed,
+                                    var $$a = _vm.isCompleted,
                                       $$el = $event.target,
                                       $$c = $$el.checked ? true : false
                                     if (Array.isArray($$a)) {
-                                      var $$v = _vm.is_completed,
+                                      var $$v = _vm.isCompleted,
                                         $$i = _vm._i($$a, $$v)
                                       if ($$el.checked) {
                                         $$i < 0 &&
-                                          (_vm.is_completed = $$a.concat([$$v]))
+                                          (_vm.isCompleted = $$a.concat([$$v]))
                                       } else {
                                         $$i > -1 &&
-                                          (_vm.is_completed = $$a
+                                          (_vm.isCompleted = $$a
                                             .slice(0, $$i)
                                             .concat($$a.slice($$i + 1)))
                                       }
                                     } else {
-                                      _vm.is_completed = $$c
+                                      _vm.isCompleted = $$c
                                     }
                                   }
                                 }
@@ -67628,8 +67623,8 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.address.streetAddress1,
-                            expression: "address.streetAddress1"
+                            value: _vm.streetAddress1,
+                            expression: "streetAddress1"
                           }
                         ],
                         staticClass: "field-input",
@@ -67638,17 +67633,13 @@ var render = function() {
                           name: "street_address_1",
                           placeholder: "Street Address 1"
                         },
-                        domProps: { value: _vm.address.streetAddress1 },
+                        domProps: { value: _vm.streetAddress1 },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
-                            _vm.$set(
-                              _vm.address,
-                              "streetAddress1",
-                              $event.target.value
-                            )
+                            _vm.streetAddress1 = $event.target.value
                           }
                         }
                       }),
@@ -67700,8 +67691,8 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.address.streetAddress2,
-                            expression: "address.streetAddress2"
+                            value: _vm.streetAddress2,
+                            expression: "streetAddress2"
                           }
                         ],
                         staticClass: "field-input",
@@ -67710,17 +67701,13 @@ var render = function() {
                           name: "street_address_2",
                           placeholder: "Street Address 2"
                         },
-                        domProps: { value: _vm.address.streetAddress2 },
+                        domProps: { value: _vm.streetAddress2 },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
-                            _vm.$set(
-                              _vm.address,
-                              "streetAddress2",
-                              $event.target.value
-                            )
+                            _vm.streetAddress2 = $event.target.value
                           }
                         }
                       }),
@@ -67770,8 +67757,8 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.address.city,
-                            expression: "address.city"
+                            value: _vm.city,
+                            expression: "city"
                           }
                         ],
                         staticClass: "field-input",
@@ -67780,13 +67767,13 @@ var render = function() {
                           name: "city",
                           placeholder: "City"
                         },
-                        domProps: { value: _vm.address.city },
+                        domProps: { value: _vm.city },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
-                            _vm.$set(_vm.address, "city", $event.target.value)
+                            _vm.city = $event.target.value
                           }
                         }
                       }),
@@ -67836,8 +67823,8 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.address.state,
-                            expression: "address.state"
+                            value: _vm.state,
+                            expression: "state"
                           }
                         ],
                         staticClass: "field-input",
@@ -67846,13 +67833,13 @@ var render = function() {
                           name: "state",
                           placeholder: "State"
                         },
-                        domProps: { value: _vm.address.state },
+                        domProps: { value: _vm.state },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
-                            _vm.$set(_vm.address, "state", $event.target.value)
+                            _vm.state = $event.target.value
                           }
                         }
                       }),
@@ -67902,8 +67889,8 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.address.zipcode,
-                            expression: "address.zipcode"
+                            value: _vm.zipcode,
+                            expression: "zipcode"
                           }
                         ],
                         staticClass: "field-input",
@@ -67912,17 +67899,13 @@ var render = function() {
                           name: "zipcode",
                           placeholder: "Zipcode"
                         },
-                        domProps: { value: _vm.address.zipcode },
+                        domProps: { value: _vm.zipcode },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
-                            _vm.$set(
-                              _vm.address,
-                              "zipcode",
-                              $event.target.value
-                            )
+                            _vm.zipcode = $event.target.value
                           }
                         }
                       }),
@@ -68570,7 +68553,68 @@ var render = function() {
       _vm._v(" "),
       _vm._m(0),
       _vm._v(" "),
-      _vm._m(1)
+      _c("div", { staticClass: "row" }, [
+        _c(
+          "div",
+          { staticClass: "col" },
+          _vm._l(_vm.emoployeeBenefitsOptions, function(benefit) {
+            return _c("div", { key: benefit.id }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.employmentDetail.employee_benefits,
+                    expression: "employmentDetail.employee_benefits"
+                  }
+                ],
+                attrs: { type: "checkbox", name: "benefit" },
+                domProps: {
+                  value: benefit.id,
+                  checked: Array.isArray(_vm.employmentDetail.employee_benefits)
+                    ? _vm._i(
+                        _vm.employmentDetail.employee_benefits,
+                        benefit.id
+                      ) > -1
+                    : _vm.employmentDetail.employee_benefits
+                },
+                on: {
+                  change: function($event) {
+                    var $$a = _vm.employmentDetail.employee_benefits,
+                      $$el = $event.target,
+                      $$c = $$el.checked ? true : false
+                    if (Array.isArray($$a)) {
+                      var $$v = benefit.id,
+                        $$i = _vm._i($$a, $$v)
+                      if ($$el.checked) {
+                        $$i < 0 &&
+                          _vm.$set(
+                            _vm.employmentDetail,
+                            "employee_benefits",
+                            $$a.concat([$$v])
+                          )
+                      } else {
+                        $$i > -1 &&
+                          _vm.$set(
+                            _vm.employmentDetail,
+                            "employee_benefits",
+                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                          )
+                      }
+                    } else {
+                      _vm.$set(_vm.employmentDetail, "employee_benefits", $$c)
+                    }
+                  }
+                }
+              }),
+              _vm._v(
+                "\n                " + _vm._s(benefit.title) + "\n            "
+              )
+            ])
+          }),
+          0
+        )
+      ])
     ],
     1
   )
@@ -68583,106 +68627,6 @@ var staticRenderFns = [
     return _c("div", { staticClass: "field-group" }, [
       _c("label", { attrs: { for: "benefits_used" } }, [
         _vm._v("Benefits used")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col" }, [
-        _c("input", {
-          attrs: { type: "checkbox", name: "vehicle", value: "Bike" }
-        }),
-        _vm._v("\n            Health Insurance "),
-        _c("br"),
-        _vm._v(" "),
-        _c("input", {
-          attrs: { type: "checkbox", name: "vehicle", value: "Bike" }
-        }),
-        _vm._v(" Dental\n            Insurance "),
-        _c("br"),
-        _vm._v(" "),
-        _c("input", {
-          attrs: { type: "checkbox", name: "vehicle", value: "Bike" }
-        }),
-        _vm._v(" Dependent\n            Care Spending Account "),
-        _c("br"),
-        _vm._v(" "),
-        _c("input", {
-          attrs: { type: "checkbox", name: "vehicle", value: "Bike" }
-        }),
-        _vm._v(" Healthcare\n            Flexible Spending Account "),
-        _c("br"),
-        _vm._v(" "),
-        _c("input", {
-          attrs: { type: "checkbox", name: "vehicle", value: "Bike" }
-        }),
-        _vm._v(" Life\n            Insurance - Basic "),
-        _c("br"),
-        _vm._v(" "),
-        _c("input", {
-          attrs: { type: "checkbox", name: "vehicle", value: "Bike" }
-        }),
-        _vm._v(" Life\n            Insurance - Optional "),
-        _c("br"),
-        _vm._v(" "),
-        _c("input", {
-          attrs: { type: "checkbox", name: "vehicle", value: "Bike" }
-        }),
-        _vm._v(" AD&D\n            Insurance "),
-        _c("br"),
-        _vm._v(" "),
-        _c("input", {
-          attrs: { type: "checkbox", name: "vehicle", value: "Bike" }
-        }),
-        _vm._v(" Depending\n            Life Spouse Insurance "),
-        _c("br"),
-        _vm._v(" "),
-        _c("input", {
-          attrs: { type: "checkbox", name: "vehicle", value: "Bike" }
-        }),
-        _vm._v(" Dependent\n            Life Child Insurance "),
-        _c("br"),
-        _vm._v(" "),
-        _c("input", {
-          attrs: { type: "checkbox", name: "vehicle", value: "Bike" }
-        }),
-        _vm._v(" Short-Term\n            Disability Insurance "),
-        _c("br"),
-        _vm._v(" "),
-        _c("input", {
-          attrs: { type: "checkbox", name: "vehicle", value: "Bike" }
-        }),
-        _vm._v(" Long-Term\n            Disability Insurance "),
-        _c("br"),
-        _vm._v(" "),
-        _c("input", {
-          attrs: { type: "checkbox", name: "vehicle", value: "Bike" }
-        }),
-        _vm._v(" Group\n            Legal Benefit "),
-        _c("br"),
-        _vm._v(" "),
-        _c("input", {
-          attrs: { type: "checkbox", name: "vehicle", value: "Bike" }
-        }),
-        _vm._v(" Group\n            Auto/Home Insurance "),
-        _c("br"),
-        _vm._v(" "),
-        _c("input", {
-          attrs: { type: "checkbox", name: "vehicle", value: "Bike" }
-        }),
-        _vm._v(" Pet\n            Insurance "),
-        _c("br"),
-        _vm._v(" "),
-        _c("input", {
-          attrs: { type: "checkbox", name: "vehicle", value: "Bike" }
-        }),
-        _vm._v(
-          " 401K or\n            Other Retirement Savings plan via employer "
-        ),
-        _c("br")
       ])
     ])
   }

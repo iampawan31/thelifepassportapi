@@ -16,7 +16,7 @@ class CreateFamilyRelationsTable extends Migration
         Schema::create('family_relations', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('title');
-            $table->enum('status', [0, 1])->default('1');
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }

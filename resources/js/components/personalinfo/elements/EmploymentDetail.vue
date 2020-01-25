@@ -121,36 +121,18 @@
         </div>
         <div class="row">
             <div class="col">
-                <input type="checkbox" name="vehicle" value="Bike" />
-                Health Insurance <br />
-                <input type="checkbox" name="vehicle" value="Bike" /> Dental
-                Insurance <br />
-                <input type="checkbox" name="vehicle" value="Bike" /> Dependent
-                Care Spending Account <br />
-                <input type="checkbox" name="vehicle" value="Bike" /> Healthcare
-                Flexible Spending Account <br />
-                <input type="checkbox" name="vehicle" value="Bike" /> Life
-                Insurance - Basic <br />
-                <input type="checkbox" name="vehicle" value="Bike" /> Life
-                Insurance - Optional <br />
-                <input type="checkbox" name="vehicle" value="Bike" /> AD&D
-                Insurance <br />
-                <input type="checkbox" name="vehicle" value="Bike" /> Depending
-                Life Spouse Insurance <br />
-                <input type="checkbox" name="vehicle" value="Bike" /> Dependent
-                Life Child Insurance <br />
-                <input type="checkbox" name="vehicle" value="Bike" /> Short-Term
-                Disability Insurance <br />
-                <input type="checkbox" name="vehicle" value="Bike" /> Long-Term
-                Disability Insurance <br />
-                <input type="checkbox" name="vehicle" value="Bike" /> Group
-                Legal Benefit <br />
-                <input type="checkbox" name="vehicle" value="Bike" /> Group
-                Auto/Home Insurance <br />
-                <input type="checkbox" name="vehicle" value="Bike" /> Pet
-                Insurance <br />
-                <input type="checkbox" name="vehicle" value="Bike" /> 401K or
-                Other Retirement Savings plan via employer <br />
+                <div
+                    v-for="benefit in emoployeeBenefitsOptions"
+                    v-bind:key="benefit.id"
+                >
+                    <input
+                        type="checkbox"
+                        v-model="employmentDetail.employee_benefits"
+                        :value="benefit.id"
+                        name="benefit"
+                    />
+                    {{ benefit.title }}
+                </div>
             </div>
         </div>
     </div>
@@ -165,12 +147,15 @@ export default {
         ValidationProvider,
         HomeAddress
     },
-    created () {
+    created() {
         this.getemployeraddress();
     },
     props: ["employer", "employmentDetailKey"],
     data() {
-        return { employmentDetail: [], address: [] };
+        return {
+            employmentDetail: [],
+            emoployeeBenefitsOptions: []
+        };
     },
     watch: {
         employmentDetail: {
@@ -186,13 +171,13 @@ export default {
     },
     methods: {
         updateHomeAddress(data) {
-            this.address = data;
+            this.employmentDetail.address = data;
         },
         getemployeraddress() {
-            axios.get('/getemployerbenefitslist').then(response => {
+            axios.get("/getemployerbenefitslist").then(response => {
                 if (response.status == 200) {
                     if (response.data) {
-                        console.log(response.data);
+                        this.emoployeeBenefitsOptions = response.data.data;
                     }
                 }
             });
