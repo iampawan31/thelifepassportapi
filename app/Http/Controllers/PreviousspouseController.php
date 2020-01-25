@@ -302,6 +302,7 @@ class PreviousspouseController extends Controller
         $count = \App\PreviousSpouseInfo::where('user_id', $user_id)->get()->count();
         if ($count > 0) {
             $previous_spouse_info = \App\PreviousSpouseInfo::where('user_id', $user_id)
+                ->with('Address')
                 ->with('PreviousSpousePhone')
                 ->with('DivorceDoc')
                 ->with('UsersPersonalDetailsCompletion')
