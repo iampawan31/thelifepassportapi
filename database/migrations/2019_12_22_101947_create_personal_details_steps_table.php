@@ -29,6 +29,7 @@ class CreatePersonalDetailsStepsTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('personal_details_steps');
     }
 }
