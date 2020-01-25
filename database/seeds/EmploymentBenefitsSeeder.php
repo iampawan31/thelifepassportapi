@@ -1,6 +1,5 @@
 <?php
 
-use Carbon\Traits\Date;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
