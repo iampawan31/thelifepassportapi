@@ -21,6 +21,10 @@ class FamilyMembers extends Model
         return 'user_id';
     }
 
+    public function Address() {
+        return $this->hasOne(FamilyMemberAddress::class, 'family_member_id');
+    }
+
     public function FamilyPhone() {
         return $this->hasMany(\App\FamilyPhone::class, 'family_member_id')->select(['family_member_id', 'phone']);
     }

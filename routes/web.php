@@ -35,9 +35,9 @@ Route::middleware(['auth'])->group(function(){
     //Personal information route
     Route::get('personal-info', 'PersonalinfoController@index')->name('personal-info');
     Route::get('personal-details', 'PersonalinfoController@personaldetails')->name('personal-details');
-    Route::post('personal-info/postdata', 'PersonalinfoController@postpersonaldata')->name('personalinfo.postdata');
+    Route::post('personal-info/postdata', 'PersonalinfoController@store')->name('personalinfo.postdata');
     Route::get('getpersonalinfo', 'PersonalinfoController@getpersonalinfo')->name('personalinfo.getdata');
-    Route::post('personal-info/{id}/updatedata', 'PersonalinfoController@updatepersonaldata')->name('personalinfo.updatedata');
+    Route::post('personal-info/{id}/updatedata', 'PersonalinfoController@update')->name('personalinfo.updatedata');
     Route::post('updatepersonalstep', 'PersonalinfoController@updateuserpersonalstepinfo')->name('personalinfo.stepupdate');
 
     //Spouse information route
@@ -85,6 +85,16 @@ Route::middleware(['auth'])->group(function(){
     Route::get('getemployerbenefitslist', 'GeneralController@employerbefefits')->name('getemployerbenefitslist');
 
     //Route::get('getemployeraddress', 'PersonalinfoController@getemployeraddress');
+
+    //Home Assistant info
+    Route::get('homeassistants/getassistantinfo', 'HomeassistantController@index')->name('homeassistants.getassistantinfo');
+    Route::post('homeassistants/updatehomeassistantstatus', 'HomeassistantController@updatehomeassistantstatus')->name('homeassistants.updatehomeassistantstatus');
+    Route::get('homeassistants/gethomeassistantstatus', 'HomeassistantController@gethomeassistantstatus')->name('homeassistants.gethomeassistantstatus');
+    Route::post('homeassistants/postdata', 'HomeassistantController@store')->name('homeassistants.postdata');
+    Route::get('homeassistants/{id}/gethomeassistantinfo', 'HomeassistantController@edit')->name('homeassistants.gethomeassistantinfo');
+    Route::post('homeassistants/{id}/updatedata', 'HomeassistantController@update')->name('homeassistants.updatedata');
+    Route::delete('homeassistants/{id}/removehomeassistant', 'HomeassistantController@destroy')->name('homeassistants.removehomeassistant');
+    Route::post('homeassistants/updatestatus', 'HomeassistantController@updatestatus')->name('homeassistants.updatestatus');
     
     
 });

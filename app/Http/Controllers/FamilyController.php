@@ -127,8 +127,9 @@ class FamilyController extends Controller
         
         if ($count > 0) {
             $member_info = \App\FamilyMembers::where('id', $id)
+                        ->with('Address')
                         ->with('FamilyPhone')
-                        ->with('FamilyPhone')
+                        ->with('FamilyRelation')
                         ->with('UsersPersonalDetailsCompletion')
                         ->get();
             
@@ -257,6 +258,7 @@ class FamilyController extends Controller
         
         if ($count > 0) {
             $spouse_info = \App\FamilyMembers::where('user_id', $user_id)
+                ->with('Address')
                 ->with('FamilyPhone')
                 ->with('FamilyRelation')
                 ->with('UsersPersonalDetailsCompletion')

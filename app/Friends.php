@@ -17,6 +17,10 @@ class Friends extends Model
         return 'user_id';
     }
 
+    public function Address() {
+        return $this->hasOne(FriendsAddress::class, 'friend_id');
+    }
+
     public function FriendsPhone() {
         return $this->hasMany(\App\FriendsPhone::class, 'friend_id')->select(['friend_id', 'phone']);
     }
