@@ -16,7 +16,7 @@ class CreateEmployerBenefitsMastersTable extends Migration
         Schema::create('employer_benefits_masters', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('title');
-            $table->enum('status', [0, 1])->default('1')->comment('0=>Inactive, 1=>active');
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }
