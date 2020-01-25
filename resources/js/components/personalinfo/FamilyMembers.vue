@@ -16,6 +16,7 @@
                             @submit.prevent="handleSubmit"
                         >
                             <!-- Name section -->
+
                             <div class="row">
                                 <div class="col">
                                     <div class="field-group">
@@ -130,38 +131,10 @@
                             </div>
 
                             <!-- Home addresss section -->
-                            <div class="row">
-                                <div class="col">
-                                    <div class="field-group">
-                                        <label for="address"
-                                            >Home Address</label
-                                        >
-                                        <ValidationProvider
-                                            name="Home Address"
-                                            rules="address|max:200"
-                                            v-slot="{ errors }"
-                                        >
-                                            <textarea
-                                                rows="2"
-                                                name="address"
-                                                id="address"
-                                                v-model="memberDetails.address"
-                                                class="field-input"
-                                                placeholder="Street Address, Town, City, State, Zipcode and country"
-                                            ></textarea>
-                                            <span
-                                                v-if="
-                                                    errors != undefined &&
-                                                        errors.length
-                                                "
-                                                class="invalid-feedback d-block"
-                                            >
-                                                {{ errors[0] }}
-                                            </span>
-                                        </ValidationProvider>
-                                    </div>
-                                </div>
-                            </div>
+                            <home-address
+                                :home-address="address"
+                                @home-address-update="updateHomeAddress"
+                            />
 
                             <!-- Phone number(s) section -->
                             <div class="row">
@@ -217,15 +190,29 @@
                                         <label for="dob" class="input-label"
                                             >Date of Birth</label
                                         >
-                                        <date-picker
-                                            name="dob"
-                                            :disabled-dates="disabledDates"
-                                            placeholder="M/dd/YYYY"
-                                            :format="'M/dd/yyyy'"
-                                            v-model="memberDetails.dob"
-                                            class="field-datepicker field-input"
+                                        <ValidationProvider
+                                            v-slot="{ errors }"
+                                            name="Date of Birth"
+                                            rules="date"
                                         >
-                                        </date-picker>
+                                            <input
+                                                v-model="memberDetails.dob"
+                                                v-mask="'##/##/####'"
+                                                type="text"
+                                                class="field-input"
+                                                name="date"
+                                                placeholder="mm/dd/yyyy"
+                                            />
+                                            <span
+                                                v-if="
+                                                    errors != undefined &&
+                                                        errors.length
+                                                "
+                                                class="invalid-feedback d-block"
+                                            >
+                                                {{ errors[0] }}
+                                            </span>
+                                        </ValidationProvider>
                                     </div>
                                 </div>
                             </div>
@@ -248,6 +235,7 @@
 <script>
 import Select2 from "v-select2-component";
 import DatePicker from "vuejs-datepicker";
+import HomeAddress from "./elements/Address";
 import PhoneDetails from "./elements/PhoneDetails.vue";
 import Email from "./elements/Email.vue";
 import { ValidationObserver, ValidationProvider } from "vee-validate";
@@ -257,6 +245,7 @@ export default {
         PhoneDetails,
         Email,
         DatePicker,
+        HomeAddress,
         Select2,
         ValidationObserver,
         ValidationProvider
@@ -276,6 +265,7 @@ export default {
             homeAddress: "",
             phoneNumbers: [],
             emailAddress: "",
+            address: [],
             dateOfBirth: "",
             memberDetails: [],
             relationshipOptions: [],
@@ -295,6 +285,7 @@ export default {
 
             const isValid = await this.$refs.observer.validate();
             if (!isValid) {
+                // Do Something
             } else {
                 const form = e.target;
                 const formData = new FormData(form);
@@ -306,6 +297,7 @@ export default {
                             formData
                         )
                         .then(response => {
+                            console.log(response);
                             this.$router.push("/family-members-question");
                         })
                         .catch(function() {});
@@ -313,6 +305,7 @@ export default {
                     axios
                         .post("/familyinfo/postdata", formData)
                         .then(response => {
+                            console.log(response);
                             this.$router.push("/family-members-question");
                         })
                         .catch(function() {});
@@ -358,6 +351,9 @@ export default {
                         }
                     });
             }
+        },
+        updateHomeAddress(data) {
+            this.address = data;
         }
     }
 };

@@ -1,1 +1,17 @@
-.invalid-feedback {display: inline !important;}
+.invalid-feedback {
+    display: inline !important;
+}
+.pl {
+    padding-left: 10px !important;
+    padding-right: 0px !important;
+}
+
+.pr {
+    padding-right: 10px !important;
+    padding-left: 0px !important;
+}
+
+.padding .row .col {
+    padding-left: 0px;
+    padding-right: 0px;
+}

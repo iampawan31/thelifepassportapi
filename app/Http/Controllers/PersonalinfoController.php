@@ -243,7 +243,6 @@ class PersonalinfoController extends Controller
             return response()->json(['status' => 200, 'message' => 'Personal information has been saved successfully'], 200);
 
         } catch (Exception $e) {
-            dd($e);
             return response()->json(['status' => 500, 'message' => 'Error'], 500);
         }
     }
@@ -316,7 +315,7 @@ class PersonalinfoController extends Controller
                         'user_id'                   => Auth::user()->id,
                         'employer_name'             => $value, 
                         'employer_phone'            => $inputs['employer_phone'][$key], 
-                        'employer_address'          => $inputs['employer_address'][$key],
+                        'employer_address'          => @$inputs['employer_address'][$key],
                         'computer_username'         => $inputs['company_computer_username'][$key],
                         'computer_password'         => $inputs['company_computer_password'][$key],
                         'benefits_used'             => $inputs['employee_benifits'][$key]
@@ -332,7 +331,7 @@ class PersonalinfoController extends Controller
             //$objPersonalInfo->user_id       = Auth::user()->id;
             $objPersonalInfo->legal_name            = $legal_name ? $legal_name : "";
             $objPersonalInfo->nickname              = $nick_name ? $nick_name : "";
-            $objPersonalInfo->home_address          = $home_address ? $home_address : "";
+            $objPersonalInfo->home_address          = @$home_address ? $home_address : "";
             $objPersonalInfo->street_address1       = $street_address_1 ? $street_address_1 : "";
             $objPersonalInfo->street_address2       = $street_address_2 ? $street_address_2 : "";
             $objPersonalInfo->city                  = $city ? $city : "";
@@ -410,10 +409,11 @@ class PersonalinfoController extends Controller
         if ($count > 0) {
             //\DB::enableQueryLog();
             $personal_info = \App\PersonalInfo::where('user_id', $user_id)
+                ->with('PersonalAddress')
                 ->with('UserPhone')
                 ->with('UserEmail')
                 ->with('UserSocailMedia')
-                ->with('UserEmployer')
+                ->with('UserEmployer.EmployerAddress')
                 ->with('UsersPersonalDetailsCompletion')
                 ->get(); 
             //dd(\DB::getQueryLog());
@@ -447,5 +447,18 @@ class PersonalinfoController extends Controller
             dd($e);
             return response()->json(['status' => 500, 'msg' => 'Error'], 500);
         }
+    }
+
+    public function getemployeraddress() {
+        $user_id = Auth::user()->id;
+        $personal_info = \App\UserEmployer::find($user_id)
+                ->with('EmployerAddress')
+                ->get(); 
+        //\DB::enableQueryLog();
+        //$personal_info = \App\EmployerAddress::find(1)->with('employer')->get();
+
+        //dd(\DB::getQueryLog());
+
+        dd($personal_info);
     }
 }

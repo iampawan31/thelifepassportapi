@@ -160,39 +160,10 @@
               </div>
             </div>
 
+
             <!-- Spouse Home Address Section -->
-            <div class="row">
-              <div class="col nopadding">
-                <div class="field-group">
-                  <label
-                    for="home_address"
-                  >Home Address</label>
-                  <ValidationProvider
-                    v-slot="{ errors }"
-                    name="Home Address"
-                    rules="max:1000"
-                  >
-                    <textarea
-                      id="home_address"
-                      v-model="spouseDetails.home_address"
-                      rows="2"
-                      name="home_address"
-                      class="field-input"
-                      placeholder="Street Address, Town, City, State, Zipcode and country"
-                    />
-                    <span
-                      v-if="
-                        errors != undefined &&
-                          errors.length
-                      "
-                      class="invalid-feedback d-block"
-                    >
-                      {{ errors[0] }}
-                    </span>
-                  </ValidationProvider>
-                </div>
-              </div>
-            </div>
+            <home-address :home-address="address"
+                  @home-address-update="updateHomeAddress" />
 
             <!-- Spouse's Phone number(s) section -->
             <div class="row">
@@ -207,22 +178,34 @@
 
             <!-- Spouse's Date of birth section -->
             <div class="row">
-              <div class="col nopadding">
-                <div class="field-group">
-                  <label
-                    for="dob"
-                    class="input-label"
-                  >Date of Birth</label>
-                  <datepicker
-                    v-model="spouseDetails.dob"
-                    name="dob"
-                    format="MM/d/yyyy"
-                    placeholder="MM/DD/YYYY"
-                    :disabled-dates="disabledDates"
-                    class="field-datepicker field-input"
-                  />
+                <div class="col nopadding">
+                    <div class="field-group">
+                        <label
+                            for="dob"
+                            class="input-label"
+                        >Date of Birth</label>
+                        <ValidationProvider
+                            v-slot="{ errors }"
+                            name="Date of Birth"
+                            rules="date"
+                        >
+                            <input
+                            v-model="spouseDetails.dob"
+                            v-mask="'##/##/####'"
+                            type="text"
+                            class="field-input"
+                            name="date"
+                            placeholder="mm/dd/yyyy"
+                            >
+                            <span
+                            v-if="errors != undefined && errors.length"
+                            class="invalid-feedback d-block"
+                            >
+                            {{ errors[0] }}
+                            </span>
+                        </ValidationProvider>
+                    </div>
                 </div>
-              </div>
             </div>
 
             <!-- Spouse's Citizsenship and Passport section -->
@@ -508,6 +491,7 @@
 <script>
 import Select2 from 'v-select2-component';
 import Datepicker from 'vuejs-datepicker';
+import HomeAddress from './elements/Address';
 import PhoneDetails from './elements/PhoneDetails.vue';
 import EmailDetails from './elements/EmailDetails.vue';
 import SocialMediaDetails from './elements/SocialMediaDetails.vue';
@@ -518,6 +502,7 @@ export default {
     components: {
         PhoneDetails,
         EmailDetails,
+        HomeAddress,
         Datepicker,
         SocialMediaDetails,
         EmploymentDetails,
@@ -531,6 +516,7 @@ export default {
             phones: [],
             emails: [],
             socials: [],
+            address: [],
             employers: [],
             userId: 0,
             submitted: false,
@@ -669,6 +655,9 @@ export default {
         },
         updateEmploymentDetails(index, data) {
             this.employers[index] = data;
+        },
+        updateHomeAddress(data) {
+            this.address = data;
         }
     }
 };

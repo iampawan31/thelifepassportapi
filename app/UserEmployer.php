@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\EmployerAddress;
 use Illuminate\Database\Eloquent\Model;
 
 class UserEmployer extends Model
@@ -12,7 +13,6 @@ class UserEmployer extends Model
                             'user_id', 
                             'employer_name', 
                             'employer_phone', 
-                            'employer_address', 
                             'computer_username', 
                             'computer_password', 
                             'benefits_used'
@@ -25,5 +25,9 @@ class UserEmployer extends Model
     //Table Name
     static function tableName() {
         return with(new static)->getTable();
+    }
+
+    public function EmployerAddress() {
+        return $this->hasOne(EmployerAddress::class, 'employer_id', 'id');
     }
 }

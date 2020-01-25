@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="row">
-            <div class="col nopadding">
+            <div class="col">
                 <div class="field-group">
                     <label for="street_address_1">Street Address 1</label>
                     <ValidationProvider
@@ -13,7 +13,7 @@
                             type="text"
                             name="street_address_1"
                             placeholder="Street Address 1"
-                            v-model="streetAddress1"
+                            v-model="address.streetAddress1"
                             class="field-input"
                         />
                         <span
@@ -27,7 +27,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col nopadding">
+            <div class="col">
                 <div class="field-group">
                     <label for="street_address_2">Street Address 2</label>
                     <ValidationProvider
@@ -39,7 +39,7 @@
                             type="text"
                             name="street_address_2"
                             placeholder="Street Address 2"
-                            v-model="streetAddress2"
+                            v-model="address.streetAddress2"
                             class="field-input"
                         />
                         <span
@@ -53,7 +53,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col nopadding">
+            <div class="col">
                 <div class="field-group">
                     <label for="city">City</label>
                     <ValidationProvider
@@ -65,7 +65,7 @@
                             type="text"
                             name="city"
                             placeholder="City"
-                            v-model="city"
+                            v-model="address.city"
                             class="field-input"
                         />
                         <span
@@ -79,7 +79,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col nopadding">
+            <div class="col">
                 <div class="field-group">
                     <label for="state">State</label>
                     <ValidationProvider
@@ -91,7 +91,7 @@
                             type="text"
                             name="state"
                             placeholder="State"
-                            v-model="state"
+                            v-model="address.state"
                             class="field-input"
                         />
                         <span
@@ -105,7 +105,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col nopadding">
+            <div class="col">
                 <div class="field-group">
                     <label for="zipcode">Zipcode</label>
                     <ValidationProvider
@@ -117,7 +117,7 @@
                             type="text"
                             name="zipcode"
                             placeholder="Zipcode"
-                            v-model="zipcode"
+                            v-model="address.zipcode"
                             class="field-input"
                         />
                         <span
@@ -136,19 +136,40 @@
 <script>
 import { ValidationProvider } from "vee-validate";
 export default {
+    props: ["homeAddress"],
     components: {
         ValidationProvider
     },
     data() {
         return {
             errors: [],
-            streetAddress1: "",
-            streetAddress2: "",
-            city: "",
-            state: "",
-            zipcode: "",
-            submitted: false
+            paddingLeft: "",
+            paddingRight: "",
+            address: {
+                streetAddress1: "",
+                streetAddress2: "",
+                city: "",
+                state: "",
+                zipcode: "",
+                submitted: false
+            }
         };
+    },
+    watch: {
+        address: {
+            handler() {
+                this.$emit("home-address-update", this.address);
+            },
+            deep: true
+        }
+    },
+    mounted() {
+        this.address = this.homeAddress;
+
+        if (this.padding !== undefined) {
+            this.paddingLeft = "pl";
+            this.paddingRight = "pr";
+        }
     }
 };
 </script>

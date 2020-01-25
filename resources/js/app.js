@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-useless-escape */
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -24,7 +26,15 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 //import Vuelidate from 'vuelidate';
 import { ValidationProvider, extend } from "vee-validate";
-import { required } from "vee-validate/dist/rules";
+import {
+    required,
+    max,
+    alpha_spaces,
+    alpha_num,
+    email,
+    required_if,
+    regex
+} from "vee-validate/dist/rules";
 import VeeValidateLaravel from "vee-validate-laravel";
 import VueSweetalert2 from "vue-sweetalert2";
 import VueMask from "v-mask";
@@ -32,6 +42,12 @@ import "sweetalert2/dist/sweetalert2.min.css";
 
 import { routes } from "./routes";
 
+extend("max", max);
+extend("alpha_spaces", alpha_spaces);
+extend("email", email);
+extend("alpha_num", alpha_num);
+extend("required_if", required_if);
+extend("regex", regex);
 extend("required", {
     ...required,
     message: "This {_field_} is required"
@@ -102,6 +118,7 @@ Vue.component(
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+Vue.component("ValidationProvider", ValidationProvider);
 
 const app = new Vue({
     el: "#page",

@@ -10,6 +10,7 @@ use App\UserEmail;
 use Session, Auth;  
 use App\UserEmployer;
 use App\UserSocailMedia;
+use App\EmployerAddress;
 use App\UsersPersonalDetailsCompletion;
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,11 +23,6 @@ class PersonalInfo extends Model
                             'legal_name', 
                             'nickname', 
                             'home_address', 
-                            'street_address1',
-                            'street_address2',
-                            'city',
-                            'state',
-                            'zipcode',
                             'dob', 
                             'country_id', 
                             'passport_number', 
@@ -48,6 +44,10 @@ class PersonalInfo extends Model
         } else {
             return $this->attributes['dob'] = "";
         }
+    }
+
+    public function PersonalAddress () {
+        return $this->hasOne(PersonalAddress::class, 'user_id');
     }
 
     public function UserPhone() {

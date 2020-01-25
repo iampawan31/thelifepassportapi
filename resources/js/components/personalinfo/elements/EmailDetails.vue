@@ -10,14 +10,14 @@
                 v-bind:key="index"
             >
                 <email
-                    v-on:email-update="updateEmails"
-                    v-on:remove-email="removeEmail"
+                    @email-update="updateEmails"
+                    @remove-email="removeEmail"
                     :email-key="index"
                     :email="email.email"
                     :password="email.password"
                 ></email>
             </div>
-            <div class="btn-add">
+            <div class="btn-add" v-show="!singleEmailIsAdded">
                 <a href="javascript:void(0);" @click="addEmail"
                     ><svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -53,6 +53,15 @@ export default {
             emails: [],
             blockRemoval: true
         };
+    },
+    computed: {
+        singleEmailIsAdded() {
+            return (
+                this.emails[0] !== undefined &&
+                (this.emails[0].email === undefined ||
+                    this.emails[0].email === null)
+            );
+        }
     },
     watch: {
         emails() {

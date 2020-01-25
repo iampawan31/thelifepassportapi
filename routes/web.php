@@ -80,5 +80,11 @@ Route::middleware(['auth'])->group(function(){
 
     //get left navigation list
     Route::get('getpersonalinfonav', 'LeftnavController@getpersonalinfoleftnavigation')->name('getpersonalinfonav.getdata');
+
+    //get employer benefits master list
+    Route::get('getemployerbenefitslist', 'GeneralController@employerbefefits')->name('getemployerbenefitslist');
+
+    Route::get('getemployeraddress', 'PersonalinfoController@getemployeraddress');
+    
     
 });

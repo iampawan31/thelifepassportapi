@@ -117,7 +117,7 @@ export default {
         updateEmploymentDetail(index, data) {
             this.employers[index].employer_name = data.employer_name;
             this.employers[index].employer_phone = data.employer_phone;
-            this.employers[index].employer_address = data.employer_address;
+            this.employers[index].employer_address = data.address;
             this.employers[index].computer_username = data.computer_username;
             this.employers[index].computer_password = data.computer_password;
             this.employers[index].employee_benefits = data.employee_benefits;

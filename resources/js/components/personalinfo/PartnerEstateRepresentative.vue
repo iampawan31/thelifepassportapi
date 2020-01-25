@@ -123,38 +123,10 @@
                                 </div>
 
                                 <!-- Address Field -->
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="field-group">
-                                            <label for="home_address"
-                                                >Address</label
-                                            >
-                                            <ValidationProvider
-                                                name="Address"
-                                                rules="address|max:200"
-                                                v-slot="{ errors }"
-                                            >
-                                                <textarea
-                                                    rows="2"
-                                                    v-model="address"
-                                                    name="home_address"
-                                                    id="home_address"
-                                                    class="field-input"
-                                                    placeholder="Street Address, Town, City, State, Zipcode and country"
-                                                ></textarea>
-                                                <span
-                                                    v-if="
-                                                        errors != undefined &&
-                                                            errors.length
-                                                    "
-                                                    class="invalid-feedback d-block"
-                                                >
-                                                    {{ errors[0] }}
-                                                </span>
-                                            </ValidationProvider>
-                                        </div>
-                                    </div>
-                                </div>
+                                <home-address
+                                    :home-address="address"
+                                    @home-address-update="updateHomeAddress"
+                                />
 
                                 <!-- Phone Number Field -->
                                 <div class="row">
@@ -285,18 +257,20 @@
 </template>
 <script>
 import { ValidationObserver, ValidationProvider } from "vee-validate";
+import HomeAddress from "./elements/Address";
 
 export default {
     components: {
         ValidationObserver,
-        ValidationProvider
+        ValidationProvider,
+        HomeAddress
     },
     data() {
         return {
             name: "",
             relationship: "",
             company: "",
-            address: "",
+            address: [],
             emailAddress: "",
             phoneNumber: "",
             website: ""
@@ -305,7 +279,11 @@ export default {
     mounted() {},
     methods: {
         handleSubmit(e) {
+            console.log(e);
             this.$router.push("/belong-question");
+        },
+        updateHomeAddress(data) {
+            this.address = data;
         }
     }
 };
