@@ -425,7 +425,7 @@ export default {
                         .post('/personal-info/' + this.userId + '/updatedata', formData)
                         .then(response => {
                             if (response.status == 200) {
-                            this.$router.push('/spouse-question');
+                              //this.$router.push('/spouse-question');
                             }
                             //this.redirectToPage();
                         })
@@ -435,7 +435,7 @@ export default {
                         .post('/personal-info/postdata', formData)
                         .then(response => {
                             if (response.status == 200) {
-                            this.$router.push('/spouse-question');
+                              //this.$router.push('/spouse-question');
                             }
                         })
                         .catch(function() {});

@@ -4433,8 +4433,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _handleSubmit = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(e) {
-        var _this = this;
-
         var isValid, formData;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
@@ -4453,15 +4451,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                   if (this.userId) {
                     axios.post('/personal-info/' + this.userId + '/updatedata', formData).then(function (response) {
-                      if (response.status == 200) {
-                        _this.$router.push('/spouse-question');
-                      } //this.redirectToPage();
+                      if (response.status == 200) {} //this.$router.push('/spouse-question');
+                      //this.redirectToPage();
 
                     })["catch"](function () {});
                   } else {
                     axios.post('/personal-info/postdata', formData).then(function (response) {
-                      if (response.status == 200) {
-                        _this.$router.push('/spouse-question');
+                      if (response.status == 200) {//this.$router.push('/spouse-question');
                       }
                     })["catch"](function () {});
                   }
@@ -4485,7 +4481,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _redirectToPage = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
-        var _this2 = this;
+        var _this = this;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
           while (1) {
@@ -4498,9 +4494,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                       console.log(response.data);
 
                       if (response.data.data && response.data.data.is_married == '0' || response.data.data && response.data.data.is_married == '2') {
-                        _this2.$router.push('/previous-spouse-question');
+                        _this.$router.push('/previous-spouse-question');
                       } else {
-                        _this2.$router.push('/spouse');
+                        _this.$router.push('/spouse');
                       }
                     }
                   }
@@ -4521,16 +4517,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return redirectToPage;
     }(),
     getPersonalInfo: function getPersonalInfo() {
-      var _this3 = this;
+      var _this2 = this;
 
       axios.get('/getpersonalinfo').then(function (response) {
         if (response.status == 200) {
           if (response.data.data[0]) {
-            _this3.personalDetail = JSON.parse(JSON.stringify(response.data.data[0]));
+            _this2.personalDetail = JSON.parse(JSON.stringify(response.data.data[0]));
 
-            _this3.populateData(_this3.personalDetail);
+            _this2.populateData(_this2.personalDetail);
           } else {
-            _this3.populateNewForm();
+            _this2.populateNewForm();
           }
         }
       });
@@ -4666,11 +4662,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
     },
     getCountyList: function getCountyList() {
-      var _this4 = this;
+      var _this3 = this;
 
       axios.get('/countrylist').then(function (response) {
         if (response.status == 200) {
-          _this4.citizenshipOptions = response.data.countries;
+          _this3.citizenshipOptions = response.data.countries;
         }
       });
     },
@@ -109587,8 +109583,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/pawankumar/valetcode/thelifepassportapi/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/pawankumar/valetcode/thelifepassportapi/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/mdprawezmusharraf/Sites/thelifepassportapi/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/mdprawezmusharraf/Sites/thelifepassportapi/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
