@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserSocailMediaTable extends Migration
+class CreateUserSocialMediaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreateUserSocailMediaTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_socail_media', function (Blueprint $table) {
+        Schema::create('user_social_media', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('social_id');
-            $table->enum('is_primary', [0,1]);
+            $table->string('username', 255);
+            $table->string('password', 20);
+            $table->boolean('is_primary')->default(false);
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('social_id')->references('id')->on('social_media');
             $table->timestamps();
@@ -31,6 +33,6 @@ class CreateUserSocailMediaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_socail_media');
+        Schema::dropIfExists('user_social_media');
     }
 }

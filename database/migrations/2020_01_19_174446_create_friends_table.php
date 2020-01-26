@@ -17,7 +17,6 @@ class CreateFriendsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->string('legal_name');
-            $table->text('address')->nullable();
             $table->text('email')->nullable();
 
             $table->foreign('user_id')->references('id')->on('users');

@@ -18,6 +18,7 @@ class CreatePersonalDetailsStepsTable extends Migration
             $table->string('step', 100);
             $table->string('slug', 100);
             $table->tinyInteger('percentage');
+            $table->tinyInteger('sequence');
             $table->timestamps();
         });
     }

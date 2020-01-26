@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\UserEmail;
+use App\PersonalAddress;
 use Exception;
-use Session, Auth;
+use Auth;
 use App\PersonalInfo;
 use Illuminate\Http\Request;
-use phpDocumentor\Reflection\Types\Null_;
+use Illuminate\Support\Carbon;
 
 class PersonalinfoController extends Controller
 {
@@ -43,145 +45,116 @@ class PersonalinfoController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Save User's Personal Information.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        // $request->validate([
-        //     'title' => 'required|unique:'.$this->table.'|max:191',
-        //     'status' => 'required',
-        // ]);
-
-        $inputs = $request->all();
-        
-        //personal information
-        $legal_name         = $inputs['legal_name'];
-        $nick_name          = $inputs['nickname'];
-        $street_address_1   = $inputs['street_address_1'];
-        $street_address_2   = $inputs['street_address_2'];
-        $city               = $inputs['city'];
-        $state              = $inputs['state'];
-        $zipcode            = $inputs['zipcode'];
-        $dob                = $inputs['date'];
-        $country_id         = @$inputs['citizenship'];
-        $passport_number    = $inputs['passport_number'];
-        $father_name        = $inputs['father_name'];
-        $father_birth_place = $inputs['father_birth_place'];
-        $mother_name        = $inputs['mother_name'];
-        $mother_birth_place = $inputs['mother_birth_place'];
-        $is_completed       = @$inputs['chk_complete'];
-
-        //phone info
-        $arrPhone = [];
-        if (isset($inputs['phone'])) {
-            foreach($inputs['phone'] as $phone) {
-                if ($phone) {
-                    $arrPhone[] = ['user_id' => Auth::user()->id, 'phone' => $phone];
-                }
-            }
-        }
-
-        //email info
-        $arrEmail = [];
-        if (isset($inputs['email'])) {
-            foreach($inputs['email'] as $key => $value) {
-                if ($value) {
-                    $arrEmail[] = ['user_id' => Auth::user()->id, 'email' => $value, 'password' => $inputs['email_password'][$key]];
-                } 
-            }
-        }
-
-        //social media info
-        $arrSocial = [];
-        if (isset($inputs['social_media_type'])) {
-            foreach($inputs['social_media_type'] as $key => $value) {
-                if ($value) {
-                    $arrSocial[] = ['user_id' => Auth::user()->id, 'social_id' => $value, 'username' => $inputs['social_username'][$key], 'password' => $inputs['social_password'][$key]];
-                }
-                
-            }
-        }
-
-        //employer info
-        $arrEmployer = [];
-        if (isset($inputs['employer_name'])) {
-            foreach($inputs['employer_name'] as $key => $value) {
-                if (!empty($value)) {
-                    $arrEmployer[] = [
-                        'user_id'                   => Auth::user()->id,
-                        'employer_name'             => $value, 
-                        'employer_phone'            => $inputs['employer_phone'][$key], 
-                        'employer_address'          => $inputs['employer_address'][$key],
-                        'computer_username'         => $inputs['company_computer_username'][$key],
-                        'computer_password'         => $inputs['company_computer_password'][$key],
-                        'benefits_used'             => $inputs['employee_benifits'][$key]
-                    ];
-                }
-            }
-        }
-
-        $arrPersonalInfo = [
-            'user_id'           => Auth::user()->id,
-            'legal_name'        => $legal_name ? $legal_name : "",
-            'nickname'          => $nick_name ? $nick_name : "",
-            'street_address_1'  => $street_address_1 ? $street_address_1 : "",
-            'street_address_2'  => $street_address_2 ? $street_address_2 : "",
-            'city'              => $city ? $city : "",
-            'state'             => $state ? $state : "",
-            'zipcode'           => $zipcode ? $zipcode : "",
-            'dob'               => $dob ? date('Y-m-d', strtotime($dob)) : Null,
-            'country_id'        => $country_id ? $country_id : 0,
-            'passport_number'   => $passport_number ? $passport_number : "",
-            'father_name'       => $father_name ? $father_name : "",
-            'father_birth_place'    => $father_birth_place ? $father_birth_place : "",
-            'mother_name'           => $mother_name ? $mother_name : "",
-            'mother_birth_place'    => $mother_birth_place ? $mother_birth_place : "",
-        ];
-       
         try {
-            //insert personal information
-            $objPersonalInfo = \App\PersonalInfo::create($arrPersonalInfo);
-            
-            //insert record in user personal details completion
-            $is_completed = $is_completed ? '1' : '0';
-            $arrData = ['step_id' => 1, 'user_id' => Auth::user()->id, 'is_visited' => '1', 'is_filled' => '1', 'is_completed' => $is_completed];
-            $objPercentageCompletion = \App\UsersPersonalDetailsCompletion::Create($arrData);
-           
-            //insert phone information
-            if (!empty($arrPhone)) {
-                foreach($arrPhone as $phones){
-                    $objPhone = \App\UserPhone::create($phones);
-                } 
+            $user = User::find(auth()->id())->first();
+
+            // Save User's Personal Information
+            $personaInfo = new PersonalInfo;
+
+            $personaInfo->user_id = $user->id;
+            $personaInfo->legal_name = request('legal_name') ?: "";
+            $personaInfo->nickname = request('nickname') ?: "";
+            $personaInfo->dob = Carbon::parse(request('dob')) ?: "";
+            $personaInfo->country_id = request('citizenship') ?: "";
+            $personaInfo->passport_number = request('passport_number') ?: "";
+            $personaInfo->father_name = request('father_name') ?: "";
+            $personaInfo->father_birth_place = request('father_birth_place') ?: "";
+            $personaInfo->mother_name = request('mother_name') ?: "";
+            $personaInfo->mother_birth_place = request('mother_birth_place') ?: "";
+
+            $personaInfo->save();
+
+            // Save User's Personal Address
+
+            $homeAddress = request('home_address');
+
+            if (isset($homeAddress)) {
+                $personalAddress = new PersonalAddress;
+
+                $personalAddress->user_id = $user->id;
+                $personalAddress->street_address1 = $homeAddress->street_address1 ?: "";
+                $personalAddress->street_address2 = $homeAddress->street_address2 ?: "";
+                $personalAddress->city = $homeAddress->city ?: "";
+                $personalAddress->state = $homeAddress->state ?: "";
+                $personalAddress->zipcode = $homeAddress->zipcode ?: "";
+
+                $personalAddress->save();
             }
 
-            //insert email information
-            if (!empty($arrEmail)) {
-                foreach($arrEmail as $emails) {
-                    \App\UserEmail::create($emails);
+            //Saving User's Phone Numbers
+            $phoneNumbers = request('phone');
+
+            if (isset($phoneNumbers)) {
+                foreach ($phoneNumbers as $phone) {
+                    if ($phone) {
+                        $user->phones()->create(['user_id' => auth()->id(), 'phone' => $phone->phone]);
+                    }
                 }
             }
 
-            //insert email information
-            if (!empty($arrSocial)) {
-                foreach($arrSocial as $socials) {
-                    \App\UserSocailMedia::create($socials);
-                }
-            }
-            
-            if(!empty($arrEmployer)) {
-                foreach($arrEmployer as $employers) {
-                    \App\UserEmployer::create($employers);
+            //Saving User's Emails
+            $emails = request('email');
+            if (isset($emails)) {
+                foreach ($emails as $email) {
+                    if ($email) {
+                        $user->emails()->create(
+                            [
+                                'user_id' => auth()->id(),
+                                'email' => $email['email'],
+                                'password' => $email['password']
+                            ]
+                        );
+                    }
                 }
             }
 
-            //return response()->json(['response' => $inputs, 'phone' => $arrPhone, 'email' => $arrEmail, 'social' => $arrSocial, 'employer' => $arrEmployer]);
-            return response()->json(['status' => 200, 'message' => 'Personal information has been saved successfully'], 200);
+            //Saving User's Social Media Details
+            $socials = request('social_media_type');
 
+            if (isset($socials)) {
+                foreach ($socials as $social) {
+                    if ($social) {
+                        $user->socials()->create(
+                            [
+                                'user_id' => auth()->id(),
+                                'social_id' => $social->social_id,
+                                'username' => $social->username,
+                                'password' => $social->password
+                            ]
+                        );
+                    }
+                }
+            }
+
+            // Save Step Completed Information
+            $user->steps()->create([
+                'step_id' => 1,
+                'user_id' => $user->id,
+                'is_visited' => '1',
+                'is_filled' => '1',
+                'is_completed' => request('is_completed')
+            ]);
+
+            return response()
+                ->json([
+                    'status' => 200,
+                    'message' => 'Personal information has been saved successfully'
+                ], 200);
         } catch (Exception $e) {
-            return response()->json(['status' => 500, 'message' => 'Error'], 500);
+
+            dd($e);
+            return response()
+                ->json([
+                    'status' => 500,
+                    'message' => $e
+                ], 500);
         }
     }
 
@@ -193,7 +166,6 @@ class PersonalinfoController extends Controller
      */
     public function show(PersonalInfo $personalInfo)
     {
-        
     }
 
     /**
@@ -217,15 +189,15 @@ class PersonalinfoController extends Controller
     public function update(Request $request, PersonalInfo $personalInfo)
     {
         $inputs = $request->all();
-        
+
         //personal information
         $legal_name         = $inputs['legal_name'];
         $nick_name          = $inputs['nickname'];
-        $street_address_1   = $inputs['street_address_1'];
-        $street_address_2   = $inputs['street_address_2'];
-        $city               = $inputs['city'];
-        $state              = $inputs['state'];
-        $zipcode            = $inputs['zipcode'];
+        $street_address_1   = $inputs['personal_street_address_1'];
+        $street_address_2   = $inputs['personal_street_address_2'];
+        $city               = $inputs['personal_city'];
+        $state              = $inputs['personal_state'];
+        $zipcode            = $inputs['personal_zipcode'];
         $dob                = $inputs['date'];
         $country_id         = @$inputs['citizenship'];
         $passport_number    = $inputs['passport_number'];
@@ -238,7 +210,7 @@ class PersonalinfoController extends Controller
         //phone info
         $arrPhone = [];
         if (isset($inputs['phone'])) {
-            foreach($inputs['phone'] as $phone) {
+            foreach ($inputs['phone'] as $phone) {
                 if ($phone) {
                     $arrPhone[] = ['user_id' => Auth::user()->id, 'phone' => $phone];
                 }
@@ -248,33 +220,32 @@ class PersonalinfoController extends Controller
         //email info
         $arrEmail = [];
         if (isset($inputs['email'])) {
-            foreach($inputs['email'] as $key => $value) {
+            foreach ($inputs['email'] as $key => $value) {
                 if ($value) {
                     $arrEmail[] = ['user_id' => Auth::user()->id, 'email' => $value, 'password' => $inputs['email_password'][$key]];
-                } 
+                }
             }
         }
 
         //social media info
         $arrSocial = [];
         if (isset($inputs['social_media_type'])) {
-            foreach($inputs['social_media_type'] as $key => $value) {
+            foreach ($inputs['social_media_type'] as $key => $value) {
                 if ($value) {
                     $arrSocial[] = ['user_id' => Auth::user()->id, 'social_id' => $value, 'username' => $inputs['social_username'][$key], 'password' => $inputs['social_password'][$key]];
                 }
-                
             }
         }
 
         //employer info
         $arrEmployer = [];
         if (isset($inputs['employer_name'])) {
-            foreach($inputs['employer_name'] as $key => $value) {
+            foreach ($inputs['employer_name'] as $key => $value) {
                 if (!empty($value)) {
                     $arrEmployer[] = [
                         'user_id'                   => Auth::user()->id,
-                        'employer_name'             => $value, 
-                        'employer_phone'            => $inputs['employer_phone'][$key], 
+                        'employer_name'             => $value,
+                        'employer_phone'            => $inputs['employer_phone'][$key],
                         'employer_address'          => @$inputs['employer_address'][$key],
                         'computer_username'         => $inputs['company_computer_username'][$key],
                         'computer_password'         => $inputs['company_computer_password'][$key],
@@ -283,9 +254,9 @@ class PersonalinfoController extends Controller
                 }
             }
         }
-        
+
         try {
-            
+
             //insert personal information
             $objPersonalInfo = \App\PersonalInfo::find($id);
             //$objPersonalInfo->user_id       = Auth::user()->id;
@@ -309,16 +280,16 @@ class PersonalinfoController extends Controller
             //insert record in user personal details completion
             $is_completed = $is_completed ? '1' : '0';
             \App\UsersPersonalDetailsCompletion::where('step_id', 1)
-                                                ->where('user_id', Auth::user()->id)
-                                                ->update([ 'is_visited' => '1', 'is_filled' => '1', 'is_completed' => $is_completed]);
+                ->where('user_id', Auth::user()->id)
+                ->update(['is_visited' => '1', 'is_filled' => '1', 'is_completed' => $is_completed]);
 
             //insert phone information
             if (!empty($arrPhone)) {
                 //remove all phone details
                 \App\UserPhone::where('user_id', Auth::user()->id)->delete();
-                foreach($arrPhone as $phones){
+                foreach ($arrPhone as $phones) {
                     $objPhone = \App\UserPhone::create($phones);
-                } 
+                }
             }
 
             //insert email information
@@ -326,7 +297,7 @@ class PersonalinfoController extends Controller
                 //remove email details
                 \App\UserEmail::where('user_id', Auth::user()->id)->delete();
 
-                foreach($arrEmail as $emails) {
+                foreach ($arrEmail as $emails) {
                     \App\UserEmail::create($emails);
                 }
             }
@@ -334,24 +305,23 @@ class PersonalinfoController extends Controller
             //insert email information
             if (!empty($arrSocial)) {
                 //remove social media info
-                \App\UserSocailMedia::where('user_id', Auth::user()->id)->delete();
+                \App\UserSocialMedia::where('user_id', Auth::user()->id)->delete();
 
-                foreach($arrSocial as $socials) {
-                    \App\UserSocailMedia::create($socials);
+                foreach ($arrSocial as $socials) {
+                    \App\UserSocialMedia::create($socials);
                 }
             }
-            
-            if(!empty($arrEmployer)) {
+
+            if (!empty($arrEmployer)) {
                 //remove employer details
                 \App\UserEmployer::where('user_id', Auth::user()->id)->delete();
 
-                foreach($arrEmployer as $employers) {
+                foreach ($arrEmployer as $employers) {
                     \App\UserEmployer::create($employers);
                 }
             }
 
             return response()->json(['status' => 200, 'message' => 'Personal information has been saved successfully'], 200);
-
         } catch (Exception $e) {
             dd($e);
             return response()->json(['status' => 500, 'message' => 'Error'], 500);
@@ -502,7 +472,7 @@ class PersonalinfoController extends Controller
             //insert email information
             if (!empty($arrSocial)) {
                 foreach ($arrSocial as $socials) {
-                    \App\UserSocailMedia::create($socials);
+                    \App\UserSocialMedia::create($socials);
                 }
             }
 
@@ -646,10 +616,10 @@ class PersonalinfoController extends Controller
             //insert email information
             if (!empty($arrSocial)) {
                 //remove social media info
-                \App\UserSocailMedia::where('user_id', Auth::user()->id)->delete();
+                \App\UserSocialMedia::where('user_id', Auth::user()->id)->delete();
 
                 foreach ($arrSocial as $socials) {
-                    \App\UserSocailMedia::create($socials);
+                    \App\UserSocialMedia::create($socials);
                 }
             }
 
@@ -684,7 +654,7 @@ class PersonalinfoController extends Controller
                 ->with('Address')
                 ->with('UserPhone')
                 ->with('UserEmail')
-                ->with('UserSocailMedia')
+                ->with('UserSocialMedia')
                 ->with('UserEmployer.Address', 'UserEmployer.Benefits')
                 ->with('UsersPersonalDetailsCompletion')
                 ->get();

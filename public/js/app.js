@@ -4419,7 +4419,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       employmentDetails: [],
       citizenshipOptions: [],
       isCompleted: false,
-      userId: 0,
+      userId: '',
+      personalDetailId: '',
       result2: '',
       submitted: false
     };
@@ -4450,7 +4451,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   formData = this.getFormData(e);
                   console.log(formData);
 
-                  if (this.userId) {
+                  if (this.userId && this.personalDetailId) {
                     axios.post('/personal-info/' + this.userId + '/updatedata', formData).then(function (response) {
                       if (response.status == 200) {} // this.$router.push('/spouse-question');
                       //this.redirectToPage();

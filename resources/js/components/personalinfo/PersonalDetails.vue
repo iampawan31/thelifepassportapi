@@ -401,7 +401,8 @@ export default {
             employmentDetails: [],
             citizenshipOptions: [],
             isCompleted: false,
-            userId: 0,
+            userId: '',
+            personalDetailId: '',
             result2: '',
             submitted: false
         };
@@ -422,7 +423,7 @@ export default {
 
                 console.log(formData);
  
-                if (this.userId) {
+                if (this.userId && this.personalDetailId) {
                     axios
                         .post('/personal-info/' + this.userId + '/updatedata', formData)
                         .then(response => {

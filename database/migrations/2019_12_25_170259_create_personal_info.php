@@ -18,7 +18,6 @@ class CreatePersonalInfo extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('legal_name', 255);
             $table->string('nickname', 255)->nullable();
-            $table->text('home_address')->nullable();
             $table->date('dob')->nullable();
             $table->bigInteger('country_id')->nullable();
             $table->string('passport_number', 50)->nullable();
