@@ -217,7 +217,7 @@ class PersonalinfoController extends Controller
     public function update(Request $request, PersonalInfo $personalInfo)
     {
         $inputs = $request->all();
-       
+        
         //personal information
         $legal_name         = $inputs['legal_name'];
         $nick_name          = $inputs['nickname'];
