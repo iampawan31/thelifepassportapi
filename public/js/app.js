@@ -4447,7 +4447,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 if (!isValid) {// Do Something
                 } else {
-                  formData = this.getFormData();
+                  formData = this.getFormData(e);
+                  console.log(formData);
 
                   if (this.userId) {
                     axios.post('/personal-info/' + this.userId + '/updatedata', formData).then(function (response) {
@@ -4531,7 +4532,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }
       });
     },
-    getFormData: function getFormData() {
+    getFormData: function getFormData(e) {
       var form = e.target;
       var formData = new FormData(form);
       formData.append('legal_name', this.legalName);
