@@ -418,8 +418,10 @@ export default {
             if (!isValid) {
                 // Do Something
             } else {
-                const formData = this.getFormData();
+                const formData = this.getFormData(e);
 
+                console.log(formData);
+ 
                 if (this.userId) {
                     axios
                         .post('/personal-info/' + this.userId + '/updatedata', formData)
@@ -473,7 +475,7 @@ export default {
                 }
             });
         },
-        getFormData() {
+        getFormData(e) {
             const form = e.target;
             const formData = new FormData(form);
 
