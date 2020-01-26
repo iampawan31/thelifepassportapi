@@ -59,7 +59,7 @@
         </div>
 
         <home-address
-            :home-address="employmentDetail.address"
+            :home-address="employmentDetail.employer_address"
             address-type="employer"
             @home-address-update="updateHomeAddress"
         />
@@ -172,7 +172,7 @@ export default {
     },
     methods: {
         updateHomeAddress(data) {
-            this.employmentDetail.address = data;
+            this.employmentDetail.employer_address = data;
         },
         getemployeraddress() {
             axios.get("/getemployerbenefitslist").then(response => {

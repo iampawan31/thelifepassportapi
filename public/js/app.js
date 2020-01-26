@@ -4452,21 +4452,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                   if (this.userId) {
                     axios.post('/personal-info/' + this.userId + '/updatedata', formData).then(function (response) {
-<<<<<<< HEAD
                       if (response.status == 200) {} // this.$router.push('/spouse-question');
-=======
-                      if (response.status == 200) {} //this.$router.push('/spouse-question');
->>>>>>> 4ca3a9073bb5763003aad6fd577a44407d7ad3e0
                       //this.redirectToPage();
 
                     })["catch"](function () {});
                   } else {
                     axios.post('/personal-info/postdata', formData).then(function (response) {
-<<<<<<< HEAD
                       if (response.status == 200) {// this.$router.push('/spouse-question');
-=======
-                      if (response.status == 200) {//this.$router.push('/spouse-question');
->>>>>>> 4ca3a9073bb5763003aad6fd577a44407d7ad3e0
                       }
                     })["catch"](function () {});
                   }
@@ -6850,7 +6842,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     updateHomeAddress: function updateHomeAddress(data) {
-      this.employmentDetail.address = data;
+      this.employmentDetail.employer_address = data;
     },
     getemployeraddress: function getemployeraddress() {
       var _this = this;
@@ -68421,7 +68413,7 @@ var render = function() {
       _vm._v(" "),
       _c("home-address", {
         attrs: {
-          "home-address": _vm.employmentDetail.address,
+          "home-address": _vm.employmentDetail.employer_address,
           "address-type": "employer"
         },
         on: { "home-address-update": _vm.updateHomeAddress }
@@ -109612,8 +109604,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/mdprawezmusharraf/Sites/thelifepassportapi/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/mdprawezmusharraf/Sites/thelifepassportapi/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/pawankumar/valetcode/thelifepassportapi/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/pawankumar/valetcode/thelifepassportapi/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
