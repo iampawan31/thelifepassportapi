@@ -95,6 +95,25 @@ Route::middleware(['auth'])->group(function(){
     Route::post('homeassistants/{id}/updatedata', 'HomeassistantController@update')->name('homeassistants.updatedata');
     Route::delete('homeassistants/{id}/removehomeassistant', 'HomeassistantController@destroy')->name('homeassistants.removehomeassistant');
     Route::post('homeassistants/updatestatus', 'HomeassistantController@updatestatus')->name('homeassistants.updatestatus');
-    
+
+    //Personal estate info
+    Route::get('personalestate/getpersonalestateinfo', 'PersonalestateController@index')->name('personalestate.getpersonalestateinfo');
+    Route::post('personalestate/updatepersonalestatestatus', 'PersonalestateController@updatepersonalestatestatus')->name('personalestate.updatepersonalestatestatus');
+    Route::get('personalestate/getpersonalestatestatus', 'PersonalestateController@getpersonalestatestatus')->name('personalestate.getpersonalestatestatus');
+    Route::post('personalestate/postdata', 'PersonalestateController@store')->name('personalestate.postdata');
+    Route::get('personalestate/{id}/getpersonalestateinfo', 'PersonalestateController@edit')->name('personalestate.getpersonalestateinfo');
+    Route::post('personalestate/{id}/updatedata', 'PersonalestateController@update')->name('personalestate.updatedata');
+    Route::delete('personalestate/{id}/removepersonalestate', 'PersonalestateController@destroy')->name('personalestate.removepersonalestate');
+    Route::post('personalestate/updatestatus', 'PersonalestateController@updatestatus')->name('personalestate.updatestatus');
+
+    //Personal estate info
+    Route::get('spouseestate/getspousestateinfo', 'SpouseestateController@index')->name('spouseestate.getspousestateinfo');
+    Route::post('spouseestate/updatespouseestatestatus', 'SpouseestateController@updatespouseestatestatus')->name('spouseestate.updatespouseestatestatus');
+    Route::get('spouseestate/getspouseestatestatus', 'SpouseestateController@getspouseestatestatus')->name('spouseestate.getspouseestatestatus');
+    Route::post('spouseestate/postdata', 'SpouseestateController@store')->name('spouseestate.postdata');
+    Route::get('spouseestate/{id}/getspouseestateinfo', 'SpouseestateController@edit')->name('spouseestate.getspouseestateinfo');
+    Route::post('spouseestate/{id}/updatedata', 'SpouseestateController@update')->name('spouseestate.updatedata');
+    Route::delete('spouseestate/{id}/removespouseestate', 'SpouseestateController@destroy')->name('spouseestate.removespouseestate');
+    Route::post('spouseestate/updatestatus', 'SpouseestateController@updatestatus')->name('spouseestate.updatestatus');
     
 });

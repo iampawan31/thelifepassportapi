@@ -231,10 +231,9 @@ class HomeassistantController extends Controller
                     ->update(['is_visited' => '1', 'is_filled' => '0', 'is_completed' => '0']);
             }
 
-            return response()->json(['status' => 200, 'msg' => 'Family member information has removed successfully', 'family_count' => $count], 200);
+            return response()->json(['status' => 200, 'msg' => 'Family member information has removed successfully', 'assistant_count' => $count], 200);
         } catch(Exception $e) {
-            dd($e);
-            return response()->json(['status' => 500, 'msg' => 'Error', 'family_count' => 0], 500);
+            return response()->json(['status' => 500, 'msg' => 'Error', 'assistant_count' => 0], 500);
         }
     }
 
@@ -250,7 +249,7 @@ class HomeassistantController extends Controller
                 \App\HomeassistantStatus::where('user_id', $user_id)
                                     ->update(['has_homeassistant' => $has_homeassistant]);
             } else {
-                \App\FamilyStatus::create(['user_id' => $user_id, 'has_friends' => $has_friends]);
+                \App\HomeassistantStatus::create(['user_id' => $user_id, 'has_friends' => $has_friends]);
             }
 
             if ($objHomeAssistantStatus == "0") {
