@@ -121,7 +121,6 @@ export default {
             this.employers[index].computer_username = data.computer_username;
             this.employers[index].computer_password = data.computer_password;
             this.employers[index].employee_benefits = data.employee_benefits;
-            this.employers[index].address = data.address;
 
             this.$emit("employment-details-updated", this.employers);
         }

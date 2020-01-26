@@ -3,7 +3,9 @@
         <div class="row">
             <div class="col">
                 <div class="field-group">
-                    <label for="street_address_1">Street Address 1</label>
+                    <label v-bind:for="addressType + '_street_address_1'"
+                        >Street Address 1</label
+                    >
                     <ValidationProvider
                         name="Street Address 1"
                         rules="address|max:80"
@@ -11,7 +13,7 @@
                     >
                         <input
                             type="text"
-                            name="street_address_1"
+                            v-bind:name="addressType + '_street_address_1'"
                             placeholder="Street Address 1"
                             v-model="streetAddress1"
                             class="field-input"
@@ -29,7 +31,9 @@
         <div class="row">
             <div class="col">
                 <div class="field-group">
-                    <label for="street_address_2">Street Address 2</label>
+                    <label v-bind:for="addressType + '_street_address_2'"
+                        >Street Address 2</label
+                    >
                     <ValidationProvider
                         name="Street Address 2"
                         rules="address|max:80"
@@ -37,7 +41,7 @@
                     >
                         <input
                             type="text"
-                            name="street_address_2"
+                            v-bind:name="addressType + '_street_address_2'"
                             placeholder="Street Address 2"
                             v-model="streetAddress2"
                             class="field-input"
@@ -55,7 +59,7 @@
         <div class="row">
             <div class="col">
                 <div class="field-group">
-                    <label for="city">City</label>
+                    <label v-bind:for="addressType + '_city'">City</label>
                     <ValidationProvider
                         name="City"
                         rules="alpha_spaces|max:50"
@@ -63,7 +67,7 @@
                     >
                         <input
                             type="text"
-                            name="city"
+                            v-bind:name="addressType + '_city'"
                             placeholder="City"
                             v-model="city"
                             class="field-input"
@@ -81,7 +85,7 @@
         <div class="row">
             <div class="col">
                 <div class="field-group">
-                    <label for="state">State</label>
+                    <label v-bind:for="addressType + '_state'">State</label>
                     <ValidationProvider
                         name="State"
                         rules="alpha_spaces|max:50"
@@ -89,7 +93,7 @@
                     >
                         <input
                             type="text"
-                            name="state"
+                            v-bind:name="addressType + '_state'"
                             placeholder="State"
                             v-model="state"
                             class="field-input"
@@ -107,7 +111,7 @@
         <div class="row">
             <div class="col">
                 <div class="field-group">
-                    <label for="zipcode">Zipcode</label>
+                    <label v-bind:for="addressType + '_zipcode'">Zipcode</label>
                     <ValidationProvider
                         name="Zipcode"
                         rules="max:6"
@@ -115,7 +119,7 @@
                     >
                         <input
                             type="text"
-                            name="zipcode"
+                            v-bind:name="addressType + '_zipcode'"
                             placeholder="Zipcode"
                             v-model="zipcode"
                             class="field-input"
@@ -136,7 +140,7 @@
 <script>
 import { ValidationProvider } from "vee-validate";
 export default {
-    props: ["homeAddress"],
+    props: ["homeAddress", "addressType"],
     components: {
         ValidationProvider
     },

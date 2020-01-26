@@ -60,6 +60,7 @@
 
         <home-address
             :home-address="employmentDetail.address"
+            address-type="employer"
             @home-address-update="updateHomeAddress"
         />
 

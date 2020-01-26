@@ -4433,8 +4433,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _handleSubmit = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(e) {
-        var _this = this;
-
         var isValid, formData;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
@@ -4454,15 +4452,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                   if (this.userId) {
                     axios.post('/personal-info/' + this.userId + '/updatedata', formData).then(function (response) {
-                      if (response.status == 200) {
-                        _this.$router.push('/spouse-question');
-                      } //this.redirectToPage();
+                      if (response.status == 200) {} // this.$router.push('/spouse-question');
+                      //this.redirectToPage();
 
                     })["catch"](function () {});
                   } else {
                     axios.post('/personal-info/postdata', formData).then(function (response) {
-                      if (response.status == 200) {
-                        _this.$router.push('/spouse-question');
+                      if (response.status == 200) {// this.$router.push('/spouse-question');
                       }
                     })["catch"](function () {});
                   }
@@ -4486,7 +4482,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _redirectToPage = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
-        var _this2 = this;
+        var _this = this;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
           while (1) {
@@ -4499,9 +4495,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                       console.log(response.data);
 
                       if (response.data.data && response.data.data.is_married == '0' || response.data.data && response.data.data.is_married == '2') {
-                        _this2.$router.push('/previous-spouse-question');
+                        _this.$router.push('/previous-spouse-question');
                       } else {
-                        _this2.$router.push('/spouse');
+                        _this.$router.push('/spouse');
                       }
                     }
                   }
@@ -4522,16 +4518,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return redirectToPage;
     }(),
     getPersonalInfo: function getPersonalInfo() {
-      var _this3 = this;
+      var _this2 = this;
 
       axios.get('/getpersonalinfo').then(function (response) {
         if (response.status == 200) {
           if (response.data.data[0]) {
-            _this3.personalDetail = JSON.parse(JSON.stringify(response.data.data[0]));
+            _this2.personalDetail = JSON.parse(JSON.stringify(response.data.data[0]));
 
-            _this3.populateData(_this3.personalDetail);
+            _this2.populateData(_this2.personalDetail);
           } else {
-            _this3.populateNewForm();
+            _this2.populateNewForm();
           }
         }
       });
@@ -4667,11 +4663,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
     },
     getCountyList: function getCountyList() {
-      var _this4 = this;
+      var _this3 = this;
 
       axios.get('/countrylist').then(function (response) {
         if (response.status == 200) {
-          _this4.citizenshipOptions = response.data.countries;
+          _this3.citizenshipOptions = response.data.countries;
         }
       });
     },
@@ -6338,9 +6334,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["homeAddress"],
+  props: ["homeAddress", "addressType"],
   components: {
     ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_0__["ValidationProvider"]
   },
@@ -6814,6 +6814,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -6996,7 +6997,6 @@ __webpack_require__.r(__webpack_exports__);
       this.employers[index].computer_username = data.computer_username;
       this.employers[index].computer_password = data.computer_password;
       this.employers[index].employee_benefits = data.employee_benefits;
-      this.employers[index].address = data.address;
       this.$emit("employment-details-updated", this.employers);
     }
   },
@@ -63584,7 +63584,10 @@ var render = function() {
                         _vm._v(" "),
                         _c("home-address", {
                           staticClass: "padding",
-                          attrs: { "home-address": _vm.address },
+                          attrs: {
+                            "home-address": _vm.address,
+                            "address-type": "personal"
+                          },
                           on: { "home-address-update": _vm.updateHomeAddress }
                         }),
                         _vm._v(" "),
@@ -67607,9 +67610,11 @@ var render = function() {
           "div",
           { staticClass: "field-group" },
           [
-            _c("label", { attrs: { for: "street_address_1" } }, [
-              _vm._v("Street Address 1")
-            ]),
+            _c(
+              "label",
+              { attrs: { for: _vm.addressType + "_street_address_1" } },
+              [_vm._v("Street Address 1")]
+            ),
             _vm._v(" "),
             _c("ValidationProvider", {
               attrs: { name: "Street Address 1", rules: "address|max:80" },
@@ -67631,7 +67636,7 @@ var render = function() {
                         staticClass: "field-input",
                         attrs: {
                           type: "text",
-                          name: "street_address_1",
+                          name: _vm.addressType + "_street_address_1",
                           placeholder: "Street Address 1"
                         },
                         domProps: { value: _vm.streetAddress1 },
@@ -67675,9 +67680,11 @@ var render = function() {
           "div",
           { staticClass: "field-group" },
           [
-            _c("label", { attrs: { for: "street_address_2" } }, [
-              _vm._v("Street Address 2")
-            ]),
+            _c(
+              "label",
+              { attrs: { for: _vm.addressType + "_street_address_2" } },
+              [_vm._v("Street Address 2")]
+            ),
             _vm._v(" "),
             _c("ValidationProvider", {
               attrs: { name: "Street Address 2", rules: "address|max:80" },
@@ -67699,7 +67706,7 @@ var render = function() {
                         staticClass: "field-input",
                         attrs: {
                           type: "text",
-                          name: "street_address_2",
+                          name: _vm.addressType + "_street_address_2",
                           placeholder: "Street Address 2"
                         },
                         domProps: { value: _vm.streetAddress2 },
@@ -67743,7 +67750,9 @@ var render = function() {
           "div",
           { staticClass: "field-group" },
           [
-            _c("label", { attrs: { for: "city" } }, [_vm._v("City")]),
+            _c("label", { attrs: { for: _vm.addressType + "_city" } }, [
+              _vm._v("City")
+            ]),
             _vm._v(" "),
             _c("ValidationProvider", {
               attrs: { name: "City", rules: "alpha_spaces|max:50" },
@@ -67765,7 +67774,7 @@ var render = function() {
                         staticClass: "field-input",
                         attrs: {
                           type: "text",
-                          name: "city",
+                          name: _vm.addressType + "_city",
                           placeholder: "City"
                         },
                         domProps: { value: _vm.city },
@@ -67809,7 +67818,9 @@ var render = function() {
           "div",
           { staticClass: "field-group" },
           [
-            _c("label", { attrs: { for: "state" } }, [_vm._v("State")]),
+            _c("label", { attrs: { for: _vm.addressType + "_state" } }, [
+              _vm._v("State")
+            ]),
             _vm._v(" "),
             _c("ValidationProvider", {
               attrs: { name: "State", rules: "alpha_spaces|max:50" },
@@ -67831,7 +67842,7 @@ var render = function() {
                         staticClass: "field-input",
                         attrs: {
                           type: "text",
-                          name: "state",
+                          name: _vm.addressType + "_state",
                           placeholder: "State"
                         },
                         domProps: { value: _vm.state },
@@ -67875,7 +67886,9 @@ var render = function() {
           "div",
           { staticClass: "field-group" },
           [
-            _c("label", { attrs: { for: "zipcode" } }, [_vm._v("Zipcode")]),
+            _c("label", { attrs: { for: _vm.addressType + "_zipcode" } }, [
+              _vm._v("Zipcode")
+            ]),
             _vm._v(" "),
             _c("ValidationProvider", {
               attrs: { name: "Zipcode", rules: "max:6" },
@@ -67897,7 +67910,7 @@ var render = function() {
                         staticClass: "field-input",
                         attrs: {
                           type: "text",
-                          name: "zipcode",
+                          name: _vm.addressType + "_zipcode",
                           placeholder: "Zipcode"
                         },
                         domProps: { value: _vm.zipcode },
@@ -68399,7 +68412,10 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("home-address", {
-        attrs: { "home-address": _vm.employmentDetail.address },
+        attrs: {
+          "home-address": _vm.employmentDetail.address,
+          "address-type": "employer"
+        },
         on: { "home-address-update": _vm.updateHomeAddress }
       }),
       _vm._v(" "),
