@@ -29,6 +29,7 @@ class PersonalInfoTest extends TestCase
     private $personalAddress;
     private $userSocialMedia;
     private $userEmployer;
+    private $personalDetailsStep;
 
     protected function setUp(): void
     {
@@ -69,13 +70,13 @@ class PersonalInfoTest extends TestCase
                 ]);
             });
 
-        factory(PersonalDetailsSteps::class)->create();
+        $this->personalDetailsStep = factory(PersonalDetailsSteps::class)->create();
     }
 
     /** @test **/
     function user_can_submit_personal_info()
     {
-        $this->actingAs($this->user)->post('/personal-info/postdata', [
+        $this->actingAs($this->user)->post('/personal-info', [
             'legal_name' => $this->personalInfo->legal_name,
             'nickname' => $this->personalInfo->nickname,
             'dob' => $this->personalInfo->dob,
@@ -93,5 +94,21 @@ class PersonalInfoTest extends TestCase
             'is_completed' => true
         ])
             ->assertStatus(200);
+    }
+
+    /** @test **/
+    function user_can_update_personal_information_completion_step()
+    {
+        $this->actingAs($this->user)
+            ->post('personal-info/steps', [
+                'step_id' => 1,
+                'is_visited' => 1
+            ])->assertStatus(200);
+
+        $this->assertDatabaseHas('users_personal_details_completions', [
+            'step_id' => 1,
+            'is_visited' => 1,
+            'user_id' => $this->user->id
+        ]);
     }
 }

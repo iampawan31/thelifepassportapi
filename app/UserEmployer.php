@@ -16,6 +16,13 @@ class UserEmployer extends Model
         'benefits_used'
     ];
 
+    /**
+     * The relationships that should always be loaded.
+     *
+     * @var array
+     */
+    protected $with = ['address', 'benefits'];
+
     public function getRouteKeyName()
     {
         return 'user_id';

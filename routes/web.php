@@ -31,14 +31,15 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/countrylist', 'CountryController@index')->name('countrylist');
 Route::get('/socialmedialist', 'SocialMediaController@index')->name('socialmedialist');
 
-Route::middleware(['auth'])->group(function(){
-    //Personal information route
-    Route::get('personal-info', 'PersonalinfoController@index')->name('personal-info');
-    Route::get('personal-details', 'PersonalinfoController@personaldetails')->name('personal-details');
-    Route::post('personal-info/postdata', 'PersonalinfoController@store')->name('personalinfo.postdata');
-    Route::get('getpersonalinfo', 'PersonalinfoController@getpersonalinfo')->name('personalinfo.getdata');
-    Route::post('personal-info/{id}/updatedata', 'PersonalinfoController@update')->name('personalinfo.updatedata');
-    Route::post('updatepersonalstep', 'PersonalinfoController@updateuserpersonalstepinfo')->name('personalinfo.stepupdate');
+Route::middleware(['auth'])->group(function () {
+
+    // Personal Information Section Routes
+    Route::get('personal-info', 'PersonalInfoController@index')->name('personal-info.index');
+    Route::get('personal-info/{personalInfoId}', 'PersonalInfoController@show')->name('personal-info.show');
+    Route::post('personal-info', 'PersonalInfoController@store')->name('personal-info.post');
+    Route::put('personal-info/{personalInfoId}', 'PersonalInfoController@update')->name('personal-info.update');
+
+    Route::post('personal-info/steps', 'PersonalStepsController@update')->name('personal-info.steps');
 
     //Spouse information route
     Route::get('getspouseinfo', 'SpouseController@getspouseinfo')->name('spouseinfo.getdata');
@@ -115,5 +116,4 @@ Route::middleware(['auth'])->group(function(){
     Route::post('spouseestate/{id}/updatedata', 'SpouseestateController@update')->name('spouseestate.updatedata');
     Route::delete('spouseestate/{id}/removespouseestate', 'SpouseestateController@destroy')->name('spouseestate.removespouseestate');
     Route::post('spouseestate/updatestatus', 'SpouseestateController@updatestatus')->name('spouseestate.updatestatus');
-    
 });

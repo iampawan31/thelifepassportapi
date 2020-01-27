@@ -385,6 +385,7 @@ export default {
     data() {
         return {
             errors: [],
+            userData: [],
             legalName: "",
             nickName: "",
             address: [],
@@ -420,28 +421,46 @@ export default {
                 // Do Something
             } else {
                 const formData = this.getFormData(e);
-
-                console.log(formData);
-
-                console.log(this.address);
-                console.log(JSON.stringify(this.address));
  
                 if (this.userId && this.personalDetailId) {
                     axios
-                        .post('/personal-info/' + this.userId + '/updatedata', formData)
+                        .put('/personal-info/' + this.personalDetailId, formData)
                         .then(response => {
                             if (response.status == 200) {
-                            // this.$router.push('/spouse-question');
+                                const Toast = this.$swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true
+                                })
+
+                                Toast.fire({
+                                icon: 'success',
+                                title: 'Information Saved'
+                                })
+                            this.$router.push('/spouse-question');
                             }
-                            //this.redirectToPage();
                         })
                         .catch(function() {});
                 } else {
                     axios
-                        .post('/personal-info/postdata', formData)
+                        .post('/personal-info', formData)
                         .then(response => {
                             if (response.status == 200) {
-                            // this.$router.push('/spouse-question');
+                                const Toast = this.$swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true
+                                })
+
+                                Toast.fire({
+                                icon: 'success',
+                                title: 'Information Saved'
+                                })
+                            this.$router.push('/spouse-question');
                             }
                         })
                         .catch(function() {});
@@ -466,13 +485,13 @@ export default {
             });
         },
         getPersonalInfo() {
-            axios.get('/getpersonalinfo').then(response => {
+            axios.get('/personal-info').then(response => {
                 if (response.status == 200) {
                     if (response.data.data[0]) {
-                        this.personalDetail = JSON.parse(
+                        this.userData = JSON.parse(
                             JSON.stringify(response.data.data[0])
                         );
-                        this.populateData(this.personalDetail);
+                        this.populateData(this.userData);
                     } else {
                         this.populateNewForm();
                     }
@@ -519,7 +538,7 @@ export default {
             this.isCompleted = false;
         },
         populateData (personalDetail) {
-            this.userId = personalDetail.user_id;
+            this.userId = personalDetail.id;
 
             if(personalDetail.legal_name) {
                 this.legalName = personalDetail.legal_name;
