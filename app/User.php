@@ -80,6 +80,6 @@ class User extends Authenticatable
 
     public function steps()
     {
-        return $this->hasMany(UsersPersonalDetailsCompletion::class, 'user_id')->where('step_id', 1);
+        return $this->hasOne(UsersPersonalDetailsCompletion::class, 'user_id')->where('step_id', 1);
     }
 }

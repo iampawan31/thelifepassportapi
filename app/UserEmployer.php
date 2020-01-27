@@ -23,9 +23,14 @@ class UserEmployer extends Model
      */
     protected $with = ['address', 'benefits'];
 
-    public function getRouteKeyName()
+    public static function boot()
     {
-        return 'user_id';
+        parent::boot();
+
+        static::deleting(function ($userEmployer) { // before delete() method call this
+            $userEmployer->address()->delete();
+            $userEmployer->benefits()->delete();
+        });
     }
 
     //Table Name

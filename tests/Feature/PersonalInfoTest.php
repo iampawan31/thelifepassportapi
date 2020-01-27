@@ -34,7 +34,8 @@ class PersonalInfoTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->user = factory(User::class)->create();
+
+        $this->user = factory(User::class)->states('verified')->create();
 
         $this->personalInfo = factory(PersonalInfo::class)->create([
             'user_id' => $this->user->id
@@ -76,16 +77,18 @@ class PersonalInfoTest extends TestCase
     /** @test **/
     function user_can_submit_personal_info()
     {
-        $this->actingAs($this->user)->post('/personal-info', [
-            'legal_name' => $this->personalInfo->legal_name,
-            'nickname' => $this->personalInfo->nickname,
-            'dob' => $this->personalInfo->dob,
+        $newUser = factory(User::class)->states('verified')->create();
+
+        $this->actingAs($newUser)->post('/personal-info', [
+            'legal_name' => 'Pawan Kumar',
+            'nickname' => 'Ricky',
+            'dob' => '02/05/1990',
             'citizenship' => $this->personalInfo->country_id,
-            'passport_number' => $this->personalInfo->passport_number,
-            'father_name' => $this->personalInfo->father_name,
-            'father_birth_place' => $this->personalInfo->father_birth_place,
-            'mother_name' => $this->personalInfo->mother_name,
-            'mother_birth_place' => $this->personalInfo->mother_birth_place,
+            'passport_number' => '123456789',
+            'father_name' => 'John Doe',
+            'father_birth_place' => 'New York',
+            'mother_name' => 'John Dee',
+            'mother_birth_place' => 'New York',
             'personal_address' => $this->personalAddress,
             'phone' => $this->phoneNumbers,
             'email' => $this->userEmails,
@@ -93,7 +96,52 @@ class PersonalInfoTest extends TestCase
             'user_employer' => $this->userEmployer,
             'is_completed' => true
         ])
-            ->assertStatus(200);
+            ->assertStatus(201);
+
+        $this->assertDatabaseHas('personal_info', [
+            'user_id' => $newUser->id,
+            'legal_name' => 'Pawan Kumar',
+            'passport_number' => '123456789',
+            'father_name' => 'John Doe',
+            'father_birth_place' => 'New York',
+            'mother_name' => 'John Dee',
+            'mother_birth_place' => 'New York'
+        ]);
+    }
+
+    /** @test **/
+    function user_can_update_personal_information()
+    {
+        $this->actingAs($this->user)->putJson(
+            "personal-info/" . $this->personalInfo->id,
+            [
+                'legal_name' => 'John Doe',
+                'nickname' => 'John',
+                'dob' => $this->personalInfo->dob,
+                'citizenship' => $this->personalInfo->country_id,
+                'passport_number' => $this->personalInfo->passport_number,
+                'father_name' => 'Adam Doe',
+                'father_birth_place' => 'Adam Birth Place',
+                'mother_name' => 'Martha Doe',
+                'mother_birth_place' => 'Martha Birth Place',
+                'personal_address' => $this->personalAddress,
+                'phone' => $this->phoneNumbers,
+                'email' => $this->userEmails,
+                'social_media_type' => $this->userSocialMedia,
+                'user_employer' => $this->userEmployer,
+                'is_completed' => true
+            ]
+        )
+            ->assertStatus(201);
+
+        $this->assertDatabaseHas('personal_info', [
+            'legal_name' => 'John Doe',
+            'nickname' => 'John',
+            'father_name' => 'Adam Doe',
+            'father_birth_place' => 'Adam Birth Place',
+            'mother_name' => 'Martha Doe',
+            'mother_birth_place' => 'Martha Birth Place',
+        ]);
     }
 
     /** @test **/

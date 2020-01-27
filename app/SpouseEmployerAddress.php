@@ -7,20 +7,22 @@ use Illuminate\Database\Eloquent\Model;
 class SpouseEmployerAddress extends Model
 {
     protected $fillable = [
-        'user_id', 
+        'user_id',
         'employer_id',
-        'street_address1', 
-        'street_address2', 
-        'city', 
-        'state', 
+        'street_address1',
+        'street_address2',
+        'city',
+        'state',
         'zipcode'
     ];
 
-    static function tableName() {
+    static function tableName()
+    {
         return with(new static)->getTable();
     }
 
-    public function employer() {
+    public function employer()
+    {
         return $this->hasOne(SpouseEmployer::class, 'id', 'employer_id');
     }
 }

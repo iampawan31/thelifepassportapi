@@ -6,14 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserPhone extends Model
 {
-    protected $primaryKey = 'user_id';
-
     protected $fillable = ['user_id', 'phone', 'is_primary'];
-
-    public function getRouteKeyName()
-    {
-        return 'user_id';
-    }
 
     /**
      * Get the user that owns the phone number.

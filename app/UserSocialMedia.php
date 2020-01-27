@@ -6,14 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserSocialMedia extends Model
 {
-    protected $primaryKey = 'user_id';
-
     protected $fillable = ['user_id', 'social_id', 'username', 'password', 'is_primary'];
-
-    public function getRouteKeyName()
-    {
-        return 'user_id';
-    }
 
     //Table Name
     static function tableName()

@@ -458,7 +458,7 @@ export default {
 
                                 Toast.fire({
                                 icon: 'success',
-                                title: 'Information Saved'
+                                title: 'Information Updated'
                                 })
                             this.$router.push('/spouse-question');
                             }

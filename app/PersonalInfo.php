@@ -16,8 +16,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class PersonalInfo extends Model
 {
-    protected $primaryKey = 'user_id';
-
     protected $fillable = [
         'user_id',
         'legal_name',
@@ -33,11 +31,6 @@ class PersonalInfo extends Model
     ];
 
     protected $table = 'personal_info';
-
-    public function getRouteKeyName()
-    {
-        return 'user_id';
-    }
 
     public function getDobAttribute($date)
     {
