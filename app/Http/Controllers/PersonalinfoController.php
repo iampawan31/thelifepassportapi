@@ -58,13 +58,14 @@ class PersonalinfoController extends Controller
         $inputs = $request->all();
         
         //personal information
+        $user_id            = Auth::user()->id;
         $legal_name         = $inputs['legal_name'];
         $nick_name          = $inputs['nickname'];
-        $street_address_1   = $inputs['street_address_1'];
-        $street_address_2   = $inputs['street_address_2'];
-        $city               = $inputs['city'];
-        $state              = $inputs['state'];
-        $zipcode            = $inputs['zipcode'];
+        $street_address_1   = $inputs['personal_street_address_1'];
+        $street_address_2   = $inputs['personal_street_address_2'];
+        $city               = $inputs['personal_city'];
+        $state              = $inputs['personal_state'];
+        $zipcode            = $inputs['personal_zipcode'];
         $dob                = $inputs['date'];
         $country_id         = @$inputs['citizenship'];
         $passport_number    = $inputs['passport_number'];
@@ -79,7 +80,7 @@ class PersonalinfoController extends Controller
         if (isset($inputs['phone'])) {
             foreach($inputs['phone'] as $phone) {
                 if ($phone) {
-                    $arrPhone[] = ['user_id' => Auth::user()->id, 'phone' => $phone];
+                    $arrPhone[] = ['user_id' => $user_id, 'phone' => $phone];
                 }
             }
         }
@@ -89,7 +90,7 @@ class PersonalinfoController extends Controller
         if (isset($inputs['email'])) {
             foreach($inputs['email'] as $key => $value) {
                 if ($value) {
-                    $arrEmail[] = ['user_id' => Auth::user()->id, 'email' => $value, 'password' => $inputs['email_password'][$key]];
+                    $arrEmail[] = ['user_id' => $user_id, 'email' => $value, 'password' => $inputs['email_password'][$key]];
                 } 
             }
         }
@@ -99,7 +100,7 @@ class PersonalinfoController extends Controller
         if (isset($inputs['social_media_type'])) {
             foreach($inputs['social_media_type'] as $key => $value) {
                 if ($value) {
-                    $arrSocial[] = ['user_id' => Auth::user()->id, 'social_id' => $value, 'username' => $inputs['social_username'][$key], 'password' => $inputs['social_password'][$key]];
+                    $arrSocial[] = ['user_id' => $user_id, 'social_id' => $value, 'username' => $inputs['social_username'][$key], 'password' => $inputs['social_password'][$key]];
                 }
                 
             }
@@ -111,7 +112,7 @@ class PersonalinfoController extends Controller
             foreach($inputs['employer_name'] as $key => $value) {
                 if (!empty($value)) {
                     $arrEmployer[] = [
-                        'user_id'                   => Auth::user()->id,
+                        'user_id'                   => $user_id,
                         'employer_name'             => $value, 
                         'employer_phone'            => $inputs['employer_phone'][$key], 
                         'employer_address'          => $inputs['employer_address'][$key],
@@ -124,14 +125,9 @@ class PersonalinfoController extends Controller
         }
 
         $arrPersonalInfo = [
-            'user_id'           => Auth::user()->id,
+            'user_id'           => $user_id,
             'legal_name'        => $legal_name ? $legal_name : "",
             'nickname'          => $nick_name ? $nick_name : "",
-            'street_address_1'  => $street_address_1 ? $street_address_1 : "",
-            'street_address_2'  => $street_address_2 ? $street_address_2 : "",
-            'city'              => $city ? $city : "",
-            'state'             => $state ? $state : "",
-            'zipcode'           => $zipcode ? $zipcode : "",
             'dob'               => $dob ? date('Y-m-d', strtotime($dob)) : Null,
             'country_id'        => $country_id ? $country_id : 0,
             'passport_number'   => $passport_number ? $passport_number : "",
@@ -140,47 +136,59 @@ class PersonalinfoController extends Controller
             'mother_name'           => $mother_name ? $mother_name : "",
             'mother_birth_place'    => $mother_birth_place ? $mother_birth_place : "",
         ];
+
+        $arrAddress = [
+            'user_id'           => $user_id,
+            'street_address_1'  => $street_address_1 ? $street_address_1 : "",
+            'street_address_2'  => $street_address_2 ? $street_address_2 : "",
+            'city'              => $city ? $city : "",
+            'state'             => $state ? $state : "",
+            'zipcode'           => $zipcode ? $zipcode : ""
+        ];
        
         try {
             //insert personal information
             $objPersonalInfo = \App\PersonalInfo::create($arrPersonalInfo);
+
+            //save personal address
+            $objPersonalAddress = \App\PersonalAddress::create($arrAddress);
             
             //insert record in user personal details completion
             $is_completed = $is_completed ? '1' : '0';
-            $arrData = ['step_id' => 1, 'user_id' => Auth::user()->id, 'is_visited' => '1', 'is_filled' => '1', 'is_completed' => $is_completed];
+            $arrData = ['step_id' => 1, 'user_id' => $user_id, 'is_visited' => '1', 'is_filled' => '1', 'is_completed' => $is_completed];
             $objPercentageCompletion = \App\UsersPersonalDetailsCompletion::Create($arrData);
            
             //insert phone information
-            if (!empty($arrPhone)) {
-                foreach($arrPhone as $phones){
-                    $objPhone = \App\UserPhone::create($phones);
-                } 
-            }
+            // if (!empty($arrPhone)) {
+            //     foreach($arrPhone as $phones){
+            //         $objPhone = \App\UserPhone::create($phones);
+            //     } 
+            // }
 
-            //insert email information
-            if (!empty($arrEmail)) {
-                foreach($arrEmail as $emails) {
-                    \App\UserEmail::create($emails);
-                }
-            }
+            // //insert email information
+            // if (!empty($arrEmail)) {
+            //     foreach($arrEmail as $emails) {
+            //         \App\UserEmail::create($emails);
+            //     }
+            // }
 
-            //insert email information
-            if (!empty($arrSocial)) {
-                foreach($arrSocial as $socials) {
-                    \App\UserSocailMedia::create($socials);
-                }
-            }
+            // //insert email information
+            // if (!empty($arrSocial)) {
+            //     foreach($arrSocial as $socials) {
+            //         \App\UserSocailMedia::create($socials);
+            //     }
+            // }
             
-            if(!empty($arrEmployer)) {
-                foreach($arrEmployer as $employers) {
-                    \App\UserEmployer::create($employers);
-                }
-            }
+            // if(!empty($arrEmployer)) {
+            //     foreach($arrEmployer as $employers) {
+            //         \App\UserEmployer::create($employers);
+            //     }
+            // }
 
             //return response()->json(['response' => $inputs, 'phone' => $arrPhone, 'email' => $arrEmail, 'social' => $arrSocial, 'employer' => $arrEmployer]);
             return response()->json(['status' => 200, 'message' => 'Personal information has been saved successfully'], 200);
 
-        } catch (Exception $e) {
+        } catch (Exception $e) { dd($e);
             return response()->json(['status' => 500, 'message' => 'Error'], 500);
         }
     }
@@ -217,15 +225,16 @@ class PersonalinfoController extends Controller
     public function update(Request $request, PersonalInfo $personalInfo)
     {
         $inputs = $request->all();
-        dd($inputs);
+        
         //personal information
+        $user_id            = Auth::user()->id;
         $legal_name         = $inputs['legal_name'];
         $nick_name          = $inputs['nickname'];
-        $street_address_1   = $inputs['street_address_1'];
-        $street_address_2   = $inputs['street_address_2'];
-        $city               = $inputs['city'];
-        $state              = $inputs['state'];
-        $zipcode            = $inputs['zipcode'];
+        $street_address_1   = $inputs['personal_street_address_1'];
+        $street_address_2   = $inputs['personal_street_address_2'];
+        $city               = $inputs['personal_city'];
+        $state              = $inputs['personal_state'];
+        $zipcode            = $inputs['personal_zipcode'];
         $dob                = $inputs['date'];
         $country_id         = @$inputs['citizenship'];
         $passport_number    = $inputs['passport_number'];
@@ -240,7 +249,7 @@ class PersonalinfoController extends Controller
         if (isset($inputs['phone'])) {
             foreach($inputs['phone'] as $phone) {
                 if ($phone) {
-                    $arrPhone[] = ['user_id' => Auth::user()->id, 'phone' => $phone];
+                    $arrPhone[] = ['user_id' => $user_id, 'phone' => $phone];
                 }
             }
         }
@@ -250,7 +259,7 @@ class PersonalinfoController extends Controller
         if (isset($inputs['email'])) {
             foreach($inputs['email'] as $key => $value) {
                 if ($value) {
-                    $arrEmail[] = ['user_id' => Auth::user()->id, 'email' => $value, 'password' => $inputs['email_password'][$key]];
+                    $arrEmail[] = ['user_id' => $user_id, 'email' => $value, 'password' => $inputs['email_password'][$key]];
                 } 
             }
         }
@@ -260,7 +269,7 @@ class PersonalinfoController extends Controller
         if (isset($inputs['social_media_type'])) {
             foreach($inputs['social_media_type'] as $key => $value) {
                 if ($value) {
-                    $arrSocial[] = ['user_id' => Auth::user()->id, 'social_id' => $value, 'username' => $inputs['social_username'][$key], 'password' => $inputs['social_password'][$key]];
+                    $arrSocial[] = ['user_id' => $user_id, 'social_id' => $value, 'username' => $inputs['social_username'][$key], 'password' => $inputs['social_password'][$key]];
                 }
                 
             }
@@ -272,7 +281,7 @@ class PersonalinfoController extends Controller
             foreach($inputs['employer_name'] as $key => $value) {
                 if (!empty($value)) {
                     $arrEmployer[] = [
-                        'user_id'                   => Auth::user()->id,
+                        'user_id'                   => $user_id,
                         'employer_name'             => $value, 
                         'employer_phone'            => $inputs['employer_phone'][$key], 
                         'employer_address'          => @$inputs['employer_address'][$key],
@@ -287,16 +296,10 @@ class PersonalinfoController extends Controller
         try {
             
             //insert personal information
-            $objPersonalInfo = \App\PersonalInfo::find($id);
+            $objPersonalInfo = \App\PersonalInfo::find($user_id);
             //$objPersonalInfo->user_id       = Auth::user()->id;
             $objPersonalInfo->legal_name            = $legal_name ? $legal_name : "";
             $objPersonalInfo->nickname              = $nick_name ? $nick_name : "";
-            $objPersonalInfo->home_address          = @$home_address ? $home_address : "";
-            $objPersonalInfo->street_address1       = $street_address_1 ? $street_address_1 : "";
-            $objPersonalInfo->street_address2       = $street_address_2 ? $street_address_2 : "";
-            $objPersonalInfo->city                  = $city ? $city : "";
-            $objPersonalInfo->state                 = $state ? $state : "";
-            $objPersonalInfo->zipcode               = $zipcode ? $zipcode : "";
             $objPersonalInfo->dob                   = $dob ? date('Y-m-d', strtotime($dob)) : Null;
             $objPersonalInfo->country_id            = $country_id ? $country_id : 0;
             $objPersonalInfo->passport_number       = $passport_number ? $passport_number : "";
@@ -306,6 +309,15 @@ class PersonalinfoController extends Controller
             $objPersonalInfo->mother_birth_place    = $mother_birth_place ? $mother_birth_place : "";
             $objPersonalInfo->save();
 
+            //save personal address
+            $objPersonalAddress = \App\PersonalAddress::find($user_id);
+            $objPersonalAddress->street_address1       = $street_address_1 ? $street_address_1 : "";
+            $objPersonalAddress->street_address2       = $street_address_2 ? $street_address_2 : "";
+            $objPersonalAddress->city                  = $city ? $city : "";
+            $objPersonalAddress->state                 = $state ? $state : "";
+            $objPersonalAddress->zipcode               = $zipcode ? $zipcode : "";
+            $objPersonalAddress->save();
+
             //insert record in user personal details completion
             $is_completed = $is_completed ? '1' : '0';
             \App\UsersPersonalDetailsCompletion::where('step_id', 1)
@@ -313,42 +325,42 @@ class PersonalinfoController extends Controller
                                                 ->update([ 'is_visited' => '1', 'is_filled' => '1', 'is_completed' => $is_completed]);
 
             //insert phone information
-            if (!empty($arrPhone)) {
-                //remove all phone details
-                \App\UserPhone::where('user_id', Auth::user()->id)->delete();
-                foreach($arrPhone as $phones){
-                    $objPhone = \App\UserPhone::create($phones);
-                } 
-            }
+            // if (!empty($arrPhone)) {
+            //     //remove all phone details
+            //     \App\UserPhone::where('user_id', Auth::user()->id)->delete();
+            //     foreach($arrPhone as $phones){
+            //         $objPhone = \App\UserPhone::create($phones);
+            //     } 
+            // }
 
             //insert email information
-            if (!empty($arrEmail)) {
-                //remove email details
-                \App\UserEmail::where('user_id', Auth::user()->id)->delete();
+            // if (!empty($arrEmail)) {
+            //     //remove email details
+            //     \App\UserEmail::where('user_id', Auth::user()->id)->delete();
 
-                foreach($arrEmail as $emails) {
-                    \App\UserEmail::create($emails);
-                }
-            }
+            //     foreach($arrEmail as $emails) {
+            //         \App\UserEmail::create($emails);
+            //     }
+            // }
 
             //insert email information
-            if (!empty($arrSocial)) {
-                //remove social media info
-                \App\UserSocailMedia::where('user_id', Auth::user()->id)->delete();
+            // if (!empty($arrSocial)) {
+            //     //remove social media info
+            //     \App\UserSocailMedia::where('user_id', Auth::user()->id)->delete();
 
-                foreach($arrSocial as $socials) {
-                    \App\UserSocailMedia::create($socials);
-                }
-            }
+            //     foreach($arrSocial as $socials) {
+            //         \App\UserSocailMedia::create($socials);
+            //     }
+            // }
             
-            if(!empty($arrEmployer)) {
-                //remove employer details
-                \App\UserEmployer::where('user_id', Auth::user()->id)->delete();
+            // if(!empty($arrEmployer)) {
+            //     //remove employer details
+            //     \App\UserEmployer::where('user_id', Auth::user()->id)->delete();
 
-                foreach($arrEmployer as $employers) {
-                    \App\UserEmployer::create($employers);
-                }
-            }
+            //     foreach($arrEmployer as $employers) {
+            //         \App\UserEmployer::create($employers);
+            //     }
+            // }
 
             return response()->json(['status' => 200, 'message' => 'Personal information has been saved successfully'], 200);
 
