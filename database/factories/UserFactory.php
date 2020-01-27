@@ -3,6 +3,7 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 use Illuminate\Support\Facades\Hash;
@@ -22,9 +23,17 @@ $factory->define(User::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
-        'email_verified_at' => now(),
+        'email_verified_at' => Carbon::now(),
+        'is_active' => true,
+        'role' => 2,
+        'phone_number' => '7973601201',
         'password' => Hash::make('password123'), // password
         'remember_token' => Str::random(10),
         'api_token' => Str::random(80),
     ];
 });
+
+$factory->state(App\User::class, 'verified', [
+    'is_active' => true,
+    'email_verified_at' => Carbon::now()
+]);

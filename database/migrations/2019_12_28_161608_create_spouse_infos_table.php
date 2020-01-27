@@ -18,7 +18,6 @@ class CreateSpouseInfosTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('legal_name', 255);
             $table->string('nickname', 255);
-            $table->text('home_address');
             $table->date('dob');
             $table->bigInteger('country_id');
             $table->string('passport_number', 50);

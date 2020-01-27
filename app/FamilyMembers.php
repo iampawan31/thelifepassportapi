@@ -9,31 +9,31 @@ class FamilyMembers extends Model
     //protected $primaryKey = 'user_id';
 
     protected $fillable = [
-        'user_id', 
-        'legal_name', 
-        'relationship_id', 
-        'address', 
-        'email', 
+        'user_id',
+        'legal_name',
+        'relationship_id',
+        'address',
+        'email',
         'dob'
     ];
 
-    public function getRouteKeyName() {
-        return 'user_id';
-    }
-
-    public function Address() {
+    public function address()
+    {
         return $this->hasOne(FamilyMemberAddress::class, 'family_member_id');
     }
 
-    public function FamilyPhone() {
+    public function phone()
+    {
         return $this->hasMany(\App\FamilyPhone::class, 'family_member_id')->select(['family_member_id', 'phone']);
     }
 
-    public function FamilyRelation() {
+    public function relation()
+    {
         return $this->hasOne(\App\FamilyRelation::class, 'id', 'relationship_id')->select(['id', 'title']);
     }
 
-    public function UsersPersonalDetailsCompletion() {
-        return $this->hasMany(UsersPersonalDetailsCompletion::class, 'user_id')->where('step_id', 4);
+    public function step()
+    {
+        return $this->hasOne(UsersPersonalDetailsCompletion::class, 'user_id')->where('step_id', 4);
     }
 }

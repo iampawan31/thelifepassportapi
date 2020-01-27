@@ -8,12 +8,9 @@ class FriendsPhone extends Model
 {
     protected $fillable = ['user_id', 'friend_id', 'phone'];
 
-    // public function getRouteKeyName() {
-    //     return 'user_id';
-    // }
-
     //Table Name
-    static function tableName() {
+    static function tableName()
+    {
         return with(new static)->getTable();
     }
 }

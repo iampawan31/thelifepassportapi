@@ -73,19 +73,22 @@ export default {
         };
     },
     watch: {
-        employers() {
-            this.blockRemoval = this.employers.length <= 1;
+        employers: {
+            handler() {
+                this.blockRemoval = this.employers.length <= 1;
+            },
+            deep: true
         }
     },
     methods: {
         addEmployers() {
             this.employers.push({
-                employer_name: null,
-                employer_phone: null,
-                employer_address: null,
-                computer_username: null,
-                computer_password: null,
-                employee_benefits: null
+                employer_name: "",
+                employer_phone: "",
+                employer_address: [],
+                computer_username: "",
+                computer_password: "",
+                employee_benefits: []
             });
         },
         populateEmployers() {
@@ -102,11 +105,11 @@ export default {
                 });
             } else {
                 this.employers.push({
-                    employer_name: null,
-                    employer_phone: null,
-                    employer_address: null,
-                    computer_username: null,
-                    computer_password: null,
+                    employer_name: "",
+                    employer_phone: "",
+                    employer_address: [],
+                    computer_username: "",
+                    computer_password: "",
                     employee_benefits: []
                 });
             }
@@ -115,13 +118,7 @@ export default {
             if (!this.blockRemoval) this.employers.splice(lineId, 1);
         },
         updateEmploymentDetail(index, data) {
-            this.employers[index].employer_name = data.employer_name;
-            this.employers[index].employer_phone = data.employer_phone;
-            this.employers[index].employer_address = data.address;
-            this.employers[index].computer_username = data.computer_username;
-            this.employers[index].computer_password = data.computer_password;
-            this.employers[index].employee_benefits = data.employee_benefits;
-
+            this.employers[index] = data;
             this.$emit("employment-details-updated", this.employers);
         }
     },

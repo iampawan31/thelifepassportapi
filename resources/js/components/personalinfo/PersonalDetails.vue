@@ -385,6 +385,7 @@ export default {
     data() {
         return {
             errors: [],
+            userData: [],
             legalName: "",
             nickName: "",
             address: [],
@@ -401,7 +402,8 @@ export default {
             employmentDetails: [],
             citizenshipOptions: [],
             isCompleted: false,
-            userId: 0,
+            userId: '',
+            personalDetailId: '',
             result2: '',
             submitted: false
         };
@@ -419,25 +421,46 @@ export default {
                 // Do Something
             } else {
                 const formData = this.getFormData(e);
-
-                console.log(formData);
  
-                if (this.userId) {
+                if (this.userId && this.personalDetailId) {
                     axios
-                        .post('/personal-info/' + this.userId + '/updatedata', formData)
+                        .put('/personal-info/' + this.personalDetailId, formData)
                         .then(response => {
                             if (response.status == 200) {
-                            // this.$router.push('/spouse-question');
+                                const Toast = this.$swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true
+                                })
+
+                                Toast.fire({
+                                icon: 'success',
+                                title: 'Information Saved'
+                                })
+                            this.$router.push('/spouse-question');
                             }
-                            //this.redirectToPage();
                         })
                         .catch(function() {});
                 } else {
                     axios
-                        .post('/personal-info/postdata', formData)
+                        .post('/personal-info', formData)
                         .then(response => {
                             if (response.status == 200) {
-                            // this.$router.push('/spouse-question');
+                                const Toast = this.$swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true
+                                })
+
+                                Toast.fire({
+                                icon: 'success',
+                                title: 'Information Updated'
+                                })
+                            this.$router.push('/spouse-question');
                             }
                         })
                         .catch(function() {});
@@ -462,13 +485,13 @@ export default {
             });
         },
         getPersonalInfo() {
-            axios.get('/getpersonalinfo').then(response => {
+            axios.get('/personal-info').then(response => {
                 if (response.status == 200) {
                     if (response.data.data[0]) {
-                        this.personalDetail = JSON.parse(
+                        this.userData = JSON.parse(
                             JSON.stringify(response.data.data[0])
                         );
-                        this.populateData(this.personalDetail);
+                        this.populateData(this.userData);
                     } else {
                         this.populateNewForm();
                     }
@@ -481,8 +504,8 @@ export default {
 
             formData.append('legal_name', this.legalName);
             formData.append('nickname', this.nickName);
-            formData.append('home_address', this.address);
-            formData.append('user_phones', this.phoneNumbers);
+            formData.append('personal_address', JSON.stringify(this.address));
+            formData.append('user_phones', JSON.stringify(this.phoneNumbers));
             formData.append('dob', this.dateOfBirth);
             formData.append('citizenship', this.citizenship);
             formData.append('passport_number', this.passportNumber);
@@ -490,10 +513,10 @@ export default {
             formData.append('father_birth_place', this.fatherBirthPlace);
             formData.append('mother_name', this.motherName);
             formData.append('mother_birth_place', this.motherBirthPlace);
-            formData.append('emails', this.emails);
-            formData.append('user_socail_media', this.socialMediaDetails);
-            formData.append('user_employer', this.employmentDetails);
-            formData.append('chk_complete', this.isCompleted);
+            formData.append('emails', JSON.stringify(this.emails));
+            formData.append('user_socail_media', JSON.stringify(this.socialMediaDetails));
+            formData.append('user_employer', JSON.stringify(this.employmentDetails));
+            formData.append('is_completed', this.isCompleted);
 
             return formData;
         },
@@ -515,7 +538,7 @@ export default {
             this.isCompleted = false;
         },
         populateData (personalDetail) {
-            this.userId = personalDetail.user_id;
+            this.userId = personalDetail.id;
 
             if(personalDetail.legal_name) {
                 this.legalName = personalDetail.legal_name;

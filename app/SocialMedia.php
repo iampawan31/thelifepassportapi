@@ -9,7 +9,8 @@ class SocialMedia extends Model
     protected $fillable = ['title', 'status'];
 
     //Table Name
-    static function tableName() {
+    static function tableName()
+    {
         return with(new static)->getTable();
     }
 }

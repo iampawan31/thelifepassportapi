@@ -8,11 +8,12 @@ class SpouseEmployerBenefits extends Model
 {
     protected $fillable = [
         'user_id',
-        'employer_id', 
+        'employer_id',
         'benefit_id'
     ];
 
-    static function tableName() {
+    static function tableName()
+    {
         return with(new static)->getTable();
     }
 }
