@@ -4,7 +4,7 @@
         <div class="add-anohter-field">
             <div
                 class="field-wrapper"
-                v-for="(social, index) in socialMedia"
+                v-for="(social, index) in userSocials"
                 v-bind:key="index"
             >
                 <social-media
@@ -12,7 +12,7 @@
                     v-on:social-media-removal="removeSocialMedia"
                     :social-media-key="index"
                     :social-media-options="socialOptions"
-                    :social-media-type="social.social"
+                    :social-media-type="social.social_id"
                     :social-media-username="social.username"
                     :social-media-password="social.password"
                 >
@@ -75,10 +75,7 @@ export default {
     },
     data() {
         return {
-            socialValue: "",
-            socialOptions: [],
-            socialMedia: [],
-            blockRemoval: true
+            socialOptions: []
         };
     },
     created() {
@@ -88,14 +85,9 @@ export default {
             }
         });
     },
-    watch: {
-        socialMedia() {
-            this.blockRemoval = this.socialMedia.length <= 1;
-        }
-    },
     methods: {
         addSocialMedia() {
-            this.socialMedia.push({
+            this.userSocials.push({
                 social_id: null,
                 username: null,
                 password: null
@@ -103,15 +95,9 @@ export default {
         },
         populateSocials() {
             if (this.userSocials.length > 0) {
-                this.userSocials.forEach(data => {
-                    this.socialMedia.push({
-                        social_id: data.social_id,
-                        username: data.username,
-                        password: data.password
-                    });
-                });
+                // Do Nothinf
             } else {
-                this.socialMedia.push({
+                this.userSocials.push({
                     social_id: null,
                     username: null,
                     password: null
@@ -119,13 +105,13 @@ export default {
             }
         },
         removeSocialMedia(lineId) {
-            if (!this.blockRemoval) this.socialMedia.splice(lineId, 1);
+            this.userSocials.splice(lineId, 1);
         },
         updateSocialMedia(index, socialMediaType, username, password) {
-            this.socialMedia[index].social_id = socialMediaType;
-            this.socialMedia[index].username = username;
-            this.socialMedia[index].password = password;
-            this.$emit("social-media-details-updates", this.socialMedia);
+            this.userSocials[index].social_id = socialMediaType;
+            this.userSocials[index].username = username;
+            this.userSocials[index].password = password;
+            this.$emit("social-media-details-updates", this.userSocials);
         }
     },
     mounted() {

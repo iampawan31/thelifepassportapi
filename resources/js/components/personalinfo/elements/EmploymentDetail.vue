@@ -59,9 +59,9 @@
         </div>
 
         <home-address
-            :home-address="employer_address"
+            v-bind:home-address="employer_address"
+            v-bind:employment-id="id"
             address-type="employer"
-            @home-address-update="updateHomeAddress"
         />
 
         <div class="field-group">
@@ -154,6 +154,7 @@ export default {
     props: ["employer", "employmentDetailKey"],
     data() {
         return {
+            id: "",
             employer_name: "",
             employer_phone: "",
             computer_username: "",
@@ -165,12 +166,6 @@ export default {
     },
     watch: {
         benefits: {
-            handler() {
-                this.updateEmploymentDetails();
-            },
-            deep: true
-        },
-        employer_address: {
             handler() {
                 this.updateEmploymentDetails();
             },
@@ -215,12 +210,13 @@ export default {
         }
     },
     mounted() {
+        this.id = this.employer.id;
         this.employer_name = this.employer.employer_name;
         this.computer_username = this.employer.computer_username;
         this.computer_password = this.employer.computer_password;
         this.phone = this.employer.phone;
-        this.employer_address = this.employer.employer_address;
-        // this.benefits = this.employer.benefits;
+        this.employer_address = this.employer.address;
+        this.benefits = this.employer.benefits;
     }
 };
 </script>

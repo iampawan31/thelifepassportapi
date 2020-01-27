@@ -6,7 +6,7 @@
             </h4>
             <div
                 class="field-wrapper"
-                v-for="(email, index) in emails"
+                v-for="(email, index) in userEmails"
                 v-bind:key="index"
             >
                 <email
@@ -17,7 +17,7 @@
                     :password="email.password"
                 ></email>
             </div>
-            <div class="btn-add" v-show="!singleEmailIsAdded">
+            <div class="btn-add" v-show="singleEmailIsAdded">
                 <a href="javascript:void(0);" @click="addEmail"
                     ><svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -48,19 +48,9 @@ export default {
         Email
     },
     props: ["userEmails"],
-    data() {
-        return {
-            emails: [],
-            blockRemoval: true
-        };
-    },
     computed: {
         singleEmailIsAdded() {
-            return (
-                this.emails[0] !== undefined &&
-                (this.emails[0].email === undefined ||
-                    this.emails[0].email === null)
-            );
+            return this.userEmails !== undefined && this.userEmails.length > 0;
         }
     },
     watch: {
@@ -70,7 +60,7 @@ export default {
     },
     methods: {
         addEmail() {
-            this.emails.push({ email: null, password: null });
+            this.userEmails.push({ email: null, password: null });
         },
         populateEmail() {
             if (this.userEmails.length > 0) {
@@ -81,16 +71,16 @@ export default {
                     });
                 });
             } else {
-                this.emails.push({ email: null, password: null });
+                this.userEmails.push({ email: null, password: null });
             }
         },
         removeEmail(lineId) {
-            if (!this.blockRemoval) this.emails.splice(lineId, 1);
+            this.userEmails.splice(lineId, 1);
         },
         updateEmails(index, email, password) {
-            this.emails[index].email = email;
-            this.emails[index].password = password;
-            this.$emit("email-details-updates", this.emails);
+            this.userEmails[index].email = email;
+            this.userEmails[index].password = password;
+            this.$emit("email-details-updates", this.userEmails);
         }
     },
     mounted() {

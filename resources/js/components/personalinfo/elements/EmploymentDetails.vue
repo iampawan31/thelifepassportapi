@@ -61,14 +61,13 @@
 </template>
 <script>
 import EmploymentDetail from "./EmploymentDetail";
+import { mapState } from "vuex";
 export default {
     components: {
         EmploymentDetail
     },
-    props: ["userEmployers"],
     data() {
         return {
-            employers: [],
             blockRemoval: true
         };
     },
@@ -79,6 +78,9 @@ export default {
             },
             deep: true
         }
+    },
+    computed: {
+        ...mapState(["employers"])
     },
     methods: {
         addEmployers() {
@@ -92,27 +94,19 @@ export default {
             });
         },
         populateEmployers() {
-            if (this.userEmployers.length > 0) {
-                this.userEmployers.forEach(data => {
-                    this.employers.push({
-                        employer_name: data.employer_name,
-                        employer_phone: data.employer_phone,
-                        employer_address: data.employer_address,
-                        computer_username: data.computer_username,
-                        computer_password: data.computer_password,
-                        employee_benefits: data.benefits_used
-                    });
-                });
-            } else {
-                this.employers.push({
-                    employer_name: "",
-                    employer_phone: "",
-                    employer_address: [],
-                    computer_username: "",
-                    computer_password: "",
-                    employee_benefits: []
-                });
-            }
+            // if (this.userEmployers.length > 0) {
+            // this.employers = this.userEmployers;
+            // this.userEmployers.forEach(data => {
+            //     this.employers.push({
+            //         employer_name: data.employer_name,
+            //         employer_phone: data.employer_phone,
+            //         employer_address: data.employer_address,
+            //         computer_username: data.computer_username,
+            //         computer_password: data.computer_password,
+            //         employee_benefits: data.benefits_used
+            //     });
+            // });
+            // }
         },
         removeEmployers(lineId) {
             if (!this.blockRemoval) this.employers.splice(lineId, 1);
@@ -121,12 +115,6 @@ export default {
             this.employers[index] = data;
             this.$emit("employment-details-updated", this.employers);
         }
-    },
-    mounted() {
-        this.$nextTick(() => {
-            //this.addEmployers();
-            this.populateEmployers();
-        });
     }
 };
 </script>

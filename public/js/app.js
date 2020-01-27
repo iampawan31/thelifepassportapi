@@ -4012,6 +4012,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _elements_SocialMediaDetails_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./elements/SocialMediaDetails.vue */ "./resources/js/components/personalinfo/elements/SocialMediaDetails.vue");
 /* harmony import */ var _elements_EmploymentDetails_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./elements/EmploymentDetails.vue */ "./resources/js/components/personalinfo/elements/EmploymentDetails.vue");
 /* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -4382,6 +4383,41 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -4403,6 +4439,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   data: function data() {
     return {
       errors: [],
+      user: [],
       legalName: "",
       nickName: "",
       address: [],
@@ -4419,9 +4456,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       employmentDetails: [],
       citizenshipOptions: [],
       isCompleted: false,
-      userId: '',
-      personalDetailId: '',
-      result2: '',
+      userId: "",
+      personalDetailId: "",
+      result2: "",
       submitted: false
     };
   },
@@ -4434,6 +4471,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _handleSubmit = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(e) {
+        var _this = this;
+
         var isValid, formData;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
@@ -4449,19 +4488,43 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 if (!isValid) {// Do Something
                 } else {
                   formData = this.getFormData(e);
-                  console.log(formData);
-                  console.log(this.address);
-                  console.log(JSON.stringify(this.address));
 
                   if (this.userId && this.personalDetailId) {
-                    axios.post('/personal-info/' + this.userId + '/updatedata', formData).then(function (response) {
-                      if (response.status == 200) {} // this.$router.push('/spouse-question');
-                      //this.redirectToPage();
+                    axios.put("/personal-info/" + this.personalDetailId, formData).then(function (response) {
+                      if (response.status == 200) {
+                        var Toast = _this.$swal.mixin({
+                          toast: true,
+                          position: "top-end",
+                          showConfirmButton: false,
+                          timer: 3000,
+                          timerProgressBar: true
+                        });
 
+                        Toast.fire({
+                          icon: "success",
+                          title: "Information Saved"
+                        });
+
+                        _this.$router.push("/spouse-question");
+                      }
                     })["catch"](function () {});
                   } else {
-                    axios.post('/personal-info/postdata', formData).then(function (response) {
-                      if (response.status == 200) {// this.$router.push('/spouse-question');
+                    axios.post("/personal-info", formData).then(function (response) {
+                      if (response.status == 200) {
+                        var Toast = _this.$swal.mixin({
+                          toast: true,
+                          position: "top-end",
+                          showConfirmButton: false,
+                          timer: 3000,
+                          timerProgressBar: true
+                        });
+
+                        Toast.fire({
+                          icon: "success",
+                          title: "Information Updated"
+                        });
+
+                        _this.$router.push("/spouse-question");
                       }
                     })["catch"](function () {});
                   }
@@ -4485,22 +4548,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _redirectToPage = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
-        var _this = this;
+        var _this2 = this;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return axios.get('spouse/getmarriagestatus').then(function (response) {
+                return axios.get("spouse/getmarriagestatus").then(function (response) {
                   if (response.status == 200) {
                     if (response.data) {
                       console.log(response.data);
 
-                      if (response.data.data && response.data.data.is_married == '0' || response.data.data && response.data.data.is_married == '2') {
-                        _this.$router.push('/previous-spouse-question');
+                      if (response.data.data && response.data.data.is_married == "0" || response.data.data && response.data.data.is_married == "2") {
+                        _this2.$router.push("/previous-spouse-question");
                       } else {
-                        _this.$router.push('/spouse');
+                        _this2.$router.push("/spouse");
                       }
                     }
                   }
@@ -4521,16 +4584,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return redirectToPage;
     }(),
     getPersonalInfo: function getPersonalInfo() {
-      var _this2 = this;
+      var _this3 = this;
 
-      axios.get('/getpersonalinfo').then(function (response) {
+      axios.get("/get-personal-info").then(function (response) {
         if (response.status == 200) {
-          if (response.data.data[0]) {
-            _this2.personalDetail = JSON.parse(JSON.stringify(response.data.data[0]));
+          if (response.data.data) {
+            console.log(response.data.data);
 
-            _this2.populateData(_this2.personalDetail);
+            _this3.$store.dispatch("populateData", response.data.data);
+
+            _this3.populateData(response.data.data);
           } else {
-            _this2.populateNewForm();
+            _this3.populateNewForm();
           }
         }
       });
@@ -4538,21 +4603,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getFormData: function getFormData(e) {
       var form = e.target;
       var formData = new FormData(form);
-      formData.append('legal_name', this.legalName);
-      formData.append('nickname', this.nickName);
-      formData.append('personal_address', JSON.stringify(this.address));
-      formData.append('user_phones', JSON.stringify(this.phoneNumbers));
-      formData.append('dob', this.dateOfBirth);
-      formData.append('citizenship', this.citizenship);
-      formData.append('passport_number', this.passportNumber);
-      formData.append('father_name', this.fatherName);
-      formData.append('father_birth_place', this.fatherBirthPlace);
-      formData.append('mother_name', this.motherName);
-      formData.append('mother_birth_place', this.motherBirthPlace);
-      formData.append('emails', JSON.stringify(this.emails));
-      formData.append('user_socail_media', JSON.stringify(this.socialMediaDetails));
-      formData.append('user_employer', JSON.stringify(this.employmentDetails));
-      formData.append('is_completed', this.isCompleted);
+      formData.append("legal_name", this.legalName);
+      formData.append("nickname", this.nickName);
+      formData.append("personal_address", JSON.stringify(this.address));
+      formData.append("user_phones", JSON.stringify(this.phoneNumbers));
+      formData.append("dob", this.dateOfBirth);
+      formData.append("citizenship", this.citizenship);
+      formData.append("passport_number", this.passportNumber);
+      formData.append("father_name", this.fatherName);
+      formData.append("father_birth_place", this.fatherBirthPlace);
+      formData.append("mother_name", this.motherName);
+      formData.append("mother_birth_place", this.motherBirthPlace);
+      formData.append("emails", JSON.stringify(this.emails));
+      formData.append("user_socail_media", JSON.stringify(this.socialMediaDetails));
+      formData.append("user_employer", JSON.stringify(this.employmentDetails));
+      formData.append("is_completed", this.isCompleted);
       return formData;
     },
     populateNewForm: function populateNewForm() {
@@ -4572,8 +4637,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.employmentDetails = [];
       this.isCompleted = false;
     },
-    populateData: function populateData(personalDetail) {
-      this.userId = personalDetail.user_id;
+    populateData: function populateData(userData) {
+      this.userId = userData.id;
+      this.user = userData;
+      var personalDetail = userData.personal;
 
       if (personalDetail.legal_name) {
         this.legalName = personalDetail.legal_name;
@@ -4583,12 +4650,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.nickName = personalDetail.nickname;
       }
 
-      if (personalDetail.home_address) {
-        this.address = personalDetail.home_address;
+      if (userData.address) {
+        this.address = userData.address;
       }
 
-      if (personalDetail.user_phone.length > 0) {
-        this.phoneNumbers = personalDetail.user_phone;
+      if (userData.phones) {
+        this.phoneNumbers = userData.phones;
       } else {
         this.phoneNumbers = [{
           number: null
@@ -4615,16 +4682,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.motherBirthPlace = personalDetail.mother_birth_place;
       }
 
-      if (personalDetail.citizenship) {
-        this.citizenship = personalDetail.citizenship;
+      if (personalDetail.country_id) {
+        this.citizenship = personalDetail.country_id;
       }
 
       if (personalDetail.passport_number) {
         this.passportNumber = personalDetail.passport_number;
       }
 
-      if (personalDetail.user_email.length > 0) {
-        this.emails = personalDetail.user_email;
+      if (userData.emails.length > 0) {
+        this.emails = userData.emails;
       } else {
         this.emails = [{
           email: null,
@@ -4632,8 +4699,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }];
       }
 
-      if (personalDetail.user_socail_media.length > 0) {
-        this.socialMediaDetails = personalDetail.user_socail_media;
+      if (userData.socials.length > 0) {
+        this.socialMediaDetails = userData.socials;
       } else {
         this.socialMediaDetails = [{
           social: null,
@@ -4642,8 +4709,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }];
       }
 
-      if (personalDetail.user_employer.length > 0) {
-        this.employmentDetails = personalDetail.user_employer;
+      if (userData.employers.length > 0) {
+        this.employmentDetails = userData.employers;
       } else {
         this.employmentDetails = [{
           employer_name: null,
@@ -4656,8 +4723,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }];
       }
 
-      if (personalDetail.users_personal_details_completion.length > 0) {
-        if (personalDetail.users_personal_details_completion[0].is_completed == 1) {
+      if (userData.step > 0) {
+        if (userData.step.is_completed == 1) {
           this.isCompleted = true;
         }
       } else {
@@ -4666,11 +4733,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
     },
     getCountyList: function getCountyList() {
-      var _this3 = this;
+      var _this4 = this;
 
-      axios.get('/countrylist').then(function (response) {
+      axios.get("/countrylist").then(function (response) {
         if (response.status == 200) {
-          _this3.citizenshipOptions = response.data.countries;
+          _this4.citizenshipOptions = response.data.countries;
         }
       });
     },
@@ -4698,7 +4765,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.employmentDetails = data;
     },
     updateHomeAddress: function updateHomeAddress(data) {
-      this.address = data;
+      if (data) {
+        this.address = data;
+      }
     }
   }
 });
@@ -6352,61 +6421,20 @@ __webpack_require__.r(__webpack_exports__);
       errors: [],
       paddingLeft: "",
       paddingRight: "",
-      streetAddress1: "",
-      streetAddress2: "",
-      city: "",
-      state: "",
-      zipcode: "",
       submitted: false
     };
   },
-  computed: {
-    address: function address() {
-      return {
-        street_address1: this.streetAddress1,
-        street_address2: this.streetAddress2,
-        city: this.city,
-        state: this.state,
-        zipcode: this.zipcode
-      };
-    }
-  },
   watch: {
-    streetAddress1: function streetAddress1() {
-      this.updateData();
-    },
-    streetAddress2: function streetAddress2() {
-      this.updateData();
-    },
-    city: function city() {
-      this.updateData();
-    },
-    state: function state() {
-      this.updateData();
-    },
-    zipcode: function zipcode() {
-      this.updateData();
+    homeAddress: {
+      handler: function handler() {
+        this.updateData();
+      },
+      deep: true
     }
   },
   methods: {
     updateData: function updateData() {
-      this.$emit("home-address-update", this.address);
-    }
-  },
-  mounted: function mounted() {
-    if (typeof this.homeAddress == "undefined") {
-      console.log(this.homeAddress);
-    } else {
-      this.streetAddress1 = this.homeAddress.streetAddress1;
-      this.streetAddress2 = this.homeAddress.streetAddress2;
-      this.city = this.homeAddress.city;
-      this.state = this.homeAddress.state;
-      this.zipcode = this.homeAddress.zipcode;
-    }
-
-    if (this.padding !== undefined) {
-      this.paddingLeft = "pl";
-      this.paddingRight = "pr";
+      this.$emit("home-address-update", this.homeAddress);
     }
   }
 });
@@ -6499,15 +6527,13 @@ __webpack_require__.r(__webpack_exports__);
   props: ["email", "password", "emailKey"],
   data: function data() {
     return {
-      errors: [],
-      tempEmail: "",
-      tempPassword: "",
-      key: ""
+      errors: []
     };
   },
   computed: {
     emailRemoveText: function emailRemoveText() {
-      return "You want to remove " + "<strong>" + this.email + "</strong>?";
+      var text = this.email ? this.email : "this field";
+      return "You want to remove " + "<strong>" + text + "</strong>?";
     }
   },
   methods: {
@@ -6532,17 +6558,12 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   watch: {
-    tempEmail: function tempEmail() {
+    email: function email() {
       this.$emit("email-update", this.key, this.tempEmail, this.tempPassword);
     },
-    tempPassword: function tempPassword() {
+    password: function password() {
       this.$emit("email-update", this.key, this.tempEmail, this.tempPassword);
     }
-  },
-  mounted: function mounted() {
-    this.tempEmail = this.email;
-    this.tempPassword = this.password;
-    this.key = this.emailKey;
   }
 });
 
@@ -6606,15 +6627,9 @@ __webpack_require__.r(__webpack_exports__);
     Email: _Email__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   props: ["userEmails"],
-  data: function data() {
-    return {
-      emails: [],
-      blockRemoval: true
-    };
-  },
   computed: {
     singleEmailIsAdded: function singleEmailIsAdded() {
-      return this.emails[0] !== undefined && (this.emails[0].email === undefined || this.emails[0].email === null);
+      return this.userEmails !== undefined && this.userEmails.length > 0;
     }
   },
   watch: {
@@ -6624,7 +6639,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     addEmail: function addEmail() {
-      this.emails.push({
+      this.userEmails.push({
         email: null,
         password: null
       });
@@ -6640,19 +6655,19 @@ __webpack_require__.r(__webpack_exports__);
           });
         });
       } else {
-        this.emails.push({
+        this.userEmails.push({
           email: null,
           password: null
         });
       }
     },
     removeEmail: function removeEmail(lineId) {
-      if (!this.blockRemoval) this.emails.splice(lineId, 1);
+      this.userEmails.splice(lineId, 1);
     },
     updateEmails: function updateEmails(index, email, password) {
-      this.emails[index].email = email;
-      this.emails[index].password = password;
-      this.$emit("email-details-updates", this.emails);
+      this.userEmails[index].email = email;
+      this.userEmails[index].password = password;
+      this.$emit("email-details-updates", this.userEmails);
     }
   },
   mounted: function mounted() {
@@ -6831,6 +6846,7 @@ __webpack_require__.r(__webpack_exports__);
   props: ["employer", "employmentDetailKey"],
   data: function data() {
     return {
+      id: "",
       employer_name: "",
       employer_phone: "",
       computer_username: "",
@@ -6842,12 +6858,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   watch: {
     benefits: {
-      handler: function handler() {
-        this.updateEmploymentDetails();
-      },
-      deep: true
-    },
-    employer_address: {
       handler: function handler() {
         this.updateEmploymentDetails();
       },
@@ -6894,11 +6904,13 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
+    this.id = this.employer.id;
     this.employer_name = this.employer.employer_name;
     this.computer_username = this.employer.computer_username;
     this.computer_password = this.employer.computer_password;
     this.phone = this.employer.phone;
-    this.employer_address = this.employer.employer_address; // this.benefits = this.employer.benefits;
+    this.employer_address = this.employer.address;
+    this.benefits = this.employer.benefits;
   }
 });
 
@@ -6914,6 +6926,13 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EmploymentDetail__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EmploymentDetail */ "./resources/js/components/personalinfo/elements/EmploymentDetail.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -6976,14 +6995,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     EmploymentDetail: _EmploymentDetail__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  props: ["userEmployers"],
   data: function data() {
     return {
-      employers: [],
       blockRemoval: true
     };
   },
@@ -6995,6 +7013,7 @@ __webpack_require__.r(__webpack_exports__);
       deep: true
     }
   },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])(["employers"])),
   methods: {
     addEmployers: function addEmployers() {
       this.employers.push({
@@ -7006,30 +7025,19 @@ __webpack_require__.r(__webpack_exports__);
         employee_benefits: []
       });
     },
-    populateEmployers: function populateEmployers() {
-      var _this = this;
-
-      if (this.userEmployers.length > 0) {
-        this.userEmployers.forEach(function (data) {
-          _this.employers.push({
-            employer_name: data.employer_name,
-            employer_phone: data.employer_phone,
-            employer_address: data.employer_address,
-            computer_username: data.computer_username,
-            computer_password: data.computer_password,
-            employee_benefits: data.benefits_used
-          });
-        });
-      } else {
-        this.employers.push({
-          employer_name: "",
-          employer_phone: "",
-          employer_address: [],
-          computer_username: "",
-          computer_password: "",
-          employee_benefits: []
-        });
-      }
+    populateEmployers: function populateEmployers() {// if (this.userEmployers.length > 0) {
+      // this.employers = this.userEmployers;
+      // this.userEmployers.forEach(data => {
+      //     this.employers.push({
+      //         employer_name: data.employer_name,
+      //         employer_phone: data.employer_phone,
+      //         employer_address: data.employer_address,
+      //         computer_username: data.computer_username,
+      //         computer_password: data.computer_password,
+      //         employee_benefits: data.benefits_used
+      //     });
+      // });
+      // }
     },
     removeEmployers: function removeEmployers(lineId) {
       if (!this.blockRemoval) this.employers.splice(lineId, 1);
@@ -7038,14 +7046,6 @@ __webpack_require__.r(__webpack_exports__);
       this.employers[index] = data;
       this.$emit("employment-details-updated", this.employers);
     }
-  },
-  mounted: function mounted() {
-    var _this2 = this;
-
-    this.$nextTick(function () {
-      //this.addEmployers();
-      _this2.populateEmployers();
-    });
   }
 });
 
@@ -7114,15 +7114,9 @@ __webpack_require__.r(__webpack_exports__);
     ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_0__["ValidationProvider"]
   },
   props: ["phoneNumber", "phoneKey"],
-  data: function data() {
-    return {
-      number: "",
-      key: ""
-    };
-  },
   computed: {
     phoneRemoveText: function phoneRemoveText() {
-      return "You want to remove " + "<strong>" + this.number + "</strong>?";
+      return "You want to remove " + "<strong>" + this.phoneNumber + "</strong>?";
     }
   },
   methods: {
@@ -7139,21 +7133,17 @@ __webpack_require__.r(__webpack_exports__);
         confirmButtonText: "Yes"
       }).then(function (result) {
         if (result.value) {
-          _this.$emit("remove-phone-number", _this.key);
+          _this.$emit("remove-phone-number", _this.phoneKey);
 
-          $swal.fire("Deleted!", "Your phone number is deleted", "success");
+          _this.$swal.fire("Deleted!", "Your phone number is deleted", "success");
         }
       });
     }
   },
   watch: {
-    number: function number() {
-      this.$emit("phone-number-update", this.key, this.number);
+    phoneNumber: function phoneNumber() {
+      this.$emit("phone-number-update", this.phoneKey, this.phoneNumber);
     }
-  },
-  mounted: function mounted() {
-    this.number = this.phoneNumber;
-    this.key = this.phoneKey;
   }
 });
 
@@ -7216,58 +7206,32 @@ __webpack_require__.r(__webpack_exports__);
   props: ["userPhones"],
   data: function data() {
     return {
-      phones: [],
       blockRemoval: true
     };
   },
   computed: {
     singlePhoneNumberIsAdded: function singlePhoneNumberIsAdded() {
-      return this.phones[0] !== undefined && (this.phones[0].number === undefined || this.phones[0].number === "");
+      return this.userPhones !== undefined && this.userPhones.length > 0;
     }
   },
   watch: {
     phones: function phones() {
-      this.blockRemoval = this.phones.length <= 1;
+      this.blockRemoval = this.userPhones.length <= 1;
     }
   },
   methods: {
     addPhone: function addPhone() {
-      this.phones.push({
-        number: null
+      this.userPhones.push({
+        phone: null
       });
     },
-    updatePhoneNumber: function updatePhoneNumber(index, number) {
-      this.phones[index].number = number;
-      this.$emit("phone-details-updates", this.phones);
-    },
-    populatePhone: function populatePhone() {
-      var _this = this;
-
-      if (this.userPhones.length > 0) {
-        this.userPhones.forEach(function (data) {
-          _this.phones.push({
-            number: data.phone
-          });
-        });
-      } else {
-        this.phones.push({
-          number: null
-        });
-      }
+    updatePhoneNumber: function updatePhoneNumber(index, phone) {
+      this.userPhones[index].phone = phone;
+      this.$emit("phone-details-updates", this.userPhones);
     },
     removePhone: function removePhone(lineId) {
-      if (!this.blockRemoval) this.phones.splice(lineId, 1);
+      this.userPhones.splice(lineId, 1);
     }
-  },
-  mounted: function mounted() {
-    var _this2 = this;
-
-    this.$nextTick(function () {
-      //this.addPhone()
-      console.log("Phone Details" + _this2.userPhones);
-
-      _this2.populatePhone();
-    });
   }
 });
 
@@ -7384,30 +7348,30 @@ __webpack_require__.r(__webpack_exports__);
   props: ["socialMediaKey", "socialMediaOptions", "socialMediaType", "socialMediaUsername", "socialMediaPassword"],
   data: function data() {
     return {
-      errors: [],
-      tempSocialMediaType: "",
-      tempUsername: "",
-      tempPassword: "",
-      index: ""
+      errors: []
     };
   },
   watch: {
-    tempSocialMediaType: function tempSocialMediaType() {
-      this.$emit("social-media-update", this.socialMediaKey, this.tempSocialMediaType, this.tempUsername, this.tempPassword);
+    socialMediaType: function socialMediaType() {
+      this.updateSocialMediaInformation();
     },
-    tempUsername: function tempUsername() {
-      this.$emit("social-media-update", this.socialMediaKey, this.tempSocialMediaType, this.tempUsername, this.tempPassword);
+    socialMediaUsername: function socialMediaUsername() {
+      this.updateSocialMediaInformation();
     },
-    tempPassword: function tempPassword() {
-      this.$emit("social-media-update", this.socialMediaKey, this.tempSocialMediaType, this.tempUsername, this.tempPassword);
+    socialMediaPassword: function socialMediaPassword() {
+      this.updateSocialMediaInformation();
     }
   },
   computed: {
     socialMediaRemoveText: function socialMediaRemoveText() {
-      return "You want to remove " + "<strong>" + this.socialMediaOptions[this.socialMediaType - 1].text + "</strong>" + " credentials?";
+      var text = this.socialMediaType ? this.socialMediaOptions[this.socialMediaType].text : "this field";
+      return "You want to remove " + "<strong>" + text + "</strong>" + " credentials?";
     }
   },
   methods: {
+    updateSocialMediaInformation: function updateSocialMediaInformation() {
+      this.$emit("social-media-update", this.socialMediaKey, this.socialMediaType, this.socialMediaUsername, this.socialMediaPassword);
+    },
     removeSocialMedia: function removeSocialMedia() {
       var _this = this;
 
@@ -7421,18 +7385,12 @@ __webpack_require__.r(__webpack_exports__);
         confirmButtonText: "Yes"
       }).then(function (result) {
         if (result.value) {
-          _this.$emit("social-media-removal", _this.index);
+          _this.$emit("social-media-removal", _this.socialMediaKey);
 
           $swal.fire("Deleted!", "Selected Social Media Credentials Removed!", "success");
         }
       });
     }
-  },
-  mounted: function mounted() {
-    this.index = this.socialMediaKey;
-    this.tempSocialMediaType = this.socialMediaType;
-    this.tempUsername = this.socialMediaUsername;
-    this.tempPassword = this.socialMediaPassword;
   }
 });
 
@@ -7524,10 +7482,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      socialValue: "",
-      socialOptions: [],
-      socialMedia: [],
-      blockRemoval: true
+      socialOptions: []
     };
   },
   created: function created() {
@@ -7539,32 +7494,18 @@ __webpack_require__.r(__webpack_exports__);
       }
     });
   },
-  watch: {
-    socialMedia: function socialMedia() {
-      this.blockRemoval = this.socialMedia.length <= 1;
-    }
-  },
   methods: {
     addSocialMedia: function addSocialMedia() {
-      this.socialMedia.push({
+      this.userSocials.push({
         social_id: null,
         username: null,
         password: null
       });
     },
     populateSocials: function populateSocials() {
-      var _this2 = this;
-
-      if (this.userSocials.length > 0) {
-        this.userSocials.forEach(function (data) {
-          _this2.socialMedia.push({
-            social_id: data.social_id,
-            username: data.username,
-            password: data.password
-          });
-        });
+      if (this.userSocials.length > 0) {// Do Nothinf
       } else {
-        this.socialMedia.push({
+        this.userSocials.push({
           social_id: null,
           username: null,
           password: null
@@ -7572,21 +7513,21 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     removeSocialMedia: function removeSocialMedia(lineId) {
-      if (!this.blockRemoval) this.socialMedia.splice(lineId, 1);
+      this.userSocials.splice(lineId, 1);
     },
     updateSocialMedia: function updateSocialMedia(index, socialMediaType, username, password) {
-      this.socialMedia[index].social_id = socialMediaType;
-      this.socialMedia[index].username = username;
-      this.socialMedia[index].password = password;
-      this.$emit("social-media-details-updates", this.socialMedia);
+      this.userSocials[index].social_id = socialMediaType;
+      this.userSocials[index].username = username;
+      this.userSocials[index].password = password;
+      this.$emit("social-media-details-updates", this.userSocials);
     }
   },
   mounted: function mounted() {
-    var _this3 = this;
+    var _this2 = this;
 
     this.$nextTick(function () {
       //this.addSocialMedia();
-      _this3.populateSocials();
+      _this2.populateSocials();
     });
   },
   socialChangeEvent: function socialChangeEvent(val) {
@@ -63417,7 +63358,7 @@ var render = function() {
   return _c("div", { staticClass: "c" }, [
     _c("div", { staticClass: "question-item" }, [
       _c("h3", { staticClass: "heading3" }, [
-        _vm._v("\n      Enter your personal details:\n    ")
+        _vm._v("\n            Enter your personal details:\n        ")
       ]),
       _vm._v(" "),
       _c(
@@ -63516,9 +63457,9 @@ var render = function() {
                                                   },
                                                   [
                                                     _vm._v(
-                                                      "\n                    " +
+                                                      "\n                                        " +
                                                         _vm._s(errors[0]) +
-                                                        "\n                  "
+                                                        "\n                                    "
                                                     )
                                                   ]
                                                 )
@@ -63600,9 +63541,9 @@ var render = function() {
                                                   },
                                                   [
                                                     _vm._v(
-                                                      "\n                    " +
+                                                      "\n                                        " +
                                                         _vm._s(errors[0]) +
-                                                        "\n                  "
+                                                        "\n                                    "
                                                     )
                                                   ]
                                                 )
@@ -63636,7 +63577,7 @@ var render = function() {
                             { staticClass: "col nopadding" },
                             [
                               _c("phone-details", {
-                                attrs: { "user-phones": _vm.phoneNumbers },
+                                attrs: { "user-phones": _vm.user.phones },
                                 on: {
                                   "phone-details-updates":
                                     _vm.updatePhoneNumbers
@@ -63718,9 +63659,9 @@ var render = function() {
                                                   },
                                                   [
                                                     _vm._v(
-                                                      "\n                    " +
+                                                      "\n                                        " +
                                                         _vm._s(errors[0]) +
-                                                        "\n                  "
+                                                        "\n                                    "
                                                     )
                                                   ]
                                                 )
@@ -63810,9 +63751,9 @@ var render = function() {
                                                     },
                                                     [
                                                       _vm._v(
-                                                        "\n                    " +
+                                                        "\n                                        " +
                                                           _vm._s(errors[0]) +
-                                                          "\n                  "
+                                                          "\n                                    "
                                                       )
                                                     ]
                                                   )
@@ -63902,9 +63843,9 @@ var render = function() {
                                                     },
                                                     [
                                                       _vm._v(
-                                                        "\n                    " +
+                                                        "\n                                        " +
                                                           _vm._s(errors[0]) +
-                                                          "\n                  "
+                                                          "\n                                    "
                                                       )
                                                     ]
                                                   )
@@ -63999,9 +63940,9 @@ var render = function() {
                                                     },
                                                     [
                                                       _vm._v(
-                                                        "\n                    " +
+                                                        "\n                                        " +
                                                           _vm._s(errors[0]) +
-                                                          "\n                  "
+                                                          "\n                                    "
                                                       )
                                                     ]
                                                   )
@@ -64092,9 +64033,9 @@ var render = function() {
                                                     },
                                                     [
                                                       _vm._v(
-                                                        "\n                    " +
+                                                        "\n                                        " +
                                                           _vm._s(errors[0]) +
-                                                          "\n                  "
+                                                          "\n                                    "
                                                       )
                                                     ]
                                                   )
@@ -64186,9 +64127,9 @@ var render = function() {
                                                     },
                                                     [
                                                       _vm._v(
-                                                        "\n                    " +
+                                                        "\n                                        " +
                                                           _vm._s(errors[0]) +
-                                                          "\n                  "
+                                                          "\n                                    "
                                                       )
                                                     ]
                                                   )
@@ -64279,9 +64220,9 @@ var render = function() {
                                                     },
                                                     [
                                                       _vm._v(
-                                                        "\n                    " +
+                                                        "\n                                        " +
                                                           _vm._s(errors[0]) +
-                                                          "\n                  "
+                                                          "\n                                    "
                                                       )
                                                     ]
                                                   )
@@ -64342,9 +64283,6 @@ var render = function() {
                             { staticClass: "col nopadding" },
                             [
                               _c("employment-details", {
-                                attrs: {
-                                  "user-employers": _vm.employmentDetails
-                                },
                                 on: {
                                   "employment-details-updated":
                                     _vm.updateEmploymentDetails
@@ -67668,8 +67606,8 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.streetAddress1,
-                            expression: "streetAddress1"
+                            value: _vm.homeAddress.street_address1,
+                            expression: "homeAddress.street_address1"
                           }
                         ],
                         staticClass: "field-input",
@@ -67678,13 +67616,17 @@ var render = function() {
                           name: _vm.addressType + "_street_address_1",
                           placeholder: "Street Address 1"
                         },
-                        domProps: { value: _vm.streetAddress1 },
+                        domProps: { value: _vm.homeAddress.street_address1 },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
-                            _vm.streetAddress1 = $event.target.value
+                            _vm.$set(
+                              _vm.homeAddress,
+                              "street_address1",
+                              $event.target.value
+                            )
                           }
                         }
                       }),
@@ -67738,8 +67680,8 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.streetAddress2,
-                            expression: "streetAddress2"
+                            value: _vm.homeAddress.street_address2,
+                            expression: "homeAddress.street_address2"
                           }
                         ],
                         staticClass: "field-input",
@@ -67748,13 +67690,17 @@ var render = function() {
                           name: _vm.addressType + "_street_address_2",
                           placeholder: "Street Address 2"
                         },
-                        domProps: { value: _vm.streetAddress2 },
+                        domProps: { value: _vm.homeAddress.street_address2 },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
-                            _vm.streetAddress2 = $event.target.value
+                            _vm.$set(
+                              _vm.homeAddress,
+                              "street_address2",
+                              $event.target.value
+                            )
                           }
                         }
                       }),
@@ -67806,8 +67752,8 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.city,
-                            expression: "city"
+                            value: _vm.homeAddress.city,
+                            expression: "homeAddress.city"
                           }
                         ],
                         staticClass: "field-input",
@@ -67816,13 +67762,17 @@ var render = function() {
                           name: _vm.addressType + "_city",
                           placeholder: "City"
                         },
-                        domProps: { value: _vm.city },
+                        domProps: { value: _vm.homeAddress.city },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
-                            _vm.city = $event.target.value
+                            _vm.$set(
+                              _vm.homeAddress,
+                              "city",
+                              $event.target.value
+                            )
                           }
                         }
                       }),
@@ -67874,8 +67824,8 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.state,
-                            expression: "state"
+                            value: _vm.homeAddress.state,
+                            expression: "homeAddress.state"
                           }
                         ],
                         staticClass: "field-input",
@@ -67884,13 +67834,17 @@ var render = function() {
                           name: _vm.addressType + "_state",
                           placeholder: "State"
                         },
-                        domProps: { value: _vm.state },
+                        domProps: { value: _vm.homeAddress.state },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
-                            _vm.state = $event.target.value
+                            _vm.$set(
+                              _vm.homeAddress,
+                              "state",
+                              $event.target.value
+                            )
                           }
                         }
                       }),
@@ -67942,8 +67896,8 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.zipcode,
-                            expression: "zipcode"
+                            value: _vm.homeAddress.zipcode,
+                            expression: "homeAddress.zipcode"
                           }
                         ],
                         staticClass: "field-input",
@@ -67952,13 +67906,17 @@ var render = function() {
                           name: _vm.addressType + "_zipcode",
                           placeholder: "Zipcode"
                         },
-                        domProps: { value: _vm.zipcode },
+                        domProps: { value: _vm.homeAddress.zipcode },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
-                            _vm.zipcode = $event.target.value
+                            _vm.$set(
+                              _vm.homeAddress,
+                              "zipcode",
+                              $event.target.value
+                            )
                           }
                         }
                       }),
@@ -68028,8 +67986,8 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.tempEmail,
-                        expression: "tempEmail"
+                        value: _vm.email,
+                        expression: "email"
                       }
                     ],
                     staticClass: "field-input field-input__first email",
@@ -68039,13 +67997,13 @@ var render = function() {
                       placeholder: "Email address",
                       value: ""
                     },
-                    domProps: { value: _vm.tempEmail },
+                    domProps: { value: _vm.email },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.tempEmail = $event.target.value
+                        _vm.email = $event.target.value
                       }
                     }
                   }),
@@ -68081,8 +68039,8 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.tempPassword,
-                        expression: "tempPassword"
+                        value: _vm.password,
+                        expression: "password"
                       }
                     ],
                     staticClass: "field-input field-input__last",
@@ -68092,13 +68050,13 @@ var render = function() {
                       placeholder: "password",
                       value: ""
                     },
-                    domProps: { value: _vm.tempPassword },
+                    domProps: { value: _vm.password },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.tempPassword = $event.target.value
+                        _vm.password = $event.target.value
                       }
                     }
                   }),
@@ -68117,7 +68075,7 @@ var render = function() {
       1
     ),
     _vm._v(" "),
-    _vm.key != 0
+    _vm.emailKey != 0
       ? _c(
           "a",
           {
@@ -68184,7 +68142,7 @@ var render = function() {
           _vm._v("\n            Email Addresses\n        ")
         ]),
         _vm._v(" "),
-        _vm._l(_vm.emails, function(email, index) {
+        _vm._l(_vm.userEmails, function(email, index) {
           return _c(
             "div",
             { key: index, staticClass: "field-wrapper" },
@@ -68212,8 +68170,8 @@ var render = function() {
               {
                 name: "show",
                 rawName: "v-show",
-                value: !_vm.singleEmailIsAdded,
-                expression: "!singleEmailIsAdded"
+                value: _vm.singleEmailIsAdded,
+                expression: "singleEmailIsAdded"
               }
             ],
             staticClass: "btn-add"
@@ -68441,9 +68399,9 @@ var render = function() {
       _c("home-address", {
         attrs: {
           "home-address": _vm.employer_address,
+          "employment-id": _vm.id,
           "address-type": "employer"
-        },
-        on: { "home-address-update": _vm.updateHomeAddress }
+        }
       }),
       _vm._v(" "),
       _c("div", { staticClass: "field-group" }, [
@@ -68808,8 +68766,8 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.number,
-                        expression: "number"
+                        value: _vm.phoneNumber,
+                        expression: "phoneNumber"
                       }
                     ],
                     staticClass: "field-input input-mobile",
@@ -68820,13 +68778,13 @@ var render = function() {
                       value: "",
                       name: "phone[]"
                     },
-                    domProps: { value: _vm.number },
+                    domProps: { value: _vm.phoneNumber },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.number = $event.target.value
+                        _vm.phoneNumber = $event.target.value
                       }
                     }
                   })
@@ -68838,7 +68796,7 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _vm.key != 0
+            _vm.phoneKey != 0
               ? _c(
                   "a",
                   {
@@ -68911,13 +68869,13 @@ var render = function() {
       "div",
       { staticClass: "add-anohter-field" },
       [
-        _vm._l(_vm.phones, function(phone, index) {
+        _vm._l(_vm.userPhones, function(phone, index) {
           return _c(
             "div",
             { key: index, staticClass: "field-wrapper" },
             [
               _c("phone", {
-                attrs: { "phone-key": index, "phone-number": phone.number },
+                attrs: { "phone-key": index, "phone-number": phone.phone },
                 on: {
                   "phone-number-update": _vm.updatePhoneNumber,
                   "remove-phone-number": _vm.removePhone
@@ -68935,8 +68893,8 @@ var render = function() {
               {
                 name: "show",
                 rawName: "v-show",
-                value: !_vm.singlePhoneNumberIsAdded,
-                expression: "!singlePhoneNumberIsAdded"
+                value: _vm.singlePhoneNumberIsAdded,
+                expression: "singlePhoneNumberIsAdded"
               }
             ],
             staticClass: "btn-add"
@@ -69028,11 +68986,11 @@ var render = function() {
                       options: _vm.socialMediaOptions
                     },
                     model: {
-                      value: _vm.tempSocialMediaType,
+                      value: _vm.socialMediaType,
                       callback: function($$v) {
-                        _vm.tempSocialMediaType = $$v
+                        _vm.socialMediaType = $$v
                       },
-                      expression: "tempSocialMediaType"
+                      expression: "socialMediaType"
                     }
                   }),
                   _vm._v(" "),
@@ -69071,8 +69029,8 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.tempUsername,
-                        expression: "tempUsername"
+                        value: _vm.socialMediaUsername,
+                        expression: "socialMediaUsername"
                       }
                     ],
                     staticClass: "field-input",
@@ -69082,13 +69040,13 @@ var render = function() {
                       placeholder: "Username",
                       value: ""
                     },
-                    domProps: { value: _vm.tempUsername },
+                    domProps: { value: _vm.socialMediaUsername },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.tempUsername = $event.target.value
+                        _vm.socialMediaUsername = $event.target.value
                       }
                     }
                   }),
@@ -69127,8 +69085,8 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.tempPassword,
-                        expression: "tempPassword"
+                        value: _vm.socialMediaPassword,
+                        expression: "socialMediaPassword"
                       }
                     ],
                     staticClass: "field-input field-input__last",
@@ -69138,13 +69096,13 @@ var render = function() {
                       placeholder: "Password",
                       value: ""
                     },
-                    domProps: { value: _vm.tempPassword },
+                    domProps: { value: _vm.socialMediaPassword },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.tempPassword = $event.target.value
+                        _vm.socialMediaPassword = $event.target.value
                       }
                     }
                   }),
@@ -69163,7 +69121,7 @@ var render = function() {
       1
     ),
     _vm._v(" "),
-    _vm.index != 0
+    _vm.socialMediaKey != 0
       ? _c(
           "a",
           {
@@ -69228,7 +69186,7 @@ var render = function() {
       "div",
       { staticClass: "add-anohter-field" },
       [
-        _vm._l(_vm.socialMedia, function(social, index) {
+        _vm._l(_vm.userSocials, function(social, index) {
           return _c(
             "div",
             { key: index, staticClass: "field-wrapper" },
@@ -69237,7 +69195,7 @@ var render = function() {
                 attrs: {
                   "social-media-key": index,
                   "social-media-options": _vm.socialOptions,
-                  "social-media-type": social.social,
+                  "social-media-type": social.social_id,
                   "social-media-username": social.username,
                   "social-media-password": social.password
                 },
@@ -94697,6 +94655,1076 @@ __vue_render__$4._withStripped = true;
 
 /***/ }),
 
+/***/ "./node_modules/vuex/dist/vuex.esm.js":
+/*!********************************************!*\
+  !*** ./node_modules/vuex/dist/vuex.esm.js ***!
+  \********************************************/
+/*! exports provided: default, Store, install, mapState, mapMutations, mapGetters, mapActions, createNamespacedHelpers */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Store", function() { return Store; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "install", function() { return install; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapState", function() { return mapState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapMutations", function() { return mapMutations; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapGetters", function() { return mapGetters; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapActions", function() { return mapActions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createNamespacedHelpers", function() { return createNamespacedHelpers; });
+/**
+ * vuex v3.1.2
+ * (c) 2019 Evan You
+ * @license MIT
+ */
+function applyMixin (Vue) {
+  var version = Number(Vue.version.split('.')[0]);
+
+  if (version >= 2) {
+    Vue.mixin({ beforeCreate: vuexInit });
+  } else {
+    // override init and inject vuex init procedure
+    // for 1.x backwards compatibility.
+    var _init = Vue.prototype._init;
+    Vue.prototype._init = function (options) {
+      if ( options === void 0 ) options = {};
+
+      options.init = options.init
+        ? [vuexInit].concat(options.init)
+        : vuexInit;
+      _init.call(this, options);
+    };
+  }
+
+  /**
+   * Vuex init hook, injected into each instances init hooks list.
+   */
+
+  function vuexInit () {
+    var options = this.$options;
+    // store injection
+    if (options.store) {
+      this.$store = typeof options.store === 'function'
+        ? options.store()
+        : options.store;
+    } else if (options.parent && options.parent.$store) {
+      this.$store = options.parent.$store;
+    }
+  }
+}
+
+var target = typeof window !== 'undefined'
+  ? window
+  : typeof global !== 'undefined'
+    ? global
+    : {};
+var devtoolHook = target.__VUE_DEVTOOLS_GLOBAL_HOOK__;
+
+function devtoolPlugin (store) {
+  if (!devtoolHook) { return }
+
+  store._devtoolHook = devtoolHook;
+
+  devtoolHook.emit('vuex:init', store);
+
+  devtoolHook.on('vuex:travel-to-state', function (targetState) {
+    store.replaceState(targetState);
+  });
+
+  store.subscribe(function (mutation, state) {
+    devtoolHook.emit('vuex:mutation', mutation, state);
+  });
+}
+
+/**
+ * Get the first item that pass the test
+ * by second argument function
+ *
+ * @param {Array} list
+ * @param {Function} f
+ * @return {*}
+ */
+
+/**
+ * forEach for object
+ */
+function forEachValue (obj, fn) {
+  Object.keys(obj).forEach(function (key) { return fn(obj[key], key); });
+}
+
+function isObject (obj) {
+  return obj !== null && typeof obj === 'object'
+}
+
+function isPromise (val) {
+  return val && typeof val.then === 'function'
+}
+
+function assert (condition, msg) {
+  if (!condition) { throw new Error(("[vuex] " + msg)) }
+}
+
+function partial (fn, arg) {
+  return function () {
+    return fn(arg)
+  }
+}
+
+// Base data struct for store's module, package with some attribute and method
+var Module = function Module (rawModule, runtime) {
+  this.runtime = runtime;
+  // Store some children item
+  this._children = Object.create(null);
+  // Store the origin module object which passed by programmer
+  this._rawModule = rawModule;
+  var rawState = rawModule.state;
+
+  // Store the origin module's state
+  this.state = (typeof rawState === 'function' ? rawState() : rawState) || {};
+};
+
+var prototypeAccessors = { namespaced: { configurable: true } };
+
+prototypeAccessors.namespaced.get = function () {
+  return !!this._rawModule.namespaced
+};
+
+Module.prototype.addChild = function addChild (key, module) {
+  this._children[key] = module;
+};
+
+Module.prototype.removeChild = function removeChild (key) {
+  delete this._children[key];
+};
+
+Module.prototype.getChild = function getChild (key) {
+  return this._children[key]
+};
+
+Module.prototype.update = function update (rawModule) {
+  this._rawModule.namespaced = rawModule.namespaced;
+  if (rawModule.actions) {
+    this._rawModule.actions = rawModule.actions;
+  }
+  if (rawModule.mutations) {
+    this._rawModule.mutations = rawModule.mutations;
+  }
+  if (rawModule.getters) {
+    this._rawModule.getters = rawModule.getters;
+  }
+};
+
+Module.prototype.forEachChild = function forEachChild (fn) {
+  forEachValue(this._children, fn);
+};
+
+Module.prototype.forEachGetter = function forEachGetter (fn) {
+  if (this._rawModule.getters) {
+    forEachValue(this._rawModule.getters, fn);
+  }
+};
+
+Module.prototype.forEachAction = function forEachAction (fn) {
+  if (this._rawModule.actions) {
+    forEachValue(this._rawModule.actions, fn);
+  }
+};
+
+Module.prototype.forEachMutation = function forEachMutation (fn) {
+  if (this._rawModule.mutations) {
+    forEachValue(this._rawModule.mutations, fn);
+  }
+};
+
+Object.defineProperties( Module.prototype, prototypeAccessors );
+
+var ModuleCollection = function ModuleCollection (rawRootModule) {
+  // register root module (Vuex.Store options)
+  this.register([], rawRootModule, false);
+};
+
+ModuleCollection.prototype.get = function get (path) {
+  return path.reduce(function (module, key) {
+    return module.getChild(key)
+  }, this.root)
+};
+
+ModuleCollection.prototype.getNamespace = function getNamespace (path) {
+  var module = this.root;
+  return path.reduce(function (namespace, key) {
+    module = module.getChild(key);
+    return namespace + (module.namespaced ? key + '/' : '')
+  }, '')
+};
+
+ModuleCollection.prototype.update = function update$1 (rawRootModule) {
+  update([], this.root, rawRootModule);
+};
+
+ModuleCollection.prototype.register = function register (path, rawModule, runtime) {
+    var this$1 = this;
+    if ( runtime === void 0 ) runtime = true;
+
+  if (true) {
+    assertRawModule(path, rawModule);
+  }
+
+  var newModule = new Module(rawModule, runtime);
+  if (path.length === 0) {
+    this.root = newModule;
+  } else {
+    var parent = this.get(path.slice(0, -1));
+    parent.addChild(path[path.length - 1], newModule);
+  }
+
+  // register nested modules
+  if (rawModule.modules) {
+    forEachValue(rawModule.modules, function (rawChildModule, key) {
+      this$1.register(path.concat(key), rawChildModule, runtime);
+    });
+  }
+};
+
+ModuleCollection.prototype.unregister = function unregister (path) {
+  var parent = this.get(path.slice(0, -1));
+  var key = path[path.length - 1];
+  if (!parent.getChild(key).runtime) { return }
+
+  parent.removeChild(key);
+};
+
+function update (path, targetModule, newModule) {
+  if (true) {
+    assertRawModule(path, newModule);
+  }
+
+  // update target module
+  targetModule.update(newModule);
+
+  // update nested modules
+  if (newModule.modules) {
+    for (var key in newModule.modules) {
+      if (!targetModule.getChild(key)) {
+        if (true) {
+          console.warn(
+            "[vuex] trying to add a new module '" + key + "' on hot reloading, " +
+            'manual reload is needed'
+          );
+        }
+        return
+      }
+      update(
+        path.concat(key),
+        targetModule.getChild(key),
+        newModule.modules[key]
+      );
+    }
+  }
+}
+
+var functionAssert = {
+  assert: function (value) { return typeof value === 'function'; },
+  expected: 'function'
+};
+
+var objectAssert = {
+  assert: function (value) { return typeof value === 'function' ||
+    (typeof value === 'object' && typeof value.handler === 'function'); },
+  expected: 'function or object with "handler" function'
+};
+
+var assertTypes = {
+  getters: functionAssert,
+  mutations: functionAssert,
+  actions: objectAssert
+};
+
+function assertRawModule (path, rawModule) {
+  Object.keys(assertTypes).forEach(function (key) {
+    if (!rawModule[key]) { return }
+
+    var assertOptions = assertTypes[key];
+
+    forEachValue(rawModule[key], function (value, type) {
+      assert(
+        assertOptions.assert(value),
+        makeAssertionMessage(path, key, type, value, assertOptions.expected)
+      );
+    });
+  });
+}
+
+function makeAssertionMessage (path, key, type, value, expected) {
+  var buf = key + " should be " + expected + " but \"" + key + "." + type + "\"";
+  if (path.length > 0) {
+    buf += " in module \"" + (path.join('.')) + "\"";
+  }
+  buf += " is " + (JSON.stringify(value)) + ".";
+  return buf
+}
+
+var Vue; // bind on install
+
+var Store = function Store (options) {
+  var this$1 = this;
+  if ( options === void 0 ) options = {};
+
+  // Auto install if it is not done yet and `window` has `Vue`.
+  // To allow users to avoid auto-installation in some cases,
+  // this code should be placed here. See #731
+  if (!Vue && typeof window !== 'undefined' && window.Vue) {
+    install(window.Vue);
+  }
+
+  if (true) {
+    assert(Vue, "must call Vue.use(Vuex) before creating a store instance.");
+    assert(typeof Promise !== 'undefined', "vuex requires a Promise polyfill in this browser.");
+    assert(this instanceof Store, "store must be called with the new operator.");
+  }
+
+  var plugins = options.plugins; if ( plugins === void 0 ) plugins = [];
+  var strict = options.strict; if ( strict === void 0 ) strict = false;
+
+  // store internal state
+  this._committing = false;
+  this._actions = Object.create(null);
+  this._actionSubscribers = [];
+  this._mutations = Object.create(null);
+  this._wrappedGetters = Object.create(null);
+  this._modules = new ModuleCollection(options);
+  this._modulesNamespaceMap = Object.create(null);
+  this._subscribers = [];
+  this._watcherVM = new Vue();
+  this._makeLocalGettersCache = Object.create(null);
+
+  // bind commit and dispatch to self
+  var store = this;
+  var ref = this;
+  var dispatch = ref.dispatch;
+  var commit = ref.commit;
+  this.dispatch = function boundDispatch (type, payload) {
+    return dispatch.call(store, type, payload)
+  };
+  this.commit = function boundCommit (type, payload, options) {
+    return commit.call(store, type, payload, options)
+  };
+
+  // strict mode
+  this.strict = strict;
+
+  var state = this._modules.root.state;
+
+  // init root module.
+  // this also recursively registers all sub-modules
+  // and collects all module getters inside this._wrappedGetters
+  installModule(this, state, [], this._modules.root);
+
+  // initialize the store vm, which is responsible for the reactivity
+  // (also registers _wrappedGetters as computed properties)
+  resetStoreVM(this, state);
+
+  // apply plugins
+  plugins.forEach(function (plugin) { return plugin(this$1); });
+
+  var useDevtools = options.devtools !== undefined ? options.devtools : Vue.config.devtools;
+  if (useDevtools) {
+    devtoolPlugin(this);
+  }
+};
+
+var prototypeAccessors$1 = { state: { configurable: true } };
+
+prototypeAccessors$1.state.get = function () {
+  return this._vm._data.$$state
+};
+
+prototypeAccessors$1.state.set = function (v) {
+  if (true) {
+    assert(false, "use store.replaceState() to explicit replace store state.");
+  }
+};
+
+Store.prototype.commit = function commit (_type, _payload, _options) {
+    var this$1 = this;
+
+  // check object-style commit
+  var ref = unifyObjectStyle(_type, _payload, _options);
+    var type = ref.type;
+    var payload = ref.payload;
+    var options = ref.options;
+
+  var mutation = { type: type, payload: payload };
+  var entry = this._mutations[type];
+  if (!entry) {
+    if (true) {
+      console.error(("[vuex] unknown mutation type: " + type));
+    }
+    return
+  }
+  this._withCommit(function () {
+    entry.forEach(function commitIterator (handler) {
+      handler(payload);
+    });
+  });
+  this._subscribers.forEach(function (sub) { return sub(mutation, this$1.state); });
+
+  if (
+     true &&
+    options && options.silent
+  ) {
+    console.warn(
+      "[vuex] mutation type: " + type + ". Silent option has been removed. " +
+      'Use the filter functionality in the vue-devtools'
+    );
+  }
+};
+
+Store.prototype.dispatch = function dispatch (_type, _payload) {
+    var this$1 = this;
+
+  // check object-style dispatch
+  var ref = unifyObjectStyle(_type, _payload);
+    var type = ref.type;
+    var payload = ref.payload;
+
+  var action = { type: type, payload: payload };
+  var entry = this._actions[type];
+  if (!entry) {
+    if (true) {
+      console.error(("[vuex] unknown action type: " + type));
+    }
+    return
+  }
+
+  try {
+    this._actionSubscribers
+      .filter(function (sub) { return sub.before; })
+      .forEach(function (sub) { return sub.before(action, this$1.state); });
+  } catch (e) {
+    if (true) {
+      console.warn("[vuex] error in before action subscribers: ");
+      console.error(e);
+    }
+  }
+
+  var result = entry.length > 1
+    ? Promise.all(entry.map(function (handler) { return handler(payload); }))
+    : entry[0](payload);
+
+  return result.then(function (res) {
+    try {
+      this$1._actionSubscribers
+        .filter(function (sub) { return sub.after; })
+        .forEach(function (sub) { return sub.after(action, this$1.state); });
+    } catch (e) {
+      if (true) {
+        console.warn("[vuex] error in after action subscribers: ");
+        console.error(e);
+      }
+    }
+    return res
+  })
+};
+
+Store.prototype.subscribe = function subscribe (fn) {
+  return genericSubscribe(fn, this._subscribers)
+};
+
+Store.prototype.subscribeAction = function subscribeAction (fn) {
+  var subs = typeof fn === 'function' ? { before: fn } : fn;
+  return genericSubscribe(subs, this._actionSubscribers)
+};
+
+Store.prototype.watch = function watch (getter, cb, options) {
+    var this$1 = this;
+
+  if (true) {
+    assert(typeof getter === 'function', "store.watch only accepts a function.");
+  }
+  return this._watcherVM.$watch(function () { return getter(this$1.state, this$1.getters); }, cb, options)
+};
+
+Store.prototype.replaceState = function replaceState (state) {
+    var this$1 = this;
+
+  this._withCommit(function () {
+    this$1._vm._data.$$state = state;
+  });
+};
+
+Store.prototype.registerModule = function registerModule (path, rawModule, options) {
+    if ( options === void 0 ) options = {};
+
+  if (typeof path === 'string') { path = [path]; }
+
+  if (true) {
+    assert(Array.isArray(path), "module path must be a string or an Array.");
+    assert(path.length > 0, 'cannot register the root module by using registerModule.');
+  }
+
+  this._modules.register(path, rawModule);
+  installModule(this, this.state, path, this._modules.get(path), options.preserveState);
+  // reset store to update getters...
+  resetStoreVM(this, this.state);
+};
+
+Store.prototype.unregisterModule = function unregisterModule (path) {
+    var this$1 = this;
+
+  if (typeof path === 'string') { path = [path]; }
+
+  if (true) {
+    assert(Array.isArray(path), "module path must be a string or an Array.");
+  }
+
+  this._modules.unregister(path);
+  this._withCommit(function () {
+    var parentState = getNestedState(this$1.state, path.slice(0, -1));
+    Vue.delete(parentState, path[path.length - 1]);
+  });
+  resetStore(this);
+};
+
+Store.prototype.hotUpdate = function hotUpdate (newOptions) {
+  this._modules.update(newOptions);
+  resetStore(this, true);
+};
+
+Store.prototype._withCommit = function _withCommit (fn) {
+  var committing = this._committing;
+  this._committing = true;
+  fn();
+  this._committing = committing;
+};
+
+Object.defineProperties( Store.prototype, prototypeAccessors$1 );
+
+function genericSubscribe (fn, subs) {
+  if (subs.indexOf(fn) < 0) {
+    subs.push(fn);
+  }
+  return function () {
+    var i = subs.indexOf(fn);
+    if (i > -1) {
+      subs.splice(i, 1);
+    }
+  }
+}
+
+function resetStore (store, hot) {
+  store._actions = Object.create(null);
+  store._mutations = Object.create(null);
+  store._wrappedGetters = Object.create(null);
+  store._modulesNamespaceMap = Object.create(null);
+  var state = store.state;
+  // init all modules
+  installModule(store, state, [], store._modules.root, true);
+  // reset vm
+  resetStoreVM(store, state, hot);
+}
+
+function resetStoreVM (store, state, hot) {
+  var oldVm = store._vm;
+
+  // bind store public getters
+  store.getters = {};
+  // reset local getters cache
+  store._makeLocalGettersCache = Object.create(null);
+  var wrappedGetters = store._wrappedGetters;
+  var computed = {};
+  forEachValue(wrappedGetters, function (fn, key) {
+    // use computed to leverage its lazy-caching mechanism
+    // direct inline function use will lead to closure preserving oldVm.
+    // using partial to return function with only arguments preserved in closure environment.
+    computed[key] = partial(fn, store);
+    Object.defineProperty(store.getters, key, {
+      get: function () { return store._vm[key]; },
+      enumerable: true // for local getters
+    });
+  });
+
+  // use a Vue instance to store the state tree
+  // suppress warnings just in case the user has added
+  // some funky global mixins
+  var silent = Vue.config.silent;
+  Vue.config.silent = true;
+  store._vm = new Vue({
+    data: {
+      $$state: state
+    },
+    computed: computed
+  });
+  Vue.config.silent = silent;
+
+  // enable strict mode for new vm
+  if (store.strict) {
+    enableStrictMode(store);
+  }
+
+  if (oldVm) {
+    if (hot) {
+      // dispatch changes in all subscribed watchers
+      // to force getter re-evaluation for hot reloading.
+      store._withCommit(function () {
+        oldVm._data.$$state = null;
+      });
+    }
+    Vue.nextTick(function () { return oldVm.$destroy(); });
+  }
+}
+
+function installModule (store, rootState, path, module, hot) {
+  var isRoot = !path.length;
+  var namespace = store._modules.getNamespace(path);
+
+  // register in namespace map
+  if (module.namespaced) {
+    if (store._modulesNamespaceMap[namespace] && "development" !== 'production') {
+      console.error(("[vuex] duplicate namespace " + namespace + " for the namespaced module " + (path.join('/'))));
+    }
+    store._modulesNamespaceMap[namespace] = module;
+  }
+
+  // set state
+  if (!isRoot && !hot) {
+    var parentState = getNestedState(rootState, path.slice(0, -1));
+    var moduleName = path[path.length - 1];
+    store._withCommit(function () {
+      if (true) {
+        if (moduleName in parentState) {
+          console.warn(
+            ("[vuex] state field \"" + moduleName + "\" was overridden by a module with the same name at \"" + (path.join('.')) + "\"")
+          );
+        }
+      }
+      Vue.set(parentState, moduleName, module.state);
+    });
+  }
+
+  var local = module.context = makeLocalContext(store, namespace, path);
+
+  module.forEachMutation(function (mutation, key) {
+    var namespacedType = namespace + key;
+    registerMutation(store, namespacedType, mutation, local);
+  });
+
+  module.forEachAction(function (action, key) {
+    var type = action.root ? key : namespace + key;
+    var handler = action.handler || action;
+    registerAction(store, type, handler, local);
+  });
+
+  module.forEachGetter(function (getter, key) {
+    var namespacedType = namespace + key;
+    registerGetter(store, namespacedType, getter, local);
+  });
+
+  module.forEachChild(function (child, key) {
+    installModule(store, rootState, path.concat(key), child, hot);
+  });
+}
+
+/**
+ * make localized dispatch, commit, getters and state
+ * if there is no namespace, just use root ones
+ */
+function makeLocalContext (store, namespace, path) {
+  var noNamespace = namespace === '';
+
+  var local = {
+    dispatch: noNamespace ? store.dispatch : function (_type, _payload, _options) {
+      var args = unifyObjectStyle(_type, _payload, _options);
+      var payload = args.payload;
+      var options = args.options;
+      var type = args.type;
+
+      if (!options || !options.root) {
+        type = namespace + type;
+        if ( true && !store._actions[type]) {
+          console.error(("[vuex] unknown local action type: " + (args.type) + ", global type: " + type));
+          return
+        }
+      }
+
+      return store.dispatch(type, payload)
+    },
+
+    commit: noNamespace ? store.commit : function (_type, _payload, _options) {
+      var args = unifyObjectStyle(_type, _payload, _options);
+      var payload = args.payload;
+      var options = args.options;
+      var type = args.type;
+
+      if (!options || !options.root) {
+        type = namespace + type;
+        if ( true && !store._mutations[type]) {
+          console.error(("[vuex] unknown local mutation type: " + (args.type) + ", global type: " + type));
+          return
+        }
+      }
+
+      store.commit(type, payload, options);
+    }
+  };
+
+  // getters and state object must be gotten lazily
+  // because they will be changed by vm update
+  Object.defineProperties(local, {
+    getters: {
+      get: noNamespace
+        ? function () { return store.getters; }
+        : function () { return makeLocalGetters(store, namespace); }
+    },
+    state: {
+      get: function () { return getNestedState(store.state, path); }
+    }
+  });
+
+  return local
+}
+
+function makeLocalGetters (store, namespace) {
+  if (!store._makeLocalGettersCache[namespace]) {
+    var gettersProxy = {};
+    var splitPos = namespace.length;
+    Object.keys(store.getters).forEach(function (type) {
+      // skip if the target getter is not match this namespace
+      if (type.slice(0, splitPos) !== namespace) { return }
+
+      // extract local getter type
+      var localType = type.slice(splitPos);
+
+      // Add a port to the getters proxy.
+      // Define as getter property because
+      // we do not want to evaluate the getters in this time.
+      Object.defineProperty(gettersProxy, localType, {
+        get: function () { return store.getters[type]; },
+        enumerable: true
+      });
+    });
+    store._makeLocalGettersCache[namespace] = gettersProxy;
+  }
+
+  return store._makeLocalGettersCache[namespace]
+}
+
+function registerMutation (store, type, handler, local) {
+  var entry = store._mutations[type] || (store._mutations[type] = []);
+  entry.push(function wrappedMutationHandler (payload) {
+    handler.call(store, local.state, payload);
+  });
+}
+
+function registerAction (store, type, handler, local) {
+  var entry = store._actions[type] || (store._actions[type] = []);
+  entry.push(function wrappedActionHandler (payload) {
+    var res = handler.call(store, {
+      dispatch: local.dispatch,
+      commit: local.commit,
+      getters: local.getters,
+      state: local.state,
+      rootGetters: store.getters,
+      rootState: store.state
+    }, payload);
+    if (!isPromise(res)) {
+      res = Promise.resolve(res);
+    }
+    if (store._devtoolHook) {
+      return res.catch(function (err) {
+        store._devtoolHook.emit('vuex:error', err);
+        throw err
+      })
+    } else {
+      return res
+    }
+  });
+}
+
+function registerGetter (store, type, rawGetter, local) {
+  if (store._wrappedGetters[type]) {
+    if (true) {
+      console.error(("[vuex] duplicate getter key: " + type));
+    }
+    return
+  }
+  store._wrappedGetters[type] = function wrappedGetter (store) {
+    return rawGetter(
+      local.state, // local state
+      local.getters, // local getters
+      store.state, // root state
+      store.getters // root getters
+    )
+  };
+}
+
+function enableStrictMode (store) {
+  store._vm.$watch(function () { return this._data.$$state }, function () {
+    if (true) {
+      assert(store._committing, "do not mutate vuex store state outside mutation handlers.");
+    }
+  }, { deep: true, sync: true });
+}
+
+function getNestedState (state, path) {
+  return path.length
+    ? path.reduce(function (state, key) { return state[key]; }, state)
+    : state
+}
+
+function unifyObjectStyle (type, payload, options) {
+  if (isObject(type) && type.type) {
+    options = payload;
+    payload = type;
+    type = type.type;
+  }
+
+  if (true) {
+    assert(typeof type === 'string', ("expects string as the type, but found " + (typeof type) + "."));
+  }
+
+  return { type: type, payload: payload, options: options }
+}
+
+function install (_Vue) {
+  if (Vue && _Vue === Vue) {
+    if (true) {
+      console.error(
+        '[vuex] already installed. Vue.use(Vuex) should be called only once.'
+      );
+    }
+    return
+  }
+  Vue = _Vue;
+  applyMixin(Vue);
+}
+
+/**
+ * Reduce the code which written in Vue.js for getting the state.
+ * @param {String} [namespace] - Module's namespace
+ * @param {Object|Array} states # Object's item can be a function which accept state and getters for param, you can do something for state and getters in it.
+ * @param {Object}
+ */
+var mapState = normalizeNamespace(function (namespace, states) {
+  var res = {};
+  if ( true && !isValidMap(states)) {
+    console.error('[vuex] mapState: mapper parameter must be either an Array or an Object');
+  }
+  normalizeMap(states).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedState () {
+      var state = this.$store.state;
+      var getters = this.$store.getters;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapState', namespace);
+        if (!module) {
+          return
+        }
+        state = module.context.state;
+        getters = module.context.getters;
+      }
+      return typeof val === 'function'
+        ? val.call(this, state, getters)
+        : state[val]
+    };
+    // mark vuex getter for devtools
+    res[key].vuex = true;
+  });
+  return res
+});
+
+/**
+ * Reduce the code which written in Vue.js for committing the mutation
+ * @param {String} [namespace] - Module's namespace
+ * @param {Object|Array} mutations # Object's item can be a function which accept `commit` function as the first param, it can accept anthor params. You can commit mutation and do any other things in this function. specially, You need to pass anthor params from the mapped function.
+ * @return {Object}
+ */
+var mapMutations = normalizeNamespace(function (namespace, mutations) {
+  var res = {};
+  if ( true && !isValidMap(mutations)) {
+    console.error('[vuex] mapMutations: mapper parameter must be either an Array or an Object');
+  }
+  normalizeMap(mutations).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedMutation () {
+      var args = [], len = arguments.length;
+      while ( len-- ) args[ len ] = arguments[ len ];
+
+      // Get the commit method from store
+      var commit = this.$store.commit;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapMutations', namespace);
+        if (!module) {
+          return
+        }
+        commit = module.context.commit;
+      }
+      return typeof val === 'function'
+        ? val.apply(this, [commit].concat(args))
+        : commit.apply(this.$store, [val].concat(args))
+    };
+  });
+  return res
+});
+
+/**
+ * Reduce the code which written in Vue.js for getting the getters
+ * @param {String} [namespace] - Module's namespace
+ * @param {Object|Array} getters
+ * @return {Object}
+ */
+var mapGetters = normalizeNamespace(function (namespace, getters) {
+  var res = {};
+  if ( true && !isValidMap(getters)) {
+    console.error('[vuex] mapGetters: mapper parameter must be either an Array or an Object');
+  }
+  normalizeMap(getters).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    // The namespace has been mutated by normalizeNamespace
+    val = namespace + val;
+    res[key] = function mappedGetter () {
+      if (namespace && !getModuleByNamespace(this.$store, 'mapGetters', namespace)) {
+        return
+      }
+      if ( true && !(val in this.$store.getters)) {
+        console.error(("[vuex] unknown getter: " + val));
+        return
+      }
+      return this.$store.getters[val]
+    };
+    // mark vuex getter for devtools
+    res[key].vuex = true;
+  });
+  return res
+});
+
+/**
+ * Reduce the code which written in Vue.js for dispatch the action
+ * @param {String} [namespace] - Module's namespace
+ * @param {Object|Array} actions # Object's item can be a function which accept `dispatch` function as the first param, it can accept anthor params. You can dispatch action and do any other things in this function. specially, You need to pass anthor params from the mapped function.
+ * @return {Object}
+ */
+var mapActions = normalizeNamespace(function (namespace, actions) {
+  var res = {};
+  if ( true && !isValidMap(actions)) {
+    console.error('[vuex] mapActions: mapper parameter must be either an Array or an Object');
+  }
+  normalizeMap(actions).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedAction () {
+      var args = [], len = arguments.length;
+      while ( len-- ) args[ len ] = arguments[ len ];
+
+      // get dispatch function from store
+      var dispatch = this.$store.dispatch;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapActions', namespace);
+        if (!module) {
+          return
+        }
+        dispatch = module.context.dispatch;
+      }
+      return typeof val === 'function'
+        ? val.apply(this, [dispatch].concat(args))
+        : dispatch.apply(this.$store, [val].concat(args))
+    };
+  });
+  return res
+});
+
+/**
+ * Rebinding namespace param for mapXXX function in special scoped, and return them by simple object
+ * @param {String} namespace
+ * @return {Object}
+ */
+var createNamespacedHelpers = function (namespace) { return ({
+  mapState: mapState.bind(null, namespace),
+  mapGetters: mapGetters.bind(null, namespace),
+  mapMutations: mapMutations.bind(null, namespace),
+  mapActions: mapActions.bind(null, namespace)
+}); };
+
+/**
+ * Normalize the map
+ * normalizeMap([1, 2, 3]) => [ { key: 1, val: 1 }, { key: 2, val: 2 }, { key: 3, val: 3 } ]
+ * normalizeMap({a: 1, b: 2, c: 3}) => [ { key: 'a', val: 1 }, { key: 'b', val: 2 }, { key: 'c', val: 3 } ]
+ * @param {Array|Object} map
+ * @return {Object}
+ */
+function normalizeMap (map) {
+  if (!isValidMap(map)) {
+    return []
+  }
+  return Array.isArray(map)
+    ? map.map(function (key) { return ({ key: key, val: key }); })
+    : Object.keys(map).map(function (key) { return ({ key: key, val: map[key] }); })
+}
+
+/**
+ * Validate whether given map is valid or not
+ * @param {*} map
+ * @return {Boolean}
+ */
+function isValidMap (map) {
+  return Array.isArray(map) || isObject(map)
+}
+
+/**
+ * Return a function expect two param contains namespace and map. it will normalize the namespace and then the param's function will handle the new namespace and the map.
+ * @param {Function} fn
+ * @return {Function}
+ */
+function normalizeNamespace (fn) {
+  return function (namespace, map) {
+    if (typeof namespace !== 'string') {
+      map = namespace;
+      namespace = '';
+    } else if (namespace.charAt(namespace.length - 1) !== '/') {
+      namespace += '/';
+    }
+    return fn(namespace, map)
+  }
+}
+
+/**
+ * Search a special module from store by namespace. if module not exist, print error message.
+ * @param {Object} store
+ * @param {String} helper
+ * @param {String} namespace
+ * @return {Object}
+ */
+function getModuleByNamespace (store, helper, namespace) {
+  var module = store._modulesNamespaceMap[namespace];
+  if ( true && !module) {
+    console.error(("[vuex] module namespace not found in " + helper + "(): " + namespace));
+  }
+  return module
+}
+
+var index_esm = {
+  Store: Store,
+  install: install,
+  version: '3.1.2',
+  mapState: mapState,
+  mapMutations: mapMutations,
+  mapGetters: mapGetters,
+  mapActions: mapActions,
+  createNamespacedHelpers: createNamespacedHelpers
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (index_esm);
+
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
+
+/***/ }),
+
 /***/ "./node_modules/webpack/buildin/amd-options.js":
 /*!****************************************!*\
   !*** (webpack)/buildin/amd-options.js ***!
@@ -94787,15 +95815,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
-/* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
-/* harmony import */ var vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vee-validate/dist/rules */ "./node_modules/vee-validate/dist/rules.js");
-/* harmony import */ var vee_validate_laravel__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vee-validate-laravel */ "./node_modules/vee-validate-laravel/dist/vee-validate-laravel.js");
-/* harmony import */ var vee_validate_laravel__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vee_validate_laravel__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var vue_sweetalert2__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue-sweetalert2 */ "./node_modules/vue-sweetalert2/dist/index.js");
-/* harmony import */ var v_mask__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! v-mask */ "./node_modules/v-mask/dist/v-mask.esm.js");
-/* harmony import */ var sweetalert2_dist_sweetalert2_min_css__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! sweetalert2/dist/sweetalert2.min.css */ "./node_modules/sweetalert2/dist/sweetalert2.min.css");
-/* harmony import */ var sweetalert2_dist_sweetalert2_min_css__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(sweetalert2_dist_sweetalert2_min_css__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _store_mainStore__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./store/mainStore */ "./resources/js/store/mainStore.js");
+/* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
+/* harmony import */ var vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vee-validate/dist/rules */ "./node_modules/vee-validate/dist/rules.js");
+/* harmony import */ var vee_validate_laravel__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vee-validate-laravel */ "./node_modules/vee-validate-laravel/dist/vee-validate-laravel.js");
+/* harmony import */ var vee_validate_laravel__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(vee_validate_laravel__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var vue_sweetalert2__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vue-sweetalert2 */ "./node_modules/vue-sweetalert2/dist/index.js");
+/* harmony import */ var v_mask__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! v-mask */ "./node_modules/v-mask/dist/v-mask.esm.js");
+/* harmony import */ var sweetalert2_dist_sweetalert2_min_css__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! sweetalert2/dist/sweetalert2.min.css */ "./node_modules/sweetalert2/dist/sweetalert2.min.css");
+/* harmony import */ var sweetalert2_dist_sweetalert2_min_css__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(sweetalert2_dist_sweetalert2_min_css__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -94839,7 +95869,6 @@ __webpack_require__(/*! ./mCustomScrollbar.concat.min.js */ "./resources/js/mCus
 __webpack_require__(/*! ./jquery-mousewheel.js */ "./resources/js/jquery-mousewheel.js");
 
 
- //import Vuelidate from 'vuelidate';
 
 
 
@@ -94848,16 +95877,18 @@ __webpack_require__(/*! ./jquery-mousewheel.js */ "./resources/js/jquery-mousewh
 
 
 
-Object(vee_validate__WEBPACK_IMPORTED_MODULE_2__["extend"])("max", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_3__["max"]);
-Object(vee_validate__WEBPACK_IMPORTED_MODULE_2__["extend"])("alpha_spaces", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_3__["alpha_spaces"]);
-Object(vee_validate__WEBPACK_IMPORTED_MODULE_2__["extend"])("email", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_3__["email"]);
-Object(vee_validate__WEBPACK_IMPORTED_MODULE_2__["extend"])("alpha_num", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_3__["alpha_num"]);
-Object(vee_validate__WEBPACK_IMPORTED_MODULE_2__["extend"])("required_if", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_3__["required_if"]);
-Object(vee_validate__WEBPACK_IMPORTED_MODULE_2__["extend"])("regex", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_3__["regex"]);
-Object(vee_validate__WEBPACK_IMPORTED_MODULE_2__["extend"])("required", _objectSpread({}, vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_3__["required"], {
+
+
+Object(vee_validate__WEBPACK_IMPORTED_MODULE_4__["extend"])("max", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_5__["max"]);
+Object(vee_validate__WEBPACK_IMPORTED_MODULE_4__["extend"])("alpha_spaces", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_5__["alpha_spaces"]);
+Object(vee_validate__WEBPACK_IMPORTED_MODULE_4__["extend"])("email", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_5__["email"]);
+Object(vee_validate__WEBPACK_IMPORTED_MODULE_4__["extend"])("alpha_num", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_5__["alpha_num"]);
+Object(vee_validate__WEBPACK_IMPORTED_MODULE_4__["extend"])("required_if", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_5__["required_if"]);
+Object(vee_validate__WEBPACK_IMPORTED_MODULE_4__["extend"])("regex", vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_5__["regex"]);
+Object(vee_validate__WEBPACK_IMPORTED_MODULE_4__["extend"])("required", _objectSpread({}, vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_5__["required"], {
   message: "This {_field_} is required"
 }));
-Object(vee_validate__WEBPACK_IMPORTED_MODULE_2__["extend"])("is_phone", function (value) {
+Object(vee_validate__WEBPACK_IMPORTED_MODULE_4__["extend"])("is_phone", function (value) {
   var phoneRegex = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/;
 
   if (value.match(phoneRegex)) {
@@ -94866,7 +95897,7 @@ Object(vee_validate__WEBPACK_IMPORTED_MODULE_2__["extend"])("is_phone", function
 
   return "Phone Number should be valid and should contain 10 digits";
 });
-Object(vee_validate__WEBPACK_IMPORTED_MODULE_2__["extend"])("address", function (value) {
+Object(vee_validate__WEBPACK_IMPORTED_MODULE_4__["extend"])("address", function (value) {
   var addressRegex = /^[\w .,!?-]+$/;
 
   if (value.match(addressRegex)) {
@@ -94875,7 +95906,7 @@ Object(vee_validate__WEBPACK_IMPORTED_MODULE_2__["extend"])("address", function 
 
   return "The {_field_} must contain only Alphanumeric and Special Characters (,.-?!)";
 });
-Object(vee_validate__WEBPACK_IMPORTED_MODULE_2__["extend"])("date", function (value) {
+Object(vee_validate__WEBPACK_IMPORTED_MODULE_4__["extend"])("date", function (value) {
   var dateRegex = /^(?:(0[1-9]|1[012])[\/.](0[1-9]|[12][0-9]|3[01])[\/.](19|20)[0-9]{2})$/;
 
   if (value.match(dateRegex)) {
@@ -94884,7 +95915,7 @@ Object(vee_validate__WEBPACK_IMPORTED_MODULE_2__["extend"])("date", function (va
 
   return "The {_field_} must be a valid date (mm/dd/yyyy)";
 });
-Object(vee_validate__WEBPACK_IMPORTED_MODULE_2__["extend"])("website", function (value) {
+Object(vee_validate__WEBPACK_IMPORTED_MODULE_4__["extend"])("website", function (value) {
   var addressRegex = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
 
   if (value.match(addressRegex)) {
@@ -94894,11 +95925,12 @@ Object(vee_validate__WEBPACK_IMPORTED_MODULE_2__["extend"])("website", function 
   return "The {_field_} must be a valid URL";
 });
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vee_validate_laravel__WEBPACK_IMPORTED_MODULE_4___default.a);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_sweetalert2__WEBPACK_IMPORTED_MODULE_5__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(v_mask__WEBPACK_IMPORTED_MODULE_6__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vee_validate_laravel__WEBPACK_IMPORTED_MODULE_6___default.a);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_sweetalert2__WEBPACK_IMPORTED_MODULE_7__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(v_mask__WEBPACK_IMPORTED_MODULE_8__["default"]);
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
-  routes: _routes__WEBPACK_IMPORTED_MODULE_8__["routes"]
+  routes: _routes__WEBPACK_IMPORTED_MODULE_10__["routes"]
 });
 /**
  * The following block of code may be used to automatically register your
@@ -94918,10 +95950,11 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("personal-info", __webpack_
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("ValidationProvider", vee_validate__WEBPACK_IMPORTED_MODULE_2__["ValidationProvider"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("ValidationProvider", vee_validate__WEBPACK_IMPORTED_MODULE_4__["ValidationProvider"]);
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: "#page",
-  router: router
+  router: router,
+  store: _store_mainStore__WEBPACK_IMPORTED_MODULE_3__["default"]
 });
 
 /***/ }),
@@ -109588,6 +110621,67 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
   return a.fn.select2.amd = b, c;
 });
+
+/***/ }),
+
+/***/ "./resources/js/store/mainStore.js":
+/*!*****************************************!*\
+  !*** ./resources/js/store/mainStore.js ***!
+  \*****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+
+ // import axios from "axios";
+
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
+var mainStore = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
+  state: {
+    user: [],
+    personal: [],
+    phones: [],
+    emails: [],
+    socials: [],
+    employers: []
+  },
+  mutations: {
+    ADD_USER: function ADD_USER(state, user) {
+      state.user = user;
+    },
+    ADD_PERSONAL_INFORMATION: function ADD_PERSONAL_INFORMATION(state, personal) {
+      state.personal = personal;
+    },
+    ADD_PHONES: function ADD_PHONES(state, phones) {
+      state.phones = phones;
+    },
+    ADD_EMAILS: function ADD_EMAILS(state, emails) {
+      state.emails = emails;
+    },
+    ADD_SOCIALS: function ADD_SOCIALS(state, socials) {
+      state.socials = socials;
+    },
+    ADD_EMPLOYERS: function ADD_EMPLOYERS(state, employers) {
+      state.employers = employers;
+    }
+  },
+  actions: {
+    populateData: function populateData(_ref, data) {
+      var commit = _ref.commit;
+      commit("ADD_USER", data);
+      commit("ADD_PERSONAL_INFORMATION", data.personal);
+      commit("ADD_PHONES", data.phones);
+      commit("ADD_EMAILS", data.emails);
+      commit("ADD_SOCIALS", data.socials);
+      commit("ADD_EMPLOYERS", data.employers);
+    }
+  }
+});
+/* harmony default export */ __webpack_exports__["default"] = (mainStore);
 
 /***/ }),
 
