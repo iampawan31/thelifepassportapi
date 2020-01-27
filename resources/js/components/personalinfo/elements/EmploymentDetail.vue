@@ -8,16 +8,16 @@
                     >
                     <ValidationProvider
                         name="Legal Name"
-                        vid="employer_name"
+                        vid="employer_name_validation"
                         rules="alpha_spaces|max:50"
                         v-slot="{ errors }"
                     >
                         <input
                             type="text"
-                            name="employer_name[]"
+                            name="employer_name"
                             class="field-input"
                             placeholder="Employer Name"
-                            v-model="employmentDetail.employer_name"
+                            v-model="employer_name"
                             value=""
                         />
                         <span
@@ -36,15 +36,15 @@
                     >
                     <ValidationProvider
                         name="Employer Phone Number"
-                        rules="required_if:employer_name|is_phone"
+                        rules="required_if:employer_name_validation|is_phone"
                         v-slot="{ errors }"
                     >
                         <input
                             type="text"
-                            name="employer_phone[]"
+                            name="employer_phone"
                             class="field-input"
                             placeholder="Phone number"
-                            v-model="employmentDetail.employer_phone"
+                            v-model="employer_phone"
                             value=""
                         />
                         <span
@@ -59,7 +59,7 @@
         </div>
 
         <home-address
-            :home-address="employmentDetail.employer_address"
+            :home-address="employer_address"
             address-type="employer"
             @home-address-update="updateHomeAddress"
         />
@@ -78,10 +78,10 @@
                     >
                         <input
                             type="text"
-                            name="company_computer_username[]"
+                            name="company_computer_username"
                             class="field-input"
                             placeholder="Username"
-                            v-model="employmentDetail.computer_username"
+                            v-model="computer_username"
                             value=""
                         />
                         <span
@@ -100,10 +100,10 @@
                     >
                         <input
                             type="text"
-                            name="company_computer_password[]"
+                            name="company_computer_password"
                             class="field-input"
                             placeholder="Password"
-                            v-model="employmentDetail.computer_password"
+                            v-model="computer_password"
                             value=""
                         />
                         <span
@@ -123,12 +123,12 @@
         <div class="row">
             <div class="col">
                 <div
-                    v-for="benefit in emoployeeBenefitsOptions"
+                    v-for="benefit in employeeBenefitsOptions"
                     v-bind:key="benefit.id"
                 >
                     <input
                         type="checkbox"
-                        v-model="employmentDetail.employee_benefits"
+                        v-model="benefits"
                         :value="benefit.id"
                         name="benefit"
                     />
@@ -154,38 +154,73 @@ export default {
     props: ["employer", "employmentDetailKey"],
     data() {
         return {
-            employmentDetail: [],
-            emoployeeBenefitsOptions: []
+            employer_name: "",
+            employer_phone: "",
+            computer_username: "",
+            computer_password: "",
+            employer_address: [],
+            benefits: [],
+            employeeBenefitsOptions: []
         };
     },
     watch: {
-        employmentDetail: {
+        benefits: {
             handler() {
-                this.$emit(
-                    "employment-detail-updated",
-                    this.employmentDetailKey,
-                    this.employmentDetail
-                );
+                this.updateEmploymentDetails();
             },
             deep: true
+        },
+        employer_address: {
+            handler() {
+                this.updateEmploymentDetails();
+            },
+            deep: true
+        },
+        computer_username() {
+            this.updateEmploymentDetails();
+        },
+        computer_password() {
+            this.updateEmploymentDetails();
+        },
+        employer_name() {
+            this.updateEmploymentDetails();
+        },
+        employer_phone() {
+            this.updateEmploymentDetails();
         }
     },
     methods: {
+        updateEmploymentDetails() {
+            this.$emit("employment-detail-updated", this.employmentDetailKey, {
+                employer_name: this.employer_name,
+                employer_phone: this.employer_phone,
+                employer_address: this.employer_address,
+                benefits: this.benefits,
+                computer_username: this.computer_username,
+                computer_password: this.computer_password
+            });
+        },
         updateHomeAddress(data) {
-            this.employmentDetail.employer_address = data;
+            this.employer_address = data;
+            this.updateEmploymentDetails();
         },
         getemployeraddress() {
             axios.get("/getemployerbenefitslist").then(response => {
                 if (response.status == 200) {
                     if (response.data) {
-                        this.emoployeeBenefitsOptions = response.data.data;
+                        this.employeeBenefitsOptions = response.data.data;
                     }
                 }
             });
         }
     },
     mounted() {
-        this.employmentDetail = this.employer;
+        this.employer_name = this.employer.employer_name;
+        this.computer_username = this.employer.computer_username;
+        this.computer_password = this.employer.computer_password;
+        this.phone = this.employer.phone;
+        this.employer_address = this.employer.employer_address;
+        // this.benefits = this.employer.benefits;
     }
 };
 </script>

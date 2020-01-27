@@ -38,6 +38,13 @@ class User extends Authenticatable
     ];
 
     /**
+     * The relationships that should always be loaded.
+     *
+     * @var array
+     */
+    protected $with = ['personal', 'address', 'phones', 'emails', 'socials', 'employers', 'steps'];
+
+    /**
      * Get the personal info associated with the user.
      */
     public function personal()

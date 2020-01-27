@@ -4450,6 +4450,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 } else {
                   formData = this.getFormData(e);
                   console.log(formData);
+                  console.log(this.address);
+                  console.log(JSON.stringify(this.address));
 
                   if (this.userId && this.personalDetailId) {
                     axios.post('/personal-info/' + this.userId + '/updatedata', formData).then(function (response) {
@@ -4538,8 +4540,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var formData = new FormData(form);
       formData.append('legal_name', this.legalName);
       formData.append('nickname', this.nickName);
-      formData.append('home_address', this.address);
-      formData.append('user_phones', this.phoneNumbers);
+      formData.append('personal_address', JSON.stringify(this.address));
+      formData.append('user_phones', JSON.stringify(this.phoneNumbers));
       formData.append('dob', this.dateOfBirth);
       formData.append('citizenship', this.citizenship);
       formData.append('passport_number', this.passportNumber);
@@ -4547,10 +4549,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       formData.append('father_birth_place', this.fatherBirthPlace);
       formData.append('mother_name', this.motherName);
       formData.append('mother_birth_place', this.motherBirthPlace);
-      formData.append('emails', this.emails);
-      formData.append('user_socail_media', this.socialMediaDetails);
-      formData.append('user_employer', this.employmentDetails);
-      formData.append('chk_complete', this.isCompleted);
+      formData.append('emails', JSON.stringify(this.emails));
+      formData.append('user_socail_media', JSON.stringify(this.socialMediaDetails));
+      formData.append('user_employer', JSON.stringify(this.employmentDetails));
+      formData.append('is_completed', this.isCompleted);
       return formData;
     },
     populateNewForm: function populateNewForm() {
@@ -6361,8 +6363,8 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     address: function address() {
       return {
-        streetAddress1: this.streetAddress1,
-        streetAddress2: this.streetAddress2,
+        street_address1: this.streetAddress1,
+        street_address2: this.streetAddress2,
         city: this.city,
         state: this.state,
         zipcode: this.zipcode
@@ -6829,21 +6831,55 @@ __webpack_require__.r(__webpack_exports__);
   props: ["employer", "employmentDetailKey"],
   data: function data() {
     return {
-      employmentDetail: [],
-      emoployeeBenefitsOptions: []
+      employer_name: "",
+      employer_phone: "",
+      computer_username: "",
+      computer_password: "",
+      employer_address: [],
+      benefits: [],
+      employeeBenefitsOptions: []
     };
   },
   watch: {
-    employmentDetail: {
+    benefits: {
       handler: function handler() {
-        this.$emit("employment-detail-updated", this.employmentDetailKey, this.employmentDetail);
+        this.updateEmploymentDetails();
       },
       deep: true
+    },
+    employer_address: {
+      handler: function handler() {
+        this.updateEmploymentDetails();
+      },
+      deep: true
+    },
+    computer_username: function computer_username() {
+      this.updateEmploymentDetails();
+    },
+    computer_password: function computer_password() {
+      this.updateEmploymentDetails();
+    },
+    employer_name: function employer_name() {
+      this.updateEmploymentDetails();
+    },
+    employer_phone: function employer_phone() {
+      this.updateEmploymentDetails();
     }
   },
   methods: {
+    updateEmploymentDetails: function updateEmploymentDetails() {
+      this.$emit("employment-detail-updated", this.employmentDetailKey, {
+        employer_name: this.employer_name,
+        employer_phone: this.employer_phone,
+        employer_address: this.employer_address,
+        benefits: this.benefits,
+        computer_username: this.computer_username,
+        computer_password: this.computer_password
+      });
+    },
     updateHomeAddress: function updateHomeAddress(data) {
-      this.employmentDetail.employer_address = data;
+      this.employer_address = data;
+      this.updateEmploymentDetails();
     },
     getemployeraddress: function getemployeraddress() {
       var _this = this;
@@ -6851,14 +6887,18 @@ __webpack_require__.r(__webpack_exports__);
       axios.get("/getemployerbenefitslist").then(function (response) {
         if (response.status == 200) {
           if (response.data) {
-            _this.emoployeeBenefitsOptions = response.data.data;
+            _this.employeeBenefitsOptions = response.data.data;
           }
         }
       });
     }
   },
   mounted: function mounted() {
-    this.employmentDetail = this.employer;
+    this.employer_name = this.employer.employer_name;
+    this.computer_username = this.employer.computer_username;
+    this.computer_password = this.employer.computer_password;
+    this.phone = this.employer.phone;
+    this.employer_address = this.employer.employer_address; // this.benefits = this.employer.benefits;
   }
 });
 
@@ -6948,19 +6988,22 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   watch: {
-    employers: function employers() {
-      this.blockRemoval = this.employers.length <= 1;
+    employers: {
+      handler: function handler() {
+        this.blockRemoval = this.employers.length <= 1;
+      },
+      deep: true
     }
   },
   methods: {
     addEmployers: function addEmployers() {
       this.employers.push({
-        employer_name: null,
-        employer_phone: null,
-        employer_address: null,
-        computer_username: null,
-        computer_password: null,
-        employee_benefits: null
+        employer_name: "",
+        employer_phone: "",
+        employer_address: [],
+        computer_username: "",
+        computer_password: "",
+        employee_benefits: []
       });
     },
     populateEmployers: function populateEmployers() {
@@ -6979,11 +7022,11 @@ __webpack_require__.r(__webpack_exports__);
         });
       } else {
         this.employers.push({
-          employer_name: null,
-          employer_phone: null,
-          employer_address: null,
-          computer_username: null,
-          computer_password: null,
+          employer_name: "",
+          employer_phone: "",
+          employer_address: [],
+          computer_username: "",
+          computer_password: "",
           employee_benefits: []
         });
       }
@@ -6992,12 +7035,7 @@ __webpack_require__.r(__webpack_exports__);
       if (!this.blockRemoval) this.employers.splice(lineId, 1);
     },
     updateEmploymentDetail: function updateEmploymentDetail(index, data) {
-      this.employers[index].employer_name = data.employer_name;
-      this.employers[index].employer_phone = data.employer_phone;
-      this.employers[index].employer_address = data.address;
-      this.employers[index].computer_username = data.computer_username;
-      this.employers[index].computer_password = data.computer_password;
-      this.employers[index].employee_benefits = data.employee_benefits;
+      this.employers[index] = data;
       this.$emit("employment-details-updated", this.employers);
     }
   },
@@ -7509,7 +7547,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     addSocialMedia: function addSocialMedia() {
       this.socialMedia.push({
-        social: null,
+        social_id: null,
         username: null,
         password: null
       });
@@ -7520,14 +7558,14 @@ __webpack_require__.r(__webpack_exports__);
       if (this.userSocials.length > 0) {
         this.userSocials.forEach(function (data) {
           _this2.socialMedia.push({
-            social: data.social_id,
+            social_id: data.social_id,
             username: data.username,
             password: data.password
           });
         });
       } else {
         this.socialMedia.push({
-          social: null,
+          social_id: null,
           username: null,
           password: null
         });
@@ -7537,7 +7575,7 @@ __webpack_require__.r(__webpack_exports__);
       if (!this.blockRemoval) this.socialMedia.splice(lineId, 1);
     },
     updateSocialMedia: function updateSocialMedia(index, socialMediaType, username, password) {
-      this.socialMedia[index].social = socialMediaType;
+      this.socialMedia[index].social_id = socialMediaType;
       this.socialMedia[index].username = username;
       this.socialMedia[index].password = password;
       this.$emit("social-media-details-updates", this.socialMedia);
@@ -68265,7 +68303,7 @@ var render = function() {
               _c("ValidationProvider", {
                 attrs: {
                   name: "Legal Name",
-                  vid: "employer_name",
+                  vid: "employer_name_validation",
                   rules: "alpha_spaces|max:50"
                 },
                 scopedSlots: _vm._u([
@@ -68279,30 +68317,24 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.employmentDetail.employer_name,
-                              expression: "employmentDetail.employer_name"
+                              value: _vm.employer_name,
+                              expression: "employer_name"
                             }
                           ],
                           staticClass: "field-input",
                           attrs: {
                             type: "text",
-                            name: "employer_name[]",
+                            name: "employer_name",
                             placeholder: "Employer Name",
                             value: ""
                           },
-                          domProps: {
-                            value: _vm.employmentDetail.employer_name
-                          },
+                          domProps: { value: _vm.employer_name },
                           on: {
                             input: function($event) {
                               if ($event.target.composing) {
                                 return
                               }
-                              _vm.$set(
-                                _vm.employmentDetail,
-                                "employer_name",
-                                $event.target.value
-                              )
+                              _vm.employer_name = $event.target.value
                             }
                           }
                         }),
@@ -68347,7 +68379,7 @@ var render = function() {
               _c("ValidationProvider", {
                 attrs: {
                   name: "Employer Phone Number",
-                  rules: "required_if:employer_name|is_phone"
+                  rules: "required_if:employer_name_validation|is_phone"
                 },
                 scopedSlots: _vm._u([
                   {
@@ -68360,30 +68392,24 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.employmentDetail.employer_phone,
-                              expression: "employmentDetail.employer_phone"
+                              value: _vm.employer_phone,
+                              expression: "employer_phone"
                             }
                           ],
                           staticClass: "field-input",
                           attrs: {
                             type: "text",
-                            name: "employer_phone[]",
+                            name: "employer_phone",
                             placeholder: "Phone number",
                             value: ""
                           },
-                          domProps: {
-                            value: _vm.employmentDetail.employer_phone
-                          },
+                          domProps: { value: _vm.employer_phone },
                           on: {
                             input: function($event) {
                               if ($event.target.composing) {
                                 return
                               }
-                              _vm.$set(
-                                _vm.employmentDetail,
-                                "employer_phone",
-                                $event.target.value
-                              )
+                              _vm.employer_phone = $event.target.value
                             }
                           }
                         }),
@@ -68414,7 +68440,7 @@ var render = function() {
       _vm._v(" "),
       _c("home-address", {
         attrs: {
-          "home-address": _vm.employmentDetail.employer_address,
+          "home-address": _vm.employer_address,
           "address-type": "employer"
         },
         on: { "home-address-update": _vm.updateHomeAddress }
@@ -68447,30 +68473,24 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.employmentDetail.computer_username,
-                              expression: "employmentDetail.computer_username"
+                              value: _vm.computer_username,
+                              expression: "computer_username"
                             }
                           ],
                           staticClass: "field-input",
                           attrs: {
                             type: "text",
-                            name: "company_computer_username[]",
+                            name: "company_computer_username",
                             placeholder: "Username",
                             value: ""
                           },
-                          domProps: {
-                            value: _vm.employmentDetail.computer_username
-                          },
+                          domProps: { value: _vm.computer_username },
                           on: {
                             input: function($event) {
                               if ($event.target.composing) {
                                 return
                               }
-                              _vm.$set(
-                                _vm.employmentDetail,
-                                "computer_username",
-                                $event.target.value
-                              )
+                              _vm.computer_username = $event.target.value
                             }
                           }
                         }),
@@ -68517,30 +68537,24 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.employmentDetail.computer_password,
-                              expression: "employmentDetail.computer_password"
+                              value: _vm.computer_password,
+                              expression: "computer_password"
                             }
                           ],
                           staticClass: "field-input",
                           attrs: {
                             type: "text",
-                            name: "company_computer_password[]",
+                            name: "company_computer_password",
                             placeholder: "Password",
                             value: ""
                           },
-                          domProps: {
-                            value: _vm.employmentDetail.computer_password
-                          },
+                          domProps: { value: _vm.computer_password },
                           on: {
                             input: function($event) {
                               if ($event.target.composing) {
                                 return
                               }
-                              _vm.$set(
-                                _vm.employmentDetail,
-                                "computer_password",
-                                $event.target.value
-                              )
+                              _vm.computer_password = $event.target.value
                             }
                           }
                         }),
@@ -68575,52 +68589,42 @@ var render = function() {
         _c(
           "div",
           { staticClass: "col" },
-          _vm._l(_vm.emoployeeBenefitsOptions, function(benefit) {
+          _vm._l(_vm.employeeBenefitsOptions, function(benefit) {
             return _c("div", { key: benefit.id }, [
               _c("input", {
                 directives: [
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.employmentDetail.employee_benefits,
-                    expression: "employmentDetail.employee_benefits"
+                    value: _vm.benefits,
+                    expression: "benefits"
                   }
                 ],
                 attrs: { type: "checkbox", name: "benefit" },
                 domProps: {
                   value: benefit.id,
-                  checked: Array.isArray(_vm.employmentDetail.employee_benefits)
-                    ? _vm._i(
-                        _vm.employmentDetail.employee_benefits,
-                        benefit.id
-                      ) > -1
-                    : _vm.employmentDetail.employee_benefits
+                  checked: Array.isArray(_vm.benefits)
+                    ? _vm._i(_vm.benefits, benefit.id) > -1
+                    : _vm.benefits
                 },
                 on: {
                   change: function($event) {
-                    var $$a = _vm.employmentDetail.employee_benefits,
+                    var $$a = _vm.benefits,
                       $$el = $event.target,
                       $$c = $$el.checked ? true : false
                     if (Array.isArray($$a)) {
                       var $$v = benefit.id,
                         $$i = _vm._i($$a, $$v)
                       if ($$el.checked) {
-                        $$i < 0 &&
-                          _vm.$set(
-                            _vm.employmentDetail,
-                            "employee_benefits",
-                            $$a.concat([$$v])
-                          )
+                        $$i < 0 && (_vm.benefits = $$a.concat([$$v]))
                       } else {
                         $$i > -1 &&
-                          _vm.$set(
-                            _vm.employmentDetail,
-                            "employee_benefits",
-                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                          )
+                          (_vm.benefits = $$a
+                            .slice(0, $$i)
+                            .concat($$a.slice($$i + 1)))
                       }
                     } else {
-                      _vm.$set(_vm.employmentDetail, "employee_benefits", $$c)
+                      _vm.benefits = $$c
                     }
                   }
                 }

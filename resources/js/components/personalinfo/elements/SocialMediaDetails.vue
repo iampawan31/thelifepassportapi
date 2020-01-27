@@ -96,7 +96,7 @@ export default {
     methods: {
         addSocialMedia() {
             this.socialMedia.push({
-                social: null,
+                social_id: null,
                 username: null,
                 password: null
             });
@@ -105,14 +105,14 @@ export default {
             if (this.userSocials.length > 0) {
                 this.userSocials.forEach(data => {
                     this.socialMedia.push({
-                        social: data.social_id,
+                        social_id: data.social_id,
                         username: data.username,
                         password: data.password
                     });
                 });
             } else {
                 this.socialMedia.push({
-                    social: null,
+                    social_id: null,
                     username: null,
                     password: null
                 });
@@ -122,7 +122,7 @@ export default {
             if (!this.blockRemoval) this.socialMedia.splice(lineId, 1);
         },
         updateSocialMedia(index, socialMediaType, username, password) {
-            this.socialMedia[index].social = socialMediaType;
+            this.socialMedia[index].social_id = socialMediaType;
             this.socialMedia[index].username = username;
             this.socialMedia[index].password = password;
             this.$emit("social-media-details-updates", this.socialMedia);

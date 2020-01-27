@@ -422,6 +422,9 @@ export default {
                 const formData = this.getFormData(e);
 
                 console.log(formData);
+
+                console.log(this.address);
+                console.log(JSON.stringify(this.address));
  
                 if (this.userId && this.personalDetailId) {
                     axios
@@ -482,8 +485,8 @@ export default {
 
             formData.append('legal_name', this.legalName);
             formData.append('nickname', this.nickName);
-            formData.append('home_address', this.address);
-            formData.append('user_phones', this.phoneNumbers);
+            formData.append('personal_address', JSON.stringify(this.address));
+            formData.append('user_phones', JSON.stringify(this.phoneNumbers));
             formData.append('dob', this.dateOfBirth);
             formData.append('citizenship', this.citizenship);
             formData.append('passport_number', this.passportNumber);
@@ -491,10 +494,10 @@ export default {
             formData.append('father_birth_place', this.fatherBirthPlace);
             formData.append('mother_name', this.motherName);
             formData.append('mother_birth_place', this.motherBirthPlace);
-            formData.append('emails', this.emails);
-            formData.append('user_socail_media', this.socialMediaDetails);
-            formData.append('user_employer', this.employmentDetails);
-            formData.append('chk_complete', this.isCompleted);
+            formData.append('emails', JSON.stringify(this.emails));
+            formData.append('user_socail_media', JSON.stringify(this.socialMediaDetails));
+            formData.append('user_employer', JSON.stringify(this.employmentDetails));
+            formData.append('is_completed', this.isCompleted);
 
             return formData;
         },

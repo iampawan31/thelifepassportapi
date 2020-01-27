@@ -18,7 +18,7 @@ class CreateUsersPersonalDetailsCompletionsTable extends Migration
             $table->unsignedBigInteger('step_id');
             $table->unsignedBigInteger('user_id');
             $table->boolean('is_filled');
-            $table->boolean('is_completed')->default('0');
+            $table->boolean('is_completed')->default(false);
             $table->foreign('user_id')->references('id')->on('users');
             $table->boolean('is_visited')->default(0);
             $table->timestamps();

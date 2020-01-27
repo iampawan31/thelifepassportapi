@@ -160,8 +160,8 @@ export default {
     computed: {
         address() {
             return {
-                streetAddress1: this.streetAddress1,
-                streetAddress2: this.streetAddress2,
+                street_address1: this.streetAddress1,
+                street_address2: this.streetAddress2,
                 city: this.city,
                 state: this.state,
                 zipcode: this.zipcode

@@ -22,61 +22,74 @@ class PersonalInfoTest extends TestCase
     use DatabaseMigrations;
     use RefreshDatabase;
 
+    private $user;
+    private $personalInfo;
+    private $phoneNumbers;
+    private $userEmails;
+    private $personalAddress;
+    private $userSocialMedia;
+    private $userEmployer;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->user = factory(User::class)->create();
+
+        $this->personalInfo = factory(PersonalInfo::class)->create([
+            'user_id' => $this->user->id
+        ]);
+
+        $this->phoneNumbers = factory(UserPhone::class, 3)->create([
+            'user_id' => $this->user->id
+        ]);
+
+        $this->userEmails = factory(UserEmail::class, 3)->create([
+            'user_id' => $this->user->id
+        ]);
+
+        $this->personalAddress = factory(PersonalAddress::class)->create([
+            'user_id' => $this->user->id
+        ]);
+
+        $this->userSocialMedia = factory(UserSocialMedia::class, 2)->create([
+            'user_id' => $this->user->id
+        ]);
+
+        $this->userEmployers = factory(UserEmployer::class, 2)
+            ->create(['user_id' => $this->user->id])
+            ->each(function ($item, $key) {
+                factory(EmployerAddress::class)->create([
+                    'user_id' => $item->user_id,
+                    'employer_id' => $item->id
+                ]);
+
+                factory(PersonalEmployerBenefits::class)->create([
+                    'user_id' => $item->user_id,
+                    'employer_id' => $item->id
+                ]);
+            });
+
+        factory(PersonalDetailsSteps::class)->create();
+    }
+
     /** @test **/
     function user_can_submit_personal_info()
     {
-        $user = factory(User::class)->create();
-        $personalInfo = factory(PersonalInfo::class)->create([
-            'user_id' => $user->id
-        ]);
-
-        $phoneNumbers = factory(UserPhone::class, 3)->create([
-            'user_id' => $user->id
-        ]);
-
-        $userEmails = factory(UserEmail::class, 3)->create([
-            'user_id' => $user->id
-        ]);
-
-        $personalAddress = factory(PersonalAddress::class)->create([
-            'user_id' => $user->id
-        ]);
-
-        $userSocialMedia = factory(UserSocialMedia::class, 2)->create([
-            'user_id' => $user->id
-        ]);
-
-        $userEmployer = factory(UserEmployer::class)->create([
-            'user_id' => $user->id
-        ]);
-
-        $userEmployer['address'] = factory(EmployerAddress::class)->create([
-            'user_id' => $user->id,
-            'employer_id' => $userEmployer->user_id
-        ]);
-
-        factory(PersonalDetailsSteps::class)->create();
-
-        $userEmployer['benefits'] = factory(PersonalEmployerBenefits::class)->create([
-            'user_id' => $user->id,
-            'employer_id' => $userEmployer->user_id
-        ]);
-
-        $this->actingAs($user)->post('/personal-info/postdata', [
-            'legal_name' => $personalInfo->legal_name,
-            'nickname' => $personalInfo->nickname,
-            'dob' => $personalInfo->dob,
-            'citizenship' => $personalInfo->country_id,
-            'passport_number' => $personalInfo->passport_number,
-            'father_name' => $personalInfo->father_name,
-            'father_birth_place' => $personalInfo->father_birth_place,
-            'mother_name' => $personalInfo->mother_name,
-            'mother_birth_place' => $personalInfo->mother_birth_place,
-            'home_address' => $personalAddress,
-            'phone' => $phoneNumbers,
-            'email' => $userEmails,
-            'social_media_type' => $userSocialMedia,
-            'user_employer' => $userEmployer,
+        $this->actingAs($this->user)->post('/personal-info/postdata', [
+            'legal_name' => $this->personalInfo->legal_name,
+            'nickname' => $this->personalInfo->nickname,
+            'dob' => $this->personalInfo->dob,
+            'citizenship' => $this->personalInfo->country_id,
+            'passport_number' => $this->personalInfo->passport_number,
+            'father_name' => $this->personalInfo->father_name,
+            'father_birth_place' => $this->personalInfo->father_birth_place,
+            'mother_name' => $this->personalInfo->mother_name,
+            'mother_birth_place' => $this->personalInfo->mother_birth_place,
+            'personal_address' => $this->personalAddress,
+            'phone' => $this->phoneNumbers,
+            'email' => $this->userEmails,
+            'social_media_type' => $this->userSocialMedia,
+            'user_employer' => $this->userEmployer,
             'is_completed' => true
         ])
             ->assertStatus(200);

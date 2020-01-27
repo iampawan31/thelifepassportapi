@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\User;
 use App\UserEmail;
 use App\PersonalAddress;
+use App\PersonalEmployerBenefits;
 use Exception;
 use Auth;
 use App\PersonalInfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class PersonalinfoController extends Controller
 {
@@ -53,6 +55,9 @@ class PersonalinfoController extends Controller
     public function store(Request $request)
     {
         try {
+
+            DB::beginTransaction();
+
             $user = User::find(auth()->id())->first();
 
             // Save User's Personal Information
@@ -73,7 +78,7 @@ class PersonalinfoController extends Controller
 
             // Save User's Personal Address
 
-            $homeAddress = request('home_address');
+            $homeAddress = json_decode(request('personal_address'));
 
             if (isset($homeAddress)) {
                 $personalAddress = new PersonalAddress;
@@ -89,26 +94,26 @@ class PersonalinfoController extends Controller
             }
 
             //Saving User's Phone Numbers
-            $phoneNumbers = request('phone');
+            $phoneNumbers = json_decode(request('user_phones'));
 
             if (isset($phoneNumbers)) {
                 foreach ($phoneNumbers as $phone) {
                     if ($phone) {
-                        $user->phones()->create(['user_id' => auth()->id(), 'phone' => $phone->phone]);
+                        $user->phones()->create(['user_id' => auth()->id(), 'phone' => $phone->number]);
                     }
                 }
             }
 
             //Saving User's Emails
-            $emails = request('email');
+            $emails = json_decode(request('emails'));
             if (isset($emails)) {
                 foreach ($emails as $email) {
                     if ($email) {
                         $user->emails()->create(
                             [
                                 'user_id' => auth()->id(),
-                                'email' => $email['email'],
-                                'password' => $email['password']
+                                'email' => $email->email,
+                                'password' => $email->password
                             ]
                         );
                     }
@@ -116,7 +121,7 @@ class PersonalinfoController extends Controller
             }
 
             //Saving User's Social Media Details
-            $socials = request('social_media_type');
+            $socials = json_decode(request('user_socail_media'));
 
             if (isset($socials)) {
                 foreach ($socials as $social) {
@@ -133,14 +138,52 @@ class PersonalinfoController extends Controller
                 }
             }
 
+            //Saving User's Social Media Details
+            $employers = json_decode(request('user_employer'));
+
+            if (isset($employers)) {
+                foreach ($employers as $employer) {
+                    if ($employer) {
+                        $employment = $user->employers()->create([
+                            'user_id' => auth()->id(),
+                            'employer_name' => $employer->employer_name,
+                            'employer_phone' => $employer->employer_phone,
+                            'computer_username' => $employer->computer_username,
+                            'computer_password' => $employer->computer_password
+                        ]);
+
+                        $employment->address()->create([
+                            'user_id' => $user->id,
+                            'street_address1' => $employer->employer_address->street_address1,
+                            'street_address2' => $employer->employer_address->street_address2,
+                            'city' => $employer->employer_address->city,
+                            'state' => $employer->employer_address->state,
+                            'zipcode' => $employer->employer_address->zipcode,
+                        ]);
+
+                        $benefits = $employer->benefits;
+
+                        foreach ($benefits as $benefit) {
+                            PersonalEmployerBenefits::create([
+                                'user_id' => $user->id,
+                                'employer_id' => $employment->id,
+                                'benefit_id' => $benefit
+                            ]);
+                        }
+                    }
+                }
+            }
+
             // Save Step Completed Information
             $user->steps()->create([
                 'step_id' => 1,
                 'user_id' => $user->id,
                 'is_visited' => '1',
                 'is_filled' => '1',
-                'is_completed' => request('is_completed')
+                'is_completed' => request('is_completed') ? 1 : 0
             ]);
+
+            DB::commit();
 
             return response()
                 ->json([
@@ -148,7 +191,7 @@ class PersonalinfoController extends Controller
                     'message' => 'Personal information has been saved successfully'
                 ], 200);
         } catch (Exception $e) {
-
+            DB::rollBack();
             dd($e);
             return response()
                 ->json([
@@ -644,25 +687,7 @@ class PersonalinfoController extends Controller
      */
     public function getpersonalinfo()
     {
-        $user_id = Auth::user()->id;
-
-        $count = \App\PersonalInfo::where('user_id', $user_id)->get()->count();
-
-        if ($count > 0) {
-            //\DB::enableQueryLog();
-            $personal_info = \App\PersonalInfo::where('user_id', $user_id)
-                ->with('Address')
-                ->with('UserPhone')
-                ->with('UserEmail')
-                ->with('UserSocialMedia')
-                ->with('UserEmployer.Address', 'UserEmployer.Benefits')
-                ->with('UsersPersonalDetailsCompletion')
-                ->get();
-            //dd(\DB::getQueryLog());
-            return response()->json(['status' => 200, 'data' => $personal_info]);
-        } else {
-            return response()->json(['status' => 200, 'data' => []]);
-        }
+        return response()->json(['status' => 200, 'data' => auth()->user()]);
     }
 
     /**
