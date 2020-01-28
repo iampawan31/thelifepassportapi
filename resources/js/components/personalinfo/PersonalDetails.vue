@@ -143,7 +143,7 @@
                                     >
                                         <Select2
                                             id="citizenship"
-                                            v-model="citizenship"
+                                            v-model="countryId"
                                             name="citizenship"
                                             width="resolve"
                                             data-placeholder="Select an Options"
@@ -386,7 +386,7 @@
                             <input
                                 type="submit"
                                 class="field-submit btn-primary"
-                                value="Save and continue"
+                                :value="buttonText"
                             />
                         </div>
                     </form>
@@ -404,7 +404,6 @@ import HomeAddress from "./elements/Address";
 import SocialMediaDetails from "./elements/SocialMediaDetails.vue";
 import EmploymentDetails from "./elements/EmploymentDetails.vue";
 import { ValidationObserver, ValidationProvider } from "vee-validate";
-import { mapState } from "vuex";
 
 export default {
     components: {
@@ -426,7 +425,7 @@ export default {
             address: [],
             phoneNumbers: [],
             dateOfBirth: "",
-            citizenship: "",
+            countryId: "",
             passportNumber: "",
             fatherName: "",
             fatherBirthPlace: "",
@@ -443,6 +442,13 @@ export default {
             submitted: false
         };
     },
+    computed: {
+        buttonText() {
+            return this.user.personal
+                ? "Update and continue"
+                : "Save and continue";
+        }
+    },
     created() {
         this.getCountyList();
         this.getPersonalInfo();
@@ -457,10 +463,10 @@ export default {
             } else {
                 const formData = this.getFormData(e);
 
-                if (this.userId && this.personalDetailId) {
+                if (this.user.id && this.user.personal.id) {
                     axios
                         .put(
-                            "/personal-info/" + this.personalDetailId,
+                            "/personal-info/" + this.user.personal.id,
                             formData
                         )
                         .then(response => {
@@ -549,7 +555,7 @@ export default {
             formData.append("personal_address", JSON.stringify(this.address));
             formData.append("user_phones", JSON.stringify(this.phoneNumbers));
             formData.append("dob", this.dateOfBirth);
-            formData.append("citizenship", this.citizenship);
+            formData.append("country_id", this.countryId);
             formData.append("passport_number", this.passportNumber);
             formData.append("father_name", this.fatherName);
             formData.append("father_birth_place", this.fatherBirthPlace);
@@ -557,7 +563,7 @@ export default {
             formData.append("mother_birth_place", this.motherBirthPlace);
             formData.append("emails", JSON.stringify(this.emails));
             formData.append(
-                "user_socail_media",
+                "user_social_media",
                 JSON.stringify(this.socialMediaDetails)
             );
             formData.append(
@@ -574,7 +580,7 @@ export default {
             this.address = [];
             this.phoneNumbers = [];
             this.dateOfBirth = "";
-            this.citizenship = "";
+            this.countryId = "";
             this.passportNumber = "";
             this.fatherName = "";
             this.fatherBirthPlace = "";
@@ -630,7 +636,7 @@ export default {
             }
 
             if (personalDetail.country_id) {
-                this.citizenship = personalDetail.country_id;
+                this.countryId = personalDetail.country_id;
             }
 
             if (personalDetail.passport_number) {

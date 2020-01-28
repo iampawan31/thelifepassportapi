@@ -17,7 +17,7 @@
                             name="employer_name"
                             class="field-input"
                             placeholder="Employer Name"
-                            v-model="employer_name"
+                            v-model="employer.employer_name"
                             value=""
                         />
                         <span
@@ -44,7 +44,7 @@
                             name="employer_phone"
                             class="field-input"
                             placeholder="Phone number"
-                            v-model="employer_phone"
+                            v-model="employer.employer_phone"
                             value=""
                         />
                         <span
@@ -59,8 +59,7 @@
         </div>
 
         <home-address
-            v-bind:home-address="employer_address"
-            v-bind:employment-id="id"
+            v-bind:home-address="employer.address"
             address-type="employer"
         />
 
@@ -81,7 +80,7 @@
                             name="company_computer_username"
                             class="field-input"
                             placeholder="Username"
-                            v-model="computer_username"
+                            v-model="employer.computer_username"
                             value=""
                         />
                         <span
@@ -103,7 +102,7 @@
                             name="company_computer_password"
                             class="field-input"
                             placeholder="Password"
-                            v-model="computer_password"
+                            v-model="employer.computer_password"
                             value=""
                         />
                         <span
@@ -128,7 +127,7 @@
                 >
                     <input
                         type="checkbox"
-                        v-model="benefits"
+                        v-model="benefitSelected[benefit.id]"
                         :value="benefit.id"
                         name="benefit"
                     />
@@ -154,15 +153,25 @@ export default {
     props: ["employer", "employmentDetailKey"],
     data() {
         return {
-            id: "",
-            employer_name: "",
-            employer_phone: "",
-            computer_username: "",
-            computer_password: "",
-            employer_address: [],
-            benefits: [],
             employeeBenefitsOptions: []
         };
+    },
+    computed: {
+        benefitSelected() {
+            let benefits = this.employer.benefits;
+            let employeeBenefitsOptions = this.employeeBenefitsOptions;
+            let ret = {};
+            for (let i = 0; i < benefits.length; i++) {
+                for (let j = 0; j < employeeBenefitsOptions.length; j++) {
+                    if (
+                        employeeBenefitsOptions[j].id == benefits[i].benefit_id
+                    ) {
+                        ret[employeeBenefitsOptions[j].id] = true;
+                    }
+                }
+            }
+            return ret;
+        }
     },
     watch: {
         benefits: {
@@ -208,15 +217,6 @@ export default {
                 }
             });
         }
-    },
-    mounted() {
-        this.id = this.employer.id;
-        this.employer_name = this.employer.employer_name;
-        this.computer_username = this.employer.computer_username;
-        this.computer_password = this.employer.computer_password;
-        this.phone = this.employer.phone;
-        this.employer_address = this.employer.address;
-        this.benefits = this.employer.benefits;
     }
 };
 </script>
