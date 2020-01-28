@@ -4012,7 +4012,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _elements_SocialMediaDetails_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./elements/SocialMediaDetails.vue */ "./resources/js/components/personalinfo/elements/SocialMediaDetails.vue");
 /* harmony import */ var _elements_EmploymentDetails_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./elements/EmploymentDetails.vue */ "./resources/js/components/personalinfo/elements/EmploymentDetails.vue");
 /* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -4424,7 +4423,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     PhoneDetails: _elements_PhoneDetails_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
@@ -4445,7 +4443,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       address: [],
       phoneNumbers: [],
       dateOfBirth: "",
-      citizenship: "",
+      countryId: "",
       passportNumber: "",
       fatherName: "",
       fatherBirthPlace: "",
@@ -4461,6 +4459,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       result2: "",
       submitted: false
     };
+  },
+  computed: {
+    buttonText: function buttonText() {
+      return this.user.personal ? "Update and continue" : "Save and continue";
+    }
   },
   created: function created() {
     this.getCountyList();
@@ -4489,8 +4492,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 } else {
                   formData = this.getFormData(e);
 
-                  if (this.userId && this.personalDetailId) {
-                    axios.put("/personal-info/" + this.personalDetailId, formData).then(function (response) {
+                  if (this.user.id && this.user.personal.id) {
+                    axios.put("/personal-info/" + this.user.personal.id, formData).then(function (response) {
                       if (response.status == 200) {
                         var Toast = _this.$swal.mixin({
                           toast: true,
@@ -4608,14 +4611,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       formData.append("personal_address", JSON.stringify(this.address));
       formData.append("user_phones", JSON.stringify(this.phoneNumbers));
       formData.append("dob", this.dateOfBirth);
-      formData.append("citizenship", this.citizenship);
+      formData.append("country_id", this.countryId);
       formData.append("passport_number", this.passportNumber);
       formData.append("father_name", this.fatherName);
       formData.append("father_birth_place", this.fatherBirthPlace);
       formData.append("mother_name", this.motherName);
       formData.append("mother_birth_place", this.motherBirthPlace);
       formData.append("emails", JSON.stringify(this.emails));
-      formData.append("user_socail_media", JSON.stringify(this.socialMediaDetails));
+      formData.append("user_social_media", JSON.stringify(this.socialMediaDetails));
       formData.append("user_employer", JSON.stringify(this.employmentDetails));
       formData.append("is_completed", this.isCompleted);
       return formData;
@@ -4626,7 +4629,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.address = [];
       this.phoneNumbers = [];
       this.dateOfBirth = "";
-      this.citizenship = "";
+      this.countryId = "";
       this.passportNumber = "";
       this.fatherName = "";
       this.fatherBirthPlace = "";
@@ -4683,7 +4686,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
 
       if (personalDetail.country_id) {
-        this.citizenship = personalDetail.country_id;
+        this.countryId = personalDetail.country_id;
       }
 
       if (personalDetail.passport_number) {
@@ -6832,7 +6835,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -6846,15 +6848,25 @@ __webpack_require__.r(__webpack_exports__);
   props: ["employer", "employmentDetailKey"],
   data: function data() {
     return {
-      id: "",
-      employer_name: "",
-      employer_phone: "",
-      computer_username: "",
-      computer_password: "",
-      employer_address: [],
-      benefits: [],
       employeeBenefitsOptions: []
     };
+  },
+  computed: {
+    benefitSelected: function benefitSelected() {
+      var benefits = this.employer.benefits;
+      var employeeBenefitsOptions = this.employeeBenefitsOptions;
+      var ret = {};
+
+      for (var i = 0; i < benefits.length; i++) {
+        for (var j = 0; j < employeeBenefitsOptions.length; j++) {
+          if (employeeBenefitsOptions[j].id == benefits[i].benefit_id) {
+            ret[employeeBenefitsOptions[j].id] = true;
+          }
+        }
+      }
+
+      return ret;
+    }
   },
   watch: {
     benefits: {
@@ -6902,15 +6914,6 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     }
-  },
-  mounted: function mounted() {
-    this.id = this.employer.id;
-    this.employer_name = this.employer.employer_name;
-    this.computer_username = this.employer.computer_username;
-    this.computer_password = this.employer.computer_password;
-    this.phone = this.employer.phone;
-    this.employer_address = this.employer.address;
-    this.benefits = this.employer.benefits;
   }
 });
 
@@ -63733,11 +63736,11 @@ var render = function() {
                                                   }
                                                 },
                                                 model: {
-                                                  value: _vm.citizenship,
+                                                  value: _vm.countryId,
                                                   callback: function($$v) {
-                                                    _vm.citizenship = $$v
+                                                    _vm.countryId = $$v
                                                   },
-                                                  expression: "citizenship"
+                                                  expression: "countryId"
                                                 }
                                               }),
                                               _vm._v(" "),
@@ -64361,10 +64364,8 @@ var render = function() {
                           [
                             _c("input", {
                               staticClass: "field-submit btn-primary",
-                              attrs: {
-                                type: "submit",
-                                value: "Save and continue"
-                              }
+                              attrs: { type: "submit" },
+                              domProps: { value: _vm.buttonText }
                             })
                           ]
                         )
@@ -68275,8 +68276,8 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.employer_name,
-                              expression: "employer_name"
+                              value: _vm.employer.employer_name,
+                              expression: "employer.employer_name"
                             }
                           ],
                           staticClass: "field-input",
@@ -68286,13 +68287,17 @@ var render = function() {
                             placeholder: "Employer Name",
                             value: ""
                           },
-                          domProps: { value: _vm.employer_name },
+                          domProps: { value: _vm.employer.employer_name },
                           on: {
                             input: function($event) {
                               if ($event.target.composing) {
                                 return
                               }
-                              _vm.employer_name = $event.target.value
+                              _vm.$set(
+                                _vm.employer,
+                                "employer_name",
+                                $event.target.value
+                              )
                             }
                           }
                         }),
@@ -68350,8 +68355,8 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.employer_phone,
-                              expression: "employer_phone"
+                              value: _vm.employer.employer_phone,
+                              expression: "employer.employer_phone"
                             }
                           ],
                           staticClass: "field-input",
@@ -68361,13 +68366,17 @@ var render = function() {
                             placeholder: "Phone number",
                             value: ""
                           },
-                          domProps: { value: _vm.employer_phone },
+                          domProps: { value: _vm.employer.employer_phone },
                           on: {
                             input: function($event) {
                               if ($event.target.composing) {
                                 return
                               }
-                              _vm.employer_phone = $event.target.value
+                              _vm.$set(
+                                _vm.employer,
+                                "employer_phone",
+                                $event.target.value
+                              )
                             }
                           }
                         }),
@@ -68398,8 +68407,7 @@ var render = function() {
       _vm._v(" "),
       _c("home-address", {
         attrs: {
-          "home-address": _vm.employer_address,
-          "employment-id": _vm.id,
+          "home-address": _vm.employer.address,
           "address-type": "employer"
         }
       }),
@@ -68431,8 +68439,8 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.computer_username,
-                              expression: "computer_username"
+                              value: _vm.employer.computer_username,
+                              expression: "employer.computer_username"
                             }
                           ],
                           staticClass: "field-input",
@@ -68442,13 +68450,17 @@ var render = function() {
                             placeholder: "Username",
                             value: ""
                           },
-                          domProps: { value: _vm.computer_username },
+                          domProps: { value: _vm.employer.computer_username },
                           on: {
                             input: function($event) {
                               if ($event.target.composing) {
                                 return
                               }
-                              _vm.computer_username = $event.target.value
+                              _vm.$set(
+                                _vm.employer,
+                                "computer_username",
+                                $event.target.value
+                              )
                             }
                           }
                         }),
@@ -68495,8 +68507,8 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.computer_password,
-                              expression: "computer_password"
+                              value: _vm.employer.computer_password,
+                              expression: "employer.computer_password"
                             }
                           ],
                           staticClass: "field-input",
@@ -68506,13 +68518,17 @@ var render = function() {
                             placeholder: "Password",
                             value: ""
                           },
-                          domProps: { value: _vm.computer_password },
+                          domProps: { value: _vm.employer.computer_password },
                           on: {
                             input: function($event) {
                               if ($event.target.composing) {
                                 return
                               }
-                              _vm.computer_password = $event.target.value
+                              _vm.$set(
+                                _vm.employer,
+                                "computer_password",
+                                $event.target.value
+                              )
                             }
                           }
                         }),
@@ -68554,35 +68570,42 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.benefits,
-                    expression: "benefits"
+                    value: _vm.benefitSelected[benefit.id],
+                    expression: "benefitSelected[benefit.id]"
                   }
                 ],
                 attrs: { type: "checkbox", name: "benefit" },
                 domProps: {
                   value: benefit.id,
-                  checked: Array.isArray(_vm.benefits)
-                    ? _vm._i(_vm.benefits, benefit.id) > -1
-                    : _vm.benefits
+                  checked: Array.isArray(_vm.benefitSelected[benefit.id])
+                    ? _vm._i(_vm.benefitSelected[benefit.id], benefit.id) > -1
+                    : _vm.benefitSelected[benefit.id]
                 },
                 on: {
                   change: function($event) {
-                    var $$a = _vm.benefits,
+                    var $$a = _vm.benefitSelected[benefit.id],
                       $$el = $event.target,
                       $$c = $$el.checked ? true : false
                     if (Array.isArray($$a)) {
                       var $$v = benefit.id,
                         $$i = _vm._i($$a, $$v)
                       if ($$el.checked) {
-                        $$i < 0 && (_vm.benefits = $$a.concat([$$v]))
+                        $$i < 0 &&
+                          _vm.$set(
+                            _vm.benefitSelected,
+                            benefit.id,
+                            $$a.concat([$$v])
+                          )
                       } else {
                         $$i > -1 &&
-                          (_vm.benefits = $$a
-                            .slice(0, $$i)
-                            .concat($$a.slice($$i + 1)))
+                          _vm.$set(
+                            _vm.benefitSelected,
+                            benefit.id,
+                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                          )
                       }
                     } else {
-                      _vm.benefits = $$c
+                      _vm.$set(_vm.benefitSelected, benefit.id, $$c)
                     }
                   }
                 }

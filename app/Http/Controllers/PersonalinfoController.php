@@ -55,7 +55,7 @@ class PersonalInfoController extends Controller
             $personalInfo->legal_name = request('legal_name') ?: "";
             $personalInfo->nickname = request('nickname') ?: "";
             $personalInfo->dob = Carbon::parse(request('dob')) ?: "";
-            $personalInfo->country_id = request('citizenship') ?: "";
+            $personalInfo->country_id = request('country_id') ?: "";
             $personalInfo->passport_number = request('passport_number') ?: "";
             $personalInfo->father_name = request('father_name') ?: "";
             $personalInfo->father_birth_place = request('father_birth_place') ?: "";
@@ -207,6 +207,7 @@ class PersonalInfoController extends Controller
      */
     public function update(Request $request, PersonalInfo $personalInfo)
     {
+        dd($request->all());
         if ($personalInfo && $personalInfo->user_id == auth()->id()) {
             try {
                 $user = User::find(auth()->id());
@@ -215,7 +216,7 @@ class PersonalInfoController extends Controller
                 $personalInfo->legal_name = request('legal_name') ?: "";
                 $personalInfo->nickname = request('nickname') ?: "";
                 $personalInfo->dob = Carbon::parse(request('dob')) ?: "";
-                $personalInfo->country_id = request('citizenship') ?: "";
+                $personalInfo->country_id = request('country_id') ?: "";
                 $personalInfo->passport_number = request('passport_number') ?: "";
                 $personalInfo->father_name = request('father_name') ?: "";
                 $personalInfo->father_birth_place = request('father_birth_place') ?: "";
