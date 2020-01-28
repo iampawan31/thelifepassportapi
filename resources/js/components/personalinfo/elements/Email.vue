@@ -12,7 +12,7 @@
                     name="email[]"
                     class="field-input field-input__first email"
                     placeholder="Email address"
-                    v-model="tempEmail"
+                    v-model="email"
                     value=""
                 />
                 <span
@@ -33,7 +33,7 @@
                     name="email_password[]"
                     class="field-input field-input__last"
                     placeholder="password"
-                    v-model="tempPassword"
+                    v-model="password"
                     value=""
                 />
                 <span
@@ -46,7 +46,7 @@
         <a
             href="javascript:void(0);"
             class="btn-remove"
-            v-if="key != 0"
+            v-if="emailKey != 0"
             @click="removeEmail"
             ><svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -76,17 +76,13 @@ export default {
     props: ["email", "password", "emailKey"],
     data() {
         return {
-            errors: [],
-            tempEmail: "",
-            tempPassword: "",
-            key: ""
+            errors: []
         };
     },
     computed: {
         emailRemoveText() {
-            return (
-                "You want to remove " + "<strong>" + this.email + "</strong>?"
-            );
+            const text = this.email ? this.email : "this field";
+            return "You want to remove " + "<strong>" + text + "</strong>?";
         }
     },
     methods: {
@@ -114,7 +110,7 @@ export default {
         }
     },
     watch: {
-        tempEmail() {
+        email() {
             this.$emit(
                 "email-update",
                 this.key,
@@ -122,7 +118,7 @@ export default {
                 this.tempPassword
             );
         },
-        tempPassword() {
+        password() {
             this.$emit(
                 "email-update",
                 this.key,
@@ -130,11 +126,6 @@ export default {
                 this.tempPassword
             );
         }
-    },
-    mounted() {
-        this.tempEmail = this.email;
-        this.tempPassword = this.password;
-        this.key = this.emailKey;
     }
 };
 </script>

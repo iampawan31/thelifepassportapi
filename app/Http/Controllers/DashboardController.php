@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    
+
     /**
      * Create a new controller instance.
      *
@@ -26,6 +26,6 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         return view('dashboard.index')
-                ->with('page_title', 'Dashboard');
+            ->with('page_title', 'Dashboard');
     }
 }

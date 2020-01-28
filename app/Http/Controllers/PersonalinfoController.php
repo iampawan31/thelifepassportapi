@@ -3,13 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use App\UserEmail;
 use App\PersonalAddress;
 use App\PersonalEmployerBenefits;
 use Exception;
-use Auth;
 use App\PersonalInfo;
-use App\UserPhone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -34,7 +31,7 @@ class PersonalInfoController extends Controller
      */
     public function index()
     {
-        return view('personalinfo.personalinfo');
+        return view('personalinfo.personalinfo', ['user' => auth()->user()]);
     }
 
     /**
@@ -180,7 +177,7 @@ class PersonalInfoController extends Controller
                     'status' => 201,
                     'message' => 'Personal information has been saved successfully'
                 ], 201);
-        } catch (Exception $e) {
+        } catch (Exception $e) {dd($e);
             DB::rollBack();
 
             return response()
@@ -194,10 +191,9 @@ class PersonalInfoController extends Controller
     /**
      * Get Personal Information Details.
      *
-     * @param  \App\PersonalInfo  $personalInfo
      * @return \Illuminate\Http\Response
      */
-    public function show(PersonalInfo $personalInfo)
+    public function show()
     {
         return response()->json(['status' => 200, 'data' => auth()->user()]);
     }

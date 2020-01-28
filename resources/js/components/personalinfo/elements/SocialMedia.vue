@@ -11,7 +11,7 @@
                     name="social_media_type[]"
                     placeholder="Select an Options"
                     :options="socialMediaOptions"
-                    v-model="tempSocialMediaType"
+                    v-model="socialMediaType"
                 />
                 <span
                     v-if="errors != undefined && errors"
@@ -32,7 +32,7 @@
                     name="social_username[]"
                     class="field-input"
                     placeholder="Username"
-                    v-model="tempUsername"
+                    v-model="socialMediaUsername"
                     value=""
                 />
                 <span
@@ -53,7 +53,7 @@
                     name="social_password[]"
                     class="field-input field-input__last"
                     placeholder="Password"
-                    v-model="tempPassword"
+                    v-model="socialMediaPassword"
                     value=""
                 />
                 <span
@@ -66,7 +66,7 @@
         <a
             href="javascript:void(0);"
             class="btn-remove"
-            v-if="index != 0"
+            v-if="socialMediaKey != 0"
             @click="removeSocialMedia"
         >
             <svg
@@ -106,54 +106,45 @@ export default {
     ],
     data() {
         return {
-            errors: [],
-            tempSocialMediaType: "",
-            tempUsername: "",
-            tempPassword: "",
-            index: ""
+            errors: []
         };
     },
     watch: {
-        tempSocialMediaType() {
-            this.$emit(
-                "social-media-update",
-                this.socialMediaKey,
-                this.tempSocialMediaType,
-                this.tempUsername,
-                this.tempPassword
-            );
+        socialMediaType() {
+            this.updateSocialMediaInformation();
         },
-        tempUsername() {
-            this.$emit(
-                "social-media-update",
-                this.socialMediaKey,
-                this.tempSocialMediaType,
-                this.tempUsername,
-                this.tempPassword
-            );
+        socialMediaUsername() {
+            this.updateSocialMediaInformation();
         },
-        tempPassword() {
-            this.$emit(
-                "social-media-update",
-                this.socialMediaKey,
-                this.tempSocialMediaType,
-                this.tempUsername,
-                this.tempPassword
-            );
+        socialMediaPassword() {
+            this.updateSocialMediaInformation();
         }
     },
     computed: {
         socialMediaRemoveText() {
+            const text = this.socialMediaType
+                ? this.socialMediaOptions[this.socialMediaType].text
+                : "this field";
+
             return (
                 "You want to remove " +
                 "<strong>" +
-                this.socialMediaOptions[this.socialMediaType - 1].text +
+                text +
                 "</strong>" +
                 " credentials?"
             );
         }
     },
     methods: {
+        updateSocialMediaInformation() {
+            this.$emit(
+                "social-media-update",
+                this.socialMediaKey,
+                this.socialMediaType,
+                this.socialMediaUsername,
+                this.socialMediaPassword
+            );
+        },
         removeSocialMedia() {
             this.$swal
                 .fire({
@@ -167,7 +158,7 @@ export default {
                 })
                 .then(result => {
                     if (result.value) {
-                        this.$emit("social-media-removal", this.index);
+                        this.$emit("social-media-removal", this.socialMediaKey);
                         $swal.fire(
                             "Deleted!",
                             "Selected Social Media Credentials Removed!",
@@ -176,12 +167,6 @@ export default {
                     }
                 });
         }
-    },
-    mounted() {
-        this.index = this.socialMediaKey;
-        this.tempSocialMediaType = this.socialMediaType;
-        this.tempUsername = this.socialMediaUsername;
-        this.tempPassword = this.socialMediaPassword;
     }
 };
 </script>

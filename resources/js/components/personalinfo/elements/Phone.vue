@@ -9,7 +9,7 @@
                 <div class="field-wrapper">
                     <input
                         type="text"
-                        v-model="number"
+                        v-model="phoneNumber"
                         numeric-keyboard-toggle
                         class="field-input input-mobile"
                         placeholder="Phone number"
@@ -22,7 +22,7 @@
         </div>
         <a
             href="javascript:void(0);"
-            v-if="key != 0"
+            v-if="phoneKey != 0"
             class="btn-remove"
             @click="removePhone"
         >
@@ -53,16 +53,13 @@ export default {
         ValidationProvider
     },
     props: ["phoneNumber", "phoneKey"],
-    data() {
-        return {
-            number: "",
-            key: ""
-        };
-    },
     computed: {
         phoneRemoveText() {
             return (
-                "You want to remove " + "<strong>" + this.number + "</strong>?"
+                "You want to remove " +
+                "<strong>" +
+                this.phoneNumber +
+                "</strong>?"
             );
         }
     },
@@ -80,8 +77,8 @@ export default {
                 })
                 .then(result => {
                     if (result.value) {
-                        this.$emit("remove-phone-number", this.key);
-                        $swal.fire(
+                        this.$emit("remove-phone-number", this.phoneKey);
+                        this.$swal.fire(
                             "Deleted!",
                             "Your phone number is deleted",
                             "success"
@@ -91,13 +88,9 @@ export default {
         }
     },
     watch: {
-        number() {
-            this.$emit("phone-number-update", this.key, this.number);
+        phoneNumber() {
+            this.$emit("phone-number-update", this.phoneKey, this.phoneNumber);
         }
-    },
-    mounted() {
-        this.number = this.phoneNumber;
-        this.key = this.phoneKey;
     }
 };
 </script>

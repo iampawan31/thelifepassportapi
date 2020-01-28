@@ -4,17 +4,17 @@
         <div class="add-anohter-field">
             <div
                 class="field-wrapper"
-                v-for="(phone, index) in phones"
+                v-for="(phone, index) in userPhones"
                 v-bind:key="index"
             >
                 <phone
                     v-on:phone-number-update="updatePhoneNumber"
                     v-on:remove-phone-number="removePhone"
                     :phone-key="index"
-                    :phone-number="phone.number"
+                    :phone-number="phone.phone"
                 ></phone>
             </div>
-            <div class="btn-add" v-show="!singlePhoneNumberIsAdded">
+            <div class="btn-add" v-show="singlePhoneNumberIsAdded">
                 <a href="javascript:void(0);" @click="addPhone">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -47,51 +47,30 @@ export default {
     props: ["userPhones"],
     data() {
         return {
-            phones: [],
             blockRemoval: true
         };
     },
     computed: {
         singlePhoneNumberIsAdded() {
-            return (
-                this.phones[0] !== undefined &&
-                (this.phones[0].number === undefined ||
-                    this.phones[0].number === "")
-            );
+            return this.userPhones !== undefined && this.userPhones.length > 0;
         }
     },
     watch: {
         phones() {
-            this.blockRemoval = this.phones.length <= 1;
+            this.blockRemoval = this.userPhones.length <= 1;
         }
     },
     methods: {
         addPhone() {
-            this.phones.push({ number: null });
+            this.userPhones.push({ phone: null });
         },
-        updatePhoneNumber(index, number) {
-            this.phones[index].number = number;
-            this.$emit("phone-details-updates", this.phones);
-        },
-        populatePhone() {
-            if (this.userPhones.length > 0) {
-                this.userPhones.forEach(data => {
-                    this.phones.push({ number: data.phone });
-                });
-            } else {
-                this.phones.push({ number: null });
-            }
+        updatePhoneNumber(index, phone) {
+            this.userPhones[index].phone = phone;
+            this.$emit("phone-details-updates", this.userPhones);
         },
         removePhone(lineId) {
-            if (!this.blockRemoval) this.phones.splice(lineId, 1);
+            this.userPhones.splice(lineId, 1);
         }
-    },
-    mounted() {
-        this.$nextTick(() => {
-            //this.addPhone()
-            console.log("Phone Details" + this.userPhones);
-            this.populatePhone();
-        });
     }
 };
 </script>

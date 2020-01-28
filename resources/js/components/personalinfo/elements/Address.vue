@@ -15,7 +15,7 @@
                             type="text"
                             v-bind:name="addressType + '_street_address_1'"
                             placeholder="Street Address 1"
-                            v-model="streetAddress1"
+                            v-model="homeAddress.street_address1"
                             class="field-input"
                         />
                         <span
@@ -43,7 +43,7 @@
                             type="text"
                             v-bind:name="addressType + '_street_address_2'"
                             placeholder="Street Address 2"
-                            v-model="streetAddress2"
+                            v-model="homeAddress.street_address2"
                             class="field-input"
                         />
                         <span
@@ -69,7 +69,7 @@
                             type="text"
                             v-bind:name="addressType + '_city'"
                             placeholder="City"
-                            v-model="city"
+                            v-model="homeAddress.city"
                             class="field-input"
                         />
                         <span
@@ -95,7 +95,7 @@
                             type="text"
                             v-bind:name="addressType + '_state'"
                             placeholder="State"
-                            v-model="state"
+                            v-model="homeAddress.state"
                             class="field-input"
                         />
                         <span
@@ -121,7 +121,7 @@
                             type="text"
                             v-bind:name="addressType + '_zipcode'"
                             placeholder="Zipcode"
-                            v-model="zipcode"
+                            v-model="homeAddress.zipcode"
                             class="field-input"
                         />
                         <span
@@ -149,61 +149,20 @@ export default {
             errors: [],
             paddingLeft: "",
             paddingRight: "",
-            streetAddress1: "",
-            streetAddress2: "",
-            city: "",
-            state: "",
-            zipcode: "",
             submitted: false
         };
     },
-    computed: {
-        address() {
-            return {
-                street_address1: this.streetAddress1,
-                street_address2: this.streetAddress2,
-                city: this.city,
-                state: this.state,
-                zipcode: this.zipcode
-            };
-        }
-    },
     watch: {
-        streetAddress1() {
-            this.updateData();
-        },
-        streetAddress2() {
-            this.updateData();
-        },
-        city() {
-            this.updateData();
-        },
-        state() {
-            this.updateData();
-        },
-        zipcode() {
-            this.updateData();
+        homeAddress: {
+            handler() {
+                this.updateData();
+            },
+            deep: true
         }
     },
     methods: {
         updateData() {
-            this.$emit("home-address-update", this.address);
-        }
-    },
-    mounted() {
-        if (typeof this.homeAddress == "undefined") {
-            console.log(this.homeAddress);
-        } else {
-            this.streetAddress1 = this.homeAddress.streetAddress1;
-            this.streetAddress2 = this.homeAddress.streetAddress2;
-            this.city = this.homeAddress.city;
-            this.state = this.homeAddress.state;
-            this.zipcode = this.homeAddress.zipcode;
-        }
-
-        if (this.padding !== undefined) {
-            this.paddingLeft = "pl";
-            this.paddingRight = "pr";
+            this.$emit("home-address-update", this.homeAddress);
         }
     }
 };
