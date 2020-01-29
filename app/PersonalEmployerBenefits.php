@@ -12,6 +12,13 @@ class PersonalEmployerBenefits extends Model
         'benefit_id'
     ];
 
+    /**
+     * The attributes that should be visible in arrays.
+     *
+     * @var array
+     */
+    protected $visible = ['first_name', 'last_name'];
+
     static function tableName()
     {
         return with(new static)->getTable();

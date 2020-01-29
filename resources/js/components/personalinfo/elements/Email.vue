@@ -12,7 +12,7 @@
                     name="email[]"
                     class="field-input field-input__first email"
                     placeholder="Email address"
-                    v-model="email"
+                    v-model="localEmail.email"
                     value=""
                 />
                 <span
@@ -33,7 +33,7 @@
                     name="email_password[]"
                     class="field-input field-input__last"
                     placeholder="password"
-                    v-model="password"
+                    v-model="localEmail.password"
                     value=""
                 />
                 <span
@@ -73,13 +73,30 @@ export default {
     components: {
         ValidationProvider
     },
-    props: ["email", "password", "emailKey"],
+    props: {
+        value: {
+            type: Object,
+            required: false
+        },
+        emailKey: {
+            type: Number,
+            required: true
+        }
+    },
     data() {
         return {
             errors: []
         };
     },
     computed: {
+        localEmail: {
+            get() {
+                return this.value;
+            },
+            set(localEmail) {
+                this.$emit("input", localEmail);
+            }
+        },
         emailRemoveText() {
             const text = this.email ? this.email : "this field";
             return "You want to remove " + "<strong>" + text + "</strong>?";
@@ -107,24 +124,6 @@ export default {
                         );
                     }
                 });
-        }
-    },
-    watch: {
-        email() {
-            this.$emit(
-                "email-update",
-                this.key,
-                this.tempEmail,
-                this.tempPassword
-            );
-        },
-        password() {
-            this.$emit(
-                "email-update",
-                this.key,
-                this.tempEmail,
-                this.tempPassword
-            );
         }
     }
 };

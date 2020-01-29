@@ -10,7 +10,7 @@ $factory->define(UserEmployer::class, function (Faker $faker) {
         'user_id' => factory(\App\User::class),
         'employer_name' => $faker->name,
         'employer_phone' => '8123565698',
-        'computer_username' => $faker->userName,
+        'computer_username' => $faker->firstName,
         'computer_password' => $faker->password,
     ];
 });

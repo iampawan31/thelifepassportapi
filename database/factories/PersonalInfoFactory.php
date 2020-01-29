@@ -12,7 +12,7 @@ $factory->define(PersonalInfo::class, function (Faker $faker) {
         'legal_name' => $faker->name,
         'nickname' => $faker->name,
         'dob' => Carbon::now(),
-        'country_id' => 12,
+        'country_id' => "1",
         'passport_number' => '1234566778',
         'father_name' => $faker->name,
         'father_birth_place' => $faker->name,

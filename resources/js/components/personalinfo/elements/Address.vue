@@ -15,7 +15,7 @@
                             type="text"
                             v-bind:name="addressType + '_street_address_1'"
                             placeholder="Street Address 1"
-                            v-model="homeAddress.street_address1"
+                            v-model="localAddress.street_address1"
                             class="field-input"
                         />
                         <span
@@ -43,7 +43,7 @@
                             type="text"
                             v-bind:name="addressType + '_street_address_2'"
                             placeholder="Street Address 2"
-                            v-model="homeAddress.street_address2"
+                            v-model="localAddress.street_address2"
                             class="field-input"
                         />
                         <span
@@ -69,7 +69,7 @@
                             type="text"
                             v-bind:name="addressType + '_city'"
                             placeholder="City"
-                            v-model="homeAddress.city"
+                            v-model="localAddress.city"
                             class="field-input"
                         />
                         <span
@@ -95,7 +95,7 @@
                             type="text"
                             v-bind:name="addressType + '_state'"
                             placeholder="State"
-                            v-model="homeAddress.state"
+                            v-model="localAddress.state"
                             class="field-input"
                         />
                         <span
@@ -121,7 +121,7 @@
                             type="text"
                             v-bind:name="addressType + '_zipcode'"
                             placeholder="Zipcode"
-                            v-model="homeAddress.zipcode"
+                            v-model="localAddress.zipcode"
                             class="field-input"
                         />
                         <span
@@ -140,10 +140,30 @@
 <script>
 import { ValidationProvider } from "vee-validate";
 export default {
-    props: ["homeAddress", "addressType"],
     components: {
         ValidationProvider
     },
+    props: {
+        value: {
+            type: Object,
+            required: true
+        },
+        addressType: {
+            type: String,
+            required: true
+        }
+    },
+    computed: {
+        localAddress: {
+            get() {
+                return this.value;
+            },
+            set(localAddress) {
+                this.$emit("input", localAddress);
+            }
+        }
+    },
+
     data() {
         return {
             errors: [],
@@ -151,19 +171,6 @@ export default {
             paddingRight: "",
             submitted: false
         };
-    },
-    watch: {
-        homeAddress: {
-            handler() {
-                this.updateData();
-            },
-            deep: true
-        }
-    },
-    methods: {
-        updateData() {
-            this.$emit("home-address-update", this.homeAddress);
-        }
     }
 };
 </script>

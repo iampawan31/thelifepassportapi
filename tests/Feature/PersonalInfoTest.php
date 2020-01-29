@@ -16,11 +16,12 @@ use App\PersonalInfo;
 use App\UserEmployer;
 use App\UserPhone;
 use App\UserSocialMedia;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class PersonalInfoTest extends TestCase
 {
     use DatabaseMigrations;
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
     private $user;
     private $personalInfo;
@@ -90,13 +91,12 @@ class PersonalInfoTest extends TestCase
             'mother_name' => 'John Dee',
             'mother_birth_place' => 'New York',
             'personal_address' => $this->personalAddress,
-            'phone' => $this->phoneNumbers,
-            'email' => $this->userEmails,
-            'social_media_type' => $this->userSocialMedia,
+            'phones' => $this->phoneNumbers,
+            'emails' => $this->userEmails,
+            'user_social_media' => $this->userSocialMedia,
             'user_employer' => $this->userEmployer,
             'is_completed' => true
-        ])
-            ->assertStatus(201);
+        ])->assertStatus(201);
 
         $this->assertDatabaseHas('personal_info', [
             'user_id' => $newUser->id,
@@ -125,16 +125,16 @@ class PersonalInfoTest extends TestCase
                 'mother_name' => 'Martha Doe',
                 'mother_birth_place' => 'Martha Birth Place',
                 'personal_address' => $this->personalAddress,
-                'phone' => $this->phoneNumbers,
-                'email' => $this->userEmails,
-                'social_media_type' => $this->userSocialMedia,
+                'phones' => $this->phoneNumbers,
+                'emails' => $this->userEmails,
+                'user_social_media' => $this->userSocialMedia,
                 'user_employer' => $this->userEmployer,
                 'is_completed' => true
             ]
-        )
-            ->assertStatus(201);
+        )->assertStatus(201);
 
         $this->assertDatabaseHas('personal_info', [
+            'user_id' => $this->user->id,
             'legal_name' => 'John Doe',
             'nickname' => 'John',
             'father_name' => 'Adam Doe',
@@ -151,7 +151,7 @@ class PersonalInfoTest extends TestCase
             ->post('personal-info/steps', [
                 'step_id' => 1,
                 'is_visited' => 1
-            ])->assertStatus(200);
+            ])->assertStatus(201);
 
         $this->assertDatabaseHas('users_personal_details_completions', [
             'step_id' => 1,

@@ -4416,6 +4416,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -4425,12 +4436,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    PhoneDetails: _elements_PhoneDetails_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
     EmailDetails: _elements_EmailDetails_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
-    SocialMediaDetails: _elements_SocialMediaDetails_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
     EmploymentDetails: _elements_EmploymentDetails_vue__WEBPACK_IMPORTED_MODULE_6__["default"],
     HomeAddress: _elements_Address__WEBPACK_IMPORTED_MODULE_4__["default"],
+    PhoneDetails: _elements_PhoneDetails_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
     Select2: v_select2_component__WEBPACK_IMPORTED_MODULE_1__["default"],
+    SocialMediaDetails: _elements_SocialMediaDetails_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
     ValidationObserver: vee_validate__WEBPACK_IMPORTED_MODULE_7__["ValidationObserver"],
     ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_7__["ValidationProvider"]
   },
@@ -4440,7 +4451,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       user: [],
       legalName: "",
       nickName: "",
-      address: [],
+      address: {
+        street_address1: null,
+        street_address2: null,
+        city: null,
+        state: null,
+        zipcode: null
+      },
       phoneNumbers: [],
       dateOfBirth: "",
       countryId: "",
@@ -4451,7 +4468,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       motherBirthPlace: "",
       emails: [],
       socialMediaDetails: [],
-      employmentDetails: [],
+      employmentDetails: [{
+        employer_name: null,
+        employer_phone: null,
+        employer_username: null,
+        employer_password: null,
+        address: {
+          street_address1: null,
+          street_address2: null,
+          city: null,
+          state: null,
+          zipcode: null
+        },
+        benefits: []
+      }],
       citizenshipOptions: [],
       isCompleted: false,
       userId: "",
@@ -4493,8 +4523,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   formData = this.getFormData(e);
 
                   if (this.user.id && this.user.personal.id) {
-                    axios.put("/personal-info/" + this.user.personal.id, formData).then(function (response) {
-                      if (response.status == 200) {
+                    formData.append("_method", "put");
+                    axios.post("/personal-info/" + this.user.personal.id, formData).then(function (response) {
+                      if (response.status == 201) {
                         var Toast = _this.$swal.mixin({
                           toast: true,
                           position: "top-end",
@@ -4513,7 +4544,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     })["catch"](function () {});
                   } else {
                     axios.post("/personal-info", formData).then(function (response) {
-                      if (response.status == 200) {
+                      if (response.status == 201) {
                         var Toast = _this.$swal.mixin({
                           toast: true,
                           position: "top-end",
@@ -4591,7 +4622,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       axios.get("/get-personal-info").then(function (response) {
         if (response.status == 200) {
-          if (response.data.data) {
+          if (response.data.data && response.data.data.personal !== null) {
             console.log(response.data.data);
 
             _this3.$store.dispatch("populateData", response.data.data);
@@ -4608,7 +4639,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var formData = new FormData(form);
       formData.append("legal_name", this.legalName);
       formData.append("nickname", this.nickName);
-      formData.append("personal_address", JSON.stringify(this.address));
+      formData.append("personal_address", this.address);
       formData.append("user_phones", JSON.stringify(this.phoneNumbers));
       formData.append("dob", this.dateOfBirth);
       formData.append("country_id", this.countryId);
@@ -4626,8 +4657,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     populateNewForm: function populateNewForm() {
       this.legalName = "";
       this.nickName = "";
-      this.address = [];
-      this.phoneNumbers = [];
+      this.address = {
+        street_address1: null,
+        street_address2: null,
+        city: null,
+        state: null,
+        zipcode: null
+      };
+      this.phoneNumbers = [{
+        phone: null
+      }];
       this.dateOfBirth = "";
       this.countryId = "";
       this.passportNumber = "";
@@ -4635,9 +4674,29 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.fatherBirthPlace = "";
       this.motherName = "";
       this.motherBirthPlace = "";
-      this.emails = [];
-      this.socialMediaDetails = [];
-      this.employmentDetails = [];
+      this.emails = [{
+        email: null,
+        password: null
+      }];
+      this.socialMediaDetails = [{
+        social_id: null,
+        username: null,
+        password: null
+      }];
+      this.employmentDetails = [{
+        employer_name: null,
+        employer_phone: null,
+        employer_username: null,
+        employer_password: null,
+        address: {
+          street_address1: null,
+          street_address2: null,
+          city: null,
+          state: null,
+          zipcode: null
+        },
+        benefits: []
+      }];
       this.isCompleted = false;
     },
     populateData: function populateData(userData) {
@@ -4718,11 +4777,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.employmentDetails = [{
           employer_name: null,
           employer_phone: null,
-          employer_address: null,
-          computer_username: null,
-          computer_password: null,
-          address: null,
-          employeeBenefits: null
+          employer_username: null,
+          employer_password: null,
+          address: {
+            street_address1: null,
+            street_address2: null,
+            city: null,
+            state: null,
+            zipcode: null
+          },
+          benefits: []
         }];
       }
 
@@ -4754,23 +4818,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         id: id,
         text: text
       });
-    },
-    updatePhoneNumbers: function updatePhoneNumbers(data) {
-      this.phoneNumbers = data;
-    },
-    updateEmails: function updateEmails(data) {
-      this.emails = data;
-    },
-    updateSocialMedia: function updateSocialMedia(data) {
-      this.socialMediaDetails = data;
-    },
-    updateEmploymentDetails: function updateEmploymentDetails(data) {
-      this.employmentDetails = data;
-    },
-    updateHomeAddress: function updateHomeAddress(data) {
-      if (data) {
-        this.address = data;
-      }
     }
   }
 });
@@ -6415,9 +6462,28 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["homeAddress", "addressType"],
   components: {
     ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_0__["ValidationProvider"]
+  },
+  props: {
+    value: {
+      type: Object,
+      required: true
+    },
+    addressType: {
+      type: String,
+      required: true
+    }
+  },
+  computed: {
+    localAddress: {
+      get: function get() {
+        return this.value;
+      },
+      set: function set(localAddress) {
+        this.$emit("input", localAddress);
+      }
+    }
   },
   data: function data() {
     return {
@@ -6426,19 +6492,80 @@ __webpack_require__.r(__webpack_exports__);
       paddingRight: "",
       submitted: false
     };
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/elements/Benefits.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/personalinfo/elements/Benefits.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    value: {
+      type: Array,
+      required: false
+    },
+    benefitOptions: {
+      type: Array,
+      required: true
+    }
   },
-  watch: {
-    homeAddress: {
-      handler: function handler() {
-        this.updateData();
+  computed: {
+    localBenefits: {
+      get: function get() {
+        return this.value;
       },
-      deep: true
-    }
-  },
-  methods: {
-    updateData: function updateData() {
-      this.$emit("home-address-update", this.homeAddress);
-    }
+      set: function set(localBenefits) {
+        this.$emit("input", localBenefits);
+      }
+    } // localBenefits: {
+    //     get() {
+    //         let benefits = this.localEmploymentDetail.benefits;
+    //         let employeeBenefitsOptions = this.employeeBenefitsOptions;
+    //         let ret = {};
+    //         for (let i = 0; i < benefits.length; i++) {
+    //             for (let j = 0; j < employeeBenefitsOptions.length; j++) {
+    //                 if (
+    //                     employeeBenefitsOptions[j].id ==
+    //                     benefits[i].benefit_id
+    //                 ) {
+    //                     ret[employeeBenefitsOptions[j].id] = true;
+    //                 }
+    //             }
+    //         }
+    //         return ret;
+    //     },
+    //     set() {}
+    // }
+
   }
 });
 
@@ -6527,13 +6654,30 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_0__["ValidationProvider"]
   },
-  props: ["email", "password", "emailKey"],
+  props: {
+    value: {
+      type: Object,
+      required: false
+    },
+    emailKey: {
+      type: Number,
+      required: true
+    }
+  },
   data: function data() {
     return {
       errors: []
     };
   },
   computed: {
+    localEmail: {
+      get: function get() {
+        return this.value;
+      },
+      set: function set(localEmail) {
+        this.$emit("input", localEmail);
+      }
+    },
     emailRemoveText: function emailRemoveText() {
       var text = this.email ? this.email : "this field";
       return "You want to remove " + "<strong>" + text + "</strong>?";
@@ -6558,14 +6702,6 @@ __webpack_require__.r(__webpack_exports__);
           $swal.fire("Deleted!", "Your email is removed", "success");
         }
       });
-    }
-  },
-  watch: {
-    email: function email() {
-      this.$emit("email-update", this.key, this.tempEmail, this.tempPassword);
-    },
-    password: function password() {
-      this.$emit("email-update", this.key, this.tempEmail, this.tempPassword);
     }
   }
 });
@@ -6622,63 +6758,40 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     Email: _Email__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  props: ["userEmails"],
-  computed: {
-    singleEmailIsAdded: function singleEmailIsAdded() {
-      return this.userEmails !== undefined && this.userEmails.length > 0;
+  props: {
+    value: {
+      type: Array,
+      required: true
     }
   },
-  watch: {
-    emails: function emails() {
-      this.blockRemoval = this.emails.length <= 1;
+  computed: {
+    localEmails: {
+      get: function get() {
+        return this.value;
+      },
+      set: function set(localEmails) {
+        this.$emit("input", localEmails);
+      }
+    },
+    singleEmailIsAdded: function singleEmailIsAdded() {
+      return this.localEmails !== undefined && this.localEmails.length > 0;
     }
   },
   methods: {
     addEmail: function addEmail() {
-      this.userEmails.push({
+      this.localEmails.push({
         email: null,
         password: null
       });
     },
-    populateEmail: function populateEmail() {
-      var _this = this;
-
-      if (this.userEmails.length > 0) {
-        this.userEmails.forEach(function (data) {
-          _this.emails.push({
-            email: data.email,
-            password: data.password
-          });
-        });
-      } else {
-        this.userEmails.push({
-          email: null,
-          password: null
-        });
-      }
-    },
     removeEmail: function removeEmail(lineId) {
-      this.userEmails.splice(lineId, 1);
-    },
-    updateEmails: function updateEmails(index, email, password) {
-      this.userEmails[index].email = email;
-      this.userEmails[index].password = password;
-      this.$emit("email-details-updates", this.userEmails);
+      this.localEmails.splice(lineId, 1);
     }
-  },
-  mounted: function mounted() {
-    var _this2 = this;
-
-    this.$nextTick(function () {
-      _this2.populateEmail();
-    });
   }
 });
 
@@ -6695,6 +6808,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
 /* harmony import */ var _Address__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Address */ "./resources/js/components/personalinfo/elements/Address.vue");
+/* harmony import */ var _Benefits__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Benefits */ "./resources/js/components/personalinfo/elements/Benefits.vue");
 //
 //
 //
@@ -6824,85 +6938,41 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_0__["ValidationProvider"],
-    HomeAddress: _Address__WEBPACK_IMPORTED_MODULE_1__["default"]
+    HomeAddress: _Address__WEBPACK_IMPORTED_MODULE_1__["default"],
+    EmployeeBenefits: _Benefits__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
-  created: function created() {
-    this.getemployeraddress();
+  props: {
+    value: {
+      type: Object,
+      required: false
+    },
+    employmentDetailKey: {
+      type: Number,
+      required: true
+    }
   },
-  props: ["employer", "employmentDetailKey"],
   data: function data() {
     return {
       employeeBenefitsOptions: []
     };
   },
   computed: {
-    benefitSelected: function benefitSelected() {
-      var benefits = this.employer.benefits;
-      var employeeBenefitsOptions = this.employeeBenefitsOptions;
-      var ret = {};
-
-      for (var i = 0; i < benefits.length; i++) {
-        for (var j = 0; j < employeeBenefitsOptions.length; j++) {
-          if (employeeBenefitsOptions[j].id == benefits[i].benefit_id) {
-            ret[employeeBenefitsOptions[j].id] = true;
-          }
-        }
-      }
-
-      return ret;
-    }
-  },
-  watch: {
-    benefits: {
-      handler: function handler() {
-        this.updateEmploymentDetails();
+    localEmploymentDetail: {
+      get: function get() {
+        return this.value;
       },
-      deep: true
-    },
-    computer_username: function computer_username() {
-      this.updateEmploymentDetails();
-    },
-    computer_password: function computer_password() {
-      this.updateEmploymentDetails();
-    },
-    employer_name: function employer_name() {
-      this.updateEmploymentDetails();
-    },
-    employer_phone: function employer_phone() {
-      this.updateEmploymentDetails();
+      set: function set(localEmploymentDetail) {
+        this.$emit("input", localEmploymentDetail);
+      }
     }
   },
   methods: {
-    updateEmploymentDetails: function updateEmploymentDetails() {
-      this.$emit("employment-detail-updated", this.employmentDetailKey, {
-        employer_name: this.employer_name,
-        employer_phone: this.employer_phone,
-        employer_address: this.employer_address,
-        benefits: this.benefits,
-        computer_username: this.computer_username,
-        computer_password: this.computer_password
-      });
-    },
-    updateHomeAddress: function updateHomeAddress(data) {
-      this.employer_address = data;
-      this.updateEmploymentDetails();
-    },
     getemployeraddress: function getemployeraddress() {
       var _this = this;
 
@@ -6914,6 +6984,9 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     }
+  },
+  created: function created() {
+    this.getemployeraddress();
   }
 });
 
@@ -6929,13 +7002,6 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EmploymentDetail__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EmploymentDetail */ "./resources/js/components/personalinfo/elements/EmploymentDetail.vue");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 //
 //
 //
@@ -6993,33 +7059,35 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     EmploymentDetail: _EmploymentDetail__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  props: {
+    value: {
+      type: Array,
+      required: true
+    }
   },
   data: function data() {
     return {
       blockRemoval: true
     };
   },
-  watch: {
-    employers: {
-      handler: function handler() {
-        this.blockRemoval = this.employers.length <= 1;
+  computed: {
+    localEmploymentDetails: {
+      get: function get() {
+        return this.value;
       },
-      deep: true
+      set: function set(localEmploymentDetails) {
+        this.$emit("input", localEmploymentDetails);
+      }
     }
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])(["employers"])),
   methods: {
     addEmployers: function addEmployers() {
-      this.employers.push({
+      this.localEmploymentDetails.push({
         employer_name: "",
         employer_phone: "",
         employer_address: [],
@@ -7028,26 +7096,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         employee_benefits: []
       });
     },
-    populateEmployers: function populateEmployers() {// if (this.userEmployers.length > 0) {
-      // this.employers = this.userEmployers;
-      // this.userEmployers.forEach(data => {
-      //     this.employers.push({
-      //         employer_name: data.employer_name,
-      //         employer_phone: data.employer_phone,
-      //         employer_address: data.employer_address,
-      //         computer_username: data.computer_username,
-      //         computer_password: data.computer_password,
-      //         employee_benefits: data.benefits_used
-      //     });
-      // });
-      // }
-    },
     removeEmployers: function removeEmployers(lineId) {
-      if (!this.blockRemoval) this.employers.splice(lineId, 1);
-    },
-    updateEmploymentDetail: function updateEmploymentDetail(index, data) {
-      this.employers[index] = data;
-      this.$emit("employment-details-updated", this.employers);
+      if (!this.blockRemoval) this.localEmploymentDetails.splice(lineId, 1);
     }
   }
 });
@@ -7116,10 +7166,32 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_0__["ValidationProvider"]
   },
-  props: ["phoneNumber", "phoneKey"],
+  props: {
+    value: {
+      type: String,
+      required: false
+    },
+    phoneKey: {
+      type: Number,
+      required: true
+    }
+  },
   computed: {
+    localPhone: {
+      get: function get() {
+        return this.value;
+      },
+      set: function set(localPhone) {
+        this.$emit("input", localPhone);
+      }
+    },
     phoneRemoveText: function phoneRemoveText() {
       return "You want to remove " + "<strong>" + this.phoneNumber + "</strong>?";
+    }
+  },
+  watch: {
+    value: function value() {
+      this.$emit("input", this.value);
     }
   },
   methods: {
@@ -7141,11 +7213,6 @@ __webpack_require__.r(__webpack_exports__);
           _this.$swal.fire("Deleted!", "Your phone number is deleted", "success");
         }
       });
-    }
-  },
-  watch: {
-    phoneNumber: function phoneNumber() {
-      this.$emit("phone-number-update", this.phoneKey, this.phoneNumber);
     }
   }
 });
@@ -7200,40 +7267,43 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     Phone: _Phone__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  props: ["userPhones"],
+  props: {
+    value: {
+      type: Array,
+      required: true
+    }
+  },
   data: function data() {
     return {
       blockRemoval: true
     };
   },
   computed: {
+    localPhones: {
+      get: function get() {
+        return this.value;
+      },
+      set: function set(localPhones) {
+        this.$emit("input", localPhones);
+      }
+    },
     singlePhoneNumberIsAdded: function singlePhoneNumberIsAdded() {
-      return this.userPhones !== undefined && this.userPhones.length > 0;
-    }
-  },
-  watch: {
-    phones: function phones() {
-      this.blockRemoval = this.userPhones.length <= 1;
+      return this.localPhones !== undefined && this.localPhones.length > 0;
     }
   },
   methods: {
     addPhone: function addPhone() {
-      this.userPhones.push({
+      this.localPhones.push({
         phone: null
       });
     },
-    updatePhoneNumber: function updatePhoneNumber(index, phone) {
-      this.userPhones[index].phone = phone;
-      this.$emit("phone-details-updates", this.userPhones);
-    },
     removePhone: function removePhone(lineId) {
-      this.userPhones.splice(lineId, 1);
+      this.localPhones.splice(lineId, 1);
     }
   }
 });
@@ -7348,33 +7418,40 @@ __webpack_require__.r(__webpack_exports__);
     ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_1__["ValidationProvider"],
     Select2: v_select2_component__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  props: ["socialMediaKey", "socialMediaOptions", "socialMediaType", "socialMediaUsername", "socialMediaPassword"],
+  props: {
+    value: {
+      type: Object,
+      required: false
+    },
+    socialMediaOptions: {
+      type: Array,
+      required: true
+    },
+    socialMediaKey: {
+      type: Number,
+      required: true
+    }
+  },
   data: function data() {
     return {
       errors: []
     };
   },
-  watch: {
-    socialMediaType: function socialMediaType() {
-      this.updateSocialMediaInformation();
-    },
-    socialMediaUsername: function socialMediaUsername() {
-      this.updateSocialMediaInformation();
-    },
-    socialMediaPassword: function socialMediaPassword() {
-      this.updateSocialMediaInformation();
-    }
-  },
   computed: {
+    localSocial: {
+      get: function get() {
+        return this.value;
+      },
+      set: function set(localSocial) {
+        this.$emit("input", localSocial);
+      }
+    },
     socialMediaRemoveText: function socialMediaRemoveText() {
-      var text = this.socialMediaType ? this.socialMediaOptions[this.socialMediaType].text : "this field";
+      var text = this.localSocial.social_id ? this.socialMediaOptions[this.localSocial.social_id - 1].text : "this field";
       return "You want to remove " + "<strong>" + text + "</strong>" + " credentials?";
     }
   },
   methods: {
-    updateSocialMediaInformation: function updateSocialMediaInformation() {
-      this.$emit("social-media-update", this.socialMediaKey, this.socialMediaType, this.socialMediaUsername, this.socialMediaPassword);
-    },
     removeSocialMedia: function removeSocialMedia() {
       var _this = this;
 
@@ -7390,7 +7467,7 @@ __webpack_require__.r(__webpack_exports__);
         if (result.value) {
           _this.$emit("social-media-removal", _this.socialMediaKey);
 
-          $swal.fire("Deleted!", "Selected Social Media Credentials Removed!", "success");
+          _this.$swal.fire("Deleted!", "Selected Social Media Credentials Removed!", "success");
         }
       });
     }
@@ -7450,35 +7527,28 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["userSocials"],
+  props: {
+    value: {
+      type: Array,
+      required: true
+    }
+  },
+  computed: {
+    localSocials: {
+      get: function get() {
+        return this.value;
+      },
+      set: function set(localSocials) {
+        this.$emit("input", localSocials);
+      }
+    },
+    singleEmailIsAdded: function singleEmailIsAdded() {
+      return this.localSocials !== undefined && this.localSocials.length > 0;
+    }
+  },
   components: {
     Select2: v_select2_component__WEBPACK_IMPORTED_MODULE_0__["default"],
     SocialMedia: _SocialMedia__WEBPACK_IMPORTED_MODULE_1__["default"]
@@ -7499,50 +7569,15 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     addSocialMedia: function addSocialMedia() {
-      this.userSocials.push({
+      this.localSocials.push({
         social_id: null,
         username: null,
         password: null
       });
     },
-    populateSocials: function populateSocials() {
-      if (this.userSocials.length > 0) {// Do Nothinf
-      } else {
-        this.userSocials.push({
-          social_id: null,
-          username: null,
-          password: null
-        });
-      }
-    },
     removeSocialMedia: function removeSocialMedia(lineId) {
-      this.userSocials.splice(lineId, 1);
-    },
-    updateSocialMedia: function updateSocialMedia(index, socialMediaType, username, password) {
-      this.userSocials[index].social_id = socialMediaType;
-      this.userSocials[index].username = username;
-      this.userSocials[index].password = password;
-      this.$emit("social-media-details-updates", this.userSocials);
+      this.localSocials.splice(lineId, 1);
     }
-  },
-  mounted: function mounted() {
-    var _this2 = this;
-
-    this.$nextTick(function () {
-      //this.addSocialMedia();
-      _this2.populateSocials();
-    });
-  },
-  socialChangeEvent: function socialChangeEvent(val) {
-    console.log(val);
-  },
-  socialSelectEvent: function socialSelectEvent(_ref) {
-    var id = _ref.id,
-        text = _ref.text;
-    console.log({
-      id: id,
-      text: text
-    });
   }
 });
 
@@ -63381,7 +63416,7 @@ var render = function() {
                       {
                         staticClass: "custom-form",
                         attrs: {
-                          id: "frmPersonalDetails",
+                          id: "formPersonalDetails",
                           name: "frmPersonalDetails",
                           method: "post"
                         },
@@ -63567,11 +63602,19 @@ var render = function() {
                         _vm._v(" "),
                         _c("home-address", {
                           staticClass: "padding",
-                          attrs: {
-                            "home-address": _vm.address,
-                            "address-type": "personal"
+                          attrs: { "address-type": "personal" },
+                          on: {
+                            input: function(newAddress) {
+                              _vm.address = newAddress
+                            }
                           },
-                          on: { "home-address-update": _vm.updateHomeAddress }
+                          model: {
+                            value: _vm.address,
+                            callback: function($$v) {
+                              _vm.address = $$v
+                            },
+                            expression: "address"
+                          }
                         }),
                         _vm._v(" "),
                         _c("div", { staticClass: "row" }, [
@@ -63580,10 +63623,17 @@ var render = function() {
                             { staticClass: "col nopadding" },
                             [
                               _c("phone-details", {
-                                attrs: { "user-phones": _vm.user.phones },
                                 on: {
-                                  "phone-details-updates":
-                                    _vm.updatePhoneNumbers
+                                  input: function(newPhoneNumbers) {
+                                    _vm.phoneNumbers = newPhoneNumbers
+                                  }
+                                },
+                                model: {
+                                  value: _vm.phoneNumbers,
+                                  callback: function($$v) {
+                                    _vm.phoneNumbers = $$v
+                                  },
+                                  expression: "phoneNumbers"
                                 }
                               })
                             ],
@@ -63716,24 +63766,12 @@ var render = function() {
                                               _c("Select2", {
                                                 attrs: {
                                                   id: "citizenship",
+                                                  options:
+                                                    _vm.citizenshipOptions,
                                                   name: "citizenship",
                                                   width: "resolve",
                                                   "data-placeholder":
-                                                    "Select an Options",
-                                                  options:
-                                                    _vm.citizenshipOptions
-                                                },
-                                                on: {
-                                                  change: function($event) {
-                                                    return _vm.citizenshipChangeEvent(
-                                                      $event
-                                                    )
-                                                  },
-                                                  select: function($event) {
-                                                    return _vm.citizenshipSelectEvent(
-                                                      $event
-                                                    )
-                                                  }
+                                                    "Select an Options"
                                                 },
                                                 model: {
                                                   value: _vm.countryId,
@@ -64251,9 +64289,17 @@ var render = function() {
                             { staticClass: "col nopadding" },
                             [
                               _c("email-details", {
-                                attrs: { "user-emails": _vm.emails },
                                 on: {
-                                  "email-details-updates": _vm.updateEmails
+                                  input: function(newEmails) {
+                                    _vm.emails = newEmails
+                                  }
+                                },
+                                model: {
+                                  value: _vm.emails,
+                                  callback: function($$v) {
+                                    _vm.emails = $$v
+                                  },
+                                  expression: "emails"
                                 }
                               })
                             ],
@@ -64267,12 +64313,17 @@ var render = function() {
                             { staticClass: "col nopadding" },
                             [
                               _c("social-media-details", {
-                                attrs: {
-                                  "user-socials": _vm.socialMediaDetails
-                                },
                                 on: {
-                                  "social-media-details-updates":
-                                    _vm.updateSocialMedia
+                                  input: function(newSocials) {
+                                    _vm.socialMediaDetails = newSocials
+                                  }
+                                },
+                                model: {
+                                  value: _vm.socialMediaDetails,
+                                  callback: function($$v) {
+                                    _vm.socialMediaDetails = $$v
+                                  },
+                                  expression: "socialMediaDetails"
                                 }
                               })
                             ],
@@ -64287,8 +64338,16 @@ var render = function() {
                             [
                               _c("employment-details", {
                                 on: {
-                                  "employment-details-updated":
-                                    _vm.updateEmploymentDetails
+                                  input: function(newEmploymentDetails) {
+                                    _vm.employmentDetails = newEmploymentDetails
+                                  }
+                                },
+                                model: {
+                                  value: _vm.employmentDetails,
+                                  callback: function($$v) {
+                                    _vm.employmentDetails = $$v
+                                  },
+                                  expression: "employmentDetails"
                                 }
                               })
                             ],
@@ -67607,8 +67666,8 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.homeAddress.street_address1,
-                            expression: "homeAddress.street_address1"
+                            value: _vm.localAddress.street_address1,
+                            expression: "localAddress.street_address1"
                           }
                         ],
                         staticClass: "field-input",
@@ -67617,14 +67676,14 @@ var render = function() {
                           name: _vm.addressType + "_street_address_1",
                           placeholder: "Street Address 1"
                         },
-                        domProps: { value: _vm.homeAddress.street_address1 },
+                        domProps: { value: _vm.localAddress.street_address1 },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
                             _vm.$set(
-                              _vm.homeAddress,
+                              _vm.localAddress,
                               "street_address1",
                               $event.target.value
                             )
@@ -67681,8 +67740,8 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.homeAddress.street_address2,
-                            expression: "homeAddress.street_address2"
+                            value: _vm.localAddress.street_address2,
+                            expression: "localAddress.street_address2"
                           }
                         ],
                         staticClass: "field-input",
@@ -67691,14 +67750,14 @@ var render = function() {
                           name: _vm.addressType + "_street_address_2",
                           placeholder: "Street Address 2"
                         },
-                        domProps: { value: _vm.homeAddress.street_address2 },
+                        domProps: { value: _vm.localAddress.street_address2 },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
                             _vm.$set(
-                              _vm.homeAddress,
+                              _vm.localAddress,
                               "street_address2",
                               $event.target.value
                             )
@@ -67753,8 +67812,8 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.homeAddress.city,
-                            expression: "homeAddress.city"
+                            value: _vm.localAddress.city,
+                            expression: "localAddress.city"
                           }
                         ],
                         staticClass: "field-input",
@@ -67763,14 +67822,14 @@ var render = function() {
                           name: _vm.addressType + "_city",
                           placeholder: "City"
                         },
-                        domProps: { value: _vm.homeAddress.city },
+                        domProps: { value: _vm.localAddress.city },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
                             _vm.$set(
-                              _vm.homeAddress,
+                              _vm.localAddress,
                               "city",
                               $event.target.value
                             )
@@ -67825,8 +67884,8 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.homeAddress.state,
-                            expression: "homeAddress.state"
+                            value: _vm.localAddress.state,
+                            expression: "localAddress.state"
                           }
                         ],
                         staticClass: "field-input",
@@ -67835,14 +67894,14 @@ var render = function() {
                           name: _vm.addressType + "_state",
                           placeholder: "State"
                         },
-                        domProps: { value: _vm.homeAddress.state },
+                        domProps: { value: _vm.localAddress.state },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
                             _vm.$set(
-                              _vm.homeAddress,
+                              _vm.localAddress,
                               "state",
                               $event.target.value
                             )
@@ -67897,8 +67956,8 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.homeAddress.zipcode,
-                            expression: "homeAddress.zipcode"
+                            value: _vm.localAddress.zipcode,
+                            expression: "localAddress.zipcode"
                           }
                         ],
                         staticClass: "field-input",
@@ -67907,14 +67966,14 @@ var render = function() {
                           name: _vm.addressType + "_zipcode",
                           placeholder: "Zipcode"
                         },
-                        domProps: { value: _vm.homeAddress.zipcode },
+                        domProps: { value: _vm.localAddress.zipcode },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
                             _vm.$set(
-                              _vm.homeAddress,
+                              _vm.localAddress,
                               "zipcode",
                               $event.target.value
                             )
@@ -67954,6 +68013,96 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/elements/Benefits.vue?vue&type=template&id=804500c4&":
+/*!*********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/personalinfo/elements/Benefits.vue?vue&type=template&id=804500c4& ***!
+  \*********************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _vm._m(0),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
+      _c(
+        "div",
+        { staticClass: "col" },
+        _vm._l(_vm.benefitOptions, function(benefit) {
+          return _c("div", { key: benefit.id }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.localBenefits,
+                  expression: "localBenefits"
+                }
+              ],
+              attrs: { type: "checkbox", name: "benefit" },
+              domProps: {
+                value: benefit,
+                checked: Array.isArray(_vm.localBenefits)
+                  ? _vm._i(_vm.localBenefits, benefit) > -1
+                  : _vm.localBenefits
+              },
+              on: {
+                change: function($event) {
+                  var $$a = _vm.localBenefits,
+                    $$el = $event.target,
+                    $$c = $$el.checked ? true : false
+                  if (Array.isArray($$a)) {
+                    var $$v = benefit,
+                      $$i = _vm._i($$a, $$v)
+                    if ($$el.checked) {
+                      $$i < 0 && (_vm.localBenefits = $$a.concat([$$v]))
+                    } else {
+                      $$i > -1 &&
+                        (_vm.localBenefits = $$a
+                          .slice(0, $$i)
+                          .concat($$a.slice($$i + 1)))
+                    }
+                  } else {
+                    _vm.localBenefits = $$c
+                  }
+                }
+              }
+            }),
+            _vm._v(
+              "\n                " + _vm._s(benefit.title) + "\n            "
+            )
+          ])
+        }),
+        0
+      )
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "field-group" }, [
+      _c("label", { attrs: { for: "benefits_used" } }, [
+        _vm._v("Benefits used")
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/elements/Email.vue?vue&type=template&id=5a2ecfac&":
 /*!******************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/personalinfo/elements/Email.vue?vue&type=template&id=5a2ecfac& ***!
@@ -67987,8 +68136,8 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.email,
-                        expression: "email"
+                        value: _vm.localEmail.email,
+                        expression: "localEmail.email"
                       }
                     ],
                     staticClass: "field-input field-input__first email",
@@ -67998,13 +68147,13 @@ var render = function() {
                       placeholder: "Email address",
                       value: ""
                     },
-                    domProps: { value: _vm.email },
+                    domProps: { value: _vm.localEmail.email },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.email = $event.target.value
+                        _vm.$set(_vm.localEmail, "email", $event.target.value)
                       }
                     }
                   }),
@@ -68040,8 +68189,8 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.password,
-                        expression: "password"
+                        value: _vm.localEmail.password,
+                        expression: "localEmail.password"
                       }
                     ],
                     staticClass: "field-input field-input__last",
@@ -68051,13 +68200,17 @@ var render = function() {
                       placeholder: "password",
                       value: ""
                     },
-                    domProps: { value: _vm.password },
+                    domProps: { value: _vm.localEmail.password },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.password = $event.target.value
+                        _vm.$set(
+                          _vm.localEmail,
+                          "password",
+                          $event.target.value
+                        )
                       }
                     }
                   }),
@@ -68143,21 +68296,14 @@ var render = function() {
           _vm._v("\n            Email Addresses\n        ")
         ]),
         _vm._v(" "),
-        _vm._l(_vm.userEmails, function(email, index) {
+        _vm._l(_vm.localEmails, function(email, index) {
           return _c(
             "div",
             { key: index, staticClass: "field-wrapper" },
             [
               _c("email", {
-                attrs: {
-                  "email-key": index,
-                  email: email.email,
-                  password: email.password
-                },
-                on: {
-                  "email-update": _vm.updateEmails,
-                  "remove-email": _vm.removeEmail
-                }
+                attrs: { value: email, "email-key": index },
+                on: { "remove-email": _vm.removeEmail }
               })
             ],
             1
@@ -68276,8 +68422,8 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.employer.employer_name,
-                              expression: "employer.employer_name"
+                              value: _vm.localEmploymentDetail.employer_name,
+                              expression: "localEmploymentDetail.employer_name"
                             }
                           ],
                           staticClass: "field-input",
@@ -68287,14 +68433,16 @@ var render = function() {
                             placeholder: "Employer Name",
                             value: ""
                           },
-                          domProps: { value: _vm.employer.employer_name },
+                          domProps: {
+                            value: _vm.localEmploymentDetail.employer_name
+                          },
                           on: {
                             input: function($event) {
                               if ($event.target.composing) {
                                 return
                               }
                               _vm.$set(
-                                _vm.employer,
+                                _vm.localEmploymentDetail,
                                 "employer_name",
                                 $event.target.value
                               )
@@ -68355,8 +68503,8 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.employer.employer_phone,
-                              expression: "employer.employer_phone"
+                              value: _vm.localEmploymentDetail.employer_phone,
+                              expression: "localEmploymentDetail.employer_phone"
                             }
                           ],
                           staticClass: "field-input",
@@ -68366,14 +68514,16 @@ var render = function() {
                             placeholder: "Phone number",
                             value: ""
                           },
-                          domProps: { value: _vm.employer.employer_phone },
+                          domProps: {
+                            value: _vm.localEmploymentDetail.employer_phone
+                          },
                           on: {
                             input: function($event) {
                               if ($event.target.composing) {
                                 return
                               }
                               _vm.$set(
-                                _vm.employer,
+                                _vm.localEmploymentDetail,
                                 "employer_phone",
                                 $event.target.value
                               )
@@ -68406,9 +68556,18 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("home-address", {
-        attrs: {
-          "home-address": _vm.employer.address,
-          "address-type": "employer"
+        attrs: { "address-type": "employer" },
+        on: {
+          input: function(newAddress) {
+            _vm.address = newAddress
+          }
+        },
+        model: {
+          value: _vm.localEmploymentDetail.address,
+          callback: function($$v) {
+            _vm.$set(_vm.localEmploymentDetail, "address", $$v)
+          },
+          expression: "localEmploymentDetail.address"
         }
       }),
       _vm._v(" "),
@@ -68439,8 +68598,10 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.employer.computer_username,
-                              expression: "employer.computer_username"
+                              value:
+                                _vm.localEmploymentDetail.computer_username,
+                              expression:
+                                "localEmploymentDetail.computer_username"
                             }
                           ],
                           staticClass: "field-input",
@@ -68450,14 +68611,16 @@ var render = function() {
                             placeholder: "Username",
                             value: ""
                           },
-                          domProps: { value: _vm.employer.computer_username },
+                          domProps: {
+                            value: _vm.localEmploymentDetail.computer_username
+                          },
                           on: {
                             input: function($event) {
                               if ($event.target.composing) {
                                 return
                               }
                               _vm.$set(
-                                _vm.employer,
+                                _vm.localEmploymentDetail,
                                 "computer_username",
                                 $event.target.value
                               )
@@ -68507,8 +68670,10 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.employer.computer_password,
-                              expression: "employer.computer_password"
+                              value:
+                                _vm.localEmploymentDetail.computer_password,
+                              expression:
+                                "localEmploymentDetail.computer_password"
                             }
                           ],
                           staticClass: "field-input",
@@ -68518,14 +68683,16 @@ var render = function() {
                             placeholder: "Password",
                             value: ""
                           },
-                          domProps: { value: _vm.employer.computer_password },
+                          domProps: {
+                            value: _vm.localEmploymentDetail.computer_password
+                          },
                           on: {
                             input: function($event) {
                               if ($event.target.composing) {
                                 return
                               }
                               _vm.$set(
-                                _vm.employer,
+                                _vm.localEmploymentDetail,
                                 "computer_password",
                                 $event.target.value
                               )
@@ -68557,83 +68724,21 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _vm._m(0),
-      _vm._v(" "),
-      _c("div", { staticClass: "row" }, [
-        _c(
-          "div",
-          { staticClass: "col" },
-          _vm._l(_vm.employeeBenefitsOptions, function(benefit) {
-            return _c("div", { key: benefit.id }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.benefitSelected[benefit.id],
-                    expression: "benefitSelected[benefit.id]"
-                  }
-                ],
-                attrs: { type: "checkbox", name: "benefit" },
-                domProps: {
-                  value: benefit.id,
-                  checked: Array.isArray(_vm.benefitSelected[benefit.id])
-                    ? _vm._i(_vm.benefitSelected[benefit.id], benefit.id) > -1
-                    : _vm.benefitSelected[benefit.id]
-                },
-                on: {
-                  change: function($event) {
-                    var $$a = _vm.benefitSelected[benefit.id],
-                      $$el = $event.target,
-                      $$c = $$el.checked ? true : false
-                    if (Array.isArray($$a)) {
-                      var $$v = benefit.id,
-                        $$i = _vm._i($$a, $$v)
-                      if ($$el.checked) {
-                        $$i < 0 &&
-                          _vm.$set(
-                            _vm.benefitSelected,
-                            benefit.id,
-                            $$a.concat([$$v])
-                          )
-                      } else {
-                        $$i > -1 &&
-                          _vm.$set(
-                            _vm.benefitSelected,
-                            benefit.id,
-                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                          )
-                      }
-                    } else {
-                      _vm.$set(_vm.benefitSelected, benefit.id, $$c)
-                    }
-                  }
-                }
-              }),
-              _vm._v(
-                "\n                " + _vm._s(benefit.title) + "\n            "
-              )
-            ])
-          }),
-          0
-        )
-      ])
+      _c("employee-benefits", {
+        attrs: { "benefit-options": _vm.employeeBenefitsOptions },
+        model: {
+          value: _vm.localEmploymentDetail.benefits,
+          callback: function($$v) {
+            _vm.$set(_vm.localEmploymentDetail, "benefits", $$v)
+          },
+          expression: "localEmploymentDetail.benefits"
+        }
+      })
     ],
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "field-group" }, [
-      _c("label", { attrs: { for: "benefits_used" } }, [
-        _vm._v("Benefits used")
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -68663,14 +68768,13 @@ var render = function() {
         _vm._v("\n        Current Employers including self employment\n    ")
       ]),
       _vm._v(" "),
-      _vm._l(_vm.employers, function(employer, index) {
+      _vm._l(_vm.localEmploymentDetails, function(employer, index) {
         return _c(
           "div",
           { key: index, staticClass: "field-wrapper" },
           [
             _c("employment-detail", {
-              attrs: { "employment-detail-key": index, employer: employer },
-              on: { "employment-detail-updated": _vm.updateEmploymentDetail }
+              attrs: { value: employer, "employment-detail-key": index }
             }),
             _vm._v(" "),
             index != 0
@@ -68789,8 +68893,8 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.phoneNumber,
-                        expression: "phoneNumber"
+                        value: _vm.localPhone,
+                        expression: "localPhone"
                       }
                     ],
                     staticClass: "field-input input-mobile",
@@ -68801,13 +68905,13 @@ var render = function() {
                       value: "",
                       name: "phone[]"
                     },
-                    domProps: { value: _vm.phoneNumber },
+                    domProps: { value: _vm.localPhone },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.phoneNumber = $event.target.value
+                        _vm.localPhone = $event.target.value
                       }
                     }
                   })
@@ -68892,16 +68996,20 @@ var render = function() {
       "div",
       { staticClass: "add-anohter-field" },
       [
-        _vm._l(_vm.userPhones, function(phone, index) {
+        _vm._l(_vm.localPhones, function(phone, index) {
           return _c(
             "div",
             { key: index, staticClass: "field-wrapper" },
             [
               _c("phone", {
-                attrs: { "phone-key": index, "phone-number": phone.phone },
-                on: {
-                  "phone-number-update": _vm.updatePhoneNumber,
-                  "remove-phone-number": _vm.removePhone
+                attrs: { "phone-key": index },
+                on: { "remove-phone-number": _vm.removePhone },
+                model: {
+                  value: phone.phone,
+                  callback: function($$v) {
+                    _vm.$set(phone, "phone", $$v)
+                  },
+                  expression: "phone.phone"
                 }
               })
             ],
@@ -69009,11 +69117,11 @@ var render = function() {
                       options: _vm.socialMediaOptions
                     },
                     model: {
-                      value: _vm.socialMediaType,
+                      value: _vm.localSocial.social_id,
                       callback: function($$v) {
-                        _vm.socialMediaType = $$v
+                        _vm.$set(_vm.localSocial, "social_id", $$v)
                       },
-                      expression: "socialMediaType"
+                      expression: "localSocial.social_id"
                     }
                   }),
                   _vm._v(" "),
@@ -69052,8 +69160,8 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.socialMediaUsername,
-                        expression: "socialMediaUsername"
+                        value: _vm.localSocial.username,
+                        expression: "localSocial.username"
                       }
                     ],
                     staticClass: "field-input",
@@ -69063,13 +69171,17 @@ var render = function() {
                       placeholder: "Username",
                       value: ""
                     },
-                    domProps: { value: _vm.socialMediaUsername },
+                    domProps: { value: _vm.localSocial.username },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.socialMediaUsername = $event.target.value
+                        _vm.$set(
+                          _vm.localSocial,
+                          "username",
+                          $event.target.value
+                        )
                       }
                     }
                   }),
@@ -69108,8 +69220,8 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.socialMediaPassword,
-                        expression: "socialMediaPassword"
+                        value: _vm.localSocial.password,
+                        expression: "localSocial.password"
                       }
                     ],
                     staticClass: "field-input field-input__last",
@@ -69119,13 +69231,17 @@ var render = function() {
                       placeholder: "Password",
                       value: ""
                     },
-                    domProps: { value: _vm.socialMediaPassword },
+                    domProps: { value: _vm.localSocial.password },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.socialMediaPassword = $event.target.value
+                        _vm.$set(
+                          _vm.localSocial,
+                          "password",
+                          $event.target.value
+                        )
                       }
                     }
                   }),
@@ -69209,23 +69325,18 @@ var render = function() {
       "div",
       { staticClass: "add-anohter-field" },
       [
-        _vm._l(_vm.userSocials, function(social, index) {
+        _vm._l(_vm.localSocials, function(social, index) {
           return _c(
             "div",
             { key: index, staticClass: "field-wrapper" },
             [
               _c("social-media", {
                 attrs: {
+                  value: social,
                   "social-media-key": index,
-                  "social-media-options": _vm.socialOptions,
-                  "social-media-type": social.social_id,
-                  "social-media-username": social.username,
-                  "social-media-password": social.password
+                  "social-media-options": _vm.socialOptions
                 },
-                on: {
-                  "social-media-update": _vm.updateSocialMedia,
-                  "social-media-removal": _vm.removeSocialMedia
-                }
+                on: { "social-media-removal": _vm.removeSocialMedia }
               })
             ],
             1
@@ -97405,6 +97516,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Address_vue_vue_type_template_id_37dbd702___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Address_vue_vue_type_template_id_37dbd702___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/personalinfo/elements/Benefits.vue":
+/*!********************************************************************!*\
+  !*** ./resources/js/components/personalinfo/elements/Benefits.vue ***!
+  \********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Benefits_vue_vue_type_template_id_804500c4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Benefits.vue?vue&type=template&id=804500c4& */ "./resources/js/components/personalinfo/elements/Benefits.vue?vue&type=template&id=804500c4&");
+/* harmony import */ var _Benefits_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Benefits.vue?vue&type=script&lang=js& */ "./resources/js/components/personalinfo/elements/Benefits.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Benefits_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Benefits_vue_vue_type_template_id_804500c4___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Benefits_vue_vue_type_template_id_804500c4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/personalinfo/elements/Benefits.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/personalinfo/elements/Benefits.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************!*\
+  !*** ./resources/js/components/personalinfo/elements/Benefits.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Benefits_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Benefits.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/elements/Benefits.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Benefits_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/personalinfo/elements/Benefits.vue?vue&type=template&id=804500c4&":
+/*!***************************************************************************************************!*\
+  !*** ./resources/js/components/personalinfo/elements/Benefits.vue?vue&type=template&id=804500c4& ***!
+  \***************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Benefits_vue_vue_type_template_id_804500c4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Benefits.vue?vue&type=template&id=804500c4& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/elements/Benefits.vue?vue&type=template&id=804500c4&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Benefits_vue_vue_type_template_id_804500c4___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Benefits_vue_vue_type_template_id_804500c4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

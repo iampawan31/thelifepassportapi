@@ -7,9 +7,11 @@ use App\PersonalAddress;
 use App\PersonalEmployerBenefits;
 use Exception;
 use App\PersonalInfo;
+use App\UserEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class PersonalInfoController extends Controller
 {
@@ -64,6 +66,8 @@ class PersonalInfoController extends Controller
 
             $personalInfo->save();
 
+
+
             // Save user's personal address
             $homeAddress = json_decode(request('personal_address'));
 
@@ -108,7 +112,7 @@ class PersonalInfoController extends Controller
             }
 
             //Saving user's social media details
-            $socials = json_decode(request('user_socail_media'));
+            $socials = json_decode(request('user_social_media'));
 
             if (isset($socials)) {
                 foreach ($socials as $social) {
@@ -139,23 +143,27 @@ class PersonalInfoController extends Controller
                             'computer_password' => $employer->computer_password
                         ]);
 
-                        $employment->address()->create([
-                            'user_id' => $user->id,
-                            'street_address1' => $employer->employer_address->street_address1,
-                            'street_address2' => $employer->employer_address->street_address2,
-                            'city' => $employer->employer_address->city,
-                            'state' => $employer->employer_address->state,
-                            'zipcode' => $employer->employer_address->zipcode,
-                        ]);
+                        if (isset($employer->employer_address)) {
+                            $employment->address()->create([
+                                'user_id' => $user->id,
+                                'street_address1' => $employer->address->street_address1,
+                                'street_address2' => $employer->address->street_address2,
+                                'city' => $employer->address->city,
+                                'state' => $employer->address->state,
+                                'zipcode' => $employer->address->zipcode,
+                            ]);
+                        }
 
                         $benefits = $employer->benefits;
 
-                        foreach ($benefits as $benefit) {
-                            PersonalEmployerBenefits::create([
-                                'user_id' => $user->id,
-                                'employer_id' => $employment->id,
-                                'benefit_id' => $benefit
-                            ]);
+                        if (isset($benefits)) {
+                            foreach ($benefits as $benefit) {
+                                PersonalEmployerBenefits::create([
+                                    'user_id' => $user->id,
+                                    'employer_id' => $employment->id,
+                                    'benefit_id' => $benefit
+                                ]);
+                            }
                         }
                     }
                 }
@@ -207,10 +215,11 @@ class PersonalInfoController extends Controller
      */
     public function update(Request $request, PersonalInfo $personalInfo)
     {
-        dd($request->all());
         if ($personalInfo && $personalInfo->user_id == auth()->id()) {
             try {
-                $user = User::find(auth()->id());
+                $user = User::findOrFail(auth()->id());
+
+
                 DB::beginTransaction();
 
                 $personalInfo->legal_name = request('legal_name') ?: "";
@@ -225,28 +234,46 @@ class PersonalInfoController extends Controller
 
                 $personalInfo->save();
 
+                // Save user's personal address
+                $homeAddress = request('personal_address');
+
+
+                if (isset($homeAddress)) {
+                    PersonalAddress::updateOrCreate([
+                        'user_id' => $user->id,
+                    ], [
+                        'street_address1' => $homeAddress['street_address1'] ?: "",
+                        'street_address2' => $homeAddress['street_address2'] ?: "",
+                        'city' => $homeAddress['city'] ?: "",
+                        'state' => $homeAddress['state'] ?: "",
+                        'zipcode' => $homeAddress['zipcode'] ?: "",
+                    ]);
+                }
+
                 // Updating user's phone numbers
-                $phoneNumbers = json_decode(request('user_phones'));
+                $phoneNumbers = request('user_phones');
 
                 if (isset($phoneNumbers)) {
                     $user->phones()->delete();
 
                     foreach ($phoneNumbers as $phone) {
                         if ($phone) {
-                            $user->phones()->create(['user_id' => auth()->id(), 'phone' => $phone->number]);
+                            $user->phones()->updateOrCreate(['user_id' => auth()->id(), 'phone' => $phone->number]);
                         }
                     }
                 }
 
-                //Updating user's emails
-                $emails = json_decode(request('emails'));
+                // Updating user's emails
+                $emails = request('emails');
 
                 if (isset($emails)) {
-                    $user->emails()->delete();
+                    UserEmail::where('user_id', $user->id)->delete();
+
+                    dd($user->emails);
 
                     foreach ($emails as $email) {
                         if ($email) {
-                            $user->emails()->create(
+                            $user->emails()->updateOrCreate(
                                 [
                                     'user_id' => auth()->id(),
                                     'email' => $email->email,
@@ -258,14 +285,14 @@ class PersonalInfoController extends Controller
                 }
 
                 //Updating user's social media details
-                $socials = json_decode(request('user_socail_media'));
+                $socials = request('user_social_media');
 
                 if (isset($socials)) {
                     $user->socials()->delete();
 
                     foreach ($socials as $social) {
                         if ($social) {
-                            $user->socials()->create(
+                            $user->socials()->updateOrCreate(
                                 [
                                     'user_id' => auth()->id(),
                                     'social_id' => $social->social_id,
@@ -278,14 +305,14 @@ class PersonalInfoController extends Controller
                 }
 
                 //Updating user's employment details
-                $employers = json_decode(request('user_employer'));
+                $employers = request('user_employer');
 
                 if (isset($employers)) {
                     $user->employers()->delete();
 
                     foreach ($employers as $employer) {
                         if ($employer) {
-                            $employment = $user->employers()->create([
+                            $employment = $user->employers()->updateOrCreate([
                                 'user_id' => auth()->id(),
                                 'employer_name' => $employer->employer_name,
                                 'employer_phone' => $employer->employer_phone,
@@ -293,23 +320,27 @@ class PersonalInfoController extends Controller
                                 'computer_password' => $employer->computer_password
                             ]);
 
-                            $employment->address()->create([
-                                'user_id' => $user->id,
-                                'street_address1' => $employer->employer_address->street_address1,
-                                'street_address2' => $employer->employer_address->street_address2,
-                                'city' => $employer->employer_address->city,
-                                'state' => $employer->employer_address->state,
-                                'zipcode' => $employer->employer_address->zipcode,
-                            ]);
+                            if (isset($employer->employer_address)) {
+                                $employment->address()->updateOrCreate([
+                                    'user_id' => $user->id,
+                                    'street_address1' => $employer->address->street_address1,
+                                    'street_address2' => $employer->address->street_address2,
+                                    'city' => $employer->address->city,
+                                    'state' => $employer->address->state,
+                                    'zipcode' => $employer->address->zipcode,
+                                ]);
+                            }
 
                             $benefits = $employer->benefits;
 
-                            foreach ($benefits as $benefit) {
-                                PersonalEmployerBenefits::create([
-                                    'user_id' => $user->id,
-                                    'employer_id' => $employment->id,
-                                    'benefit_id' => $benefit
-                                ]);
+                            if (isset($benefits)) {
+                                foreach ($benefits as $benefit) {
+                                    PersonalEmployerBenefits::updateOrCreate([
+                                        'user_id' => $user->id,
+                                        'employer_id' => $employment->id,
+                                        'benefit_id' => $benefit
+                                    ]);
+                                }
                             }
                         }
                     }
@@ -332,6 +363,7 @@ class PersonalInfoController extends Controller
                         'message' => 'Personal information has been saved successfully'
                     ], 201);
             } catch (Exception $e) {
+                Log::error('createProcess() ERROR: ' . $e->getMessage(), $request->all());
                 DB::rollBack();
 
                 return response()

@@ -29,7 +29,7 @@ class PersonalStepsController extends Controller
             return response()->json([
                 'status' => 200,
                 'msg' => 'Step information saved successfully'
-            ], 200);
+            ], 201);
         } catch (Exception $e) {
             return response()->json([
                 'status' => 500,
