@@ -54,32 +54,32 @@ class User extends Authenticatable
 
     public function address()
     {
-        return $this->hasOne(PersonalAddress::class, 'user_id');
+        return $this->hasOne(PersonalAddress::class);
     }
 
     public function phones()
     {
         //, Auth::user()->id
-        return $this->hasMany(UserPhone::class, 'user_id')->select(['user_id', 'phone', 'is_primary']);
+        return $this->hasMany(UserPhone::class)->select(['user_id', 'phone', 'is_primary']);
     }
 
     public function emails()
     {
-        return $this->hasMany(UserEmail::class, 'user_id')->select(['user_id', 'email', 'password', 'is_primary']);
+        return $this->hasMany(UserEmail::class)->select(['user_id', 'email', 'password', 'is_primary']);
     }
 
     public function socials()
     {
-        return $this->hasMany(UserSocialMedia::class, 'user_id');
+        return $this->hasMany(UserSocialMedia::class);
     }
 
     public function employers()
     {
-        return $this->hasMany(UserEmployer::class, 'user_id');
+        return $this->hasMany(UserEmployer::class);
     }
 
     public function steps()
     {
-        return $this->hasOne(UsersPersonalDetailsCompletion::class, 'user_id')->where('step_id', 1);
+        return $this->hasOne(UsersPersonalDetailsCompletion::class)->where('step_id', 1);
     }
 }

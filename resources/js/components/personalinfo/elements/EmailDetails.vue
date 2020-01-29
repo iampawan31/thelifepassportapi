@@ -6,15 +6,13 @@
             </h4>
             <div
                 class="field-wrapper"
-                v-for="(email, index) in userEmails"
+                v-for="(email, index) in localEmails"
                 v-bind:key="index"
             >
                 <email
-                    @email-update="updateEmails"
+                    :value="email"
                     @remove-email="removeEmail"
                     :email-key="index"
-                    :email="email.email"
-                    :password="email.password"
                 ></email>
             </div>
             <div class="btn-add" v-show="singleEmailIsAdded">
@@ -47,46 +45,34 @@ export default {
     components: {
         Email
     },
-    props: ["userEmails"],
-    computed: {
-        singleEmailIsAdded() {
-            return this.userEmails !== undefined && this.userEmails.length > 0;
+    props: {
+        value: {
+            type: Array,
+            required: true
         }
     },
-    watch: {
-        emails() {
-            this.blockRemoval = this.emails.length <= 1;
+    computed: {
+        localEmails: {
+            get() {
+                return this.value;
+            },
+            set(localEmails) {
+                this.$emit("input", localEmails);
+            }
+        },
+        singleEmailIsAdded() {
+            return (
+                this.localEmails !== undefined && this.localEmails.length > 0
+            );
         }
     },
     methods: {
         addEmail() {
-            this.userEmails.push({ email: null, password: null });
-        },
-        populateEmail() {
-            if (this.userEmails.length > 0) {
-                this.userEmails.forEach(data => {
-                    this.emails.push({
-                        email: data.email,
-                        password: data.password
-                    });
-                });
-            } else {
-                this.userEmails.push({ email: null, password: null });
-            }
+            this.localEmails.push({ email: null, password: null });
         },
         removeEmail(lineId) {
-            this.userEmails.splice(lineId, 1);
-        },
-        updateEmails(index, email, password) {
-            this.userEmails[index].email = email;
-            this.userEmails[index].password = password;
-            this.$emit("email-details-updates", this.userEmails);
+            this.localEmails.splice(lineId, 1);
         }
-    },
-    mounted() {
-        this.$nextTick(() => {
-            this.populateEmail();
-        });
     }
 };
 </script>

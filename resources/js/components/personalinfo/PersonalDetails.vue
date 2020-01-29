@@ -7,7 +7,7 @@
             <div class="form-wrapper">
                 <ValidationObserver ref="observer" v-slot="{ invalid }">
                     <form
-                        id="frmPersonalDetails"
+                        id="formPersonalDetails"
                         name="frmPersonalDetails"
                         method="post"
                         class="custom-form"
@@ -79,18 +79,26 @@
 
                         <!-- Home Address Section -->
                         <home-address
-                            :home-address="address"
+                            v-model="address"
+                            @input="
+                                newAddress => {
+                                    address = newAddress;
+                                }
+                            "
                             address-type="personal"
                             class="padding"
-                            @home-address-update="updateHomeAddress"
                         />
 
                         <!-- Phone Number(s) section -->
                         <div class="row">
                             <div class="col nopadding">
                                 <phone-details
-                                    :user-phones="user.phones"
-                                    @phone-details-updates="updatePhoneNumbers"
+                                    v-model="phoneNumbers"
+                                    @input="
+                                        newPhoneNumbers => {
+                                            phoneNumbers = newPhoneNumbers;
+                                        }
+                                    "
                                 />
                             </div>
                         </div>
@@ -143,17 +151,11 @@
                                     >
                                         <Select2
                                             id="citizenship"
+                                            :options="citizenshipOptions"
                                             v-model="countryId"
                                             name="citizenship"
                                             width="resolve"
                                             data-placeholder="Select an Options"
-                                            :options="citizenshipOptions"
-                                            @change="
-                                                citizenshipChangeEvent($event)
-                                            "
-                                            @select="
-                                                citizenshipSelectEvent($event)
-                                            "
                                         />
                                         <span
                                             v-if="
@@ -339,8 +341,12 @@
                         <div class="row">
                             <div class="col nopadding">
                                 <email-details
-                                    :user-emails="emails"
-                                    @email-details-updates="updateEmails"
+                                    v-model="emails"
+                                    @input="
+                                        newEmails => {
+                                            emails = newEmails;
+                                        }
+                                    "
                                 />
                             </div>
                         </div>
@@ -349,9 +355,11 @@
                         <div class="row">
                             <div class="col nopadding">
                                 <social-media-details
-                                    :user-socials="socialMediaDetails"
-                                    @social-media-details-updates="
-                                        updateSocialMedia
+                                    v-model="socialMediaDetails"
+                                    @input="
+                                        newSocials => {
+                                            socialMediaDetails = newSocials;
+                                        }
                                     "
                                 />
                             </div>
@@ -361,8 +369,11 @@
                         <div class="row">
                             <div class="col nopadding">
                                 <employment-details
-                                    @employment-details-updated="
-                                        updateEmploymentDetails
+                                    v-model="employmentDetails"
+                                    @input="
+                                        newEmploymentDetails => {
+                                            employmentDetails = newEmploymentDetails;
+                                        }
                                     "
                                 />
                             </div>
@@ -407,12 +418,12 @@ import { ValidationObserver, ValidationProvider } from "vee-validate";
 
 export default {
     components: {
-        PhoneDetails,
         EmailDetails,
-        SocialMediaDetails,
         EmploymentDetails,
         HomeAddress,
+        PhoneDetails,
         Select2,
+        SocialMediaDetails,
         ValidationObserver,
         ValidationProvider
     },
@@ -422,7 +433,13 @@ export default {
             user: [],
             legalName: "",
             nickName: "",
-            address: [],
+            address: {
+                street_address1: null,
+                street_address2: null,
+                city: null,
+                state: null,
+                zipcode: null
+            },
             phoneNumbers: [],
             dateOfBirth: "",
             countryId: "",
@@ -433,7 +450,22 @@ export default {
             motherBirthPlace: "",
             emails: [],
             socialMediaDetails: [],
-            employmentDetails: [],
+            employmentDetails: [
+                {
+                    employer_name: null,
+                    employer_phone: null,
+                    employer_username: null,
+                    employer_password: null,
+                    address: {
+                        street_address1: null,
+                        street_address2: null,
+                        city: null,
+                        state: null,
+                        zipcode: null
+                    },
+                    benefits: []
+                }
+            ],
             citizenshipOptions: [],
             isCompleted: false,
             userId: "",
@@ -464,13 +496,14 @@ export default {
                 const formData = this.getFormData(e);
 
                 if (this.user.id && this.user.personal.id) {
+                    formData.append("_method", "put");
                     axios
-                        .put(
+                        .post(
                             "/personal-info/" + this.user.personal.id,
                             formData
                         )
                         .then(response => {
-                            if (response.status == 200) {
+                            if (response.status == 201) {
                                 const Toast = this.$swal.mixin({
                                     toast: true,
                                     position: "top-end",
@@ -491,7 +524,7 @@ export default {
                     axios
                         .post("/personal-info", formData)
                         .then(response => {
-                            if (response.status == 200) {
+                            if (response.status == 201) {
                                 const Toast = this.$swal.mixin({
                                     toast: true,
                                     position: "top-end",
@@ -533,7 +566,10 @@ export default {
         getPersonalInfo() {
             axios.get("/get-personal-info").then(response => {
                 if (response.status == 200) {
-                    if (response.data.data) {
+                    if (
+                        response.data.data &&
+                        response.data.data.personal !== null
+                    ) {
                         console.log(response.data.data);
                         this.$store.dispatch(
                             "populateData",
@@ -552,7 +588,7 @@ export default {
 
             formData.append("legal_name", this.legalName);
             formData.append("nickname", this.nickName);
-            formData.append("personal_address", JSON.stringify(this.address));
+            formData.append("personal_address", this.address);
             formData.append("user_phones", JSON.stringify(this.phoneNumbers));
             formData.append("dob", this.dateOfBirth);
             formData.append("country_id", this.countryId);
@@ -577,8 +613,14 @@ export default {
         populateNewForm() {
             this.legalName = "";
             this.nickName = "";
-            this.address = [];
-            this.phoneNumbers = [];
+            this.address = {
+                street_address1: null,
+                street_address2: null,
+                city: null,
+                state: null,
+                zipcode: null
+            };
+            this.phoneNumbers = [{ phone: null }];
             this.dateOfBirth = "";
             this.countryId = "";
             this.passportNumber = "";
@@ -586,9 +628,26 @@ export default {
             this.fatherBirthPlace = "";
             this.motherName = "";
             this.motherBirthPlace = "";
-            this.emails = [];
-            this.socialMediaDetails = [];
-            this.employmentDetails = [];
+            this.emails = [{ email: null, password: null }];
+            this.socialMediaDetails = [
+                { social_id: null, username: null, password: null }
+            ];
+            this.employmentDetails = [
+                {
+                    employer_name: null,
+                    employer_phone: null,
+                    employer_username: null,
+                    employer_password: null,
+                    address: {
+                        street_address1: null,
+                        street_address2: null,
+                        city: null,
+                        state: null,
+                        zipcode: null
+                    },
+                    benefits: []
+                }
+            ];
             this.isCompleted = false;
         },
         populateData(userData) {
@@ -664,11 +723,16 @@ export default {
                     {
                         employer_name: null,
                         employer_phone: null,
-                        employer_address: null,
-                        computer_username: null,
-                        computer_password: null,
-                        address: null,
-                        employeeBenefits: null
+                        employer_username: null,
+                        employer_password: null,
+                        address: {
+                            street_address1: null,
+                            street_address2: null,
+                            city: null,
+                            state: null,
+                            zipcode: null
+                        },
+                        benefits: []
                     }
                 ];
             }
@@ -697,23 +761,6 @@ export default {
                 id,
                 text
             });
-        },
-        updatePhoneNumbers(data) {
-            this.phoneNumbers = data;
-        },
-        updateEmails(data) {
-            this.emails = data;
-        },
-        updateSocialMedia(data) {
-            this.socialMediaDetails = data;
-        },
-        updateEmploymentDetails(data) {
-            this.employmentDetails = data;
-        },
-        updateHomeAddress(data) {
-            if (data) {
-                this.address = data;
-            }
         }
     }
 };

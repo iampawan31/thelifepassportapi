@@ -17,7 +17,7 @@
                             name="employer_name"
                             class="field-input"
                             placeholder="Employer Name"
-                            v-model="employer.employer_name"
+                            v-model="localEmploymentDetail.employer_name"
                             value=""
                         />
                         <span
@@ -44,7 +44,7 @@
                             name="employer_phone"
                             class="field-input"
                             placeholder="Phone number"
-                            v-model="employer.employer_phone"
+                            v-model="localEmploymentDetail.employer_phone"
                             value=""
                         />
                         <span
@@ -59,7 +59,12 @@
         </div>
 
         <home-address
-            v-bind:home-address="employer.address"
+            v-model="localEmploymentDetail.address"
+            @input="
+                newAddress => {
+                    address = newAddress;
+                }
+            "
             address-type="employer"
         />
 
@@ -80,7 +85,7 @@
                             name="company_computer_username"
                             class="field-input"
                             placeholder="Username"
-                            v-model="employer.computer_username"
+                            v-model="localEmploymentDetail.computer_username"
                             value=""
                         />
                         <span
@@ -102,7 +107,7 @@
                             name="company_computer_password"
                             class="field-input"
                             placeholder="Password"
-                            v-model="employer.computer_password"
+                            v-model="localEmploymentDetail.computer_password"
                             value=""
                         />
                         <span
@@ -115,99 +120,50 @@
                 </div>
             </div>
         </div>
-
-        <div class="field-group">
-            <label for="benefits_used">Benefits used</label>
-        </div>
-        <div class="row">
-            <div class="col">
-                <div
-                    v-for="benefit in employeeBenefitsOptions"
-                    v-bind:key="benefit.id"
-                >
-                    <input
-                        type="checkbox"
-                        v-model="benefitSelected[benefit.id]"
-                        :value="benefit.id"
-                        name="benefit"
-                    />
-                    {{ benefit.title }}
-                </div>
-            </div>
-        </div>
+        <employee-benefits
+            v-model="localEmploymentDetail.benefits"
+            :benefit-options="employeeBenefitsOptions"
+        ></employee-benefits>
     </div>
 </template>
 
 <script>
 import { ValidationProvider } from "vee-validate";
 import HomeAddress from "./Address";
+import EmployeeBenefits from "./Benefits";
 
 export default {
     components: {
         ValidationProvider,
-        HomeAddress
+        HomeAddress,
+        EmployeeBenefits
     },
-    created() {
-        this.getemployeraddress();
+    props: {
+        value: {
+            type: Object,
+            required: false
+        },
+        employmentDetailKey: {
+            type: Number,
+            required: true
+        }
     },
-    props: ["employer", "employmentDetailKey"],
     data() {
         return {
             employeeBenefitsOptions: []
         };
     },
     computed: {
-        benefitSelected() {
-            let benefits = this.employer.benefits;
-            let employeeBenefitsOptions = this.employeeBenefitsOptions;
-            let ret = {};
-            for (let i = 0; i < benefits.length; i++) {
-                for (let j = 0; j < employeeBenefitsOptions.length; j++) {
-                    if (
-                        employeeBenefitsOptions[j].id == benefits[i].benefit_id
-                    ) {
-                        ret[employeeBenefitsOptions[j].id] = true;
-                    }
-                }
-            }
-            return ret;
-        }
-    },
-    watch: {
-        benefits: {
-            handler() {
-                this.updateEmploymentDetails();
+        localEmploymentDetail: {
+            get() {
+                return this.value;
             },
-            deep: true
-        },
-        computer_username() {
-            this.updateEmploymentDetails();
-        },
-        computer_password() {
-            this.updateEmploymentDetails();
-        },
-        employer_name() {
-            this.updateEmploymentDetails();
-        },
-        employer_phone() {
-            this.updateEmploymentDetails();
+            set(localEmploymentDetail) {
+                this.$emit("input", localEmploymentDetail);
+            }
         }
     },
     methods: {
-        updateEmploymentDetails() {
-            this.$emit("employment-detail-updated", this.employmentDetailKey, {
-                employer_name: this.employer_name,
-                employer_phone: this.employer_phone,
-                employer_address: this.employer_address,
-                benefits: this.benefits,
-                computer_username: this.computer_username,
-                computer_password: this.computer_password
-            });
-        },
-        updateHomeAddress(data) {
-            this.employer_address = data;
-            this.updateEmploymentDetails();
-        },
         getemployeraddress() {
             axios.get("/getemployerbenefitslist").then(response => {
                 if (response.status == 200) {
@@ -217,6 +173,9 @@ export default {
                 }
             });
         }
+    },
+    created() {
+        this.getemployeraddress();
     }
 };
 </script>

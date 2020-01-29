@@ -32,6 +32,15 @@ class PersonalInfo extends Model
 
     protected $table = 'personal_info';
 
+    public function setCountryIdAttribute($countryId)
+    {
+        if ($countryId) {
+            return $this->attributes['country_id'] = (int) $countryId;
+        } else {
+            return $this->attributes['country_id'] = null;
+        }
+    }
+
     public function getDobAttribute($date)
     {
         if ($date) {

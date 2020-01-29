@@ -5,14 +5,10 @@
         </h4>
         <div
             class="field-wrapper"
-            v-for="(employer, index) in employers"
+            v-for="(employer, index) in localEmploymentDetails"
             v-bind:key="index"
         >
-            <employment-detail
-                v-on:employment-detail-updated="updateEmploymentDetail"
-                :employment-detail-key="index"
-                :employer="employer"
-            >
+            <employment-detail :value="employer" :employment-detail-key="index">
             </employment-detail>
             <a
                 href="javascript:void(0);"
@@ -61,30 +57,34 @@
 </template>
 <script>
 import EmploymentDetail from "./EmploymentDetail";
-import { mapState } from "vuex";
 export default {
     components: {
         EmploymentDetail
+    },
+    props: {
+        value: {
+            type: Array,
+            required: true
+        }
     },
     data() {
         return {
             blockRemoval: true
         };
     },
-    watch: {
-        employers: {
-            handler() {
-                this.blockRemoval = this.employers.length <= 1;
-            },
-            deep: true
-        }
-    },
     computed: {
-        ...mapState(["employers"])
+        localEmploymentDetails: {
+            get() {
+                return this.value;
+            },
+            set(localEmploymentDetails) {
+                this.$emit("input", localEmploymentDetails);
+            }
+        }
     },
     methods: {
         addEmployers() {
-            this.employers.push({
+            this.localEmploymentDetails.push({
                 employer_name: "",
                 employer_phone: "",
                 employer_address: [],
@@ -93,27 +93,9 @@ export default {
                 employee_benefits: []
             });
         },
-        populateEmployers() {
-            // if (this.userEmployers.length > 0) {
-            // this.employers = this.userEmployers;
-            // this.userEmployers.forEach(data => {
-            //     this.employers.push({
-            //         employer_name: data.employer_name,
-            //         employer_phone: data.employer_phone,
-            //         employer_address: data.employer_address,
-            //         computer_username: data.computer_username,
-            //         computer_password: data.computer_password,
-            //         employee_benefits: data.benefits_used
-            //     });
-            // });
-            // }
-        },
         removeEmployers(lineId) {
-            if (!this.blockRemoval) this.employers.splice(lineId, 1);
-        },
-        updateEmploymentDetail(index, data) {
-            this.employers[index] = data;
-            this.$emit("employment-details-updated", this.employers);
+            if (!this.blockRemoval)
+                this.localEmploymentDetails.splice(lineId, 1);
         }
     }
 };

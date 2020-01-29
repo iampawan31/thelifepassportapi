@@ -4,14 +4,13 @@
         <div class="add-anohter-field">
             <div
                 class="field-wrapper"
-                v-for="(phone, index) in userPhones"
+                v-for="(phone, index) in localPhones"
                 v-bind:key="index"
             >
                 <phone
-                    v-on:phone-number-update="updatePhoneNumber"
+                    v-model="phone.phone"
                     v-on:remove-phone-number="removePhone"
                     :phone-key="index"
-                    :phone-number="phone.phone"
                 ></phone>
             </div>
             <div class="btn-add" v-show="singlePhoneNumberIsAdded">
@@ -44,32 +43,38 @@ export default {
     components: {
         Phone
     },
-    props: ["userPhones"],
+    props: {
+        value: {
+            type: Array,
+            required: true
+        }
+    },
     data() {
         return {
             blockRemoval: true
         };
     },
     computed: {
+        localPhones: {
+            get() {
+                return this.value;
+            },
+            set(localPhones) {
+                this.$emit("input", localPhones);
+            }
+        },
         singlePhoneNumberIsAdded() {
-            return this.userPhones !== undefined && this.userPhones.length > 0;
-        }
-    },
-    watch: {
-        phones() {
-            this.blockRemoval = this.userPhones.length <= 1;
+            return (
+                this.localPhones !== undefined && this.localPhones.length > 0
+            );
         }
     },
     methods: {
         addPhone() {
-            this.userPhones.push({ phone: null });
-        },
-        updatePhoneNumber(index, phone) {
-            this.userPhones[index].phone = phone;
-            this.$emit("phone-details-updates", this.userPhones);
+            this.localPhones.push({ phone: null });
         },
         removePhone(lineId) {
-            this.userPhones.splice(lineId, 1);
+            this.localPhones.splice(lineId, 1);
         }
     }
 };

@@ -4,41 +4,16 @@
         <div class="add-anohter-field">
             <div
                 class="field-wrapper"
-                v-for="(social, index) in userSocials"
+                v-for="(social, index) in localSocials"
                 v-bind:key="index"
             >
                 <social-media
-                    v-on:social-media-update="updateSocialMedia"
-                    v-on:social-media-removal="removeSocialMedia"
+                    :value="social"
                     :social-media-key="index"
                     :social-media-options="socialOptions"
-                    :social-media-type="social.social_id"
-                    :social-media-username="social.username"
-                    :social-media-password="social.password"
+                    v-on:social-media-removal="removeSocialMedia"
                 >
                 </social-media>
-                <!-- <a
-                    href="javascript:void(0);"
-                    class="btn-remove"
-                    v-if="index != 0"
-                    @click="removeSocialMedia(index)"
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="feather feather-minus-circle"
-                    >
-                        <circle cx="12" cy="12" r="10" />
-                        <line x1="8" y1="12" x2="16" y2="12" />
-                    </svg>
-                </a> -->
             </div>
             <div class="btn-add">
                 <a href="javascript:void(0);" @click="addSocialMedia">
@@ -68,7 +43,27 @@ import Select2 from "v-select2-component";
 import SocialMedia from "./SocialMedia";
 
 export default {
-    props: ["userSocials"],
+    props: {
+        value: {
+            type: Array,
+            required: true
+        }
+    },
+    computed: {
+        localSocials: {
+            get() {
+                return this.value;
+            },
+            set(localSocials) {
+                this.$emit("input", localSocials);
+            }
+        },
+        singleEmailIsAdded() {
+            return (
+                this.localSocials !== undefined && this.localSocials.length > 0
+            );
+        }
+    },
     components: {
         Select2,
         SocialMedia
@@ -87,44 +82,15 @@ export default {
     },
     methods: {
         addSocialMedia() {
-            this.userSocials.push({
+            this.localSocials.push({
                 social_id: null,
                 username: null,
                 password: null
             });
         },
-        populateSocials() {
-            if (this.userSocials.length > 0) {
-                // Do Nothinf
-            } else {
-                this.userSocials.push({
-                    social_id: null,
-                    username: null,
-                    password: null
-                });
-            }
-        },
         removeSocialMedia(lineId) {
-            this.userSocials.splice(lineId, 1);
-        },
-        updateSocialMedia(index, socialMediaType, username, password) {
-            this.userSocials[index].social_id = socialMediaType;
-            this.userSocials[index].username = username;
-            this.userSocials[index].password = password;
-            this.$emit("social-media-details-updates", this.userSocials);
+            this.localSocials.splice(lineId, 1);
         }
-    },
-    mounted() {
-        this.$nextTick(() => {
-            //this.addSocialMedia();
-            this.populateSocials();
-        });
-    },
-    socialChangeEvent(val) {
-        console.log(val);
-    },
-    socialSelectEvent({ id, text }) {
-        console.log({ id, text });
     }
 };
 </script>

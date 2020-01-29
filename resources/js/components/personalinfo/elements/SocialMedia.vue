@@ -11,7 +11,7 @@
                     name="social_media_type[]"
                     placeholder="Select an Options"
                     :options="socialMediaOptions"
-                    v-model="socialMediaType"
+                    v-model="localSocial.social_id"
                 />
                 <span
                     v-if="errors != undefined && errors"
@@ -32,7 +32,7 @@
                     name="social_username[]"
                     class="field-input"
                     placeholder="Username"
-                    v-model="socialMediaUsername"
+                    v-model="localSocial.username"
                     value=""
                 />
                 <span
@@ -53,7 +53,7 @@
                     name="social_password[]"
                     class="field-input field-input__last"
                     placeholder="Password"
-                    v-model="socialMediaPassword"
+                    v-model="localSocial.password"
                     value=""
                 />
                 <span
@@ -97,33 +97,37 @@ export default {
         ValidationProvider,
         Select2
     },
-    props: [
-        "socialMediaKey",
-        "socialMediaOptions",
-        "socialMediaType",
-        "socialMediaUsername",
-        "socialMediaPassword"
-    ],
+    props: {
+        value: {
+            type: Object,
+            required: false
+        },
+        socialMediaOptions: {
+            type: Array,
+            required: true
+        },
+        socialMediaKey: {
+            type: Number,
+            required: true
+        }
+    },
     data() {
         return {
             errors: []
         };
     },
-    watch: {
-        socialMediaType() {
-            this.updateSocialMediaInformation();
-        },
-        socialMediaUsername() {
-            this.updateSocialMediaInformation();
-        },
-        socialMediaPassword() {
-            this.updateSocialMediaInformation();
-        }
-    },
     computed: {
+        localSocial: {
+            get() {
+                return this.value;
+            },
+            set(localSocial) {
+                this.$emit("input", localSocial);
+            }
+        },
         socialMediaRemoveText() {
-            const text = this.socialMediaType
-                ? this.socialMediaOptions[this.socialMediaType].text
+            const text = this.localSocial.social_id
+                ? this.socialMediaOptions[this.localSocial.social_id - 1].text
                 : "this field";
 
             return (
@@ -136,15 +140,6 @@ export default {
         }
     },
     methods: {
-        updateSocialMediaInformation() {
-            this.$emit(
-                "social-media-update",
-                this.socialMediaKey,
-                this.socialMediaType,
-                this.socialMediaUsername,
-                this.socialMediaPassword
-            );
-        },
         removeSocialMedia() {
             this.$swal
                 .fire({
@@ -159,7 +154,7 @@ export default {
                 .then(result => {
                     if (result.value) {
                         this.$emit("social-media-removal", this.socialMediaKey);
-                        $swal.fire(
+                        this.$swal.fire(
                             "Deleted!",
                             "Selected Social Media Credentials Removed!",
                             "success"

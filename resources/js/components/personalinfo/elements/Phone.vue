@@ -9,7 +9,7 @@
                 <div class="field-wrapper">
                     <input
                         type="text"
-                        v-model="phoneNumber"
+                        v-model="localPhone"
                         numeric-keyboard-toggle
                         class="field-input input-mobile"
                         placeholder="Phone number"
@@ -52,8 +52,25 @@ export default {
     components: {
         ValidationProvider
     },
-    props: ["phoneNumber", "phoneKey"],
+    props: {
+        value: {
+            type: String,
+            required: false
+        },
+        phoneKey: {
+            type: Number,
+            required: true
+        }
+    },
     computed: {
+        localPhone: {
+            get() {
+                return this.value;
+            },
+            set(localPhone) {
+                this.$emit("input", localPhone);
+            }
+        },
         phoneRemoveText() {
             return (
                 "You want to remove " +
@@ -61,6 +78,11 @@ export default {
                 this.phoneNumber +
                 "</strong>?"
             );
+        }
+    },
+    watch: {
+        value() {
+            this.$emit("input", this.value);
         }
     },
     methods: {
@@ -85,11 +107,6 @@ export default {
                         );
                     }
                 });
-        }
-    },
-    watch: {
-        phoneNumber() {
-            this.$emit("phone-number-update", this.phoneKey, this.phoneNumber);
         }
     }
 };
