@@ -16,7 +16,7 @@ class CreateMarriageStatusesTable extends Migration
         Schema::create('marriage_statuses', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
-            $table->enum('is_married', [0, 1, 2])->nullable()->comment('0=>N0, 1=>Yes, 2=>Skipped');
+            $table->boolean('is_married')->default(false);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

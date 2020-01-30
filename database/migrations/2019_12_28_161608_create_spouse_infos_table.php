@@ -17,16 +17,16 @@ class CreateSpouseInfosTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->string('legal_name', 255);
-            $table->string('nickname', 255);
-            $table->date('dob');
-            $table->bigInteger('country_id');
-            $table->string('passport_number', 50);
-            $table->string('father_name', 255);
-            $table->string('father_birth_place', 255);
-            $table->string('mother_name', 255);
-            $table->string('mother_birth_place', 255);
-            $table->date('marriage_date');
-            $table->string('marriage_location', 255);
+            $table->string('nickname', 255)->nullable();
+            $table->date('dob')->nullable();
+            $table->bigInteger('country_id')->nullable();
+            $table->string('passport_number', 50)->nullable();
+            $table->string('father_name', 255)->nullable();
+            $table->string('father_birth_place', 255)->nullable();
+            $table->string('mother_name', 255)->nullable();
+            $table->string('mother_birth_place', 255)->nullable();
+            $table->date('marriage_date')->nullable();
+            $table->string('marriage_location', 255)->nullable();
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();

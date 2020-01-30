@@ -58,7 +58,7 @@ class PersonalInfoTest extends TestCase
             'user_id' => $this->user->id
         ]);
 
-        $this->userEmployers = factory(UserEmployer::class, 2)
+        $this->userEmployer = factory(UserEmployer::class, 2)
             ->create(['user_id' => $this->user->id])
             ->each(function ($item, $key) {
                 factory(EmployerAddress::class)->create([
@@ -67,7 +67,6 @@ class PersonalInfoTest extends TestCase
                 ]);
 
                 factory(PersonalEmployerBenefits::class)->create([
-                    'user_id' => $item->user_id,
                     'employer_id' => $item->id
                 ]);
             });
@@ -80,7 +79,7 @@ class PersonalInfoTest extends TestCase
     {
         $newUser = factory(User::class)->states('verified')->create();
 
-        $this->actingAs($newUser)->post('/personal-info', [
+        $this->actingAs($newUser, 'api')->postJson('/api/personal-info', [
             'legal_name' => 'Pawan Kumar',
             'nickname' => 'Ricky',
             'dob' => '02/05/1990',
@@ -90,13 +89,13 @@ class PersonalInfoTest extends TestCase
             'father_birth_place' => 'New York',
             'mother_name' => 'John Dee',
             'mother_birth_place' => 'New York',
-            'personal_address' => $this->personalAddress,
-            'phones' => $this->phoneNumbers,
-            'emails' => $this->userEmails,
-            'user_social_media' => $this->userSocialMedia,
-            'user_employer' => $this->userEmployer,
+            'personal_address' => $this->personalAddress->toJson(),
+            'phones' => $this->phoneNumbers->toJson(),
+            'emails' => $this->userEmails->toJson(),
+            'user_social_media' => $this->userSocialMedia->toJson(),
+            'user_employer' => $this->userEmployer->toJson(),
             'is_completed' => true
-        ])->assertStatus(201);
+        ])->dump();
 
         $this->assertDatabaseHas('personal_info', [
             'user_id' => $newUser->id,
@@ -112,8 +111,9 @@ class PersonalInfoTest extends TestCase
     /** @test **/
     function user_can_update_personal_information()
     {
-        $this->actingAs($this->user)->putJson(
-            "personal-info/" . $this->personalInfo->id,
+        $newAddress = factory(PersonalAddress::class)->create()->toJson();
+        $this->actingAs($this->user, 'api')->putJson(
+            "api/personal-info/" . $this->personalInfo->id,
             [
                 'legal_name' => 'John Doe',
                 'nickname' => 'John',
@@ -124,14 +124,14 @@ class PersonalInfoTest extends TestCase
                 'father_birth_place' => 'Adam Birth Place',
                 'mother_name' => 'Martha Doe',
                 'mother_birth_place' => 'Martha Birth Place',
-                'personal_address' => $this->personalAddress,
-                'phones' => $this->phoneNumbers,
-                'emails' => $this->userEmails,
-                'user_social_media' => $this->userSocialMedia,
-                'user_employer' => $this->userEmployer,
+                'personal_address' => $newAddress,
+                'user_phones' => $this->phoneNumbers->toJson(),
+                'user_emails' => $this->userEmails->toJson(),
+                'user_social_media' => $this->userSocialMedia->toJson(),
+                'user_employer' => $this->userEmployer->toJson(),
                 'is_completed' => true
             ]
-        )->assertStatus(201);
+        )->dump()->assertStatus(201);
 
         $this->assertDatabaseHas('personal_info', [
             'user_id' => $this->user->id,

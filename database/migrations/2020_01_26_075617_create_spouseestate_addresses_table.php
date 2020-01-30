@@ -17,11 +17,11 @@ class CreateSpouseestateAddressesTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('spouse_estate_id');
-            $table->string('street_address1');
-            $table->string('street_address2');
-            $table->string('city');
-            $table->string('state');
-            $table->string('zipcode', 8);
+            $table->string('street_address1')->nullable();
+            $table->string('street_address2')->nullable();
+            $table->string('city')->nullable();
+            $table->string('state')->nullable();
+            $table->string('zipcode', 8)->nullable();
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('spouse_estate_id')->references('id')->on('spouse_estates');

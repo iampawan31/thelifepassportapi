@@ -11,7 +11,8 @@ const mainStore = new Vuex.Store({
         phones: [],
         emails: [],
         socials: [],
-        employers: []
+        employers: [],
+        apiToken: ""
     },
     mutations: {
         ADD_USER(state, user) {

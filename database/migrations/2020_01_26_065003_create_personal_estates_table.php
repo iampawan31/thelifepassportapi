@@ -16,12 +16,12 @@ class CreatePersonalEstatesTable extends Migration
         Schema::create('personal_estates', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
-            $table->string('legal_name');
-            $table->string('relationship');
-            $table->string('company');
-            $table->string('phone');
-            $table->string('email');
-            $table->string('website');
+            $table->string('legal_name')->nullable();
+            $table->string('relationship')->nullable();
+            $table->string('company')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
+            $table->string('website')->nullable();
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();

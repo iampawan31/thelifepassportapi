@@ -23,11 +23,11 @@ $factory->define(User::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
-        'email_verified_at' => Carbon::now(),
-        'is_active' => true,
+        'email_verified_at' => null,
+        'is_active' => false,
         'role' => 2,
         'phone_number' => '7973601201',
-        'password' => Hash::make('password123'), // password
+        'password' => Hash::make('pawan123'), // password
         'remember_token' => Str::random(10),
         'api_token' => Str::random(80),
     ];

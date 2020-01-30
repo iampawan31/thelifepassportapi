@@ -17,11 +17,11 @@ class CreateEmployerAddressesTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('employer_id');
-            $table->string('street_address1');
-            $table->string('street_address2');
-            $table->string('city');
-            $table->string('state');
-            $table->string('zipcode', 8);
+            $table->string('street_address1')->nullable();
+            $table->string('street_address2')->nullable();
+            $table->string('city')->nullable();
+            $table->string('state')->nullable();
+            $table->string('zipcode', 8)->nullable();
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('employer_id')->references('id')->on('user_employers');

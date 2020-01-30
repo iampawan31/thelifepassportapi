@@ -17,8 +17,8 @@ class CreateUserSocialMediaTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('social_id');
-            $table->string('username', 255);
-            $table->string('password', 20);
+            $table->string('username', 255)->nullable();
+            $table->string('password', 20)->nullable();
             $table->boolean('is_primary')->default(false);
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('social_id')->references('id')->on('social_media');
