@@ -175,6 +175,15 @@ export default {
         }
     },
     created() {
+        if (this.localEmploymentDetail.address === null) {
+            this.localEmploymentDetail.address = {
+                street_address1: null,
+                street_address2: null,
+                city: null,
+                state: null,
+                zipcode: null
+            };
+        }
         this.getemployeraddress();
     }
 };

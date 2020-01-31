@@ -22,7 +22,7 @@ class PersonalInfoController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store()
     {
@@ -36,18 +36,7 @@ class PersonalInfoController extends Controller
             $personalInfo = new PersonalInfo;
 
             $personalInfo->user_id = $user->id;
-            $personalInfo->legal_name = request('legal_name') ?: "";
-            $personalInfo->nickname = request('nickname') ?: "";
-            $personalInfo->dob = Carbon::parse(request('dob')) ?: "";
-            $personalInfo->country_id = request('country_id') ?: "";
-            $personalInfo->passport_number = request('passport_number') ?: "";
-            $personalInfo->father_name = request('father_name') ?: "";
-            $personalInfo->father_birth_place = request('father_birth_place') ?: "";
-            $personalInfo->mother_name = request('mother_name') ?: "";
-            $personalInfo->mother_birth_place = request('mother_birth_place') ?: "";
-
-            $personalInfo->save();
-
+            $this->updatePersonalInformation($personalInfo);
 
             // Save user's personal address
             $homeAddress = json_decode(request('personal_address'));
@@ -139,10 +128,6 @@ class PersonalInfoController extends Controller
                             $benefits = $employer->benefits;
                             foreach ($benefits as $benefit) {
                                 $employment->benefits()->attach($benefit->id);
-//                            PersonalEmployerBenefits::create([
-//                                'employer_id' => $employment->id,
-//                                'benefit_id' => $benefit->id
-//                            ]);
                             }
                         }
                     }
@@ -150,7 +135,7 @@ class PersonalInfoController extends Controller
             }
 
             // Save step completed information
-            $user->steps()->create([
+            $user->steps()->sync([
                 'step_id' => 1,
                 'user_id' => $user->id,
                 'is_visited' => '1',
@@ -179,44 +164,29 @@ class PersonalInfoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show()
     {
-        //
+//        dd(auth()->user());
+        return response()->json(['status' => 200, 'data' => auth()->user()]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param PersonalInfo $personalInfo
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(PersonalInfo $personalInfo)
     {
-        // TODO:: Update Personal Information
-        // TODO:: Update Personal Address
-        // TODO:: Update Phone Numbers
-        // TODO:: Update Emails
-        // TODO:: Update Social Media Details
-
         if ($personalInfo && $personalInfo->user_id == auth()->id()) {
             try {
                 $user = User::findOrFail(auth()->id());
+
                 DB::beginTransaction();
 
-                $personalInfo->legal_name = request('legal_name') ?: "";
-                $personalInfo->nickname = request('nickname') ?: "";
-                $personalInfo->dob = Carbon::parse(request('dob')) ?: "";
-                $personalInfo->country_id = request('country_id') ?: "";
-                $personalInfo->passport_number = request('passport_number') ?: "";
-                $personalInfo->father_name = request('father_name') ?: "";
-                $personalInfo->father_birth_place = request('father_birth_place') ?: "";
-                $personalInfo->mother_name = request('mother_name') ?: "";
-                $personalInfo->mother_birth_place = request('mother_birth_place') ?: "";
-
-                $personalInfo->save();
+                $this->updatePersonalInformation($personalInfo);
 
                 // Save user's personal address
                 $homeAddress = json_decode(request('personal_address'));
@@ -254,7 +224,11 @@ class PersonalInfoController extends Controller
 
                     foreach ($emails as $email) {
                         if (!empty($email)) {
-                            UserEmail::create(['user_id' => $user->id, 'email' => $email->email, 'password' => $email->password]);
+                            UserEmail::create([
+                                'user_id' => $user->id,
+                                'email' => $email->email,
+                                'password' => $email->password
+                            ]);
                         }
                     }
                 }
@@ -271,7 +245,8 @@ class PersonalInfoController extends Controller
                                 'user_id' => $user->id,
                                 'social_id' => $social->social_id,
                                 'username' => $social->username,
-                                'password' => $social->password]);
+                                'password' => $social->password
+                            ]);
                         }
                     }
                 }
@@ -280,11 +255,10 @@ class PersonalInfoController extends Controller
                 $employers = json_decode(request('user_employer'));
 
                 if (!empty($employers)) {
-//                    UserEmployer::where('user_id', $user->id)->delete();
 
                     foreach ($employers as $employer) {
                         if (!empty($employer)) {
-                            if ($employer->id) {
+                            if (!empty($employer->id)) {
                                 $userEmployer = UserEmployer::updateOrCreate([
                                     'id' => $employer->id,
                                     'user_id' => $user->id], [
@@ -295,7 +269,7 @@ class PersonalInfoController extends Controller
                                 ]);
                             } else {
                                 $userEmployer = UserEmployer::create([
-                                    'user_id' => $user->id], [
+                                    'user_id' => $user->id,
                                     'employer_name' => $employer->employer_name,
                                     'employer_phone' => $employer->employer_phone,
                                     'computer_username' => $employer->computer_username,
@@ -303,7 +277,7 @@ class PersonalInfoController extends Controller
                                 ]);
                             }
 
-                            if (!empty($employer->employer_address)) {
+                            if (!empty($employer->address)) {
                                 EmployerAddress::updateOrCreate([
                                     'user_id' => $user->id,
                                     'employer_id' => $userEmployer->id
@@ -326,10 +300,7 @@ class PersonalInfoController extends Controller
                 }
 
                 // Save step completed information
-                UsersPersonalDetailsCompletion::updateOrCreate([
-                    'step_id' => 1,
-                    'user_id' => $user->id
-                ], [
+                $user->steps()->sync([
                     'step_id' => 1,
                     'user_id' => $user->id,
                     'is_visited' => '1',
@@ -342,25 +313,26 @@ class PersonalInfoController extends Controller
                 return response()
                     ->json([
                         'status' => 201,
-                        'message' => 'Personal information has been saved successfully'
+                        'message' => 'Personal information has been updated successfully'
                     ], 201);
-            } catch
-            (Exception $e) {
+            } catch (Exception $e) {
                 DB::rollBack();
 
                 return response()
                     ->json([
                         'status' => 500,
                         'message' => $e
-                    ], 500);
+                    ], 422);
             }
         }
         return response()
-            ->json(['status' => 500,
-                'message' => "Something went wrong. Error Code APIC#358"], 500);
+            ->json([
+                'status' => 500,
+                'message' => "Something went wrong. Error Code APIC#332"
+            ], 500);
     }
 
-    public function getSelectedBenefits($benefits)
+    protected function getSelectedBenefits($benefits)
     {
         $selectedBenefits = [];
         foreach ($benefits as $key => $value) {
@@ -368,5 +340,23 @@ class PersonalInfoController extends Controller
         }
 
         return $selectedBenefits;
+    }
+
+    /**
+     * @param PersonalInfo $personalInfo
+     */
+    protected function updatePersonalInformation(PersonalInfo $personalInfo): void
+    {
+        $personalInfo->legal_name = request('legal_name') ?: "";
+        $personalInfo->nickname = request('nickname') ?: "";
+        $personalInfo->dob = Carbon::parse(request('dob')) ?: "";
+        $personalInfo->country_id = request('country_id') ?: "";
+        $personalInfo->passport_number = request('passport_number') ?: "";
+        $personalInfo->father_name = request('father_name') ?: "";
+        $personalInfo->father_birth_place = request('father_birth_place') ?: "";
+        $personalInfo->mother_name = request('mother_name') ?: "";
+        $personalInfo->mother_birth_place = request('mother_birth_place') ?: "";
+
+        $personalInfo->save();
     }
 }

@@ -36,8 +36,6 @@ Route::middleware(['auth'])->group(function () {
     // Personal Information Section Routes
     Route::get('personal-info', 'PersonalInfoController@index')->name('personal-info.index');
     Route::get('get-personal-info', 'PersonalInfoController@show')->name('personal-info.show');
-    Route::post('personal-info', 'PersonalInfoController@store')->name('personal-info.post');
-    Route::put('personal-info/{personalInfo}', 'PersonalInfoController@update')->name('personal-info.update');
 
     Route::post('personal-info/steps', 'PersonalStepsController@update')->name('personal-info.steps');
 

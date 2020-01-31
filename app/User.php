@@ -59,7 +59,6 @@ class User extends Authenticatable
 
     public function phones()
     {
-        //, Auth::user()->id
         return $this->hasMany(UserPhone::class)->select(['user_id', 'phone', 'is_primary']);
     }
 
@@ -80,6 +79,6 @@ class User extends Authenticatable
 
     public function steps()
     {
-        return $this->hasOne(UsersPersonalDetailsCompletion::class)->where('step_id', 1);
+        return $this->belongsToMany(PersonalDetailsSteps::class, 'users_personal_details_completions', 'user_id', 'step_id');
     }
 }

@@ -59,7 +59,7 @@ class SpouseInfo extends Model
 
     public function country()
     {
-        return $this->hasOne(\App\Countries::class, 'id', 'country_id')->select(['id', 'country_name']);
+        return $this->hasOne(\App\Country::class, 'id', 'country_id')->select(['id', 'country_name']);
     }
 
     public function step()
