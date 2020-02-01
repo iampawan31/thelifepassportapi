@@ -4480,9 +4480,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   computed: {
     buttonText: function buttonText() {
       return this.user.personal ? "Update and continue" : "Save and continue";
-    },
-    apiToken: function apiToken() {
-      return this.user ? "?api_token=" + this.user.api_token : "?api_token=" + null;
     }
   },
   created: function created() {
@@ -4513,7 +4510,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                   if (this.user.id && this.user.personal) {
                     formData.append("_method", "put");
-                    axios.post("api/personal-info/" + this.user.personal.id + this.apiToken, formData).then(function (response) {
+                    axios.post("/personal-info/" + this.user.personal.id, formData).then(function (response) {
                       if (response.status == 201) {
                         var Toast = _this.$swal.mixin({
                           toast: true,
@@ -4532,7 +4529,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                       }
                     })["catch"](function () {});
                   } else {
-                    axios.post("/api/personal-info" + this.apiToken, formData).then(function (response) {
+                    axios.post("/personal-info", formData).then(function (response) {
                       if (response.status == 201) {
                         var Toast = _this.$swal.mixin({
                           toast: true,
@@ -4608,7 +4605,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getPersonalInfo: function getPersonalInfo() {
       var _this3 = this;
 
-      axios.get("/get-personal-info" + this.apiToken).then(function (response) {
+      axios.get("/get-personal-info").then(function (response) {
         if (response.status == 200) {
           if (response.data.data) {
             console.log(response.data.data);
@@ -4738,14 +4735,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getCountyList: function getCountyList() {
       var _this4 = this;
 
-      axios.get("/api/countries" + this.apiToken).then(function (response) {
+      axios.get("/countries").then(function (response) {
         if (response.status == 200) {
           _this4.citizenshipOptions = response.data.countries;
         }
       });
-    },
-    getFormattedUrl: function getFormattedUrl(path) {
-      return path + "?api_token=" + this.apiToken;
     },
     citizenshipChangeEvent: function citizenshipChangeEvent(val) {
       console.log(val);
