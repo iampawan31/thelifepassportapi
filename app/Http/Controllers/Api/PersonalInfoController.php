@@ -185,7 +185,6 @@ class PersonalInfoController extends Controller
                 $user = User::findOrFail(auth()->id());
 
                 DB::beginTransaction();
-
                 $this->updatePersonalInformation($personalInfo);
 
                 // Save user's personal address

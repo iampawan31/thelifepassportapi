@@ -150,15 +150,15 @@
                                         vid="citizenship"
                                     >
                                         <Select2
-                                            id="citizenship"
+                                            id="country_id"
                                             :options="citizenshipOptions"
                                             v-model="countryId"
-                                            name="citizenship"
+                                            name="country_id"
                                             width="resolve"
                                             data-placeholder="Select an Options"
                                         >
                                             <option>
-                                                disabled value="0">Select
+                                                value="0">Select
                                                 Country</option
                                             >
                                         </Select2>
@@ -184,7 +184,7 @@
                                     <validation-provider
                                         v-slot="{ errors }"
                                         name="Passport Number"
-                                        rules="required_if:citizenship|max:20"
+                                        rules="required_if:country_id|max:20"
                                     >
                                         <input
                                             id="passport_number"
@@ -597,7 +597,7 @@ export default {
                 JSON.stringify(this.employmentDetails)
             );
             formData.append("is_completed", this.isCompleted);
-
+            
             return formData;
         },
         populateNewForm() {

@@ -16,44 +16,46 @@
                             @submit.prevent="handleSubmit"
                         >
                             <!-- Former spouse's name section -->
-                            <div class="row">
-                                <div class="col-md-12 col-sm-12">
-                                    <div class="field-group">
-                                        <label
-                                            for="former_spouse_name"
-                                            class="input-label"
-                                            >Former Spouse Name</label
-                                        >
-                                        <ValidationProvider
-                                            name="Legal Name"
-                                            rules="required|alpha_spaces|max:50"
-                                            v-slot="{ errors }"
-                                        >
-                                            <input
-                                                type="text"
-                                                name="legal_name"
-                                                id="legal_name"
-                                                class="field-input required"
-                                                placeholder="Former Spouse Name"
-                                                v-model="
-                                                    spouseDetails.legal_name
-                                                "
-                                            />
-                                            <div
-                                                class="invalid-feedback d-block"
-                                                v-for="(error, index) in errors"
-                                                v-bind:key="index"
+                            <div class="padding">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="field-group">
+                                            <label
+                                                for="former_spouse_name"
+                                                class="input-label"
+                                                >Former Spouse Name</label
                                             >
-                                                {{ error }}
-                                            </div>
-                                        </ValidationProvider>
+                                            <ValidationProvider
+                                                name="Legal Name"
+                                                rules="required|alpha_spaces|max:50"
+                                                v-slot="{ errors }"
+                                            >
+                                                <input
+                                                    type="text"
+                                                    name="legal_name"
+                                                    id="legal_name"
+                                                    class="field-input required"
+                                                    placeholder="Former Spouse Name"
+                                                    v-model="
+                                                        spouseDetails.legal_name
+                                                    "
+                                                />
+                                                <div
+                                                    class="invalid-feedback d-block"
+                                                    v-for="(error, index) in errors"
+                                                    v-bind:key="index"
+                                                >
+                                                    {{ error }}
+                                                </div>
+                                            </ValidationProvider>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Marriage date and location Section -->
                             <div class="row">
-                                <div class="col-md-6 col-sm-12">
+                                <div class="col-md-6 col-sm-12 pr">
                                     <div class="field-group">
                                         <label
                                             for="marriage_date"
@@ -87,7 +89,7 @@
                                         </ValidationProvider>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-sm-12">
+                                <div class="col-md-6 col-sm-12 pl">
                                     <div class="field-group">
                                         <label
                                             for="marriage_location"
@@ -125,7 +127,7 @@
 
                             <!-- Divorce Date and location section -->
                             <div class="row">
-                                <div class="col-md-6 col-sm-12">
+                                <div class="col-md-6 col-sm-12 pr">
                                     <div class="field-group">
                                         <label
                                             for="divorce_date"
@@ -160,7 +162,7 @@
                                         </validation-provider>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-sm-12">
+                                <div class="col-md-6 col-sm-12 pl">
                                     <div class="field-group">
                                         <label
                                             for="divorce_location"
@@ -196,51 +198,89 @@
                                 </div>
                             </div>
                             <!-- Former spouse's current address -->
-                            <home-address
+                            <!-- <home-address
                                 :home-address="address"
                                 @home-address-update="updateHomeAddress"
+                            /> -->
+                            <home-address
+                                v-model="address"
+                                @input="
+                                    newAddress => {
+                                        address = newAddress;
+                                    }
+                                "
+                                address-type="previousspouse"
+                                class="padding"
                             />
 
                             <!-- Former spouse's Phone number(s) section -->
-                            <div class="row">
-                                <div class="col">
-                                    <phone-details
-                                        :user-phones="phones"
-                                        v-if="phones.length > 0"
-                                    ></phone-details>
+                            <div class="padding">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="field-group">
+                                            <label for="email" class="input-label"
+                                                >Phone Number</label
+                                            >
+                                            <ValidationProvider
+                                                name="Phone Number"
+                                                rules="phone"
+                                                v-slot="{ errors }"
+                                            >
+                                                <input
+                                                    type="text"
+                                                    name="phone"
+                                                    id="phone"
+                                                    class="field-input required email"
+                                                    placeholder="Phone number"
+                                                    v-model="spouseDetails.phone"
+                                                />
+                                                <span
+                                                    v-if="
+                                                        errors != undefined &&
+                                                            errors.length
+                                                    "
+                                                    class="invalid-feedback d-block"
+                                                >
+                                                    {{ errors[0] }}
+                                                </span>
+                                            </ValidationProvider>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
                             <!-- Former spouse's Email address section -->
-                            <div class="row">
-                                <div class="col">
-                                    <div class="field-group">
-                                        <label for="email" class="input-label"
-                                            >Email</label
-                                        >
-                                        <ValidationProvider
-                                            name="Email address"
-                                            rules="email"
-                                            v-slot="{ errors }"
-                                        >
-                                            <input
-                                                type="text"
-                                                name="email"
-                                                id="email"
-                                                class="field-input required email"
-                                                placeholder="Email address"
-                                                v-model="spouseDetails.email"
-                                            />
-                                            <span
-                                                v-if="
-                                                    errors != undefined &&
-                                                        errors.length
-                                                "
-                                                class="invalid-feedback d-block"
+                            <div class="padding">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="field-group">
+                                            <label for="email" class="input-label"
+                                                >Email</label
                                             >
-                                                {{ errors[0] }}
-                                            </span>
-                                        </ValidationProvider>
+                                            <ValidationProvider
+                                                name="Email address"
+                                                rules="email"
+                                                v-slot="{ errors }"
+                                            >
+                                                <input
+                                                    type="text"
+                                                    name="email"
+                                                    id="email"
+                                                    class="field-input required email"
+                                                    placeholder="Email address"
+                                                    v-model="spouseDetails.email"
+                                                />
+                                                <span
+                                                    v-if="
+                                                        errors != undefined &&
+                                                            errors.length
+                                                    "
+                                                    class="invalid-feedback d-block"
+                                                >
+                                                    {{ errors[0] }}
+                                                </span>
+                                            </ValidationProvider>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -585,7 +625,7 @@ export default {
             phones: [],
             emails: [],
             socials: [],
-            address: [],
+            address: {},
             employers: [],
             userId: 0,
             submitted: false,
