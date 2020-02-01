@@ -464,11 +464,6 @@ export default {
             return this.user.personal
                 ? "Update and continue"
                 : "Save and continue";
-        },
-        apiToken() {
-            return this.user
-                ? "?api_token=" + this.user.api_token
-                : "?api_token=" + null;
         }
     },
     created() {
@@ -489,9 +484,7 @@ export default {
 
                     axios
                         .post(
-                            "api/personal-info/" +
-                                this.user.personal.id +
-                                this.apiToken,
+                            "/personal-info/" + this.user.personal.id,
                             formData
                         )
                         .then(response => {
@@ -514,7 +507,7 @@ export default {
                         .catch(function() {});
                 } else {
                     axios
-                        .post("/api/personal-info" + this.apiToken, formData)
+                        .post("/personal-info", formData)
                         .then(response => {
                             if (response.status == 201) {
                                 const Toast = this.$swal.mixin({
@@ -558,7 +551,7 @@ export default {
                 });
         },
         getPersonalInfo() {
-            axios.get("/get-personal-info" + this.apiToken).then(response => {
+            axios.get("/get-personal-info").then(response => {
                 if (response.status == 200) {
                     if (response.data.data) {
                         console.log(response.data.data);
@@ -689,14 +682,11 @@ export default {
             }
         },
         getCountyList() {
-            axios.get("/api/countries" + this.apiToken).then(response => {
+            axios.get("/countries").then(response => {
                 if (response.status == 200) {
                     this.citizenshipOptions = response.data.countries;
                 }
             });
-        },
-        getFormattedUrl(path) {
-            return path + "?api_token=" + this.apiToken;
         },
         citizenshipChangeEvent(val) {
             console.log(val);
