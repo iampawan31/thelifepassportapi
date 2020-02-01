@@ -29,8 +29,8 @@ class CountryTest extends TestCase
     {
         $user = factory(User::class)->states('verified')->create();
 
-        $this->actingAs($user, 'api')
-            ->getJson('api/countries')
+        $this->actingAs($user)
+            ->getJson('/countries')
             ->assertJsonFragment([
                 'text' => $this->country[0]->country_name
             ]);
