@@ -17,7 +17,7 @@ class SpouseTest extends TestCase
     {
         $user = factory(User::class)->states('verified')->create();
 
-        $this->actingAs($user, 'api')->postJson('api/personal-info/marriage-status', [
+        $this->actingAs($user, 'api')->postJson('personal-info/marriage-status', [
             'is_married' => 0
         ])->dump()->assertStatus(201);
     }

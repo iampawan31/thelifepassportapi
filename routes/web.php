@@ -28,16 +28,28 @@ Route::get('dashboard', 'DashboardController@index')->name('dashboard');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/countrylist', 'CountryController@index')->name('countrylist');
 Route::get('/socialmedialist', 'SocialMediaController@index')->name('socialmedialist');
 
 Route::middleware(['auth'])->group(function () {
 
-    // Personal Information Section Routes
-    Route::get('personal-info', 'PersonalInfoController@index')->name('personal-info.index');
-    Route::get('get-personal-info', 'PersonalInfoController@show')->name('personal-info.show');
+    Route::get('personal-info', 'PersonalInfoController@show')->name('personal.info.show');
+    Route::post('personal-info', 'PersonalInfoController@store')->name('personal.info.post');
+    Route::put('personal-info/{personalInfo}', 'PersonalInfoController@update')->name('personal.info.update');
 
-    Route::post('personal-info/steps', 'PersonalStepsController@update')->name('personal-info.steps');
+    // Personal Information Steps
+    Route::post('steps', 'PersonalStepsController@update')->name('personal.steps');
+
+    // Spouse Information Routes
+    Route::post('personal-info/marriage-status', 'MarriageStatusController@store')->name('personal.marriage.post');
+
+    // Data Routes
+    Route::get('countries', 'CountryController@index')->name('countries.index');
+
+    // Personal Information Section Routes
+//    Route::get('personal-info', 'PersonalInfoController@index')->name('personal-info.index');
+//    Route::get('get-personal-info', 'PersonalInfoController@show')->name('personal-info.show');
+//
+//    Route::post('personal-info/steps', 'PersonalStepsController@update')->name('personal-info.steps');
 
     //Spouse information route
     Route::get('getspouseinfo', 'SpouseController@getspouseinfo')->name('spouseinfo.getdata');

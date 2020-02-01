@@ -77,7 +77,7 @@ class PersonalInfoTest extends TestCase
     /** @test */
     function authenticated_user_can_get_personal_information()
     {
-        $this->actingAs($this->user, 'api')->getJson('/api/personal-info')
+        $this->actingAs($this->user)->getJson('/personal-info')
             ->dump()
             ->assertStatus(200)
             ->assertJsonFragment([
@@ -90,8 +90,8 @@ class PersonalInfoTest extends TestCase
     {
         $newUser = factory(User::class)->states('verified')->create();
 
-        $this->actingAs($newUser, 'api')
-            ->postJson('/api/personal-info', [
+        $this->actingAs($newUser)
+            ->postJson('/personal-info', [
                 'legal_name' => 'Pawan Kumar',
                 'nickname' => 'Ricky',
                 'dob' => '02/05/1990',
@@ -126,9 +126,9 @@ class PersonalInfoTest extends TestCase
     function user_can_update_personal_information()
     {
         $newAddress = factory(PersonalAddress::class)->create()->toJson();
-        $this->actingAs($this->user, 'api')
+        $this->actingAs($this->user)
             ->putJson(
-                "api/personal-info/" . $this->personalInfo->id,
+                "/personal-info/" . $this->personalInfo->id,
                 [
                     'legal_name' => 'John Doe',
                     'nickname' => 'John',
@@ -164,8 +164,8 @@ class PersonalInfoTest extends TestCase
     /** @test * */
     function user_can_update_personal_information_completion_step()
     {
-        $this->actingAs($this->user, 'api')
-            ->postJson('api/steps', [
+        $this->actingAs($this->user)
+            ->postJson('/steps', [
                 'step_id' => 1,
                 'is_visited' => 1
             ])
