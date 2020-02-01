@@ -19,6 +19,15 @@ use Illuminate\Support\Facades\DB;
 
 class PersonalInfoController extends Controller
 {
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function index()
+    {
+        return view('personal.info', ['user' => auth()->user()]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

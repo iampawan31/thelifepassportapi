@@ -78,11 +78,7 @@ class PersonalInfoTest extends TestCase
     function authenticated_user_can_get_personal_information()
     {
         $this->actingAs($this->user)->getJson('/personal-info')
-            ->dump()
-            ->assertStatus(200)
-            ->assertJsonFragment([
-                'name' => $this->user->name
-            ]);
+            ->assertStatus(200);
     }
 
     /** @test * */
