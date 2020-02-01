@@ -6,6 +6,7 @@ use DB;
 use App\User;
 use Exception;
 use Session, Auth;
+use App\PreviousSpouseInfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
@@ -30,7 +31,20 @@ class PreviousspouseController extends Controller
      */
     public function index()
     {
-        //
+        $user_id = Auth::user()->id;
+        $count = \App\PreviousSpouseInfo::where('user_id', $user_id)->get()->count();
+        if ($count > 0) {
+            $previous_spouse_info = \App\PreviousSpouseInfo::where('user_id', $user_id)
+                ->with('Address')
+                ->with('PreviousSpousePhone')
+                ->with('DivorceDoc')
+                ->with('UsersPersonalDetailsCompletion')
+                ->get();
+            
+            return response()->json(['status' => 200, 'data' => $previous_spouse_info]);
+        } else {
+            return response()->json(['status' => 200, 'data' => []]);
+        }
     }
 
     /**
@@ -389,5 +403,32 @@ class PreviousspouseController extends Controller
         } catch(Exception $e) {
             return response()->json(['status' => 500, 'msg' => 'Error'], 500);
         }
+    }
+
+    public function updatePerviousSpouseInformation(PreviousSpouseInfo $perviousSpouseInfo): void 
+    {
+        $perviousSpouseInfo->legal_name         = request('legal_name') ?: "";
+        $perviousSpouseInfo->marriage_date      = Carbon::parse(request('marriage_date')) ?: "";
+        $perviousSpouseInfo->marriage_location  = Carbon::parse(request('dob')) ?: "";
+        $perviousSpouseInfo->divorce_date       = request('country_id') ?: "";
+        $perviousSpouseInfo->divorce_location   = request('passport_number') ?: "";
+        $perviousSpouseInfo->email              = request('father_name') ?: "";
+        $perviousSpouseInfo->is_alimony_paid = request('father_birth_place') ?: "";
+        $perviousSpouseInfo->divorce_agreement_doc = request('mother_name') ?: "";
+        $perviousSpouseInfo->alimony_amount = request('mother_birth_place') ?: "";
+
+        $perviousSpouseInfo->save();
+
+        // 'user_id'           => $user_id,
+        //     'legal_name'        => $legal_name ? $legal_name : "",
+        //     'marriage_date'     => $marriage_date ? date('Y-m-d', strtotime($marriage_date)) : null,
+        //     'marriage_location' => $marriage_location ? $marriage_location : "",
+        //     'divorce_date'      => $divorce_date ? date('Y-m-d', strtotime($divorce_date)) : null,
+        //     'divorce_location'  => $divorce_location ? $divorce_location : "",
+        //     'address'           => $address ? $address : "",
+        //     'email'             => $email ? $email : "",
+        //     'is_alimony_paid'   => $is_alimony_paid == true ? '1' : '0',
+        //     'divorce_agreement_doc'  => "",
+        //     'alimony_amount'    => $alimony_amount ? $alimony_amount : 0
     }
 }
