@@ -9,6 +9,14 @@ class PersonalDetailsSteps extends Model
 {
     protected $fillable = ['step', 'slug', 'percentage', 'sequence'];
 
+    /**
+     * The users that has steps.
+     */
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'users_personal_details_completions', 'step_id', 'user_id');
+    }
+
     //Table Name
     static function tableName()
     {

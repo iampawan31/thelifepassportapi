@@ -17,11 +17,10 @@ class CreateSpouseEmployersTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->string('employer_name', 255);
-            $table->string('employer_phone', 20);
-            $table->text('employer_address');
-            $table->string('computer_username', 20);
-            $table->string('computer_password', 20);
-            $table->text('benefits_used');
+            $table->string('employer_phone', 20)->nullable();
+            $table->text('employer_address')->nullable();
+            $table->string('computer_username', 20)->nullable();
+            $table->string('computer_password', 20)->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });

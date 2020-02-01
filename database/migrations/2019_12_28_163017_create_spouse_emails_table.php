@@ -17,7 +17,7 @@ class CreateSpouseEmailsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->string('email', 255);
-            $table->string('password', 20);
+            $table->string('password', 20)->nullable();
             $table->enum('is_primary', [0,1]);
 
             $table->foreign('user_id')->references('id')->on('users');

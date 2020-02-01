@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 
-class Countries extends Model
+class Country extends Model
 {
     protected $fillable = ['country_code', 'country_name'];
 

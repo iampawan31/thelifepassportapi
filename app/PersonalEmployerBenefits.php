@@ -6,8 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class PersonalEmployerBenefits extends Model
 {
+    /* Redundant Table and Model. Don't add anything here. */
+    /* Redundant Table and Model. Don't add anything here. */
+    /* Redundant Table and Model. Don't add anything here. */
+    /* Redundant Table and Model. Don't add anything here. */
+
     protected $fillable = [
-        'user_id',
         'employer_id',
         'benefit_id'
     ];
@@ -31,6 +35,6 @@ class PersonalEmployerBenefits extends Model
 
     public function benefits()
     {
-        return $this->belongsTo(EmployerBenefitsMaster::class);
+        return $this->belongsTo(EmployerBenefitsMaster::class, 'benefit');
     }
 }

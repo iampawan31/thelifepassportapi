@@ -16,7 +16,7 @@ class CreateSpousePhonesTable extends Migration
         Schema::create('spouse_phones', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
-            $table->string('phone', 20);
+            $table->string('phone', 20)->nullable();
             $table->enum('is_primary', [0, 1]);
 
             $table->foreign('user_id')->references('id')->on('users');

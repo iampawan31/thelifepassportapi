@@ -27,7 +27,7 @@ class LeftnavController extends Controller
      */
     public function index()
     {
-        return view('personalinfo.personalinfo');
+        return view('personal.personal');
     }
 
     public function getpersonalinfoleftnavigation() {

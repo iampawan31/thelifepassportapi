@@ -5,11 +5,16 @@
         </div>
         <div class="row">
             <div class="col">
-                <div v-for="benefit in benefitOptions" v-bind:key="benefit.id">
+                <div
+                    v-for="benefit in selectedBenefits"
+                    v-bind:key="benefit.id"
+                >
                     <input
                         type="checkbox"
-                        v-model="localBenefits"
-                        :value="benefit"
+                        :id="benefit.id"
+                        :checked="benefit.checked"
+                        :value="benefit.id"
+                        @click="check($event)"
                         name="benefit"
                     />
                     {{ benefit.title }}
@@ -39,6 +44,23 @@ export default {
             set(localBenefits) {
                 this.$emit("input", localBenefits);
             }
+        },
+        selectedBenefits() {
+            var checkedIds = [];
+            var results = [];
+            for (var i = 0; i < this.localBenefits.length; i++) {
+                checkedIds.push(this.localBenefits[i].id);
+            }
+            for (var j = 0; j < this.benefitOptions.length; j++) {
+                var item = this.benefitOptions[j];
+                if (checkedIds.includes(this.benefitOptions[j].id)) {
+                    item.checked = true;
+                } else {
+                    item.checked = false;
+                }
+                results.push(item);
+            }
+            return results;
         }
         // localBenefits: {
         //     get() {
@@ -59,6 +81,23 @@ export default {
         //     },
         //     set() {}
         // }
+    },
+    methods: {
+        check(e) {
+            if (e.target.checked) {
+                var newCat = {
+                    "0": e.target.value,
+                    id: e.target.value
+                };
+                this.localBenefits.push(newCat);
+            } else {
+                for (var i = 0; i < this.localBenefits.length; i++) {
+                    if (this.localBenefits[i].id == e.target.value) {
+                        this.localBenefits.splice(i, 1);
+                    }
+                }
+            }
+        }
     }
 };
 </script>

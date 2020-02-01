@@ -49,7 +49,7 @@ class SpouseController extends Controller
     public function store(Request $request)
     {
         $inputs = $request->all();
-       
+
         //personal information
         $legal_name         = $inputs['legal_name'];
         $nick_name          = $inputs['nickname'];
@@ -81,7 +81,7 @@ class SpouseController extends Controller
             foreach($inputs['email'] as $key => $value) {
                 if ($value) {
                     $arrEmail[] = ['user_id' => Auth::user()->id, 'email' => $value, 'password' => $inputs['email_password'][$key]];
-                } 
+                }
             }
         }
 
@@ -92,7 +92,7 @@ class SpouseController extends Controller
                 if ($value) {
                     $arrSocial[] = ['user_id' => Auth::user()->id, 'social_id' => $value, 'username' => $inputs['social_username'][$key], 'password' => $inputs['social_password'][$key]];
                 }
-                
+
             }
         }
 
@@ -103,8 +103,8 @@ class SpouseController extends Controller
                 if (!empty($value)) {
                     $arrEmployer[] = [
                         'user_id'                   => Auth::user()->id,
-                        'employer_name'             => $value, 
-                        'employer_phone'            => $inputs['employer_phone'][$key], 
+                        'employer_name'             => $value,
+                        'employer_phone'            => $inputs['employer_phone'][$key],
                         'employer_address'          => $inputs['employer_address'][$key],
                         'computer_username'         => $inputs['company_computer_username'][$key],
                         'computer_password'         => $inputs['company_computer_password'][$key],
@@ -129,11 +129,11 @@ class SpouseController extends Controller
             'marriage_date'        => $marriage_date ? date('Y-m-d', strtotime($marriage_date)) : null,
             'marriage_location'    => $marriage_location ? $marriage_location: ""
         ];
-        
+
         try {
             //insert personal information
             $objSpouseInfo = \App\SpouseInfo::create($arrSpouseInfo);
-            
+
             //insert record in user personal details completion
             $is_completed = $is_completed ? '1' : '0';
             \App\UsersPersonalDetailsCompletion::where('step_id', 2)
@@ -144,7 +144,7 @@ class SpouseController extends Controller
             if (!empty($arrPhone)) {
                 foreach($arrPhone as $phones){
                     $objPhone = \App\SpousePhone::create($phones);
-                } 
+                }
             }
 
             //insert email information
@@ -160,7 +160,7 @@ class SpouseController extends Controller
                     \App\SpouseSocialMedia::create($socials);
                 }
             }
-            
+
             if(!empty($arrEmployer)) {
                 foreach($arrEmployer as $employers) {
                     \App\SpouseEmployer::create($employers);
@@ -191,7 +191,7 @@ class SpouseController extends Controller
                 ->with('SpouseSocailMedia')
                 ->with('SpouseEmployer')
                 ->get();
-            
+
             return response()->json(['status' => 200, 'data' => $spouse_info]);
         } else {
             return response()->json(['status' => 200, 'data' => []]);
@@ -219,7 +219,7 @@ class SpouseController extends Controller
     public function update(Request $request, $id)
     {
         $inputs = $request->all();
-        
+
         //personal information
         $legal_name         = $inputs['legal_name'];
         $nick_name          = $inputs['nickname'];
@@ -251,7 +251,7 @@ class SpouseController extends Controller
             foreach($inputs['email'] as $key => $value) {
                 if ($value) {
                     $arrEmail[] = ['user_id' => Auth::user()->id, 'email' => $value, 'password' => $inputs['email_password'][$key]];
-                } 
+                }
             }
         }
 
@@ -262,7 +262,7 @@ class SpouseController extends Controller
                 if ($value) {
                     $arrSocial[] = ['user_id' => Auth::user()->id, 'social_id' => $value, 'username' => $inputs['social_username'][$key], 'password' => $inputs['social_password'][$key]];
                 }
-                
+
             }
         }
 
@@ -273,8 +273,8 @@ class SpouseController extends Controller
                 if (!empty($value)) {
                     $arrEmployer[] = [
                         'user_id'                   => Auth::user()->id,
-                        'employer_name'             => $value, 
-                        'employer_phone'            => $inputs['employer_phone'][$key], 
+                        'employer_name'             => $value,
+                        'employer_phone'            => $inputs['employer_phone'][$key],
                         'employer_address'          => $inputs['employer_address'][$key],
                         'computer_username'         => $inputs['company_computer_username'][$key],
                         'computer_password'         => $inputs['company_computer_password'][$key],
@@ -283,7 +283,7 @@ class SpouseController extends Controller
                 }
             }
         }
-        
+
         try {
             //get spouse information
             $objSpouseInfo = \App\SpouseInfo::find($id);
@@ -315,7 +315,7 @@ class SpouseController extends Controller
                 \App\SpousePhone::where('user_id', Auth::user()->id)->delete();
                 foreach($arrPhone as $phones){
                     $objPhone = \App\SpousePhone::create($phones);
-                } 
+                }
             }
 
             //insert email information
@@ -337,7 +337,7 @@ class SpouseController extends Controller
                     \App\SpouseSocialMedia::create($socials);
                 }
             }
-            
+
             if(!empty($arrEmployer)) {
                 //remove employer details
                 \App\SpouseEmployer::where('user_id', Auth::user()->id)->delete();
@@ -346,7 +346,7 @@ class SpouseController extends Controller
                     \App\SpouseEmployer::create($employers);
                 }
             }
-            
+
             return response()->json(['status' => 200, 'message' => 'Personal information has been saved successfully']);
         } catch (Exception $e) {
             dd($e);
@@ -364,19 +364,19 @@ class SpouseController extends Controller
     {
         try {
             \DB::transaction(function () {
-                
+
                 //remove sopuse information
                 \App\SpouseInfo::where('user_id', Auth::user()->id)->delete();
-    
+
                 //remove spouse phone
                 \App\SpousePhone::where('user_id', Auth::user()->id)->delete();
-    
+
                 //remove spouse email
                 \App\SpouseEmail::where('user_id', Auth::user()->id)->delete();
-    
+
                 //remove spouse social media
                 \App\SpouseSocialMedia::where('user_id', Auth::user()->id)->delete();
-    
+
                 //remove spouse employer
                 \App\SpouseEmployer::where('user_id', Auth::user()->id)->delete();
 
@@ -395,7 +395,7 @@ class SpouseController extends Controller
             return response()->json(['status' => 200, 'msg' => 'Error'], 500);
         }
     }
-    
+
     /**
      * Display the specified resource.
      *
@@ -405,7 +405,7 @@ class SpouseController extends Controller
     public function getspouseinfo() {
         $user_id = Auth::user()->id;
         $count = \App\SpouseInfo::where('user_id', $user_id)->get()->count();
-        
+
         if ($count > 0) {
             $spouse_info = \App\SpouseInfo::find($user_id)
                 ->with('Address')
@@ -413,10 +413,10 @@ class SpouseController extends Controller
                 ->with('SpouseEmail')
                 ->with('SpouseSocailMedia')
                 ->with('SpouseEmployer.Address', 'SpouseEmployer.Benefits')
-                ->with('Countries')
+                ->with('Country')
                 ->with('UsersPersonalDetailsCompletion')
                 ->get();
-            
+
             return response()->json(['status' => 200, 'data' => $spouse_info]);
         } else {
             return response()->json(['status' => 200, 'data' => []]);
@@ -437,7 +437,7 @@ class SpouseController extends Controller
         try {
             //check for record
             $objMarriageStatus = \App\MarriageStatus::where('user_id', $user_id)->get();
-            
+
             if ($objMarriageStatus->count()) {
                 \App\MarriageStatus::where('user_id', $user_id)
                                     ->update(['is_married' => $is_married]);
@@ -446,7 +446,7 @@ class SpouseController extends Controller
             } else {
                 \App\MarriageStatus::create(['user_id' => $user_id, 'is_married' => $is_married]);
             }
-             
+
             //insert record in user personal details completion
             if ($is_married == "0") {
                 $arrData = ['is_visited' => '1', 'is_filled' => '1', 'is_completed' => '1'];
@@ -465,7 +465,7 @@ class SpouseController extends Controller
     }
 
     public function getmarriagestatus() {
-        
+
         $user_id    = Auth::user()->id;
 
         try {

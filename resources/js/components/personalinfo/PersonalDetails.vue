@@ -156,7 +156,12 @@
                                             name="citizenship"
                                             width="resolve"
                                             data-placeholder="Select an Options"
-                                        />
+                                        >
+                                            <option>
+                                                disabled value="0">Select
+                                                Country</option
+                                            >
+                                        </Select2>
                                         <span
                                             v-if="
                                                 errors != undefined &&
@@ -386,6 +391,7 @@
                                     id="chk_complete"
                                     v-model="isCompleted"
                                     type="checkbox"
+                                    :checked="isCompleted"
                                     name="chk_complete"
                                     :value="isCompleted"
                                 /><i /> <span>Mark as complete</span>
@@ -429,49 +435,28 @@ export default {
     },
     data() {
         return {
-            errors: [],
-            user: [],
-            legalName: "",
-            nickName: "",
-            address: {
-                street_address1: null,
-                street_address2: null,
-                city: null,
-                state: null,
-                zipcode: null
-            },
-            phoneNumbers: [],
-            dateOfBirth: "",
+            address: {},
+            citizenshipOptions: [],
             countryId: "",
-            passportNumber: "",
+            dateOfBirth: "",
+            emails: [],
+            employmentDetails: [],
+            errors: [],
             fatherName: "",
             fatherBirthPlace: "",
+            isCompleted: false,
+            legalName: "",
+            nickName: "",
             motherName: "",
             motherBirthPlace: "",
-            emails: [],
+            passportNumber: "",
+            phoneNumbers: [],
             socialMediaDetails: [],
-            employmentDetails: [
-                {
-                    employer_name: null,
-                    employer_phone: null,
-                    employer_username: null,
-                    employer_password: null,
-                    address: {
-                        street_address1: null,
-                        street_address2: null,
-                        city: null,
-                        state: null,
-                        zipcode: null
-                    },
-                    benefits: []
-                }
-            ],
-            citizenshipOptions: [],
-            isCompleted: false,
-            userId: "",
             personalDetailId: "",
             result2: "",
-            submitted: false
+            submitted: false,
+            user: [],
+            userId: ""
         };
     },
     computed: {
@@ -479,10 +464,14 @@ export default {
             return this.user.personal
                 ? "Update and continue"
                 : "Save and continue";
+        },
+        apiToken() {
+            return this.user
+                ? "?api_token=" + this.user.api_token
+                : "?api_token=" + null;
         }
     },
     created() {
-        this.getCountyList();
         this.getPersonalInfo();
     },
     methods: {
@@ -495,11 +484,14 @@ export default {
             } else {
                 const formData = this.getFormData(e);
 
-                if (this.user.id && this.user.personal.id) {
+                if (this.user.id && this.user.personal) {
                     formData.append("_method", "put");
+
                     axios
                         .post(
-                            "/personal-info/" + this.user.personal.id,
+                            "api/personal-info/" +
+                                this.user.personal.id +
+                                this.apiToken,
                             formData
                         )
                         .then(response => {
@@ -522,7 +514,7 @@ export default {
                         .catch(function() {});
                 } else {
                     axios
-                        .post("/personal-info", formData)
+                        .post("/api/personal-info" + this.apiToken, formData)
                         .then(response => {
                             if (response.status == 201) {
                                 const Toast = this.$swal.mixin({
@@ -545,40 +537,38 @@ export default {
             }
         },
         async redirectToPage() {
-            await axios.get("spouse/getmarriagestatus").then(response => {
-                if (response.status == 200) {
-                    if (response.data) {
-                        console.log(response.data);
-                        if (
-                            (response.data.data &&
-                                response.data.data.is_married == "0") ||
-                            (response.data.data &&
-                                response.data.data.is_married == "2")
-                        ) {
-                            this.$router.push("/previous-spouse-question");
-                        } else {
-                            this.$router.push("/spouse");
+            await axios
+                .get("spouse/getmarriagestatus" + this.apiToken)
+                .then(response => {
+                    if (response.status == 200) {
+                        if (response.data) {
+                            // console.log(response.data);
+                            if (
+                                (response.data.data &&
+                                    response.data.data.is_married == "0") ||
+                                (response.data.data &&
+                                    response.data.data.is_married == "2")
+                            ) {
+                                this.$router.push("/previous-spouse-question");
+                            } else {
+                                this.$router.push("/spouse");
+                            }
                         }
                     }
-                }
-            });
+                });
         },
         getPersonalInfo() {
-            axios.get("/get-personal-info").then(response => {
+            axios.get("/get-personal-info" + this.apiToken).then(response => {
                 if (response.status == 200) {
-                    if (
-                        response.data.data &&
-                        response.data.data.personal !== null
-                    ) {
+                    if (response.data.data) {
                         console.log(response.data.data);
                         this.$store.dispatch(
                             "populateData",
                             response.data.data
                         );
                         this.populateData(response.data.data);
-                    } else {
-                        this.populateNewForm();
                     }
+                    this.getCountyList();
                 }
             });
         },
@@ -588,7 +578,7 @@ export default {
 
             formData.append("legal_name", this.legalName);
             formData.append("nickname", this.nickName);
-            formData.append("personal_address", this.address);
+            formData.append("personal_address", JSON.stringify(this.address));
             formData.append("user_phones", JSON.stringify(this.phoneNumbers));
             formData.append("dob", this.dateOfBirth);
             formData.append("country_id", this.countryId);
@@ -613,14 +603,8 @@ export default {
         populateNewForm() {
             this.legalName = "";
             this.nickName = "";
-            this.address = {
-                street_address1: null,
-                street_address2: null,
-                city: null,
-                state: null,
-                zipcode: null
-            };
-            this.phoneNumbers = [{ phone: null }];
+            this.address = {};
+            this.phoneNumbers = [];
             this.dateOfBirth = "";
             this.countryId = "";
             this.passportNumber = "";
@@ -628,26 +612,9 @@ export default {
             this.fatherBirthPlace = "";
             this.motherName = "";
             this.motherBirthPlace = "";
-            this.emails = [{ email: null, password: null }];
-            this.socialMediaDetails = [
-                { social_id: null, username: null, password: null }
-            ];
-            this.employmentDetails = [
-                {
-                    employer_name: null,
-                    employer_phone: null,
-                    employer_username: null,
-                    employer_password: null,
-                    address: {
-                        street_address1: null,
-                        street_address2: null,
-                        city: null,
-                        state: null,
-                        zipcode: null
-                    },
-                    benefits: []
-                }
-            ];
+            this.emails = [];
+            this.socialMediaDetails = [];
+            this.employmentDetails = [];
             this.isCompleted = false;
         },
         populateData(userData) {
@@ -655,51 +622,26 @@ export default {
             this.user = userData;
 
             const personalDetail = userData.personal;
-
-            if (personalDetail.legal_name) {
+            if (personalDetail) {
                 this.legalName = personalDetail.legal_name;
-            }
-
-            if (personalDetail.nickname) {
                 this.nickName = personalDetail.nickname;
+                this.dateOfBirth = personalDetail.dob;
+                this.fatherName = personalDetail.father_name;
+                this.fatherBirthPlace = personalDetail.father_birth_place;
+                this.motherName = personalDetail.mother_name;
+                this.motherBirthPlace = personalDetail.mother_birth_place;
+                this.countryId = personalDetail.country_id;
+                this.passportNumber = personalDetail.passport_number;
             }
 
             if (userData.address) {
                 this.address = userData.address;
             }
 
-            if (userData.phones) {
+            if (userData.phones.length > 0) {
                 this.phoneNumbers = userData.phones;
             } else {
                 this.phoneNumbers = [{ number: null }];
-            }
-
-            if (personalDetail.dob) {
-                this.dateOfBirth = personalDetail.dob;
-            }
-
-            if (personalDetail.father_name) {
-                this.fatherName = personalDetail.father_name;
-            }
-
-            if (personalDetail.father_birth_place) {
-                this.fatherBirthPlace = personalDetail.father_birth_place;
-            }
-
-            if (personalDetail.mother_name) {
-                this.motherName = personalDetail.mother_name;
-            }
-
-            if (personalDetail.mother_birth_place) {
-                this.motherBirthPlace = personalDetail.mother_birth_place;
-            }
-
-            if (personalDetail.country_id) {
-                this.countryId = personalDetail.country_id;
-            }
-
-            if (personalDetail.passport_number) {
-                this.passportNumber = personalDetail.passport_number;
             }
 
             if (userData.emails.length > 0) {
@@ -737,8 +679,8 @@ export default {
                 ];
             }
 
-            if (userData.step > 0) {
-                if (userData.step.is_completed == 1) {
+            if (userData.steps) {
+                if (userData.steps.is_completed) {
                     this.isCompleted = true;
                 }
             } else {
@@ -747,11 +689,14 @@ export default {
             }
         },
         getCountyList() {
-            axios.get("/countrylist").then(response => {
+            axios.get("/api/countries" + this.apiToken).then(response => {
                 if (response.status == 200) {
                     this.citizenshipOptions = response.data.countries;
                 }
             });
+        },
+        getFormattedUrl(path) {
+            return path + "?api_token=" + this.apiToken;
         },
         citizenshipChangeEvent(val) {
             console.log(val);

@@ -85,12 +85,18 @@ export default {
     methods: {
         addEmployers() {
             this.localEmploymentDetails.push({
-                employer_name: "",
-                employer_phone: "",
-                employer_address: [],
-                computer_username: "",
-                computer_password: "",
-                employee_benefits: []
+                employer_name: null,
+                employer_phone: null,
+                employer_username: null,
+                employer_password: null,
+                address: {
+                    street_address1: null,
+                    street_address2: null,
+                    city: null,
+                    state: null,
+                    zipcode: null
+                },
+                benefits: []
             });
         },
         removeEmployers(lineId) {

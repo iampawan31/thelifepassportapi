@@ -44,8 +44,13 @@ class UserEmployer extends Model
         return $this->hasOne(EmployerAddress::class, 'employer_id', 'id');
     }
 
-    public function benefits()
-    {
-        return $this->hasMany(PersonalEmployerBenefits::class, 'employer_id', 'id');
+    public function benefits() {
+        return $this->morphToMany(EmployerBenefitsMaster::class, 'benefits');
+
     }
+
+//    public function benefits()
+//    {
+//        return $this->hasMany(PersonalEmployerBenefits::class, 'employer_id', 'id');
+//    }
 }

@@ -13,13 +13,16 @@ class CreatePersonalEmployerBenefitsTable extends Migration
      */
     public function up()
     {
+        /* Redundant Table and Model. Don't add anything here. */
+        /* Redundant Table and Model. Don't add anything here. */
+        /* Redundant Table and Model. Don't add anything here. */
+        /* Redundant Table and Model. Don't add anything here. */
+
         Schema::create('personal_employer_benefits', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('employer_id');
             $table->unsignedBigInteger('benefit_id');
 
-            $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('employer_id')->references('id')->on('user_employers');
             $table->foreign('benefit_id')->references('id')->on('employer_benefits_masters');
             $table->timestamps();

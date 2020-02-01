@@ -4427,6 +4427,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -4447,56 +4453,39 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   data: function data() {
     return {
-      errors: [],
-      user: [],
-      legalName: "",
-      nickName: "",
-      address: {
-        street_address1: null,
-        street_address2: null,
-        city: null,
-        state: null,
-        zipcode: null
-      },
-      phoneNumbers: [],
-      dateOfBirth: "",
+      address: {},
+      citizenshipOptions: [],
       countryId: "",
-      passportNumber: "",
+      dateOfBirth: "",
+      emails: [],
+      employmentDetails: [],
+      errors: [],
       fatherName: "",
       fatherBirthPlace: "",
+      isCompleted: false,
+      legalName: "",
+      nickName: "",
       motherName: "",
       motherBirthPlace: "",
-      emails: [],
+      passportNumber: "",
+      phoneNumbers: [],
       socialMediaDetails: [],
-      employmentDetails: [{
-        employer_name: null,
-        employer_phone: null,
-        employer_username: null,
-        employer_password: null,
-        address: {
-          street_address1: null,
-          street_address2: null,
-          city: null,
-          state: null,
-          zipcode: null
-        },
-        benefits: []
-      }],
-      citizenshipOptions: [],
-      isCompleted: false,
-      userId: "",
       personalDetailId: "",
       result2: "",
-      submitted: false
+      submitted: false,
+      user: [],
+      userId: ""
     };
   },
   computed: {
     buttonText: function buttonText() {
       return this.user.personal ? "Update and continue" : "Save and continue";
+    },
+    apiToken: function apiToken() {
+      return this.user ? "?api_token=" + this.user.api_token : "?api_token=" + null;
     }
   },
   created: function created() {
-    this.getCountyList();
     this.getPersonalInfo();
   },
   methods: {
@@ -4522,9 +4511,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 } else {
                   formData = this.getFormData(e);
 
-                  if (this.user.id && this.user.personal.id) {
+                  if (this.user.id && this.user.personal) {
                     formData.append("_method", "put");
-                    axios.post("/personal-info/" + this.user.personal.id, formData).then(function (response) {
+                    axios.post("api/personal-info/" + this.user.personal.id + this.apiToken, formData).then(function (response) {
                       if (response.status == 201) {
                         var Toast = _this.$swal.mixin({
                           toast: true,
@@ -4543,7 +4532,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                       }
                     })["catch"](function () {});
                   } else {
-                    axios.post("/personal-info", formData).then(function (response) {
+                    axios.post("/api/personal-info" + this.apiToken, formData).then(function (response) {
                       if (response.status == 201) {
                         var Toast = _this.$swal.mixin({
                           toast: true,
@@ -4589,11 +4578,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return axios.get("spouse/getmarriagestatus").then(function (response) {
+                return axios.get("spouse/getmarriagestatus" + this.apiToken).then(function (response) {
                   if (response.status == 200) {
                     if (response.data) {
-                      console.log(response.data);
-
+                      // console.log(response.data);
                       if (response.data.data && response.data.data.is_married == "0" || response.data.data && response.data.data.is_married == "2") {
                         _this2.$router.push("/previous-spouse-question");
                       } else {
@@ -4608,7 +4596,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _context2.stop();
             }
           }
-        }, _callee2);
+        }, _callee2, this);
       }));
 
       function redirectToPage() {
@@ -4620,17 +4608,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getPersonalInfo: function getPersonalInfo() {
       var _this3 = this;
 
-      axios.get("/get-personal-info").then(function (response) {
+      axios.get("/get-personal-info" + this.apiToken).then(function (response) {
         if (response.status == 200) {
-          if (response.data.data && response.data.data.personal !== null) {
+          if (response.data.data) {
             console.log(response.data.data);
 
             _this3.$store.dispatch("populateData", response.data.data);
 
             _this3.populateData(response.data.data);
-          } else {
-            _this3.populateNewForm();
           }
+
+          _this3.getCountyList();
         }
       });
     },
@@ -4639,7 +4627,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var formData = new FormData(form);
       formData.append("legal_name", this.legalName);
       formData.append("nickname", this.nickName);
-      formData.append("personal_address", this.address);
+      formData.append("personal_address", JSON.stringify(this.address));
       formData.append("user_phones", JSON.stringify(this.phoneNumbers));
       formData.append("dob", this.dateOfBirth);
       formData.append("country_id", this.countryId);
@@ -4657,16 +4645,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     populateNewForm: function populateNewForm() {
       this.legalName = "";
       this.nickName = "";
-      this.address = {
-        street_address1: null,
-        street_address2: null,
-        city: null,
-        state: null,
-        zipcode: null
-      };
-      this.phoneNumbers = [{
-        phone: null
-      }];
+      this.address = {};
+      this.phoneNumbers = [];
       this.dateOfBirth = "";
       this.countryId = "";
       this.passportNumber = "";
@@ -4674,29 +4654,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.fatherBirthPlace = "";
       this.motherName = "";
       this.motherBirthPlace = "";
-      this.emails = [{
-        email: null,
-        password: null
-      }];
-      this.socialMediaDetails = [{
-        social_id: null,
-        username: null,
-        password: null
-      }];
-      this.employmentDetails = [{
-        employer_name: null,
-        employer_phone: null,
-        employer_username: null,
-        employer_password: null,
-        address: {
-          street_address1: null,
-          street_address2: null,
-          city: null,
-          state: null,
-          zipcode: null
-        },
-        benefits: []
-      }];
+      this.emails = [];
+      this.socialMediaDetails = [];
+      this.employmentDetails = [];
       this.isCompleted = false;
     },
     populateData: function populateData(userData) {
@@ -4704,52 +4664,28 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.user = userData;
       var personalDetail = userData.personal;
 
-      if (personalDetail.legal_name) {
+      if (personalDetail) {
         this.legalName = personalDetail.legal_name;
-      }
-
-      if (personalDetail.nickname) {
         this.nickName = personalDetail.nickname;
+        this.dateOfBirth = personalDetail.dob;
+        this.fatherName = personalDetail.father_name;
+        this.fatherBirthPlace = personalDetail.father_birth_place;
+        this.motherName = personalDetail.mother_name;
+        this.motherBirthPlace = personalDetail.mother_birth_place;
+        this.countryId = personalDetail.country_id;
+        this.passportNumber = personalDetail.passport_number;
       }
 
       if (userData.address) {
         this.address = userData.address;
       }
 
-      if (userData.phones) {
+      if (userData.phones.length > 0) {
         this.phoneNumbers = userData.phones;
       } else {
         this.phoneNumbers = [{
           number: null
         }];
-      }
-
-      if (personalDetail.dob) {
-        this.dateOfBirth = personalDetail.dob;
-      }
-
-      if (personalDetail.father_name) {
-        this.fatherName = personalDetail.father_name;
-      }
-
-      if (personalDetail.father_birth_place) {
-        this.fatherBirthPlace = personalDetail.father_birth_place;
-      }
-
-      if (personalDetail.mother_name) {
-        this.motherName = personalDetail.mother_name;
-      }
-
-      if (personalDetail.mother_birth_place) {
-        this.motherBirthPlace = personalDetail.mother_birth_place;
-      }
-
-      if (personalDetail.country_id) {
-        this.countryId = personalDetail.country_id;
-      }
-
-      if (personalDetail.passport_number) {
-        this.passportNumber = personalDetail.passport_number;
       }
 
       if (userData.emails.length > 0) {
@@ -4790,8 +4726,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }];
       }
 
-      if (userData.step > 0) {
-        if (userData.step.is_completed == 1) {
+      if (userData.steps) {
+        if (userData.steps.is_completed) {
           this.isCompleted = true;
         }
       } else {
@@ -4802,11 +4738,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getCountyList: function getCountyList() {
       var _this4 = this;
 
-      axios.get("/countrylist").then(function (response) {
+      axios.get("/api/countries" + this.apiToken).then(function (response) {
         if (response.status == 200) {
           _this4.citizenshipOptions = response.data.countries;
         }
       });
+    },
+    getFormattedUrl: function getFormattedUrl(path) {
+      return path + "?api_token=" + this.apiToken;
     },
     citizenshipChangeEvent: function citizenshipChangeEvent(val) {
       console.log(val);
@@ -6527,6 +6466,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     value: {
@@ -6546,6 +6490,28 @@ __webpack_require__.r(__webpack_exports__);
       set: function set(localBenefits) {
         this.$emit("input", localBenefits);
       }
+    },
+    selectedBenefits: function selectedBenefits() {
+      var checkedIds = [];
+      var results = [];
+
+      for (var i = 0; i < this.localBenefits.length; i++) {
+        checkedIds.push(this.localBenefits[i].id);
+      }
+
+      for (var j = 0; j < this.benefitOptions.length; j++) {
+        var item = this.benefitOptions[j];
+
+        if (checkedIds.includes(this.benefitOptions[j].id)) {
+          item.checked = true;
+        } else {
+          item.checked = false;
+        }
+
+        results.push(item);
+      }
+
+      return results;
     } // localBenefits: {
     //     get() {
     //         let benefits = this.localEmploymentDetail.benefits;
@@ -6566,6 +6532,23 @@ __webpack_require__.r(__webpack_exports__);
     //     set() {}
     // }
 
+  },
+  methods: {
+    check: function check(e) {
+      if (e.target.checked) {
+        var newCat = {
+          "0": e.target.value,
+          id: e.target.value
+        };
+        this.localBenefits.push(newCat);
+      } else {
+        for (var i = 0; i < this.localBenefits.length; i++) {
+          if (this.localBenefits[i].id == e.target.value) {
+            this.localBenefits.splice(i, 1);
+          }
+        }
+      }
+    }
   }
 });
 
@@ -6986,6 +6969,16 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
+    if (this.localEmploymentDetail.address === null) {
+      this.localEmploymentDetail.address = {
+        street_address1: null,
+        street_address2: null,
+        city: null,
+        state: null,
+        zipcode: null
+      };
+    }
+
     this.getemployeraddress();
   }
 });
@@ -7088,12 +7081,18 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     addEmployers: function addEmployers() {
       this.localEmploymentDetails.push({
-        employer_name: "",
-        employer_phone: "",
-        employer_address: [],
-        computer_username: "",
-        computer_password: "",
-        employee_benefits: []
+        employer_name: null,
+        employer_phone: null,
+        employer_username: null,
+        employer_password: null,
+        address: {
+          street_address1: null,
+          street_address2: null,
+          city: null,
+          state: null,
+          zipcode: null
+        },
+        benefits: []
       });
     },
     removeEmployers: function removeEmployers(lineId) {
@@ -63763,24 +63762,34 @@ var render = function() {
                                           fn: function(ref) {
                                             var errors = ref.errors
                                             return [
-                                              _c("Select2", {
-                                                attrs: {
-                                                  id: "citizenship",
-                                                  options:
-                                                    _vm.citizenshipOptions,
-                                                  name: "citizenship",
-                                                  width: "resolve",
-                                                  "data-placeholder":
-                                                    "Select an Options"
-                                                },
-                                                model: {
-                                                  value: _vm.countryId,
-                                                  callback: function($$v) {
-                                                    _vm.countryId = $$v
+                                              _c(
+                                                "Select2",
+                                                {
+                                                  attrs: {
+                                                    id: "citizenship",
+                                                    options:
+                                                      _vm.citizenshipOptions,
+                                                    name: "citizenship",
+                                                    width: "resolve",
+                                                    "data-placeholder":
+                                                      "Select an Options"
                                                   },
-                                                  expression: "countryId"
-                                                }
-                                              }),
+                                                  model: {
+                                                    value: _vm.countryId,
+                                                    callback: function($$v) {
+                                                      _vm.countryId = $$v
+                                                    },
+                                                    expression: "countryId"
+                                                  }
+                                                },
+                                                [
+                                                  _c("option", [
+                                                    _vm._v(
+                                                      '\n                                            disabled value="0">Select\n                                            Country'
+                                                    )
+                                                  ])
+                                                ]
+                                              ),
                                               _vm._v(" "),
                                               errors != undefined &&
                                               errors.length
@@ -64378,6 +64387,7 @@ var render = function() {
                                   name: "chk_complete"
                                 },
                                 domProps: {
+                                  checked: _vm.isCompleted,
                                   value: _vm.isCompleted,
                                   checked: Array.isArray(_vm.isCompleted)
                                     ? _vm._i(_vm.isCompleted, _vm.isCompleted) >
@@ -68035,43 +68045,14 @@ var render = function() {
       _c(
         "div",
         { staticClass: "col" },
-        _vm._l(_vm.benefitOptions, function(benefit) {
+        _vm._l(_vm.selectedBenefits, function(benefit) {
           return _c("div", { key: benefit.id }, [
             _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.localBenefits,
-                  expression: "localBenefits"
-                }
-              ],
-              attrs: { type: "checkbox", name: "benefit" },
-              domProps: {
-                value: benefit,
-                checked: Array.isArray(_vm.localBenefits)
-                  ? _vm._i(_vm.localBenefits, benefit) > -1
-                  : _vm.localBenefits
-              },
+              attrs: { type: "checkbox", id: benefit.id, name: "benefit" },
+              domProps: { checked: benefit.checked, value: benefit.id },
               on: {
-                change: function($event) {
-                  var $$a = _vm.localBenefits,
-                    $$el = $event.target,
-                    $$c = $$el.checked ? true : false
-                  if (Array.isArray($$a)) {
-                    var $$v = benefit,
-                      $$i = _vm._i($$a, $$v)
-                    if ($$el.checked) {
-                      $$i < 0 && (_vm.localBenefits = $$a.concat([$$v]))
-                    } else {
-                      $$i > -1 &&
-                        (_vm.localBenefits = $$a
-                          .slice(0, $$i)
-                          .concat($$a.slice($$i + 1)))
-                    }
-                  } else {
-                    _vm.localBenefits = $$c
-                  }
+                click: function($event) {
+                  return _vm.check($event)
                 }
               }
             }),
@@ -110850,7 +110831,8 @@ var mainStore = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     phones: [],
     emails: [],
     socials: [],
-    employers: []
+    employers: [],
+    apiToken: ""
   },
   mutations: {
     ADD_USER: function ADD_USER(state, user) {
