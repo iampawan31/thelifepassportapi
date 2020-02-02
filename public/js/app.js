@@ -4523,9 +4523,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                         Toast.fire({
                           icon: "success",
                           title: "Information Saved"
-                        });
-
-                        _this.$router.push("/spouse-question");
+                        }); //this.$router.push("/spouse-question");
                       }
                     })["catch"](function () {});
                   } else {
@@ -4542,9 +4540,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                         Toast.fire({
                           icon: "success",
                           title: "Information Updated"
-                        });
-
-                        _this.$router.push("/spouse-question");
+                        }); //this.$router.push("/spouse-question");
                       }
                     })["catch"](function () {});
                   }

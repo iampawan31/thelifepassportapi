@@ -501,7 +501,7 @@ export default {
                                     icon: "success",
                                     title: "Information Saved"
                                 });
-                                this.$router.push("/spouse-question");
+                                //this.$router.push("/spouse-question");
                             }
                         })
                         .catch(function() {});
@@ -522,7 +522,7 @@ export default {
                                     icon: "success",
                                     title: "Information Updated"
                                 });
-                                this.$router.push("/spouse-question");
+                                //this.$router.push("/spouse-question");
                             }
                         })
                         .catch(function() {});
