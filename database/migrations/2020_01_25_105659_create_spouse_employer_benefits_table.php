@@ -15,13 +15,8 @@ class CreateSpouseEmployerBenefitsTable extends Migration
     {
         Schema::create('spouse_employer_benefits', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('employer_id');
             $table->unsignedBigInteger('benefit_id');
-
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('employer_id')->references('id')->on('spouse_employers');
-            $table->foreign('benefit_id')->references('id')->on('employer_benefits_masters');
             $table->timestamps();
         });
     }

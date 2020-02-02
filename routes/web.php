@@ -28,7 +28,6 @@ Route::get('dashboard', 'DashboardController@index')->name('dashboard');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/socialmedialist', 'SocialMediaController@index')->name('socialmedialist');
 
 Route::middleware(['auth'])->group(function () {
 
@@ -40,24 +39,21 @@ Route::middleware(['auth'])->group(function () {
     // Personal Information Steps
     Route::post('steps', 'PersonalStepsController@update')->name('personal.steps');
 
-    // Spouse Information Routes
-    Route::post('personal-info/marriage-status', 'MarriageStatusController@store')->name('personal.marriage.post');
 
     // Data Routes
+    Route::get('social', 'SocialMediaController@index')->name('social.index');
     Route::get('countries', 'CountryController@index')->name('countries.index');
+    Route::get('benefits', 'BenefitController@index')->name('benefit.index');
 
-    // Personal Information Section Routes
-//    Route::get('get-personal-info', 'PersonalInfoController@show')->name('personal-info.show');
-//
-//    Route::post('personal-info/steps', 'PersonalStepsController@update')->name('personal-info.steps');
 
     //Spouse information route
-    Route::get('getspouseinfo', 'SpouseController@getspouseinfo')->name('spouseinfo.getdata');
-    Route::post('spouse/postdata', 'SpouseController@store')->name('spouseinfo.postdata');
-    Route::post('spouse/{id}/updatedata', 'SpouseController@update')->name('spouseinfo.updatedata');
-    Route::post('spouse/updatemarriagestatus', 'SpouseController@updatemarriagestatus')->name('spouseinfo.updatemarriagestatus');
-    Route::get('spouse/getmarriagestatus', 'SpouseController@getmarriagestatus')->name('spouseinfo.getmarriagestatus');
-    Route::delete('spouse/{id}/removespouse', 'SpouseController@destroy')->name('spouseinfo.removespouse');
+    Route::prefix('personal')->group(function () {
+        // Spouse Information Routes
+        Route::get('marriage-status', 'MarriageStatusController@index')->name('personal.marriage.get');
+        Route::post('marriage-status', 'MarriageStatusController@store')->name('personal.marriage.post');
+        Route::resource('spouse-info', 'SpouseInfoController')->only(['index', 'store', 'update', 'destroy']);
+
+    });
 
     //Previous Spouse information route
     Route::get('getprevspouseinfo', 'PreviousspouseController@getpreviousspouseinfo')->name('prevspouseinfo.getdata');

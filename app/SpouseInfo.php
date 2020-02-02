@@ -22,6 +22,8 @@ class SpouseInfo extends Model
         'marriage_location'
     ];
 
+    protected $with = ['address', 'phones', 'emails', 'socials', 'employers', 'step'];
+
     public function getMarriageDateAttribute($date)
     {
         return $this->attributes['marriage_date'] = date('m/d/Y', strtotime($date));
@@ -39,37 +41,31 @@ class SpouseInfo extends Model
 
     public function phones()
     {
-        return $this->hasMany(\App\SpousePhone::class, 'user_id')->select(['user_id', 'phone', 'is_primary']);
+        return $this->hasMany(SpousePhone::class, 'user_id')->select(['user_id', 'phone', 'is_primary']);
     }
 
     public function emails()
     {
-        return $this->hasMany(\App\SpouseEmail::class, 'user_id')->select(['user_id', 'email', 'password', 'is_primary']);
+        return $this->hasMany(SpouseEmail::class, 'user_id')->select(['user_id', 'email', 'password', 'is_primary']);
     }
 
     public function socials()
     {
-        return $this->hasMany(\App\SpouseSocialMedia::class, 'user_id');
+        return $this->hasMany(SpouseSocialMedia::class, 'user_id');
     }
 
     public function employers()
     {
-        return $this->hasMany(\App\SpouseEmployer::class, 'user_id');
+        return $this->hasMany(SpouseEmployer::class, 'user_id');
     }
 
     public function country()
     {
-        return $this->hasOne(\App\Country::class, 'id', 'country_id')->select(['id', 'country_name']);
+        return $this->hasOne(Country::class, 'id', 'country_id')->select(['id', 'country_name']);
     }
 
     public function step()
     {
         return $this->hasOne(UsersPersonalDetailsCompletion::class, 'user_id')->where('step_id', 2);
-    }
-
-    //Table Name
-    static function tableName()
-    {
-        return with(new static)->getTable();
     }
 }

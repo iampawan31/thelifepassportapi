@@ -13,41 +13,11 @@ class UsersPersonalDetailsCompletion extends Model
      *
      * @var array
      */
-    // protected $casts = [
-    //     'is_filled' => 'boolean',
-    //     'is_completed' => 'boolean',
-    //     'is_visited' => 'boolean',
-    // ];
-
-    // /**
-    //  * Get is_filled value.
-    //  *
-    //  * @return boolean
-    //  */
-    // public function getIsFilledAttribute()
-    // {
-    //     return (boolean) $this->is_filled;
-    // }
-
-    // /**
-    //  * Get is_completed value.
-    //  *
-    //  * @return boolean
-    //  */
-    // public function getIsCompletedAttribute()
-    // {
-    //     return (boolean) $this->is_completed;
-    // }
-
-    // /**
-    //  * Get is_visited value.
-    //  *
-    //  * @return boolean
-    //  */
-    // public function getIsVisitedAttribute()
-    // {
-    //     return (boolean) $this->is_visited;
-    // }
+    protected $casts = [
+        'is_filled' => 'boolean',
+        'is_completed' => 'boolean',
+        'is_visited' => 'boolean',
+    ];
 
     /**
      * The roles that belong to the user.

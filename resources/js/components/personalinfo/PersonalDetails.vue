@@ -530,25 +530,23 @@ export default {
             }
         },
         async redirectToPage() {
-            await axios
-                .get("spouse/getmarriagestatus" + this.apiToken)
-                .then(response => {
-                    if (response.status == 200) {
-                        if (response.data) {
-                            // console.log(response.data);
-                            if (
-                                (response.data.data &&
-                                    response.data.data.is_married == "0") ||
-                                (response.data.data &&
-                                    response.data.data.is_married == "2")
-                            ) {
-                                this.$router.push("/previous-spouse-question");
-                            } else {
-                                this.$router.push("/spouse");
-                            }
+            await axios.get("personal/marriage-status").then(response => {
+                if (response.status == 200) {
+                    if (response.data) {
+                        // console.log(response.data);
+                        if (
+                            (response.data.data &&
+                                response.data.data.is_married == "0") ||
+                            (response.data.data &&
+                                response.data.data.is_married == "2")
+                        ) {
+                            this.$router.push("/previous-spouse-question");
+                        } else {
+                            this.$router.push("/spouse");
                         }
                     }
-                });
+                }
+            });
         },
         getPersonalInfo() {
             axios.get("/get-personal-info").then(response => {
@@ -572,7 +570,7 @@ export default {
             formData.append("legal_name", this.legalName);
             formData.append("nickname", this.nickName);
             formData.append("personal_address", JSON.stringify(this.address));
-            formData.append("user_phones", JSON.stringify(this.phoneNumbers));
+            formData.append("phones", JSON.stringify(this.phoneNumbers));
             formData.append("dob", this.dateOfBirth);
             formData.append("country_id", this.countryId);
             formData.append("passport_number", this.passportNumber);
@@ -634,7 +632,7 @@ export default {
             if (userData.phones.length > 0) {
                 this.phoneNumbers = userData.phones;
             } else {
-                this.phoneNumbers = [{ number: null }];
+                this.phoneNumbers = [{ phone: null }];
             }
 
             if (userData.emails.length > 0) {

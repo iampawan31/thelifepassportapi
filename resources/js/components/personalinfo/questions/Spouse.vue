@@ -162,7 +162,7 @@ export default {
     mounted() {},
     methods: {
         getSpouseInfo() {
-            axios.get("/getspouseinfo").then(response => {
+            axios.get("/personal/spouse-info").then(response => {
                 if (response.status == 200) {
                     if (response.data.data[0]) {
                         this.spouseDetails = JSON.parse(
@@ -186,9 +186,9 @@ export default {
             }
 
             axios
-                .post("spouse/updatemarriagestatus", this.formData)
+                .post("personal/marriage-status", this.formData)
                 .then(response => {
-                    if (response.status == 200) {
+                    if (response.status == 201) {
                         if (status == "1") {
                             this.$router.push("/spouse");
                         } else {
@@ -201,7 +201,7 @@ export default {
         updatestepinfo() {
             let data = { step_id: 2, is_visited: "1" };
             axios
-                .post("/updatepersonalstep", data)
+                .post("/steps", data)
                 .then(response => {
                     console.log(response);
                 })
@@ -221,7 +221,7 @@ export default {
                 .then(result => {
                     if (result.value) {
                         axios
-                            .delete("spouse/" + this.userId + "/removespouse")
+                            .delete("spouse/" + this.userId)
                             .then(response => {
                                 if (response.status == 200) {
                                     this.$swal.fire(

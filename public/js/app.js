@@ -3609,7 +3609,7 @@ __webpack_require__.r(__webpack_exports__);
     getSpouseMarriageStatus: function getSpouseMarriageStatus() {
       var _this3 = this;
 
-      axios.get('spouse/getmarriagestatus').then(function (response) {
+      axios.get('personal/marriage-status').then(function (response) {
         if (response.status == 200) {
           _this3.marriageStatus = response.data.data;
         }
@@ -4575,7 +4575,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return axios.get("spouse/getmarriagestatus" + this.apiToken).then(function (response) {
+                return axios.get("personal/marriage-status").then(function (response) {
                   if (response.status == 200) {
                     if (response.data) {
                       // console.log(response.data);
@@ -4593,7 +4593,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _context2.stop();
             }
           }
-        }, _callee2, this);
+        }, _callee2);
       }));
 
       function redirectToPage() {
@@ -4625,7 +4625,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       formData.append("legal_name", this.legalName);
       formData.append("nickname", this.nickName);
       formData.append("personal_address", JSON.stringify(this.address));
-      formData.append("user_phones", JSON.stringify(this.phoneNumbers));
+      formData.append("phones", JSON.stringify(this.phoneNumbers));
       formData.append("dob", this.dateOfBirth);
       formData.append("country_id", this.countryId);
       formData.append("passport_number", this.passportNumber);
@@ -4681,7 +4681,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.phoneNumbers = userData.phones;
       } else {
         this.phoneNumbers = [{
-          number: null
+          phone: null
         }];
       }
 
@@ -6075,18 +6075,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -6110,18 +6098,34 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   data: function data() {
     return {
       spouseDetails: [],
-      phones: [],
-      emails: [],
-      socials: [],
-      address: [],
-      employers: [],
-      userId: 0,
-      submitted: false,
+      address: {},
       citizenshipOptions: [],
-      is_completed: false
+      countryId: "",
+      dateOfBirth: "",
+      emails: [],
+      employmentDetails: [],
+      errors: [],
+      fatherName: "",
+      fatherBirthPlace: "",
+      isCompleted: false,
+      legalName: "",
+      nickName: "",
+      marriageDate: "",
+      marriageLocation: "",
+      motherName: "",
+      motherBirthPlace: "",
+      passportNumber: "",
+      phoneNumbers: [],
+      socialMediaDetails: [],
+      personalDetailId: "",
+      userId: 0,
+      submitted: false
     };
   },
   computed: {
+    buttonText: function buttonText() {
+      return this.spouseDetails && this.spouseDetails.id ? "Update and continue" : "Save and continue";
+    },
     disabledDates: function disabledDates() {
       return {
         from: new Date()
@@ -6129,101 +6133,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   created: function created() {
-    var _this = this;
-
-    axios.get('/countrylist').then(function (response) {
-      if (response.status == 200) {
-        _this.citizenshipOptions = response.data.countries;
-      }
-    });
-    axios.get('/getspouseinfo').then(function (response) {
-      if (response.status == 200) {
-        if (response.data.data[0]) {
-          _this.spouseDetails = JSON.parse(JSON.stringify(response.data.data[0]));
-          _this.userId = _this.spouseDetails.user_id;
-
-          if (_this.spouseDetails.spouse_phone.length > 0) {
-            _this.phones = _this.spouseDetails.spouse_phone;
-          } else {
-            _this.phones = [{
-              number: null
-            }];
-          }
-
-          if (_this.spouseDetails.spouse_email.length > 0) {
-            _this.emails = _this.spouseDetails.spouse_email;
-          } else {
-            _this.emails = [{
-              email: null,
-              password: null
-            }];
-          }
-
-          if (_this.spouseDetails.spouse_socail_media.length > 0) {
-            _this.socials = _this.spouseDetails.spouse_socail_media;
-          } else {
-            _this.socials = [{
-              social: null,
-              username: null,
-              password: null
-            }];
-          }
-
-          if (_this.spouseDetails.spouse_employer.length > 0) {
-            _this.employers = _this.spouseDetails.spouse_employer;
-          } else {
-            _this.employers = [{
-              employer_name: null,
-              employer_phone: null,
-              employer_address: null,
-              computer_username: null,
-              computer_password: null,
-              employee_benefits: null
-            }];
-          }
-
-          if (_this.spouseDetails.users_personal_details_completion.length > 0) {
-            if (_this.spouseDetails.users_personal_details_completion[0].is_completed == 1) {
-              _this.is_completed = true;
-            }
-          } else {
-            //this.completionStatus = { step_id: null, is_visited: null, is_filled: null, is_completed: null };
-            _this.is_completed = false;
-          }
-        } else {
-          _this.phones = [{
-            number: null
-          }];
-          _this.emails = [{
-            email: null,
-            password: null
-          }];
-          _this.socials = [{
-            social: null,
-            username: null,
-            password: null
-          }];
-          _this.employers = [{
-            employer_name: null,
-            employer_phone: null,
-            employer_address: null,
-            computer_username: null,
-            computer_password: null,
-            employee_benefits: null
-          }];
-          _this.is_completed = false;
-        }
-      }
-    });
+    this.getCountryList();
+    this.getSpouseInfo();
   },
   methods: {
     handleSubmit: function () {
       var _handleSubmit = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(e) {
-        var _this2 = this;
+        var _this = this;
 
-        var isValid, form, formData;
+        var isValid, formData;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -6236,20 +6156,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 isValid = _context.sent;
 
                 if (isValid) {
-                  form = e.target;
-                  formData = new FormData(form);
+                  formData = this.getFormData(e);
 
-                  if (this.userId) {
-                    axios.post('/spouse/' + this.userId + '/updatedata', formData).then(function (response) {
+                  if (this.spouseDetails && this.spouseDetails.id) {
+                    formData.append("_method", "put");
+                  }
+
+                  if (this.spouseDetails && this.spouseDetails.id) {
+                    axios.post('/personal/spouse-info/' + this.spouseDetails.id, formData).then(function (response) {
                       console.log(response);
 
-                      _this2.$router.push('/previous-spouse-question');
+                      _this.$router.push('/previous-spouse-question');
                     })["catch"](function () {});
                   } else {
-                    axios.post('/spouse/postdata', formData).then(function (response) {
+                    axios.post('/personal/spouse-info/', formData).then(function (response) {
                       console.log(response);
 
-                      _this2.$router.push('/previous-spouse-question');
+                      _this.$router.push('/previous-spouse-question');
                     })["catch"](function () {});
                   }
                 }
@@ -6268,20 +6191,163 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return handleSubmit;
     }(),
-    updatePhoneNumbers: function updatePhoneNumbers(data) {
-      this.phones = data;
+    getFormData: function getFormData(e) {
+      var form = e.target;
+      var formData = new FormData(form);
+      formData.append('marriage_date', this.marriageDate);
+      formData.append('marriage_location', this.marriageLocation);
+      formData.append("legal_name", this.legalName);
+      formData.append("nickname", this.nickName);
+      formData.append("spouse_address", JSON.stringify(this.address));
+      formData.append("phones", JSON.stringify(this.phoneNumbers));
+      formData.append("dob", this.dateOfBirth);
+      formData.append("country_id", this.countryId);
+      formData.append("passport_number", this.passportNumber);
+      formData.append("father_name", this.fatherName);
+      formData.append("father_birth_place", this.fatherBirthPlace);
+      formData.append("mother_name", this.motherName);
+      formData.append("mother_birth_place", this.motherBirthPlace);
+      formData.append("emails", JSON.stringify(this.emails));
+      formData.append("spouse_social_media", JSON.stringify(this.socialMediaDetails));
+      formData.append("spouse_employer", JSON.stringify(this.employmentDetails));
+      formData.append("is_completed", this.isCompleted);
+      return formData;
     },
-    updateEmails: function updateEmails(data) {
-      this.emails = data;
+    populateNewForm: function populateNewForm() {
+      this.marriageDate = '', this.marriageLocation = "", this.legalName = "", this.nickName = "", this.address = {
+        street_address1: null,
+        street_address2: null,
+        city: null,
+        state: null,
+        zipcode: null
+      }, this.phoneNumbers = [{
+        phone: null
+      }], this.dateOfBirth = "", this.countryId = "", this.passportNumber = "", this.fatherName = "", this.fatherBirthPlace = "", this.motherName = "", this.motherBirthPlace = "", this.emails = [{
+        email: null,
+        password: null
+      }], this.socialMediaDetails = [{
+        social_id: null,
+        username: null,
+        password: null
+      }], this.employmentDetails = [{
+        employer_name: null,
+        employer_phone: null,
+        employer_username: null,
+        employer_password: null,
+        address: {
+          street_address1: null,
+          street_address2: null,
+          city: null,
+          state: null,
+          zipcode: null
+        },
+        benefits: []
+      }], this.isCompleted = false;
     },
-    updateSocialMedia: function updateSocialMedia(data) {
-      this.socials = data;
+    populateData: function populateData(spouseData) {
+      this.spouseDetails = spouseData;
+      this.marriageLocation = spouseData.marriage_location;
+      this.marriageDate = spouseData.marriage_date;
+      this.legalName = spouseData.legal_name;
+      this.nickName = spouseData.nickname;
+      this.dateOfBirth = spouseData.dob;
+      this.fatherName = spouseData.father_name;
+      this.fatherBirthPlace = spouseData.father_birth_place;
+      this.motherName = spouseData.mother_name;
+      this.motherBirthPlace = spouseData.mother_birth_place;
+      this.countryId = spouseData.country_id;
+      this.passportNumber = spouseData.passport_number;
+
+      if (spouseData.address) {
+        this.address = spouseData.address;
+      }
+
+      if (spouseData.phones.length > 0) {
+        this.phoneNumbers = spouseData.phones;
+      } else {
+        this.phoneNumbers = [{
+          phone: null
+        }];
+      }
+
+      if (spouseData.emails.length > 0) {
+        this.emails = spouseData.emails;
+      } else {
+        this.emails = [{
+          email: null,
+          password: null
+        }];
+      }
+
+      if (spouseData.socials.length > 0) {
+        this.socialMediaDetails = spouseData.socials;
+      } else {
+        this.socialMediaDetails = [{
+          social_id: null,
+          username: null,
+          password: null
+        }];
+      }
+
+      if (spouseData.employers.length > 0) {
+        this.employmentDetails = spouseData.employers;
+      } else {
+        this.employmentDetails = [{
+          employer_name: null,
+          employer_phone: null,
+          employer_username: null,
+          employer_password: null,
+          address: {
+            street_address1: null,
+            street_address2: null,
+            city: null,
+            state: null,
+            zipcode: null
+          },
+          benefits: []
+        }];
+      }
+
+      if (spouseData.steps) {
+        if (spouseData.steps.is_completed) {
+          this.isCompleted = true;
+        }
+      } else {
+        this.isCompleted = false;
+      }
     },
-    updateEmploymentDetails: function updateEmploymentDetails(index, data) {
-      this.employers[index] = data;
+    getSpouseInfo: function getSpouseInfo() {
+      var _this2 = this;
+
+      axios.get("/personal/spouse-info").then(function (response) {
+        if (response.status == 200) {
+          if (response.data.data) {
+            _this2.populateData(response.data.data);
+          } else {
+            _this2.populateNewForm();
+          }
+        }
+      });
     },
-    updateHomeAddress: function updateHomeAddress(data) {
-      this.address = data;
+    getCountryList: function getCountryList() {
+      var _this3 = this;
+
+      axios.get('/countries').then(function (response) {
+        if (response.status == 200) {
+          _this3.citizenshipOptions = response.data.countries;
+        }
+      });
+    },
+    citizenshipChangeEvent: function citizenshipChangeEvent(val) {
+      console.log(val);
+    },
+    citizenshipSelectEvent: function citizenshipSelectEvent(_ref) {
+      var id = _ref.id,
+          text = _ref.text;
+      console.log({
+        id: id,
+        text: text
+      });
     }
   }
 });
@@ -7015,7 +7081,7 @@ __webpack_require__.r(__webpack_exports__);
     getemployeraddress: function getemployeraddress() {
       var _this = this;
 
-      axios.get("/getemployerbenefitslist").then(function (response) {
+      axios.get("/benefits").then(function (response) {
         if (response.status == 200) {
           if (response.data) {
             _this.employeeBenefitsOptions = response.data.data;
@@ -7616,7 +7682,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this = this;
 
-    axios.get("/socialmedialist").then(function (response) {
+    axios.get("/social").then(function (response) {
       if (response.status == 200) {
         _this.socialOptions = response.data.social;
       }
@@ -8592,7 +8658,7 @@ __webpack_require__.r(__webpack_exports__);
     getSpouseInfo: function getSpouseInfo() {
       var _this = this;
 
-      axios.get("/getspouseinfo").then(function (response) {
+      axios.get("/personal/spouse-info").then(function (response) {
         if (response.status == 200) {
           if (response.data.data[0]) {
             _this.spouseDetails = JSON.parse(JSON.stringify(response.data.data[0]));
@@ -8622,8 +8688,8 @@ __webpack_require__.r(__webpack_exports__);
         };
       }
 
-      axios.post("spouse/updatemarriagestatus", this.formData).then(function (response) {
-        if (response.status == 200) {
+      axios.post("personal/marriage-status", this.formData).then(function (response) {
+        if (response.status == 201) {
           if (status == "1") {
             _this2.$router.push("/spouse");
           } else {
@@ -8637,7 +8703,7 @@ __webpack_require__.r(__webpack_exports__);
         step_id: 2,
         is_visited: "1"
       };
-      axios.post("/updatepersonalstep", data).then(function (response) {
+      axios.post("/steps", data).then(function (response) {
         console.log(response);
       })["catch"](function () {});
     },
@@ -8654,7 +8720,7 @@ __webpack_require__.r(__webpack_exports__);
         confirmButtonText: "Yes"
       }).then(function (result) {
         if (result.value) {
-          axios["delete"]("spouse/" + _this3.userId + "/removespouse").then(function (response) {
+          axios["delete"]("spouse/" + _this3.userId).then(function (response) {
             if (response.status == 200) {
               _this3.$swal.fire("Deleted!", "Marriage information is deleted", "success");
 
@@ -13184,25 +13250,6 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 // module
 exports.push([module.i, "\n.vue__time-picker input.display-time {\n    padding: 0;\n    line-height: 18px;\n    height: 1em;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/Spouse.vue?vue&type=style&index=0&lang=css&":
-/*!*************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/personalinfo/Spouse.vue?vue&type=style&index=0&lang=css& ***!
-  \*************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.mb-2 {\n    margin-bottom: 2px;\n}\n", ""]);
 
 // exports
 
@@ -51636,36 +51683,6 @@ if(false) {}
 
 /***/ }),
 
-/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/Spouse.vue?vue&type=style&index=0&lang=css&":
-/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/personalinfo/Spouse.vue?vue&type=style&index=0&lang=css& ***!
-  \*****************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-var content = __webpack_require__(/*! !../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./Spouse.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/Spouse.vue?vue&type=style&index=0&lang=css&");
-
-if(typeof content === 'string') content = [[module.i, content, '']];
-
-var transform;
-var insertInto;
-
-
-
-var options = {"hmr":true}
-
-options.transform = transform
-options.insertInto = undefined;
-
-var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
-
-if(content.locals) module.exports = content.locals;
-
-if(false) {}
-
-/***/ }),
-
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/elements/Email.vue?vue&type=style&index=0&lang=css&":
 /*!*************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/personalinfo/elements/Email.vue?vue&type=style&index=0&lang=css& ***!
@@ -66405,11 +66422,9 @@ var render = function() {
                                                     {
                                                       name: "model",
                                                       rawName: "v-model",
-                                                      value:
-                                                        _vm.spouseDetails
-                                                          .marriage_date,
+                                                      value: _vm.marriageDate,
                                                       expression:
-                                                        "\n                      spouseDetails.marriage_date\n                    "
+                                                        "\n                      marriageDate\n                    "
                                                     },
                                                     {
                                                       name: "mask",
@@ -66421,13 +66436,11 @@ var render = function() {
                                                   staticClass: "field-input",
                                                   attrs: {
                                                     type: "text",
-                                                    name: "date",
+                                                    name: "marriage_date",
                                                     placeholder: "mm/dd/yyyy"
                                                   },
                                                   domProps: {
-                                                    value:
-                                                      _vm.spouseDetails
-                                                        .marriage_date
+                                                    value: _vm.marriageDate
                                                   },
                                                   on: {
                                                     input: function($event) {
@@ -66436,11 +66449,8 @@ var render = function() {
                                                       ) {
                                                         return
                                                       }
-                                                      _vm.$set(
-                                                        _vm.spouseDetails,
-                                                        "marriage_date",
+                                                      _vm.marriageDate =
                                                         $event.target.value
-                                                      )
                                                     }
                                                   }
                                                 }),
@@ -66511,10 +66521,9 @@ var render = function() {
                                                       name: "model",
                                                       rawName: "v-model",
                                                       value:
-                                                        _vm.spouseDetails
-                                                          .marriage_location,
+                                                        _vm.marriageLocation,
                                                       expression:
-                                                        "\n                      spouseDetails.marriage_location\n                    "
+                                                        "\n                      marriageLocation\n                    "
                                                     }
                                                   ],
                                                   staticClass:
@@ -66526,9 +66535,7 @@ var render = function() {
                                                     placeholder: "Location"
                                                   },
                                                   domProps: {
-                                                    value:
-                                                      _vm.spouseDetails
-                                                        .marriage_location
+                                                    value: _vm.marriageLocation
                                                   },
                                                   on: {
                                                     input: function($event) {
@@ -66537,11 +66544,8 @@ var render = function() {
                                                       ) {
                                                         return
                                                       }
-                                                      _vm.$set(
-                                                        _vm.spouseDetails,
-                                                        "marriage_location",
+                                                      _vm.marriageLocation =
                                                         $event.target.value
-                                                      )
                                                     }
                                                   }
                                                 }),
@@ -66603,7 +66607,7 @@ var render = function() {
                                     _c("ValidationProvider", {
                                       attrs: {
                                         name: "Legal Name",
-                                        rules: "required|max:50"
+                                        rules: "required|alpha_spaces|max:50"
                                       },
                                       scopedSlots: _vm._u(
                                         [
@@ -66617,11 +66621,8 @@ var render = function() {
                                                     {
                                                       name: "model",
                                                       rawName: "v-model",
-                                                      value:
-                                                        _vm.spouseDetails
-                                                          .legal_name,
-                                                      expression:
-                                                        "spouseDetails.legal_name"
+                                                      value: _vm.legalName,
+                                                      expression: "legalName"
                                                     }
                                                   ],
                                                   staticClass:
@@ -66633,9 +66634,7 @@ var render = function() {
                                                     placeholder: "Legal Name"
                                                   },
                                                   domProps: {
-                                                    value:
-                                                      _vm.spouseDetails
-                                                        .legal_name
+                                                    value: _vm.legalName
                                                   },
                                                   on: {
                                                     input: function($event) {
@@ -66644,11 +66643,8 @@ var render = function() {
                                                       ) {
                                                         return
                                                       }
-                                                      _vm.$set(
-                                                        _vm.spouseDetails,
-                                                        "legal_name",
+                                                      _vm.legalName =
                                                         $event.target.value
-                                                      )
                                                     }
                                                   }
                                                 }),
@@ -66721,11 +66717,8 @@ var render = function() {
                                                     {
                                                       name: "model",
                                                       rawName: "v-model",
-                                                      value:
-                                                        _vm.spouseDetails
-                                                          .nickname,
-                                                      expression:
-                                                        "spouseDetails.nickname"
+                                                      value: _vm.nickName,
+                                                      expression: "nickName"
                                                     }
                                                   ],
                                                   staticClass: "field-input",
@@ -66737,8 +66730,7 @@ var render = function() {
                                                       "Nickname or prior name"
                                                   },
                                                   domProps: {
-                                                    value:
-                                                      _vm.spouseDetails.nickname
+                                                    value: _vm.nickName
                                                   },
                                                   on: {
                                                     input: function($event) {
@@ -66747,11 +66739,8 @@ var render = function() {
                                                       ) {
                                                         return
                                                       }
-                                                      _vm.$set(
-                                                        _vm.spouseDetails,
-                                                        "nickname",
+                                                      _vm.nickName =
                                                         $event.target.value
-                                                      )
                                                     }
                                                   }
                                                 }),
@@ -66789,8 +66778,19 @@ var render = function() {
                           ]),
                           _vm._v(" "),
                           _c("home-address", {
-                            attrs: { "home-address": _vm.address },
-                            on: { "home-address-update": _vm.updateHomeAddress }
+                            attrs: { "address-type": "personal" },
+                            on: {
+                              input: function(newAddress) {
+                                _vm.address = newAddress
+                              }
+                            },
+                            model: {
+                              value: _vm.address,
+                              callback: function($$v) {
+                                _vm.address = $$v
+                              },
+                              expression: "address"
+                            }
                           }),
                           _vm._v(" "),
                           _c("div", { staticClass: "row" }, [
@@ -66798,15 +66798,20 @@ var render = function() {
                               "div",
                               { staticClass: "col nopadding" },
                               [
-                                _vm.phones.length > 0
-                                  ? _c("phone-details", {
-                                      attrs: { "user-phones": _vm.phones },
-                                      on: {
-                                        "phone-details-updates":
-                                          _vm.updatePhoneNumbers
-                                      }
-                                    })
-                                  : _vm._e()
+                                _c("phone-details", {
+                                  on: {
+                                    input: function(newPhoneNumbers) {
+                                      _vm.phoneNumbers = newPhoneNumbers
+                                    }
+                                  },
+                                  model: {
+                                    value: _vm.phoneNumbers,
+                                    callback: function($$v) {
+                                      _vm.phoneNumbers = $$v
+                                    },
+                                    expression: "phoneNumbers"
+                                  }
+                                })
                               ],
                               1
                             )
@@ -66844,10 +66849,8 @@ var render = function() {
                                                   {
                                                     name: "model",
                                                     rawName: "v-model",
-                                                    value:
-                                                      _vm.spouseDetails.dob,
-                                                    expression:
-                                                      "spouseDetails.dob"
+                                                    value: _vm.dateOfBirth,
+                                                    expression: "dateOfBirth"
                                                   },
                                                   {
                                                     name: "mask",
@@ -66859,11 +66862,11 @@ var render = function() {
                                                 staticClass: "field-input",
                                                 attrs: {
                                                   type: "text",
-                                                  name: "date",
+                                                  name: "date_of_birth",
                                                   placeholder: "mm/dd/yyyy"
                                                 },
                                                 domProps: {
-                                                  value: _vm.spouseDetails.dob
+                                                  value: _vm.dateOfBirth
                                                 },
                                                 on: {
                                                   input: function($event) {
@@ -66872,11 +66875,8 @@ var render = function() {
                                                     ) {
                                                       return
                                                     }
-                                                    _vm.$set(
-                                                      _vm.spouseDetails,
-                                                      "dob",
+                                                    _vm.dateOfBirth =
                                                       $event.target.value
-                                                    )
                                                   }
                                                 }
                                               }),
@@ -66965,18 +66965,11 @@ var render = function() {
                                                     }
                                                   },
                                                   model: {
-                                                    value:
-                                                      _vm.spouseDetails
-                                                        .country_id,
+                                                    value: _vm.countryId,
                                                     callback: function($$v) {
-                                                      _vm.$set(
-                                                        _vm.spouseDetails,
-                                                        "country_id",
-                                                        $$v
-                                                      )
+                                                      _vm.countryId = $$v
                                                     },
-                                                    expression:
-                                                      "spouseDetails.country_id"
+                                                    expression: "countryId"
                                                   }
                                                 }),
                                                 _vm._v(" "),
@@ -67045,11 +67038,9 @@ var render = function() {
                                                     {
                                                       name: "model",
                                                       rawName: "v-model",
-                                                      value:
-                                                        _vm.spouseDetails
-                                                          .passport_number,
+                                                      value: _vm.passportNumber,
                                                       expression:
-                                                        "\n                      spouseDetails.passport_number\n                    "
+                                                        "\n                      passportNumber\n                    "
                                                     }
                                                   ],
                                                   staticClass: "field-input",
@@ -67061,9 +67052,7 @@ var render = function() {
                                                       "Passport Number"
                                                   },
                                                   domProps: {
-                                                    value:
-                                                      _vm.spouseDetails
-                                                        .passport_number
+                                                    value: _vm.passportNumber
                                                   },
                                                   on: {
                                                     input: function($event) {
@@ -67072,11 +67061,8 @@ var render = function() {
                                                       ) {
                                                         return
                                                       }
-                                                      _vm.$set(
-                                                        _vm.spouseDetails,
-                                                        "passport_number",
+                                                      _vm.passportNumber =
                                                         $event.target.value
-                                                      )
                                                     }
                                                   }
                                                 }),
@@ -67150,11 +67136,8 @@ var render = function() {
                                                     {
                                                       name: "model",
                                                       rawName: "v-model",
-                                                      value:
-                                                        _vm.spouseDetails
-                                                          .father_name,
-                                                      expression:
-                                                        "spouseDetails.father_name"
+                                                      value: _vm.fatherName,
+                                                      expression: "fatherName"
                                                     }
                                                   ],
                                                   staticClass: "field-input",
@@ -67165,9 +67148,7 @@ var render = function() {
                                                     placeholder: "Father's Name"
                                                   },
                                                   domProps: {
-                                                    value:
-                                                      _vm.spouseDetails
-                                                        .father_name
+                                                    value: _vm.fatherName
                                                   },
                                                   on: {
                                                     input: function($event) {
@@ -67176,11 +67157,8 @@ var render = function() {
                                                       ) {
                                                         return
                                                       }
-                                                      _vm.$set(
-                                                        _vm.spouseDetails,
-                                                        "father_name",
+                                                      _vm.fatherName =
                                                         $event.target.value
-                                                      )
                                                     }
                                                   }
                                                 }),
@@ -67251,10 +67229,9 @@ var render = function() {
                                                       name: "model",
                                                       rawName: "v-model",
                                                       value:
-                                                        _vm.spouseDetails
-                                                          .father_birth_place,
+                                                        _vm.fatherBirthPlace,
                                                       expression:
-                                                        "\n                      spouseDetails.father_birth_place\n                    "
+                                                        "\n                      fatherBirthPlace\n                    "
                                                     }
                                                   ],
                                                   staticClass:
@@ -67266,9 +67243,7 @@ var render = function() {
                                                     placeholder: "Birth place"
                                                   },
                                                   domProps: {
-                                                    value:
-                                                      _vm.spouseDetails
-                                                        .father_birth_place
+                                                    value: _vm.fatherBirthPlace
                                                   },
                                                   on: {
                                                     input: function($event) {
@@ -67277,11 +67252,8 @@ var render = function() {
                                                       ) {
                                                         return
                                                       }
-                                                      _vm.$set(
-                                                        _vm.spouseDetails,
-                                                        "father_birth_place",
+                                                      _vm.fatherBirthPlace =
                                                         $event.target.value
-                                                      )
                                                     }
                                                   }
                                                 }),
@@ -67353,11 +67325,8 @@ var render = function() {
                                                     {
                                                       name: "model",
                                                       rawName: "v-model",
-                                                      value:
-                                                        _vm.spouseDetails
-                                                          .mother_name,
-                                                      expression:
-                                                        "spouseDetails.mother_name"
+                                                      value: _vm.motherName,
+                                                      expression: "motherName"
                                                     }
                                                   ],
                                                   staticClass: "field-input",
@@ -67368,9 +67337,7 @@ var render = function() {
                                                     placeholder: "Mother's Name"
                                                   },
                                                   domProps: {
-                                                    value:
-                                                      _vm.spouseDetails
-                                                        .mother_name
+                                                    value: _vm.motherName
                                                   },
                                                   on: {
                                                     input: function($event) {
@@ -67379,11 +67346,8 @@ var render = function() {
                                                       ) {
                                                         return
                                                       }
-                                                      _vm.$set(
-                                                        _vm.spouseDetails,
-                                                        "mother_name",
+                                                      _vm.motherName =
                                                         $event.target.value
-                                                      )
                                                     }
                                                   }
                                                 }),
@@ -67454,10 +67418,9 @@ var render = function() {
                                                       name: "model",
                                                       rawName: "v-model",
                                                       value:
-                                                        _vm.spouseDetails
-                                                          .mother_birth_place,
+                                                        _vm.motherBirthPlace,
                                                       expression:
-                                                        "\n                      spouseDetails.mother_birth_place\n                    "
+                                                        "\n                      motherBirthPlace\n                    "
                                                     }
                                                   ],
                                                   staticClass:
@@ -67469,9 +67432,7 @@ var render = function() {
                                                     placeholder: "Birth place"
                                                   },
                                                   domProps: {
-                                                    value:
-                                                      _vm.spouseDetails
-                                                        .mother_birth_place
+                                                    value: _vm.motherBirthPlace
                                                   },
                                                   on: {
                                                     input: function($event) {
@@ -67480,11 +67441,8 @@ var render = function() {
                                                       ) {
                                                         return
                                                       }
-                                                      _vm.$set(
-                                                        _vm.spouseDetails,
-                                                        "mother_birth_place",
+                                                      _vm.motherBirthPlace =
                                                         $event.target.value
-                                                      )
                                                     }
                                                   }
                                                 }),
@@ -67526,15 +67484,20 @@ var render = function() {
                               "div",
                               { staticClass: "col nopadding" },
                               [
-                                _vm.emails !== undefined && _vm.emails.length
-                                  ? _c("email-details", {
-                                      attrs: { "user-emails": _vm.emails },
-                                      on: {
-                                        "email-details-updates":
-                                          _vm.updateEmails
-                                      }
-                                    })
-                                  : _vm._e()
+                                _c("email-details", {
+                                  on: {
+                                    input: function(newEmails) {
+                                      _vm.emails = newEmails
+                                    }
+                                  },
+                                  model: {
+                                    value: _vm.emails,
+                                    callback: function($$v) {
+                                      _vm.emails = $$v
+                                    },
+                                    expression: "emails"
+                                  }
+                                })
                               ],
                               1
                             )
@@ -67545,15 +67508,20 @@ var render = function() {
                               "div",
                               { staticClass: "col nopadding" },
                               [
-                                _vm.socials !== undefined && _vm.socials.length
-                                  ? _c("social-media-details", {
-                                      attrs: { "user-socials": _vm.socials },
-                                      on: {
-                                        "social-media-details-updates":
-                                          _vm.updateSocialMedia
-                                      }
-                                    })
-                                  : _vm._e()
+                                _c("social-media-details", {
+                                  on: {
+                                    input: function(newSocials) {
+                                      _vm.socialMediaDetails = newSocials
+                                    }
+                                  },
+                                  model: {
+                                    value: _vm.socialMediaDetails,
+                                    callback: function($$v) {
+                                      _vm.socialMediaDetails = $$v
+                                    },
+                                    expression: "socialMediaDetails"
+                                  }
+                                })
                               ],
                               1
                             )
@@ -67564,18 +67532,20 @@ var render = function() {
                               "div",
                               { staticClass: "col nopadding" },
                               [
-                                _vm.employers !== undefined &&
-                                _vm.employers.length > 0
-                                  ? _c("employment-details", {
-                                      attrs: {
-                                        "user-employers": _vm.employers
-                                      },
-                                      on: {
-                                        "employment-details-updated":
-                                          _vm.updateEmploymentDetails
-                                      }
-                                    })
-                                  : _vm._e()
+                                _c("employment-details", {
+                                  on: {
+                                    input: function(newEmploymentDetails) {
+                                      _vm.employmentDetails = newEmploymentDetails
+                                    }
+                                  },
+                                  model: {
+                                    value: _vm.employmentDetails,
+                                    callback: function($$v) {
+                                      _vm.employmentDetails = $$v
+                                    },
+                                    expression: "employmentDetails"
+                                  }
+                                })
                               ],
                               1
                             )
@@ -67594,8 +67564,8 @@ var render = function() {
                                     {
                                       name: "model",
                                       rawName: "v-model",
-                                      value: _vm.is_completed,
-                                      expression: "is_completed"
+                                      value: _vm.isCompleted,
+                                      expression: "isCompleted"
                                     }
                                   ],
                                   attrs: {
@@ -67604,35 +67574,36 @@ var render = function() {
                                     name: "chk_complete"
                                   },
                                   domProps: {
-                                    value: _vm.is_completed,
-                                    checked: Array.isArray(_vm.is_completed)
+                                    checked: _vm.isCompleted,
+                                    value: _vm.isCompleted,
+                                    checked: Array.isArray(_vm.isCompleted)
                                       ? _vm._i(
-                                          _vm.is_completed,
-                                          _vm.is_completed
+                                          _vm.isCompleted,
+                                          _vm.isCompleted
                                         ) > -1
-                                      : _vm.is_completed
+                                      : _vm.isCompleted
                                   },
                                   on: {
                                     change: function($event) {
-                                      var $$a = _vm.is_completed,
+                                      var $$a = _vm.isCompleted,
                                         $$el = $event.target,
                                         $$c = $$el.checked ? true : false
                                       if (Array.isArray($$a)) {
-                                        var $$v = _vm.is_completed,
+                                        var $$v = _vm.isCompleted,
                                           $$i = _vm._i($$a, $$v)
                                         if ($$el.checked) {
                                           $$i < 0 &&
-                                            (_vm.is_completed = $$a.concat([
+                                            (_vm.isCompleted = $$a.concat([
                                               $$v
                                             ]))
                                         } else {
                                           $$i > -1 &&
-                                            (_vm.is_completed = $$a
+                                            (_vm.isCompleted = $$a
                                               .slice(0, $$i)
                                               .concat($$a.slice($$i + 1)))
                                         }
                                       } else {
-                                        _vm.is_completed = $$c
+                                        _vm.isCompleted = $$c
                                       }
                                     }
                                   }
@@ -67653,10 +67624,8 @@ var render = function() {
                             [
                               _c("input", {
                                 staticClass: "field-submit btn-primary",
-                                attrs: {
-                                  type: "submit",
-                                  value: "Save and continue"
-                                }
+                                attrs: { type: "submit" },
+                                domProps: { value: _vm.buttonText }
                               })
                             ]
                           )
@@ -97423,9 +97392,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Spouse_vue_vue_type_template_id_4728700a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Spouse.vue?vue&type=template&id=4728700a& */ "./resources/js/components/personalinfo/Spouse.vue?vue&type=template&id=4728700a&");
 /* harmony import */ var _Spouse_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Spouse.vue?vue&type=script&lang=js& */ "./resources/js/components/personalinfo/Spouse.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _Spouse_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Spouse.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/personalinfo/Spouse.vue?vue&type=style&index=0&lang=css&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -97433,7 +97400,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _Spouse_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _Spouse_vue_vue_type_template_id_4728700a___WEBPACK_IMPORTED_MODULE_0__["render"],
   _Spouse_vue_vue_type_template_id_4728700a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
@@ -97462,22 +97429,6 @@ component.options.__file = "resources/js/components/personalinfo/Spouse.vue"
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Spouse_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Spouse.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/Spouse.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Spouse_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/js/components/personalinfo/Spouse.vue?vue&type=style&index=0&lang=css&":
-/*!******************************************************************************************!*\
-  !*** ./resources/js/components/personalinfo/Spouse.vue?vue&type=style&index=0&lang=css& ***!
-  \******************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Spouse_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./Spouse.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/Spouse.vue?vue&type=style&index=0&lang=css&");
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Spouse_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Spouse_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Spouse_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Spouse_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Spouse_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 

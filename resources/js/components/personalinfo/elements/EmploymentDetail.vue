@@ -165,7 +165,7 @@ export default {
     },
     methods: {
         getemployeraddress() {
-            axios.get("/getemployerbenefitslist").then(response => {
+            axios.get("/benefits").then(response => {
                 if (response.status == 200) {
                     if (response.data) {
                         this.employeeBenefitsOptions = response.data.data;

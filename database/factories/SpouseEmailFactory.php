@@ -2,13 +2,14 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\User;
-use App\UserEmail;
+use App\Model;
+use App\SpouseEmail;
+use App\SpouseInfo;
 use Faker\Generator as Faker;
 
-$factory->define(UserEmail::class, function (Faker $faker) {
+$factory->define(SpouseEmail::class, function (Faker $faker) {
     return [
-        'user_id' => factory(User::class),
+        'user_id' => factory(SpouseInfo::class),
         'email' => $faker->email,
         'password' => $faker->password
     ];

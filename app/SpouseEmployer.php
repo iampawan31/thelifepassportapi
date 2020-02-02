@@ -16,11 +16,12 @@ class SpouseEmployer extends Model
         'benefits_used'
     ];
 
-    //Table Name
-    static function tableName()
-    {
-        return with(new static)->getTable();
-    }
+    /**
+     * The relationships that should always be loaded.
+     *
+     * @var array
+     */
+    protected $with = ['address', 'benefits'];
 
     public function address()
     {
@@ -29,6 +30,12 @@ class SpouseEmployer extends Model
 
     public function benefits()
     {
-        return $this->hasMany(SpouseEmployerBenefits::class, 'employer_id', 'id');
+        return $this->morphToMany(EmployerBenefitsMaster::class, 'benefits');
+
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(SpouseInfo::class);
     }
 }

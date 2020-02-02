@@ -74,7 +74,7 @@ export default {
         };
     },
     created() {
-        axios.get("/socialmedialist").then(response => {
+        axios.get("/social").then(response => {
             if (response.status == 200) {
                 this.socialOptions = response.data.social;
             }

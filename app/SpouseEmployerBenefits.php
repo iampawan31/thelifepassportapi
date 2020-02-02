@@ -16,4 +16,9 @@ class SpouseEmployerBenefits extends Model
     {
         return with(new static)->getTable();
     }
+
+    public function benefits()
+    {
+        return $this->belongsTo(EmployerBenefitsMaster::class, 'benefit');
+    }
 }
