@@ -13,4 +13,9 @@ class SpouseEmail extends Model
     {
         return with(new static)->getTable();
     }
+
+    public function user()
+    {
+
+    }
 }

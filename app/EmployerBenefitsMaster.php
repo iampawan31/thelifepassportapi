@@ -22,8 +22,8 @@ class EmployerBenefitsMaster extends Model
         return $this->morphedByMany(PersonalEmployerBenefits::class, 'benefits');
     }
 
-//    public function personal()
-//    {
-//        return $this->morphedByMany(PersonalEmployerBenefits::class, 'benefits');
-//    }
+    public function spouse()
+    {
+        return $this->morphedByMany(SpouseEmployerBenefits::class, 'benefits');
+    }
 }

@@ -325,7 +325,7 @@ export default {
             }
         },
         getSpouseMarriageStatus() {
-            axios.get('spouse/getmarriagestatus')
+            axios.get('personal/marriage-status')
                 .then((response) => {
                     if(response.status == 200) {
                         this.marriageStatus = response.data.data;

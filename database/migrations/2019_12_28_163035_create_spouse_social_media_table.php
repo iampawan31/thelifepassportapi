@@ -19,7 +19,7 @@ class CreateSpouseSocialMediaTable extends Migration
             $table->bigInteger('social_id');
             $table->string('username', 255)->nullable();
             $table->string('password', 20)->nullable();
-            $table->enum('is_primary', [0, 1]);
+            $table->boolean('is_primary')->default(false);
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();

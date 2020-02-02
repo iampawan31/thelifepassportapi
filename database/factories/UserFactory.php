@@ -33,7 +33,7 @@ $factory->define(User::class, function (Faker $faker) {
     ];
 });
 
-$factory->state(App\User::class, 'verified', [
+$factory->state(User::class, 'verified', [
     'is_active' => true,
     'email_verified_at' => Carbon::now()
 ]);

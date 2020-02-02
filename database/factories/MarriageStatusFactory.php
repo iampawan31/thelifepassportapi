@@ -2,14 +2,14 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+use App\MarriageStatus;
+use App\Model;
 use App\User;
-use App\UserEmail;
 use Faker\Generator as Faker;
 
-$factory->define(UserEmail::class, function (Faker $faker) {
+$factory->define(MarriageStatus::class, function (Faker $faker) {
     return [
         'user_id' => factory(User::class),
-        'email' => $faker->email,
-        'password' => $faker->password
+        'is_married' => false
     ];
 });

@@ -36,12 +36,12 @@
                   >
                     <input
                       v-model="
-                        spouseDetails.marriage_date
+                        marriageDate
                       "
                       v-mask="'##/##/####'"
                       type="text"
                       class="field-input"
-                      name="date"
+                      name="marriage_date"
                       placeholder="mm/dd/yyyy"
                     >
                     <span
@@ -70,7 +70,7 @@
                     <input
                       id="marriage_location"
                       v-model="
-                        spouseDetails.marriage_location
+                        marriageLocation
                       "
                       type="text"
                       name="marriage_location"
@@ -107,11 +107,11 @@
                   <ValidationProvider
                     v-slot="{ errors }"
                     name="Legal Name"
-                    rules="required|max:50"
+                    rules="required|alpha_spaces|max:50"
                   >
                     <input
                       id="legal_name"
-                      v-model="spouseDetails.legal_name"
+                      v-model="legalName"
                       type="text"
                       name="legal_name"
                       class="field-input required"
@@ -140,7 +140,7 @@
                   >
                     <input
                       id="nickname"
-                      v-model="spouseDetails.nickname"
+                      v-model="nickName"
                       type="text"
                       name="nickname"
                       class="field-input"
@@ -162,16 +162,20 @@
 
 
             <!-- Spouse Home Address Section -->
-            <home-address :home-address="address"
-                  @home-address-update="updateHomeAddress" />
+            <home-address 
+            v-model="address"
+            @input="newAddress => {address = newAddress;}" address-type="personal" />
 
             <!-- Spouse's Phone number(s) section -->
             <div class="row">
               <div class="col nopadding">
                 <phone-details
-                  v-if="phones.length > 0"
-                  :user-phones="phones"
-                  @phone-details-updates="updatePhoneNumbers"
+                  v-model="phoneNumbers"
+                                    @input="
+                                        newPhoneNumbers => {
+                                            phoneNumbers = newPhoneNumbers;
+                                        }
+                                    "
                 />
               </div>
             </div>
@@ -190,11 +194,11 @@
                             rules="date"
                         >
                             <input
-                            v-model="spouseDetails.dob"
+                            v-model="dateOfBirth"
                             v-mask="'##/##/####'"
                             type="text"
                             class="field-input"
-                            name="date"
+                            name="date_of_birth"
                             placeholder="mm/dd/yyyy"
                             >
                             <span
@@ -223,7 +227,7 @@
                   >
                     <Select2
                       id="citizenship"
-                      v-model="spouseDetails.country_id"
+                      v-model="countryId"
                       name="citizenship"
                       width="resolve"
                       data-placeholder="Select an Options"
@@ -261,7 +265,7 @@
                     <input
                       id="passport_number"
                       v-model="
-                        spouseDetails.passport_number
+                        passportNumber
                       "
                       type="text"
                       name="passport_number"
@@ -269,10 +273,7 @@
                       placeholder="Passport Number"
                     >
                     <span
-                      v-if="
-                        errors != undefined &&
-                          errors.length
-                      "
+                      v-if=" errors != undefined &&errors.length"
                       class="invalid-feedback d-block"
                     >
                       {{ errors[0] }}
@@ -297,7 +298,7 @@
                     >Father's name</label>
                     <input
                       id="father_name"
-                      v-model="spouseDetails.father_name"
+                      v-model="fatherName"
                       type="text"
                       name="father_name"
                       class="field-input"
@@ -329,7 +330,7 @@
                     <input
                       id="father_birth_place"
                       v-model="
-                        spouseDetails.father_birth_place
+                        fatherBirthPlace
                       "
                       type="text"
                       name="father_birth_place"
@@ -365,7 +366,7 @@
                   >
                     <input
                       id="mother_name"
-                      v-model="spouseDetails.mother_name"
+                      v-model="motherName"
                       type="text"
                       name="mother_name"
                       class="field-input"
@@ -397,7 +398,7 @@
                     <input
                       id="mother_birth_place"
                       v-model="
-                        spouseDetails.mother_birth_place
+                        motherBirthPlace
                       "
                       type="text"
                       name="mother_birth_place"
@@ -422,9 +423,7 @@
             <div class="row">
               <div class="col nopadding">
                 <email-details
-                  v-if="emails !== undefined && emails.length"
-                  :user-emails="emails"
-                  @email-details-updates="updateEmails"
+                  v-model="emails" @input="newEmails => {emails = newEmails;}"
                 />
               </div>
             </div>
@@ -433,13 +432,7 @@
             <div class="row">
               <div class="col nopadding">
                 <social-media-details
-                  v-if="
-                    socials !== undefined && socials.length
-                  "
-                  :user-socials="socials"
-                  @social-media-details-updates="
-                    updateSocialMedia
-                  "
+                  v-model="socialMediaDetails" @input="newSocials => {socialMediaDetails = newSocials;}"
                 />
               </div>
             </div>
@@ -448,14 +441,8 @@
             <div class="row">
               <div class="col nopadding">
                 <employment-details
-                  v-if="
-                    employers !== undefined &&
-                      employers.length > 0
-                  "
-                  :user-employers="employers"
-                  @employment-details-updated="
-                    updateEmploymentDetails
-                  "
+                  v-model="employmentDetails"
+                                    @input="newEmploymentDetails => {employmentDetails = newEmploymentDetails;}"
                 />
               </div>
             </div>
@@ -465,10 +452,11 @@
               <label for="chk_complete">
                 <input
                   id="chk_complete"
-                  v-model="is_completed"
+                  v-model="isCompleted"
                   type="checkbox"
+                  :checked="isCompleted"
                   name="chk_complete"
-                  :value="is_completed"
+                  :value="isCompleted"
                 ><i /> <span>Mark as complete</span>
               </label>
             </div>
@@ -478,7 +466,7 @@
               <input
                 type="submit"
                 class="field-submit btn-primary"
-                value="Save and continue"
+                :value="buttonText"
               >
             </div>
           </form>
@@ -513,119 +501,58 @@ export default {
     data() {
         return {
             spouseDetails: [],
-            phones: [],
-            emails: [],
-            socials: [],
-            address: [],
-            employers: [],
-            userId: 0,
-            submitted: false,
+            address: {},
             citizenshipOptions: [],
-            is_completed: false
+            countryId: "",
+            dateOfBirth: "",
+            emails: [],
+            employmentDetails: [],
+            errors: [],
+            fatherName: "",
+            fatherBirthPlace: "",
+            isCompleted: false,
+            legalName: "",
+            nickName: "",
+            marriageDate: "",
+            marriageLocation: "",
+            motherName: "",
+            motherBirthPlace: "",
+            passportNumber: "",
+            phoneNumbers: [],
+            socialMediaDetails: [],
+            personalDetailId: "",
+            userId: 0,
+            submitted: false
         };
     },
     computed: {
+        buttonText() {
+            return this.spouseDetails && this.spouseDetails.id
+                ? "Update and continue"
+                : "Save and continue";
+        },
         disabledDates() {
             return { from: new Date() };
         }
     },
     created() {
-        axios.get('/countrylist').then(response => {
-            if (response.status == 200) {
-                this.citizenshipOptions = response.data.countries;
-            }
-        });
-
-        axios.get('/getspouseinfo').then(response => {
-            if (response.status == 200) {
-                if (response.data.data[0]) {
-                    this.spouseDetails = JSON.parse(
-                        JSON.stringify(response.data.data[0])
-                    );
-                    this.userId = this.spouseDetails.user_id;
-
-                    if (this.spouseDetails.spouse_phone.length > 0) {
-                        this.phones = this.spouseDetails.spouse_phone;
-                    } else {
-                        this.phones = [{ number: null }];
-                    }
-
-                    if (this.spouseDetails.spouse_email.length > 0) {
-                        this.emails = this.spouseDetails.spouse_email;
-                    } else {
-                        this.emails = [{ email: null, password: null }];
-                    }
-
-                    if (this.spouseDetails.spouse_socail_media.length > 0) {
-                        this.socials = this.spouseDetails.spouse_socail_media;
-                    } else {
-                        this.socials = [
-                            { social: null, username: null, password: null }
-                        ];
-                    }
-
-                    if (this.spouseDetails.spouse_employer.length > 0) {
-                        this.employers = this.spouseDetails.spouse_employer;
-                    } else {
-                        this.employers = [
-                            {
-                                employer_name: null,
-                                employer_phone: null,
-                                employer_address: null,
-                                computer_username: null,
-                                computer_password: null,
-                                employee_benefits: null
-                            }
-                        ];
-                    }
-                    if (
-                        this.spouseDetails.users_personal_details_completion
-                            .length > 0
-                    ) {
-                        if (
-                            this.spouseDetails
-                                .users_personal_details_completion[0]
-                                .is_completed == 1
-                        ) {
-                            this.is_completed = true;
-                        }
-                    } else {
-                        //this.completionStatus = { step_id: null, is_visited: null, is_filled: null, is_completed: null };
-                        this.is_completed = false;
-                    }
-                } else {
-                    this.phones = [{ number: null }];
-                    this.emails = [{ email: null, password: null }];
-                    this.socials = [
-                        { social: null, username: null, password: null }
-                    ];
-                    this.employers = [
-                        {
-                            employer_name: null,
-                            employer_phone: null,
-                            employer_address: null,
-                            computer_username: null,
-                            computer_password: null,
-                            employee_benefits: null
-                        }
-                    ];
-                    this.is_completed = false;
-                }
-            }
-        });
+        this.getCountryList();
+        this.getSpouseInfo();
     },
     methods: {
         async handleSubmit(e) {
             this.submitted = true;
             const isValid = await this.$refs.observer.validate();
             if (isValid) {
-                const form = e.target;
-                const formData = new FormData(form);
+                const formData = this.getFormData(e);
+                if(this.spouseDetails && this.spouseDetails.id) {
+                    formData.append("_method", "put");
+                }
 
-                if (this.userId) {
+                if (this.spouseDetails && this.spouseDetails.id) {
                     axios
                         .post(
-                            '/spouse/' + this.userId + '/updatedata',
+                            '/personal/spouse-info/' + this.spouseDetails.id,
                             formData
                         )
                         .then(response => {
@@ -635,7 +562,7 @@ export default {
                         .catch(function() {});
                 } else {
                     axios
-                        .post('/spouse/postdata', formData)
+                        .post('/personal/spouse-info/', formData)
                         .then(response => {
                             console.log(response);
                             this.$router.push('/previous-spouse-question');
@@ -644,27 +571,169 @@ export default {
                 }
             }
         },
-        updatePhoneNumbers(data) {
-            this.phones = data;
+        getFormData(e) {
+            const form = e.target;
+            const formData = new FormData(form);
+
+            formData.append('marriage_date', this.marriageDate);
+            formData.append('marriage_location', this.marriageLocation);
+            formData.append("legal_name", this.legalName);
+            formData.append("nickname", this.nickName);
+            formData.append("spouse_address", JSON.stringify(this.address));
+            formData.append("phones", JSON.stringify(this.phoneNumbers));
+            formData.append("dob", this.dateOfBirth);
+            formData.append("country_id", this.countryId);
+            formData.append("passport_number", this.passportNumber);
+            formData.append("father_name", this.fatherName);
+            formData.append("father_birth_place", this.fatherBirthPlace);
+            formData.append("mother_name", this.motherName);
+            formData.append("mother_birth_place", this.motherBirthPlace);
+            formData.append("emails", JSON.stringify(this.emails));
+            formData.append(
+                "spouse_social_media",
+                JSON.stringify(this.socialMediaDetails)
+            );
+            formData.append(
+                "spouse_employer",
+                JSON.stringify(this.employmentDetails)
+            );
+            formData.append("is_completed", this.isCompleted);
+
+            return formData;
         },
-        updateEmails(data) {
-            this.emails = data;
+        populateNewForm() {
+            this.marriageDate= '',
+            this.marriageLocation = "",
+            this.legalName = "",
+            this.nickName = "",
+            this.address = {
+                street_address1: null,
+                street_address2: null,
+                city: null,
+                state: null,
+                zipcode: null
+            },
+            this.phoneNumbers = [{ phone: null }],
+            this.dateOfBirth = "",
+            this.countryId = "",
+            this.passportNumber = "",
+            this.fatherName = "",
+            this.fatherBirthPlace = "",
+            this.motherName = "",
+            this.motherBirthPlace = "",
+            this.emails = [{ email: null, password: null }],
+            this.socialMediaDetails = [{ social_id: null, username: null, password: null }],
+            this.employmentDetails = [{
+                employer_name: null,
+                        employer_phone: null,
+                        employer_username: null,
+                        employer_password: null,
+                        address: {
+                            street_address1: null,
+                            street_address2: null,
+                            city: null,
+                            state: null,
+                            zipcode: null
+                        },
+                        benefits: []
+            }],
+            this.isCompleted = false;
         },
-        updateSocialMedia(data) {
-            this.socials = data;
+        populateData(spouseData) {
+            this.spouseDetails = spouseData;
+
+            this.marriageLocation = spouseData.marriage_location;
+            this.marriageDate = spouseData.marriage_date;
+            this.legalName = spouseData.legal_name;
+            this.nickName = spouseData.nickname;
+            this.dateOfBirth = spouseData.dob;
+            this.fatherName = spouseData.father_name;
+            this.fatherBirthPlace = spouseData.father_birth_place;
+            this.motherName = spouseData.mother_name;
+            this.motherBirthPlace = spouseData.mother_birth_place;
+            this.countryId = spouseData.country_id;
+            this.passportNumber = spouseData.passport_number;
+
+            if (spouseData.address) {
+            this.address = spouseData.address;
+            }
+
+            if (spouseData.phones.length > 0) {
+                this.phoneNumbers = spouseData.phones;
+            } else {
+                this.phoneNumbers = [{ phone: null }];
+            }
+
+            if (spouseData.emails.length > 0) {
+                this.emails = spouseData.emails;
+            } else {
+                this.emails = [{ email: null, password: null }];
+            }
+
+            if (spouseData.socials.length > 0) {
+                this.socialMediaDetails = spouseData.socials;
+            } else {
+                this.socialMediaDetails = [
+                    { social_id: null, username: null, password: null }
+                ];
+            }
+
+            if (spouseData.employers.length > 0) {
+                this.employmentDetails = spouseData.employers;
+            } else {
+                this.employmentDetails = [
+                    {
+                        employer_name: null,
+                        employer_phone: null,
+                        employer_username: null,
+                        employer_password: null,
+                        address: {
+                            street_address1: null,
+                            street_address2: null,
+                            city: null,
+                            state: null,
+                            zipcode: null
+                        },
+                        benefits: []
+                    }
+                ];
+            }
+
+            if (spouseData.steps) {
+                if (spouseData.steps.is_completed) {
+                    this.isCompleted = true;
+                }
+            } else {
+                this.isCompleted = false;
+            }
+         },
+        getSpouseInfo() {
+            axios.get("/personal/spouse-info").then(response => {
+                if (response.status == 200) {
+                    if (response.data.data) {
+                        this.populateData(response.data.data);
+                    } else {
+                        this.populateNewForm();
+                    }
+                }
+            });
         },
-        updateEmploymentDetails(index, data) {
-            this.employers[index] = data;
+        getCountryList () {
+            axios.get('/countries').then(response => {
+            if (response.status == 200) {
+                this.citizenshipOptions = response.data.countries;
+            }
+        });
         },
-        updateHomeAddress(data) {
-            this.address = data;
+        citizenshipChangeEvent(val) {
+            console.log(val);
+        },
+        citizenshipSelectEvent({ id, text }) {
+            console.log({
+                id,
+                text
+            });
         }
     }
 };
 </script>
-
-<style>
-.mb-2 {
-    margin-bottom: 2px;
-}
-</style>

@@ -64,7 +64,7 @@ class PersonalInfoController extends Controller
             }
 
             //Saving user's phone numbers
-            $phoneNumbers = json_decode(request('user_phones'));
+            $phoneNumbers = json_decode(request('phones'));
 
             if (!empty($phoneNumbers)) {
                 foreach ($phoneNumbers as $phone) {
@@ -219,7 +219,7 @@ class PersonalInfoController extends Controller
                 if (!empty($phoneNumbers)) {
                     UserPhone::where('user_id', $user->id)->delete();
                     foreach ($phoneNumbers as $phone) {
-                        if (!empty($phone)) {
+                        if (!empty($phone) && $phone->phone !== null) {
                             UserPhone::create(['user_id' => $user->id, 'phone' => $phone->phone]);
                         }
                     }
@@ -232,7 +232,7 @@ class PersonalInfoController extends Controller
                     UserEmail::where('user_id', $user->id)->delete();
 
                     foreach ($emails as $email) {
-                        if (!empty($email)) {
+                        if (!empty($email) && $email->email !== null) {
                             UserEmail::create([
                                 'user_id' => $user->id,
                                 'email' => $email->email,
@@ -264,9 +264,8 @@ class PersonalInfoController extends Controller
                 $employers = json_decode(request('user_employer'));
 
                 if (!empty($employers)) {
-
                     foreach ($employers as $employer) {
-                        if (!empty($employer)) {
+                        if (!empty($employer) && $employer->employer_name !== null) {
                             if (!empty($employer->id)) {
                                 $userEmployer = UserEmployer::updateOrCreate([
                                     'id' => $employer->id,

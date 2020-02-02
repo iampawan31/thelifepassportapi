@@ -167,5 +167,10 @@ class PersonalInfoTest extends TestCase
             ])
             ->dump()
             ->assertStatus(201);
+
+        $this->assertDatabaseHas('users_personal_details_completions', [
+            'step_id' => 1,
+            'user_id' => $this->user->id
+        ]);
     }
 }

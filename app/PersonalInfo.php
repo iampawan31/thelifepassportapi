@@ -2,16 +2,6 @@
 
 namespace App;
 
-use DB;
-use App\User;
-use Carbon\Carbon;
-use App\UserPhone;
-use App\UserEmail;
-use Session, Auth;
-use App\UserEmployer;
-use App\UserSocialMedia;
-use App\EmployerAddress;
-use App\UsersPersonalDetailsCompletion;
 use Illuminate\Database\Eloquent\Model;
 
 class PersonalInfo extends Model
@@ -30,16 +20,11 @@ class PersonalInfo extends Model
         'mother_birth_place'
     ];
 
-    protected $table = 'personal_info';
+    protected $casts = [
+        'country_id' => 'integer'
+    ];
 
-    public function setCountryIdAttribute($countryId)
-    {
-        if ($countryId) {
-            return $this->attributes['country_id'] = (int) $countryId;
-        } else {
-            return $this->attributes['country_id'] = null;
-        }
-    }
+    protected $table = 'personal_info';
 
     public function getDobAttribute($date)
     {

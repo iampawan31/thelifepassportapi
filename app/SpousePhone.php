@@ -8,9 +8,8 @@ class SpousePhone extends Model
 {
     protected $fillable = ['user_id', 'phone', 'is_primary'];
 
-    //Table Name
-    static function tableName()
+    public function user()
     {
-        return with(new static)->getTable();
+        return $this->belongsTo(SpouseInfo::class, 'user_id');
     }
 }
