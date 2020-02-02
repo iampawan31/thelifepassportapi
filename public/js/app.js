@@ -6277,7 +6277,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       axios.get("/personal/spouse-info").then(function (response) {
         if (response.status == 200) {
-          if (response.data.data) {
+          if (response.data.data && response.data.data.id !== undefined) {
             _this2.populateData(response.data.data);
           } else {
             _this2.populateNewForm();

@@ -710,7 +710,7 @@ export default {
         getSpouseInfo() {
             axios.get("/personal/spouse-info").then(response => {
                 if (response.status == 200) {
-                    if (response.data.data) {
+                    if (response.data.data && response.data.data.id !== undefined) {
                         this.populateData(response.data.data);
                     } else {
                         this.populateNewForm();
