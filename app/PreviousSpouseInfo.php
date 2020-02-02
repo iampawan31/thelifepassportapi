@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class PreviousSpouseInfo extends Model
 {
+    protected $primaryKey = 'user_id';
+
     protected $fillable = [
         'user_id',
         'legal_name',
@@ -14,10 +16,11 @@ class PreviousSpouseInfo extends Model
         'divorce_date',
         'divorce_location',
         'email',
-        'address',
         'is_alimony_paid',
         'divorce_agreement_doc',
-        'alimony_amount'
+        'alimony_amount',
+        'is_child_support',
+        'child_support_amount'
     ];
 
     public function getMarriageDateAttribute($date)
@@ -32,17 +35,22 @@ class PreviousSpouseInfo extends Model
 
     public function address()
     {
-        return $this->hasOne(PreviousSpouseAddress::class, 'user_id');
+        return $this->hasOne(\App\PreviousSpouseAddress::class, 'user_id', 'user_id');
     }
 
     public function phones()
     {
-        return $this->hasMany(\App\PreviousSpousePhone::class, 'user_id')->select(['user_id', 'phone', 'is_primary']);
+        return $this->hasMany(\App\PreviousSpousePhone::class, 'user_id', 'user_id')->select(['user_id', 'phone', 'is_primary']);
     }
 
     public function documents()
     {
-        return $this->hasMany(\App\DivorceDoc::class, 'user_id')->select(['user_id', 'title', 'url']);
+        return $this->hasOne(\App\DivorceDoc::class, 'user_id', 'user_id')->select(['user_id', 'title', 'url']);
+    }
+
+    public function childsupportdoc()
+    {
+        return $this->hasOne(\App\ChildSupportDoc::class, 'user_id', 'user_id')->select(['user_id', 'title', 'url']);
     }
 
     public function step()

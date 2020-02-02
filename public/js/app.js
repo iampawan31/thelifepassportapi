@@ -5353,34 +5353,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -5405,10 +5377,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     return {
       spouseDetails: [],
       phones: [],
-      emails: [],
-      socials: [],
       address: {},
-      employers: [],
       userId: 0,
       submitted: false,
       citizenshipOptions: [],
@@ -5428,6 +5397,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     isDivorceDocumentUploaded: function isDivorceDocumentUploaded() {
       return this.divorceDoc !== undefined && this.divorceDoc.title !== undefined;
+    },
+    isChildSupportDocumentUploaded: function isChildSupportDocumentUploaded() {
+      return this.childSupportDoc !== undefined && this.childSupportDoc.title !== undefined;
     }
   },
   created: function created() {
@@ -5445,16 +5417,28 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             _this.isAlimonyPaid = true;
           }
 
-          if (_this.spouseDetails.previous_spouse_phone.length > 0) {
-            _this.phones = _this.spouseDetails.previous_spouse_phone;
+          if (_this.spouseDetails.is_child_support == "1") {
+            _this.isChildSupportPaid = true;
+          }
+
+          if (_this.spouseDetails.address) {
+            _this.address = _this.spouseDetails.address;
+          }
+
+          if (_this.spouseDetails.phones.length > 0) {
+            _this.phones = _this.spouseDetails.phones;
           } else {
             _this.phones = [{
-              number: null
+              phone: null
             }];
           }
 
-          if (_this.spouseDetails.divorce_doc.length > 0) {
-            _this.divorceDoc = _this.spouseDetails.divorce_doc[0];
+          if (_this.spouseDetails.documents) {
+            _this.divorceDoc = _this.spouseDetails.documents;
+          }
+
+          if (_this.spouseDetails.childsupportdoc) {
+            _this.childSupportDoc = _this.spouseDetails.childsupportdoc;
           }
 
           if (_this.spouseDetails.users_personal_details_completion.length > 0) {
@@ -5467,7 +5451,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         } else {
           _this.phones = [{
-            number: null
+            phone: null
           }];
           _this.is_completed = false;
         }
@@ -5483,8 +5467,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _handleSubmit = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(e) {
-        var _this2 = this;
-
         var isValid, form, formData;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
@@ -5502,6 +5484,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 } else {
                   form = e.target;
                   formData = new FormData(form);
+                  formData.append("previousspouse_address", JSON.stringify(this.address));
+                  formData.append("previousspouse_phones", JSON.stringify(this.phones));
                   formData.append("file", this.file);
 
                   if (this.userId) {
@@ -5510,14 +5494,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                         "Content-Type": "multipart/form-data"
                       }
                     }).then(function (response) {
-                      console.log(response);
-
-                      _this2.$router.push("/family-members-question");
+                      console.log(response); //this.$router.push("/family-members-question");
                     })["catch"](function () {});
                   } else {
                     axios.post("/previousspouse/postdata", formData).then(function (response) {
-                      if (response.status == 200) {
-                        _this2.$router.push("/family-members-question");
+                      if (response.status == 200) {//this.$router.push("/family-members-question");
                       }
                     })["catch"](function () {});
                   }
@@ -5538,7 +5519,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return handleSubmit;
     }(),
     removeDivorceFile: function removeDivorceFile() {
-      var _this3 = this;
+      var _this2 = this;
 
       this.$swal.fire({
         title: "Are you sure?",
@@ -5552,7 +5533,30 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         if (result.value) {
           axios.post("/removedivorcefile").then(function (response) {
             if (response.status == 200) {
-              _this3.divorceDoc = [];
+              _this2.divorceDoc = [];
+
+              _this2.$swal.fire("Deleted!", "Document is removed", "success");
+            }
+          })["catch"](function () {});
+        }
+      });
+    },
+    removeChildSupportFile: function removeChildSupportFile() {
+      var _this3 = this;
+
+      this.$swal.fire({
+        title: "Are you sure?",
+        text: "Remove Child Support Agreement Document?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes"
+      }).then(function (result) {
+        if (result.value) {
+          axios.post("/removechildsupportfile").then(function (response) {
+            if (response.status == 200) {
+              _this3.childSupportDoc = [];
 
               _this3.$swal.fire("Deleted!", "Document is removed", "success");
             }
@@ -8200,6 +8204,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -65163,108 +65168,28 @@ var render = function() {
                               }
                             }),
                             _vm._v(" "),
-                            _c("div", { staticClass: "padding" }, [
-                              _c("div", { staticClass: "row" }, [
-                                _c("div", { staticClass: "col" }, [
-                                  _c(
-                                    "div",
-                                    { staticClass: "field-group" },
-                                    [
-                                      _c(
-                                        "label",
-                                        {
-                                          staticClass: "input-label",
-                                          attrs: { for: "email" }
-                                        },
-                                        [_vm._v("Phone Number")]
-                                      ),
-                                      _vm._v(" "),
-                                      _c("ValidationProvider", {
-                                        attrs: {
-                                          name: "Phone Number",
-                                          rules: "phone"
-                                        },
-                                        scopedSlots: _vm._u(
-                                          [
-                                            {
-                                              key: "default",
-                                              fn: function(ref) {
-                                                var errors = ref.errors
-                                                return [
-                                                  _c("input", {
-                                                    directives: [
-                                                      {
-                                                        name: "model",
-                                                        rawName: "v-model",
-                                                        value:
-                                                          _vm.spouseDetails
-                                                            .phone,
-                                                        expression:
-                                                          "spouseDetails.phone"
-                                                      }
-                                                    ],
-                                                    staticClass:
-                                                      "field-input required email",
-                                                    attrs: {
-                                                      type: "text",
-                                                      name: "phone",
-                                                      id: "phone",
-                                                      placeholder:
-                                                        "Phone number"
-                                                    },
-                                                    domProps: {
-                                                      value:
-                                                        _vm.spouseDetails.phone
-                                                    },
-                                                    on: {
-                                                      input: function($event) {
-                                                        if (
-                                                          $event.target
-                                                            .composing
-                                                        ) {
-                                                          return
-                                                        }
-                                                        _vm.$set(
-                                                          _vm.spouseDetails,
-                                                          "phone",
-                                                          $event.target.value
-                                                        )
-                                                      }
-                                                    }
-                                                  }),
-                                                  _vm._v(" "),
-                                                  errors != undefined &&
-                                                  errors.length
-                                                    ? _c(
-                                                        "span",
-                                                        {
-                                                          staticClass:
-                                                            "invalid-feedback d-block"
-                                                        },
-                                                        [
-                                                          _vm._v(
-                                                            "\n                                                " +
-                                                              _vm._s(
-                                                                errors[0]
-                                                              ) +
-                                                              "\n                                            "
-                                                          )
-                                                        ]
-                                                      )
-                                                    : _vm._e()
-                                                ]
-                                              }
-                                            }
-                                          ],
-                                          null,
-                                          true
-                                        )
-                                      })
-                                    ],
-                                    1
-                                  )
-                                ])
-                              ])
+                            _c("div", { staticClass: "row" }, [
+                              _c(
+                                "div",
+                                { staticClass: "col nopadding" },
+                                [
+                                  _c("phone-details", {
+                                    on: {
+                                      input: function(newPhoneNumbers) {
+                                        _vm.phoneNumbers = newPhoneNumbers
+                                      }
+                                    },
+                                    model: {
+                                      value: _vm.phones,
+                                      callback: function($$v) {
+                                        _vm.phones = $$v
+                                      },
+                                      expression: "phones"
+                                    }
+                                  })
+                                ],
+                                1
+                              )
                             ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "padding" }, [
@@ -65926,7 +65851,7 @@ var render = function() {
                                                         "input-file-wrapper clearfix"
                                                     },
                                                     [
-                                                      !_vm.isDivorceDocumentUploaded
+                                                      !_vm.isChildSupportDocumentUploaded
                                                         ? _c(
                                                             "div",
                                                             {
@@ -65952,7 +65877,7 @@ var render = function() {
                                                                 {
                                                                   attrs: {
                                                                     name:
-                                                                      "Divorce Document",
+                                                                      "Child Support Document",
                                                                     rules:
                                                                       "ext:pdf,docx,doc,txt,jpeg,png|size:5000"
                                                                   },
@@ -66037,7 +65962,7 @@ var render = function() {
                                                                     attrs: {
                                                                       href:
                                                                         _vm
-                                                                          .divorceDoc
+                                                                          .childSupportDoc
                                                                           .url,
                                                                       target:
                                                                         "_blank"
@@ -66063,7 +65988,7 @@ var render = function() {
                                                                       click: function(
                                                                         $event
                                                                       ) {
-                                                                        return _vm.removeDivorceFile()
+                                                                        return _vm.removeChildSupportFile()
                                                                       }
                                                                     }
                                                                   },
@@ -66099,7 +66024,8 @@ var render = function() {
                                                       staticClass:
                                                         "input-label",
                                                       attrs: {
-                                                        for: "alimony_amount"
+                                                        for:
+                                                          "child_support_amount"
                                                       }
                                                     },
                                                     [_vm._v("Amount")]
@@ -66107,7 +66033,8 @@ var render = function() {
                                                   _vm._v(" "),
                                                   _c("ValidationProvider", {
                                                     attrs: {
-                                                      name: "Alimony amount",
+                                                      name:
+                                                        "Child support amount",
                                                       rules: {
                                                         regex: /^[0-9]*(\.[0-9]{0,2})?$/
                                                       }
@@ -66130,9 +66057,9 @@ var render = function() {
                                                                     value:
                                                                       _vm
                                                                         .spouseDetails
-                                                                        .alimony_amount,
+                                                                        .child_support_amount,
                                                                     expression:
-                                                                      "\n                                                        spouseDetails.alimony_amount\n                                                    "
+                                                                      "\n                                                        spouseDetails.child_support_amount\n                                                    "
                                                                   }
                                                                 ],
                                                                 staticClass:
@@ -66140,9 +66067,9 @@ var render = function() {
                                                                 attrs: {
                                                                   type: "text",
                                                                   name:
-                                                                    "alimony_amount",
+                                                                    "child_support_amount",
                                                                   id:
-                                                                    "alimony_amount",
+                                                                    "child_support_amount",
                                                                   placeholder:
                                                                     "Amount"
                                                                 },
@@ -66150,7 +66077,7 @@ var render = function() {
                                                                   value:
                                                                     _vm
                                                                       .spouseDetails
-                                                                      .alimony_amount
+                                                                      .child_support_amount
                                                                 },
                                                                 on: {
                                                                   input: function(
@@ -66165,7 +66092,7 @@ var render = function() {
                                                                     }
                                                                     _vm.$set(
                                                                       _vm.spouseDetails,
-                                                                      "alimony_amount",
+                                                                      "child_support_amount",
                                                                       $event
                                                                         .target
                                                                         .value
@@ -70859,7 +70786,18 @@ var render = function() {
                   _c("div", { staticClass: "item__content" }, [
                     _vm._v(
                       "\n                            " +
-                        _vm._s(_vm.spouseDetails.address) +
+                        _vm._s(_vm.spouseDetails.address.street_address1) +
+                        ", " +
+                        _vm._s(_vm.spouseDetails.address.street_address2) +
+                        ", " +
+                        _vm._s(_vm.spouseDetails.address.city) +
+                        ", " +
+                        _vm._s(_vm.spouseDetails.address.state)
+                    ),
+                    _c("br"),
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(_vm.spouseDetails.address.zipcode) +
                         "\n                        "
                     )
                   ])
@@ -70877,10 +70815,7 @@ var render = function() {
                   _c(
                     "div",
                     { staticClass: "item__content" },
-                    _vm._l(_vm.spouseDetails.previous_spouse_phone, function(
-                      phone,
-                      index
-                    ) {
+                    _vm._l(_vm.spouseDetails.phones, function(phone, index) {
                       return _c("span", { key: index }, [
                         _vm._v(
                           "\n                                " +
