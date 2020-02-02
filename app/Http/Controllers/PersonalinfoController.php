@@ -144,13 +144,22 @@ class PersonalInfoController extends Controller
             }
 
             // Save step completed information
-            $user->steps()->sync([
-                'step_id' => 1,
-                'user_id' => $user->id,
-                'is_visited' => '1',
-                'is_filled' => '1',
-                'is_completed' => request('is_completed') ? 1 : 0
-            ]);
+            // $user->steps()->sync([
+            //     'step_id' => 1,
+            //     'user_id' => $user->id,
+            //     'is_visited' => '1',
+            //     'is_filled' => '1',
+            //     'is_completed' => request('is_completed') ? 1 : 0
+            // ]);
+
+            UsersPersonalDetailsCompletion::updateOrCreate(
+                ['user_id' => $user->id, 'step_id' => 1], 
+                [
+                    'is_visited' => '1',
+                    'is_filled' => '1',
+                    'is_completed' => request('is_completed') == "true" ? '1' : '0'
+                ]
+            );
 
             DB::commit();
 
@@ -308,13 +317,22 @@ class PersonalInfoController extends Controller
                 }
 
                 // Save step completed information
-                $user->steps()->sync([
-                    'step_id' => 1,
-                    'user_id' => $user->id,
-                    'is_visited' => '1',
-                    'is_filled' => '1',
-                    'is_completed' => request('is_completed') ? 1 : 0
-                ]);
+                // $user->steps()->sync([
+                //     'step_id' => 1,
+                //     'user_id' => $user->id,
+                //     'is_visited' => 1,
+                //     'is_filled' => 1,
+                //     'is_completed' => request('is_completed') ? 1 : 0
+                // ]);
+                
+                UsersPersonalDetailsCompletion::updateOrCreate(
+                    ['user_id' => $user->id, 'step_id' => 1], 
+                    [
+                        'is_visited' => '1',
+                        'is_filled' => '1',
+                        'is_completed' => request('is_completed') == "true" ? '1' : '0'
+                    ]
+                );
 
                 DB::commit();
 
@@ -323,7 +341,7 @@ class PersonalInfoController extends Controller
                         'status' => 201,
                         'message' => 'Personal information has been updated successfully'
                     ], 201);
-            } catch (Exception $e) {
+            } catch (Exception $e) {dd($e);
                 DB::rollBack();
 
                 return response()
