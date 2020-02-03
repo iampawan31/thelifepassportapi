@@ -144,13 +144,13 @@ class PreviousspouseController extends Controller
             }
 
             // Save step completed information
-            $user->steps()->sync([
-                'step_id' => 3,
-                'user_id' => $user->id,
-                'is_visited' => '1',
-                'is_filled' => '1',
-                'is_completed' => request('chk_complete') ? '1' : '0'
-            ]);
+            // $user->steps()->sync([
+            //     'step_id' => 3,
+            //     'user_id' => $user->id,
+            //     'is_visited' => '1',
+            //     'is_filled' => '1',
+            //     'is_completed' => request('chk_complete') ? '1' : '0'
+            // ]);
 
             // //$inputs = $request->all();
             
@@ -361,13 +361,13 @@ class PreviousspouseController extends Controller
                 }
 
                 // Save step completed information
-                $user->steps()->sync([
-                    'step_id' => 3,
-                    'user_id' => $user->id,
-                    'is_visited' => '1',
-                    'is_filled' => '1',
-                    'is_completed' => request('chk_complete') ? '1' : '0'
-                ]);
+                // $user->steps()->sync([
+                //     'step_id' => 3,
+                //     'user_id' => $user->id,
+                //     'is_visited' => '1',
+                //     'is_filled' => '1',
+                //     'is_completed' => request('chk_complete') ? '1' : '0'
+                // ]);
                 
                 DB::commit();
                 return response()

@@ -1973,6 +1973,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -1999,8 +2005,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     return {
       name: "",
       relationship: "",
-      address: "",
-      phoneNumbers: [],
+      address: {},
+      phones: [],
       emailAddress: "",
       dateOfBirth: "",
       relationshipOptions: [{
@@ -2052,6 +2058,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 } else {
                   form = e.target;
                   formData = new FormData(form);
+                  formData.append("friends_address", JSON.stringify(this.address));
+                  formData.append("friends_phones", JSON.stringify(this.phones));
 
                   if (this.friendId) {
                     axios.post("/friendsinfo/" + this.friendId + "/updatedata", formData).then(function (response) {
@@ -2061,8 +2069,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     })["catch"](function () {});
                   } else {
                     axios.post("/friendsinfo/postdata", formData).then(function (response) {
-                      console.log(response);
-
                       _this.$router.push("/close-friends-question");
                     })["catch"](function () {});
                   }
@@ -2084,7 +2090,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return handleSubmit;
     }(),
     updatePhoneNumbers: function updatePhoneNumbers(data) {
-      this.phoneNumbers = data;
+      this.phones = data;
     },
     getFriendsInfo: function getFriendsInfo() {
       var _this2 = this;
@@ -2094,15 +2100,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           if (response.status == 200) {
             _this2.friendsDetails = JSON.parse(JSON.stringify(response.data.data[0]));
 
-            if (_this2.friendsDetails.friends_phone.length > 0) {
-              _this2.phoneNumbers = _this2.friendsDetails.friends_phone;
+            if (_this2.friendsDetails.address) {
+              _this2.address = _this2.friendsDetails.address;
+            }
+
+            console.log(_this2.address);
+
+            if (_this2.friendsDetails.phone.length > 0) {
+              _this2.phones = _this2.friendsDetails.phone;
             } else {
-              _this2.phoneNumbers = [{
-                number: null
+              _this2.phones = [{
+                phone: null
               }];
             }
           }
         });
+      } else {
+        this.phones = [{
+          phone: null
+        }];
       }
     },
     updateHomeAddress: function updateHomeAddress(data) {
@@ -2916,40 +2932,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vuejs_datepicker__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuejs-datepicker */ "./node_modules/vuejs-datepicker/dist/vuejs-datepicker.esm.js");
-/* harmony import */ var vue2_timepicker__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue2-timepicker */ "./node_modules/vue2-timepicker/dist/VueTimepicker.common.js");
-/* harmony import */ var vue2_timepicker__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue2_timepicker__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _elements_Address__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./elements/Address */ "./resources/js/components/personalinfo/elements/Address.vue");
-/* harmony import */ var vue2_timepicker_dist_VueTimepicker_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue2-timepicker/dist/VueTimepicker.css */ "./node_modules/vue2-timepicker/dist/VueTimepicker.css");
-/* harmony import */ var vue2_timepicker_dist_VueTimepicker_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue2_timepicker_dist_VueTimepicker_css__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var v_select2_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! v-select2-component */ "./node_modules/v-select2-component/dist/Select2.esm.js");
-/* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vuejs_datepicker__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuejs-datepicker */ "./node_modules/vuejs-datepicker/dist/vuejs-datepicker.esm.js");
+/* harmony import */ var vue2_timepicker__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue2-timepicker */ "./node_modules/vue2-timepicker/dist/VueTimepicker.common.js");
+/* harmony import */ var vue2_timepicker__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue2_timepicker__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _elements_Address__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./elements/Address */ "./resources/js/components/personalinfo/elements/Address.vue");
+/* harmony import */ var vue2_timepicker_dist_VueTimepicker_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue2-timepicker/dist/VueTimepicker.css */ "./node_modules/vue2-timepicker/dist/VueTimepicker.css");
+/* harmony import */ var vue2_timepicker_dist_VueTimepicker_css__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vue2_timepicker_dist_VueTimepicker_css__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var v_select2_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! v-select2-component */ "./node_modules/v-select2-component/dist/Select2.esm.js");
+/* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 //
 //
 //
@@ -3169,19 +3167,20 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    ValidationObserver: vee_validate__WEBPACK_IMPORTED_MODULE_5__["ValidationObserver"],
-    ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_5__["ValidationProvider"],
-    Select2: v_select2_component__WEBPACK_IMPORTED_MODULE_4__["default"],
-    HomeAddress: _elements_Address__WEBPACK_IMPORTED_MODULE_2__["default"],
-    DatePicker: vuejs_datepicker__WEBPACK_IMPORTED_MODULE_0__["default"],
-    VueTimepicker: vue2_timepicker__WEBPACK_IMPORTED_MODULE_1___default.a
+    ValidationObserver: vee_validate__WEBPACK_IMPORTED_MODULE_6__["ValidationObserver"],
+    ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_6__["ValidationProvider"],
+    Select2: v_select2_component__WEBPACK_IMPORTED_MODULE_5__["default"],
+    HomeAddress: _elements_Address__WEBPACK_IMPORTED_MODULE_3__["default"],
+    DatePicker: vuejs_datepicker__WEBPACK_IMPORTED_MODULE_1__["default"],
+    VueTimepicker: vue2_timepicker__WEBPACK_IMPORTED_MODULE_2___default.a
   },
   data: function data() {
     return {
       personAssetCared: "",
       homeAddress: "",
       errors: [],
-      address: [],
+      address: {},
+      homeAssistantDetails: [],
       providerName: "",
       dayCareFrequencySelected: false,
       careDayTimeFrequency: "",
@@ -3208,15 +3207,64 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         id: 7,
         text: "Yearly"
-      }]
+      }],
+      submitted: false,
+      assistantId: 0
     };
   },
   mounted: function mounted() {},
+  created: function created() {
+    this.assistantId = this.$route.params.id;
+    this.getHomeAssistantInfo();
+  },
   methods: {
-    handleSubmit: function handleSubmit(e) {
-      console.log(e);
-      this.$router.push("/estate-representative-question");
-    },
+    handleSubmit: function () {
+      var _handleSubmit = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(e) {
+        var isValid, form, formData;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                this.submitted = true;
+                _context.next = 3;
+                return this.$refs.observer.validate();
+
+              case 3:
+                isValid = _context.sent;
+
+                if (!isValid) {// Do Something
+                } else {
+                  form = e.target;
+                  formData = new FormData(form);
+                  formData.append("homeassistant_address", JSON.stringify(this.address));
+
+                  if (this.assistantId) {
+                    axios.post("/homeassistants/" + this.friendId + "/updatedata", formData).then(function (response) {
+                      console.log(response); //this.$router.push("/close-friends-question");
+                    })["catch"](function () {});
+                  } else {
+                    axios.post("/homeassistants/postdata", formData).then(function (response) {//this.$router.push("/close-friends-question");
+                    })["catch"](function () {});
+                  }
+                } //this.$router.push("/close-friends-question");
+
+
+              case 5:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function handleSubmit(_x) {
+        return _handleSubmit.apply(this, arguments);
+      }
+
+      return handleSubmit;
+    }(),
     careDayTimeChangeEvent: function careDayTimeChangeEvent($event) {
       console.log($event);
       this.dayCareFrequencySelected = true;
@@ -3227,6 +3275,21 @@ __webpack_require__.r(__webpack_exports__);
     },
     updateHomeAddress: function updateHomeAddress(data) {
       this.address = data;
+    },
+    getHomeAssistantInfo: function getHomeAssistantInfo() {
+      var _this = this;
+
+      if (this.assistantId) {
+        axios.get("/homeassistants/" + this.friendId + "/gethomeassistantinfo").then(function (response) {
+          if (response.status == 200) {
+            _this.homeAssistantDetails = JSON.parse(JSON.stringify(response.data.data[0]));
+
+            if (_this.homeAssistantDetails.address) {
+              _this.address = _this.homeAssistantDetails.address;
+            }
+          }
+        });
+      }
     }
   }
 });
@@ -5467,6 +5530,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _handleSubmit = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(e) {
+        var _this2 = this;
+
         var isValid, form, formData;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
@@ -5494,11 +5559,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                         "Content-Type": "multipart/form-data"
                       }
                     }).then(function (response) {
-                      console.log(response); //this.$router.push("/family-members-question");
+                      _this2.$router.push("/family-members-question");
                     })["catch"](function () {});
                   } else {
                     axios.post("/previousspouse/postdata", formData).then(function (response) {
-                      if (response.status == 200) {//this.$router.push("/family-members-question");
+                      if (response.status == 200) {
+                        _this2.$router.push("/family-members-question");
                       }
                     })["catch"](function () {});
                   }
@@ -5519,7 +5585,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return handleSubmit;
     }(),
     removeDivorceFile: function removeDivorceFile() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.$swal.fire({
         title: "Are you sure?",
@@ -5533,16 +5599,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         if (result.value) {
           axios.post("/removedivorcefile").then(function (response) {
             if (response.status == 200) {
-              _this2.divorceDoc = [];
+              _this3.divorceDoc = [];
 
-              _this2.$swal.fire("Deleted!", "Document is removed", "success");
+              _this3.$swal.fire("Deleted!", "Document is removed", "success");
             }
           })["catch"](function () {});
         }
       });
     },
     removeChildSupportFile: function removeChildSupportFile() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.$swal.fire({
         title: "Are you sure?",
@@ -5556,9 +5622,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         if (result.value) {
           axios.post("/removechildsupportfile").then(function (response) {
             if (response.status == 200) {
-              _this3.childSupportDoc = [];
+              _this4.childSupportDoc = [];
 
-              _this3.$swal.fire("Deleted!", "Document is removed", "success");
+              _this4.$swal.fire("Deleted!", "Document is removed", "success");
             }
           })["catch"](function () {});
         }
@@ -58819,7 +58885,7 @@ var render = function() {
                         },
                         [
                           _c("div", { staticClass: "row" }, [
-                            _c("div", { staticClass: "col" }, [
+                            _c("div", { staticClass: "col nopadding" }, [
                               _c(
                                 "div",
                                 { staticClass: "field-group" },
@@ -58921,33 +58987,48 @@ var render = function() {
                           ]),
                           _vm._v(" "),
                           _c("home-address", {
-                            attrs: { "home-address": _vm.address },
-                            on: { "home-address-update": _vm.updateHomeAddress }
+                            staticClass: "padding",
+                            attrs: { "address-type": "friends" },
+                            on: {
+                              input: function(newAddress) {
+                                _vm.address = newAddress
+                              }
+                            },
+                            model: {
+                              value: _vm.address,
+                              callback: function($$v) {
+                                _vm.address = $$v
+                              },
+                              expression: "address"
+                            }
                           }),
                           _vm._v(" "),
                           _c("div", { staticClass: "row" }, [
                             _c(
                               "div",
-                              { staticClass: "col" },
+                              { staticClass: "col nopadding" },
                               [
-                                _vm.phoneNumbers.length > 0
-                                  ? _c("phone-details", {
-                                      attrs: {
-                                        "user-phones": _vm.phoneNumbers
-                                      },
-                                      on: {
-                                        "phone-details-updates":
-                                          _vm.updatePhoneNumbers
-                                      }
-                                    })
-                                  : _vm._e()
+                                _c("phone-details", {
+                                  on: {
+                                    input: function(newPhoneNumbers) {
+                                      _vm.phoneNumbers = newPhoneNumbers
+                                    }
+                                  },
+                                  model: {
+                                    value: _vm.phones,
+                                    callback: function($$v) {
+                                      _vm.phones = $$v
+                                    },
+                                    expression: "phones"
+                                  }
+                                })
                               ],
                               1
                             )
                           ]),
                           _vm._v(" "),
                           _c("div", { staticClass: "row" }, [
-                            _c("div", { staticClass: "col" }, [
+                            _c("div", { staticClass: "col nopadding" }, [
                               _c(
                                 "div",
                                 { staticClass: "field-group" },
@@ -60678,7 +60759,7 @@ var render = function() {
                           },
                           [
                             _c("div", { staticClass: "row" }, [
-                              _c("div", { staticClass: "col" }, [
+                              _c("div", { staticClass: "col nopadding" }, [
                                 _c(
                                   "div",
                                   { staticClass: "staff-members-fields" },
@@ -60793,7 +60874,7 @@ var render = function() {
                             ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "row" }, [
-                              _c("div", { staticClass: "col" }, [
+                              _c("div", { staticClass: "col nopadding" }, [
                                 _c(
                                   "div",
                                   { staticClass: "field-group" },
@@ -60885,102 +60966,24 @@ var render = function() {
                             ]),
                             _vm._v(" "),
                             _c("home-address", {
-                              attrs: { "home-address": _vm.address },
+                              staticClass: "padding",
+                              attrs: { "address-type": "homeassistant" },
                               on: {
-                                "home-address-update": _vm.updateHomeAddress
+                                input: function(newAddress) {
+                                  _vm.address = newAddress
+                                }
+                              },
+                              model: {
+                                value: _vm.address,
+                                callback: function($$v) {
+                                  _vm.address = $$v
+                                },
+                                expression: "address"
                               }
                             }),
                             _vm._v(" "),
                             _c("div", { staticClass: "row" }, [
-                              _c("div", { staticClass: "col" }, [
-                                _c(
-                                  "div",
-                                  { staticClass: "field-group" },
-                                  [
-                                    _c(
-                                      "label",
-                                      { attrs: { for: "home_address" } },
-                                      [_vm._v("Home Address")]
-                                    ),
-                                    _vm._v(" "),
-                                    _c("ValidationProvider", {
-                                      attrs: {
-                                        name: "Home Address",
-                                        rules: "address|max:200"
-                                      },
-                                      scopedSlots: _vm._u(
-                                        [
-                                          {
-                                            key: "default",
-                                            fn: function(ref) {
-                                              var errors = ref.errors
-                                              return [
-                                                _c("textarea", {
-                                                  directives: [
-                                                    {
-                                                      name: "model",
-                                                      rawName: "v-model",
-                                                      value: _vm.homeAddress,
-                                                      expression: "homeAddress"
-                                                    }
-                                                  ],
-                                                  staticClass: "field-input",
-                                                  attrs: {
-                                                    rows: "2",
-                                                    name: "home_address",
-                                                    id: "home_address",
-                                                    placeholder:
-                                                      "Street Address, Town, City, State, Zipcode and country"
-                                                  },
-                                                  domProps: {
-                                                    value: _vm.homeAddress
-                                                  },
-                                                  on: {
-                                                    input: function($event) {
-                                                      if (
-                                                        $event.target.composing
-                                                      ) {
-                                                        return
-                                                      }
-                                                      _vm.homeAddress =
-                                                        $event.target.value
-                                                    }
-                                                  }
-                                                }),
-                                                _vm._v(" "),
-                                                errors != undefined &&
-                                                errors.length
-                                                  ? _c(
-                                                      "span",
-                                                      {
-                                                        staticClass:
-                                                          "invalid-feedback d-block"
-                                                      },
-                                                      [
-                                                        _vm._v(
-                                                          "\n                                            " +
-                                                            _vm._s(errors[0]) +
-                                                            "\n                                        "
-                                                        )
-                                                      ]
-                                                    )
-                                                  : _vm._e()
-                                              ]
-                                            }
-                                          }
-                                        ],
-                                        null,
-                                        true
-                                      )
-                                    })
-                                  ],
-                                  1
-                                )
-                              ])
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "row" }, [
-                              _c("div", { staticClass: "col" }, [
+                              _c("div", { staticClass: "col nopadding" }, [
                                 _c(
                                   "div",
                                   { staticClass: "field-group" },
@@ -61072,7 +61075,7 @@ var render = function() {
                             _vm._v(" "),
                             _vm.dayCareFrequencySelected
                               ? _c("div", { staticClass: "row" }, [
-                                  _c("div", { staticClass: "col" }, [
+                                  _c("div", { staticClass: "col nopadding" }, [
                                     _c(
                                       "div",
                                       { staticClass: "field-group" },
@@ -61174,7 +61177,7 @@ var render = function() {
                                     )
                                   ]),
                                   _vm._v(" "),
-                                  _c("div", { staticClass: "col" }, [
+                                  _c("div", { staticClass: "col nopadding" }, [
                                     _c(
                                       "div",
                                       { staticClass: "field-group" },

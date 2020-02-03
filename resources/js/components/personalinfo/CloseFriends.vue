@@ -18,7 +18,7 @@
                     >
                         <!-- Name section -->
                         <div class="row">
-                            <div class="col">
+                            <div class="col nopadding">
                                 <div class="field-group">
                                     <label for="legal_name" class="input-label"
                                         >Name</label
@@ -49,28 +49,34 @@
                         </div>
 
                         <!-- Home addresss section -->
-                        <!-- Home Address Section -->
-                        <home-address
-                            :home-address="address"
-                            @home-address-update="updateHomeAddress"
-                        />
+                            <home-address
+                                v-model="address"
+                                @input="
+                                    newAddress => {
+                                        address = newAddress;
+                                    }
+                                "
+                                address-type="friends"
+                                class="padding"
+                            />
 
                         <!-- Phone number(s) section -->
                         <div class="row">
-                            <div class="col">
+                            <div class="col nopadding">
                                 <phone-details
-                                    v-on:phone-details-updates="
-                                        updatePhoneNumbers
+                                    @input="
+                                        newPhoneNumbers => {
+                                            phoneNumbers = newPhoneNumbers;
+                                        }
                                     "
-                                    :user-phones="phoneNumbers"
-                                    v-if="phoneNumbers.length > 0"
+                                    v-model="phones"
                                 ></phone-details>
                             </div>
                         </div>
 
                         <!-- Former spouse's Email address section -->
                         <div class="row">
-                            <div class="col">
+                            <div class="col nopadding">
                                 <div class="field-group">
                                     <label for="email" class="input-label"
                                         >Email</label
@@ -141,8 +147,8 @@ export default {
         return {
             name: "",
             relationship: "",
-            address: "",
-            phoneNumbers: [],
+            address: {},
+            phones: [],
             emailAddress: "",
             dateOfBirth: "",
             relationshipOptions: [
@@ -172,6 +178,8 @@ export default {
             } else {
                 const form = e.target;
                 const formData = new FormData(form);
+                formData.append("friends_address", JSON.stringify(this.address));
+                formData.append("friends_phones", JSON.stringify(this.phones));
 
                 if (this.friendId) {
                     axios
@@ -188,7 +196,6 @@ export default {
                     axios
                         .post("/friendsinfo/postdata", formData)
                         .then(response => {
-                            console.log(response);
                             this.$router.push("/close-friends-question");
                         })
                         .catch(function() {});
@@ -198,7 +205,7 @@ export default {
             //this.$router.push("/close-friends-question");
         },
         updatePhoneNumbers(data) {
-            this.phoneNumbers = data;
+            this.phones = data;
         },
         getFriendsInfo() {
             if (this.friendId) {
@@ -209,13 +216,21 @@ export default {
                             this.friendsDetails = JSON.parse(
                                 JSON.stringify(response.data.data[0])
                             );
-                            if (this.friendsDetails.friends_phone.length > 0) {
-                                this.phoneNumbers = this.friendsDetails.friends_phone;
+
+                            if (this.friendsDetails.address) {
+                                this.address = this.friendsDetails.address;
+                            }
+                            console.log(this.address);
+
+                            if (this.friendsDetails.phone.length > 0) {
+                                this.phones = this.friendsDetails.phone;
                             } else {
-                                this.phoneNumbers = [{ number: null }];
+                                this.phones = [{ phone: null }];
                             }
                         }
                     });
+            } else {
+                this.phones = [{ phone: null }];
             }
         },
         updateHomeAddress(data) {

@@ -712,8 +712,7 @@ export default {
                             }
                         )
                         .then(response => {
-                            console.log(response);
-                            //this.$router.push("/family-members-question");
+                            this.$router.push("/family-members-question");
                         })
                         .catch(function() {});
                 } else {
@@ -721,7 +720,7 @@ export default {
                         .post("/previousspouse/postdata", formData)
                         .then(response => {
                             if (response.status == 200) {
-                                //this.$router.push("/family-members-question");
+                                this.$router.push("/family-members-question");
                             }
                         })
                         .catch(function() {});

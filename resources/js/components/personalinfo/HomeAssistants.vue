@@ -16,7 +16,7 @@
                         >
                             <!-- Person or asset cared for -->
                             <div class="row">
-                                <div class="col">
+                                <div class="col nopadding">
                                     <div class="staff-members-fields">
                                         <div class="field-group">
                                             <label
@@ -56,7 +56,7 @@
 
                             <!-- Provider name -->
                             <div class="row">
-                                <div class="col">
+                                <div class="col nopadding">
                                     <div class="field-group">
                                         <label
                                             for="provider_name"
@@ -94,45 +94,19 @@
                             <!-- Home addresss section -->
                             <!-- Home addresss section -->
                             <home-address
-                                :home-address="address"
-                                @home-address-update="updateHomeAddress"
+                                v-model="address"
+                                @input="
+                                    newAddress => {
+                                        address = newAddress;
+                                    }
+                                "
+                                address-type="homeassistant"
+                                class="padding"
                             />
-                            <div class="row">
-                                <div class="col">
-                                    <div class="field-group">
-                                        <label for="home_address"
-                                            >Home Address</label
-                                        >
-                                        <ValidationProvider
-                                            name="Home Address"
-                                            rules="address|max:200"
-                                            v-slot="{ errors }"
-                                        >
-                                            <textarea
-                                                rows="2"
-                                                name="home_address"
-                                                id="home_address"
-                                                v-model="homeAddress"
-                                                class="field-input"
-                                                placeholder="Street Address, Town, City, State, Zipcode and country"
-                                            ></textarea>
-                                            <span
-                                                v-if="
-                                                    errors != undefined &&
-                                                        errors.length
-                                                "
-                                                class="invalid-feedback d-block"
-                                            >
-                                                {{ errors[0] }}
-                                            </span>
-                                        </ValidationProvider>
-                                    </div>
-                                </div>
-                            </div>
 
                             <!-- Day and Time of care received section -->
                             <div class="row">
-                                <div class="col">
+                                <div class="col nopadding">
                                     <div class="field-group">
                                         <label
                                             for="relationship"
@@ -176,7 +150,7 @@
                                 </div>
                             </div>
                             <div class="row" v-if="dayCareFrequencySelected">
-                                <div class="col">
+                                <div class="col nopadding">
                                     <div class="field-group">
                                         <label for="dob" class="input-label"
                                             >Care Day</label
@@ -206,7 +180,7 @@
                                         </ValidationProvider>
                                     </div>
                                 </div>
-                                <div class="col">
+                                <div class="col nopadding">
                                     <div class="field-group">
                                         <label for="dob" class="input-label"
                                             >Care Time</label
@@ -257,8 +231,8 @@ export default {
             personAssetCared: "",
             homeAddress: "",
             errors: [],
-            address: [],
-
+            address: {},
+            homeAssistantDetails : [],
             providerName: "",
             dayCareFrequencySelected: false,
             careDayTimeFrequency: "",
@@ -272,14 +246,50 @@ export default {
                 { id: 5, text: "Quaterly" },
                 { id: 6, text: "Half Yearly" },
                 { id: 7, text: "Yearly" }
-            ]
+            ],
+            submitted: false,
+            assistantId: 0
         };
     },
     mounted() {},
+    created() {
+        this.assistantId = this.$route.params.id;
+        this.getHomeAssistantInfo();
+    },
     methods: {
-        handleSubmit(e) {
-            console.log(e);
-            this.$router.push("/estate-representative-question");
+        async handleSubmit(e) {
+            this.submitted = true;
+
+            const isValid = await this.$refs.observer.validate();
+            if (!isValid) {
+                // Do Something
+            } else {
+                const form = e.target;
+                const formData = new FormData(form);
+                formData.append("homeassistant_address", JSON.stringify(this.address));
+
+                if (this.assistantId) {
+                    axios
+                        .post(
+                            "/homeassistants/" + this.friendId + "/updatedata",
+                            formData
+                        )
+                        .then(response => {
+                            console.log(response);
+                            //this.$router.push("/close-friends-question");
+                        })
+                        .catch(function() {});
+                } else {
+                    axios
+                        .post("/homeassistants/postdata", formData)
+                        .then(response => {
+                            //this.$router.push("/close-friends-question");
+                        })
+                        .catch(function() {});
+                }
+            }
+
+            //this.$router.push("/close-friends-question");
         },
         careDayTimeChangeEvent($event) {
             console.log($event);
@@ -291,6 +301,23 @@ export default {
         },
         updateHomeAddress(data) {
             this.address = data;
+        },
+        getHomeAssistantInfo() {
+            if (this.assistantId) {
+                axios
+                    .get("/homeassistants/" + this.friendId + "/gethomeassistantinfo")
+                    .then(response => {
+                        if (response.status == 200) {
+                            this.homeAssistantDetails = JSON.parse(
+                                JSON.stringify(response.data.data[0])
+                            );
+
+                            if (this.homeAssistantDetails.address) {
+                                this.address = this.homeAssistantDetails.address;
+                            }
+                        }
+                    });
+            }
         }
     }
 };
