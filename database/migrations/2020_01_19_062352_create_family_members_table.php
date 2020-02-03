@@ -18,7 +18,7 @@ class CreateFamilyMembersTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('legal_name');
             $table->integer('relationship_id');
-            $table->string('relatiionship_other')->nullable();
+            $table->string('relationship_other')->nullable();
             $table->string('email')->nullable();
             $table->date('dob')->nullable();
 

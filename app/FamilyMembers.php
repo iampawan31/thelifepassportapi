@@ -17,6 +17,12 @@ class FamilyMembers extends Model
         'dob'
     ];
 
+    protected $casts = [
+        'dob' => 'datetime:m/d/Y'
+    ];
+
+    protected $with = ['address', 'phone', 'relation', 'step'];
+
     public function address()
     {
         return $this->hasOne(FamilyMemberAddress::class, 'family_member_id');
@@ -24,12 +30,12 @@ class FamilyMembers extends Model
 
     public function phone()
     {
-        return $this->hasMany(\App\FamilyPhone::class, 'family_member_id')->select(['family_member_id', 'phone']);
+        return $this->hasMany(FamilyPhone::class, 'family_member_id', 'id')->select(['family_member_id', 'phone']);
     }
 
     public function relation()
     {
-        return $this->hasOne(\App\FamilyRelation::class, 'id', 'relationship_id')->select(['id', 'title']);
+        return $this->hasOne(FamilyRelation::class, 'id', 'relationship_id')->select(['id', 'title']);
     }
 
     public function step()

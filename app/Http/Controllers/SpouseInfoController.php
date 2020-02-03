@@ -11,6 +11,7 @@ use App\SpouseInfo;
 use App\SpousePhone;
 use App\SpouseSocialMedia;
 use App\User;
+use App\UsersPersonalDetailsCompletion;
 use Exception;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -162,8 +163,7 @@ class SpouseInfoController extends Controller
             }
 
             // Save step completed information
-            $user->steps()->sync([
-                'step_id' => 2,
+            $user->steps()->syncWithoutDetaching(2, [
                 'user_id' => $user->id,
                 'is_visited' => '1',
                 'is_filled' => '1',
@@ -336,8 +336,7 @@ class SpouseInfoController extends Controller
         // Save step completed information
         $user = auth()->user();
 
-        $user->steps()->sync([
-            'step_id' => 2,
+        $user->steps()->syncWithoutDetaching(2, [
             'user_id' => $user->id,
             'is_visited' => '1',
             'is_filled' => '1',
@@ -391,6 +390,26 @@ class SpouseInfoController extends Controller
                 'message' => 'Unauthorized'
             ], '401');
         }
+    }
+
+    /**
+     * @param SpouseInfo $spouseInfo
+     */
+    protected function updateSpouseInformation(SpouseInfo $spouseInfo): void
+    {
+        $spouseInfo->marriage_date = Carbon::parse(request('marriage_date')) ?: "";
+        $spouseInfo->marriage_location = request('marriage_location') ?: "";
+        $spouseInfo->legal_name = request('legal_name') ?: "";
+        $spouseInfo->nickname = request('nickname') ?: "";
+        $spouseInfo->dob = Carbon::parse(request('dob')) ?: "";
+        $spouseInfo->country_id = request('country_id') ?: "";
+        $spouseInfo->passport_number = request('passport_number') ?: "";
+        $spouseInfo->father_name = request('father_name') ?: "";
+        $spouseInfo->father_birth_place = request('father_birth_place') ?: "";
+        $spouseInfo->mother_name = request('mother_name') ?: "";
+        $spouseInfo->mother_birth_place = request('mother_birth_place') ?: "";
+
+        $spouseInfo->save();
     }
 
     private function deleteEmployers(SpouseInfo $spouseInfo)

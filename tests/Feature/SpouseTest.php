@@ -204,7 +204,7 @@ class SpouseTest extends TestCase
         'emails' => json_encode($emails),
         'spouse_social_media' => $this->spouseSocialMedia->toJson(),
         'spouse_employer' => $this->spouseEmployer->toJson(),
-        'is_completed' => true
+        'is_completed' => false
     ])->dump()
         ->assertStatus(201);
     }

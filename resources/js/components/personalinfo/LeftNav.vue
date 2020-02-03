@@ -347,7 +347,7 @@ export default {
                 });
         },
         getFamilyMembersStatus() {
-            axios.get('familyinfo/getfamilymembersstatus')
+            axios.get('personal/family/status')
                 .then((response) => {
                     if(response.status == 200) {
                         this.familyMembersStatus = response.data.data;

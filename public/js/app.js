@@ -2516,11 +2516,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var v_select2_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! v-select2-component */ "./node_modules/v-select2-component/dist/Select2.esm.js");
-/* harmony import */ var vuejs_datepicker__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuejs-datepicker */ "./node_modules/vuejs-datepicker/dist/vuejs-datepicker.esm.js");
-/* harmony import */ var _elements_Address__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./elements/Address */ "./resources/js/components/personalinfo/elements/Address.vue");
-/* harmony import */ var _elements_PhoneDetails_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./elements/PhoneDetails.vue */ "./resources/js/components/personalinfo/elements/PhoneDetails.vue");
-/* harmony import */ var _elements_Email_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./elements/Email.vue */ "./resources/js/components/personalinfo/elements/Email.vue");
-/* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
+/* harmony import */ var _elements_Address__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./elements/Address */ "./resources/js/components/personalinfo/elements/Address.vue");
+/* harmony import */ var _elements_PhoneDetails_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./elements/PhoneDetails.vue */ "./resources/js/components/personalinfo/elements/PhoneDetails.vue");
+/* harmony import */ var _elements_Email_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./elements/Email.vue */ "./resources/js/components/personalinfo/elements/Email.vue");
+/* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -2761,7 +2760,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2769,44 +2782,51 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    PhoneDetails: _elements_PhoneDetails_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
-    Email: _elements_Email_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
-    DatePicker: vuejs_datepicker__WEBPACK_IMPORTED_MODULE_2__["default"],
-    HomeAddress: _elements_Address__WEBPACK_IMPORTED_MODULE_3__["default"],
+    PhoneDetails: _elements_PhoneDetails_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+    Email: _elements_Email_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
+    HomeAddress: _elements_Address__WEBPACK_IMPORTED_MODULE_2__["default"],
     Select2: v_select2_component__WEBPACK_IMPORTED_MODULE_1__["default"],
-    ValidationObserver: vee_validate__WEBPACK_IMPORTED_MODULE_6__["ValidationObserver"],
-    ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_6__["ValidationProvider"]
+    ValidationObserver: vee_validate__WEBPACK_IMPORTED_MODULE_5__["ValidationObserver"],
+    ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_5__["ValidationProvider"]
   },
   computed: {
     isOtherSelected: function isOtherSelected() {
-      return this.relationship === "5" ? true : false;
+      return this.relationshipId === "5" ? true : false;
     },
-    disabledDates: function disabledDates() {
-      return {
-        from: new Date()
-      };
+    formSubmissionText: function formSubmissionText() {
+      return this.familyMemberId ? "Update and Continue" : "Add Member";
     }
   },
   data: function data() {
     return {
-      name: "",
-      relationship: "",
-      homeAddress: "",
+      legalName: "",
+      relationshipId: "",
       phoneNumbers: [],
-      emailAddress: "",
-      address: [],
+      email: "",
+      address: {
+        street_address1: null,
+        street_address2: null,
+        city: null,
+        state: null,
+        zipcode: null
+      },
       dateOfBirth: "",
+      relationshipOther: "",
       memberDetails: [],
       relationshipOptions: [],
-      relationId: 0,
+      familyMemberId: "",
       submitted: false
     };
   },
-  mounted: function mounted() {},
   created: function created() {
-    this.relationId = this.$route.params.id;
+    this.familyMemberId = this.$route.params.id;
     this.getFamilyRelations();
-    this.getFamilyMemberInfo();
+
+    if (this.familyMemberId) {
+      this.getFamilyMemberInfo();
+    } else {
+      this.populateNewForm();
+    }
   },
   methods: {
     handleSubmit: function () {
@@ -2815,7 +2835,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(e) {
         var _this = this;
 
-        var isValid, form, formData;
+        var isValid, formData;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -2829,17 +2849,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 if (!isValid) {// Do Something
                 } else {
-                  form = e.target;
-                  formData = new FormData(form);
+                  formData = this.getFormData(e);
 
-                  if (this.relationId) {
-                    axios.post("/familyinfo/" + this.relationId + "/updatedata", formData).then(function (response) {
+                  if (this.familyMemberId) {
+                    formData.append("_method", "put");
+                    axios.post("/personal/family/" + this.familyMemberId, formData).then(function (response) {
                       console.log(response);
 
                       _this.$router.push("/family-members-question");
                     })["catch"](function () {});
                   } else {
-                    axios.post("/familyinfo/postdata", formData).then(function (response) {
+                    axios.post("/personal/family", formData).then(function (response) {
                       console.log(response);
 
                       _this.$router.push("/family-members-question");
@@ -2862,6 +2882,58 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return handleSubmit;
     }(),
+    getFormData: function getFormData(e) {
+      var form = e.target;
+      var formData = new FormData(form);
+      formData.append("legal_name", this.legalName);
+      formData.append("relationship_id", this.relationshipId);
+      formData.append("relationship_other", this.relationshipOther);
+      formData.append("dob", this.dateOfBirth);
+      formData.append("email", this.email);
+      formData.append("phones", JSON.stringify(this.phoneNumbers));
+      formData.append("address", JSON.stringify(this.address));
+      return formData;
+    },
+    populateNewForm: function populateNewForm() {
+      this.name = "";
+      this.relationship = "";
+      this.phoneNumbers = [{
+        phone: null
+      }];
+      this.email = "";
+      this.address = {
+        street_address1: null,
+        street_address2: null,
+        city: null,
+        state: null,
+        zipcode: null
+      };
+    },
+    populateData: function populateData(familyMember) {
+      this.memberId = familyMember.id;
+      this.legalName = familyMember.legal_name ? familyMember.legal_name : "";
+      this.relationshipId = familyMember.relationship_id ? familyMember.relationship_id : "";
+      this.email = familyMember.email ? familyMember.email : "";
+      this.dateOfBirth = familyMember.dob;
+
+      if (familyMember.phone.length > 0) {
+        this.phoneNumbers = familyMember.phone;
+      } else {
+        this.phoneNumbers = [{
+          phone: null
+        }];
+      }
+
+      this.relationshipOther = familyMember.relationship_other;
+
+      if (familyMember.address) {
+        this.address.street_address1 = familyMember.address.street_address1 ? familyMember.address.street_address1 : "";
+        this.address.street_address2 = familyMember.address.street_address2 ? familyMember.address.street_address2 : "";
+        this.address.city = familyMember.address.city ? familyMember.address.city : "";
+        this.address.state = familyMember.address.state ? familyMember.address.state : "";
+        this.address.zipcode = familyMember.address.zipcode ? familyMember.address.zipcode : "";
+      }
+    },
     relationshipChangeEvent: function relationshipChangeEvent(event) {
       console.log(event);
     },
@@ -2874,27 +2946,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getFamilyRelations: function getFamilyRelations() {
       var _this2 = this;
 
-      axios.get("/familyrelations").then(function (response) {
+      axios.get("/personal/family/create").then(function (response) {
         if (response.status == 200) {
-          _this2.relationshipOptions = response.data.relation;
+          _this2.relationshipOptions = response.data.data;
         }
       });
     },
     getFamilyMemberInfo: function getFamilyMemberInfo() {
       var _this3 = this;
 
-      if (this.relationId) {
-        axios.get("/familyinfo/" + this.relationId + "/getfamilymemberinfo").then(function (response) {
+      if (this.familyMemberId) {
+        axios.get("/personal/family/" + this.familyMemberId + "/edit").then(function (response) {
           if (response.status == 200) {
-            _this3.memberDetails = JSON.parse(JSON.stringify(response.data.data[0]));
-
-            if (_this3.memberDetails.family_phone.length > 0) {
-              _this3.phoneNumbers = _this3.memberDetails.family_phone;
-            } else {
-              _this3.phoneNumbers = [{
-                number: null
-              }];
-            }
+            // console.log(response.data.data);
+            _this3.populateData(response.data.data);
           }
         });
       }
@@ -3627,7 +3692,7 @@ __webpack_require__.r(__webpack_exports__);
     getFamilyMembersStatus: function getFamilyMembersStatus() {
       var _this5 = this;
 
-      axios.get('familyinfo/getfamilymembersstatus').then(function (response) {
+      axios.get('personal/family/status').then(function (response) {
         if (response.status == 200) {
           _this5.familyMembersStatus = response.data.data; // console.log("Family Members");
           // console.log(this.familyMembersStatus);
@@ -8072,6 +8137,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -8100,7 +8168,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 form = e.target;
                 formData = new FormData(form);
-                axios.post("/familyinfo/updatestatus", formData).then(function (response) {
+                axios.post("/personal/family/status", formData).then(function (response) {
                   if (response.status == 200) {
                     _this.$router.push("/close-friends-question");
                   }
@@ -8125,7 +8193,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         step_id: 4,
         is_visited: "1"
       };
-      axios.post("/updatepersonalstep", data).then(function (response) {
+      axios.post("/steps", data).then(function (response) {
         console.log(response);
       })["catch"](function () {});
     },
@@ -8146,7 +8214,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         };
       }
 
-      axios.post("familyinfo/updatefamilystatus", this.formData).then(function (response) {
+      axios.post("/personal/family/status", this.formData).then(function (response) {
         console.log(response);
 
         if (status == "1") {
@@ -8159,11 +8227,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getFamilyMemberInfo: function getFamilyMemberInfo() {
       var _this3 = this;
 
-      axios.get("/familyinfo/getfamilymembersinfo").then(function (response) {
+      axios.get("/personal/family").then(function (response) {
         if (response.status == 200) {
           if (response.data.data[0]) {
             _this3.familyDetails = JSON.parse(JSON.stringify(response.data.data));
-            _this3.userId = _this3.familyDetails.user_id;
+            _this3.userId = _this3.familyDetails[0].user_id;
             _this3.showFamilyDetails = true;
           } else {
             _this3.showFamilyDetails = false;
@@ -8184,9 +8252,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         confirmButtonText: "Yes"
       }).then(function (result) {
         if (result.value) {
-          axios["delete"]("familyinfo/" + id + "/removefamilymember").then(function (response) {
-            if (response.status == 200) {
-              _this4.$swal.fire("Deleted!", "Family member information is deleted", "success");
+          axios["delete"]("personal/family/" + id).then(function (response) {
+            if (response.status == 201) {
+              _this4.$swal.fire({
+                title: "Deleted!",
+                text: "Family member information is deleted",
+                icon: "success"
+              });
 
               _this4.getFamilyMemberInfo();
             }
@@ -59938,11 +60010,9 @@ var render = function() {
                                                       {
                                                         name: "model",
                                                         rawName: "v-model",
-                                                        value:
-                                                          _vm.memberDetails
-                                                            .legal_name,
+                                                        value: _vm.legalName,
                                                         expression:
-                                                          "\n                                                memberDetails.legal_name\n                                            "
+                                                          "\n                                                    legalName\n                                                "
                                                       }
                                                     ],
                                                     staticClass:
@@ -59954,9 +60024,7 @@ var render = function() {
                                                       placeholder: "Name"
                                                     },
                                                     domProps: {
-                                                      value:
-                                                        _vm.memberDetails
-                                                          .legal_name
+                                                      value: _vm.legalName
                                                     },
                                                     on: {
                                                       input: function($event) {
@@ -59966,11 +60034,8 @@ var render = function() {
                                                         ) {
                                                           return
                                                         }
-                                                        _vm.$set(
-                                                          _vm.memberDetails,
-                                                          "legal_name",
+                                                        _vm.legalName =
                                                           $event.target.value
-                                                        )
                                                       }
                                                     }
                                                   }),
@@ -59988,9 +60053,9 @@ var render = function() {
                                                       },
                                                       [
                                                         _vm._v(
-                                                          "\n                                            " +
+                                                          "\n\t\t\t\t\t\t\t\t\t\t\t\t" +
                                                             _vm._s(error) +
-                                                            "\n                                        "
+                                                            "\n\t\t\t\t\t\t\t\t\t\t\t"
                                                         )
                                                       ]
                                                     )
@@ -60019,7 +60084,10 @@ var render = function() {
                                         "label",
                                         {
                                           staticClass: "input-label",
-                                          attrs: { for: "relationship" }
+                                          attrs: {
+                                            name: "Relationship",
+                                            for: "relationship"
+                                          }
                                         },
                                         [_vm._v("Relationship")]
                                       ),
@@ -60058,18 +60126,12 @@ var render = function() {
                                                       }
                                                     },
                                                     model: {
-                                                      value:
-                                                        _vm.memberDetails
-                                                          .relationship_id,
+                                                      value: _vm.relationshipId,
                                                       callback: function($$v) {
-                                                        _vm.$set(
-                                                          _vm.memberDetails,
-                                                          "relationship_id",
-                                                          $$v
-                                                        )
+                                                        _vm.relationshipId = $$v
                                                       },
                                                       expression:
-                                                        "\n                                                memberDetails.relationship_id\n                                            "
+                                                        "\n                                                    relationshipId\n                                                "
                                                     }
                                                   }),
                                                   _vm._v(" "),
@@ -60083,11 +60145,11 @@ var render = function() {
                                                         },
                                                         [
                                                           _vm._v(
-                                                            "\n                                            " +
+                                                            "\n\t\t\t\t\t\t\t\t\t\t\t\t" +
                                                               _vm._s(
                                                                 errors[0]
                                                               ) +
-                                                              "\n                                        "
+                                                              "\n\t\t\t\t\t\t\t\t\t\t\t"
                                                           )
                                                         ]
                                                       )
@@ -60105,130 +60167,123 @@ var render = function() {
                                   )
                                 ]),
                                 _vm._v(" "),
-                                _c(
-                                  "div",
-                                  {
-                                    directives: [
-                                      {
-                                        name: "show",
-                                        rawName: "v-show",
-                                        value: _vm.isOtherSelected,
-                                        expression: "isOtherSelected"
-                                      }
-                                    ],
-                                    staticClass: "col"
-                                  },
-                                  [
-                                    _c(
-                                      "div",
-                                      { staticClass: "field-group" },
-                                      [
-                                        _c(
-                                          "label",
-                                          {
-                                            staticClass: "input-label",
-                                            attrs: { for: "relationship" }
-                                          },
-                                          [_vm._v("Relationship")]
-                                        ),
-                                        _vm._v(" "),
-                                        _c("validation-provider", {
-                                          attrs: {
-                                            rules:
-                                              "required_if:relationship_selection,5|alpha_spaces|max:50"
-                                          },
-                                          scopedSlots: _vm._u(
-                                            [
-                                              {
-                                                key: "default",
-                                                fn: function(ref) {
-                                                  var errors = ref.errors
-                                                  return [
-                                                    _c("input", {
-                                                      directives: [
-                                                        {
-                                                          name: "model",
-                                                          rawName: "v-model",
-                                                          value:
-                                                            _vm.memberDetails
-                                                              .others,
-                                                          expression:
-                                                            "memberDetails.others"
-                                                        }
-                                                      ],
-                                                      staticClass:
-                                                        "field-input",
-                                                      attrs: {
-                                                        type: "text",
-                                                        name:
-                                                          "relatiionship_other",
-                                                        id:
-                                                          "relatiionship_other",
-                                                        placeholder:
-                                                          "Please specify relation"
-                                                      },
-                                                      domProps: {
-                                                        value:
-                                                          _vm.memberDetails
-                                                            .others
-                                                      },
-                                                      on: {
-                                                        input: function(
-                                                          $event
-                                                        ) {
-                                                          if (
-                                                            $event.target
-                                                              .composing
-                                                          ) {
-                                                            return
-                                                          }
-                                                          _vm.$set(
-                                                            _vm.memberDetails,
-                                                            "others",
-                                                            $event.target.value
-                                                          )
-                                                        }
-                                                      }
-                                                    }),
-                                                    _vm._v(" "),
-                                                    errors != undefined &&
-                                                    errors.length
-                                                      ? _c(
-                                                          "span",
+                                _vm.isOtherSelected
+                                  ? _c("div", { staticClass: "col" }, [
+                                      _c(
+                                        "div",
+                                        { staticClass: "field-group" },
+                                        [
+                                          _c(
+                                            "label",
+                                            {
+                                              staticClass: "input-label",
+                                              attrs: { for: "relationship" }
+                                            },
+                                            [_vm._v("Relationship")]
+                                          ),
+                                          _vm._v(" "),
+                                          _c("validation-provider", {
+                                            attrs: {
+                                              name: "Other relationship",
+                                              rules:
+                                                "required_if:relationship_selection,5|alpha_spaces|max:50"
+                                            },
+                                            scopedSlots: _vm._u(
+                                              [
+                                                {
+                                                  key: "default",
+                                                  fn: function(ref) {
+                                                    var errors = ref.errors
+                                                    return [
+                                                      _c("input", {
+                                                        directives: [
                                                           {
-                                                            staticClass:
-                                                              "invalid-feedback d-block"
-                                                          },
-                                                          [
-                                                            _vm._v(
-                                                              "\n                                            " +
-                                                                _vm._s(
-                                                                  errors[0]
-                                                                ) +
-                                                                "\n                                        "
-                                                            )
-                                                          ]
-                                                        )
-                                                      : _vm._e()
-                                                  ]
+                                                            name: "model",
+                                                            rawName: "v-model",
+                                                            value:
+                                                              _vm.relationshipOther,
+                                                            expression:
+                                                              "relationshipOther"
+                                                          }
+                                                        ],
+                                                        staticClass:
+                                                          "field-input",
+                                                        attrs: {
+                                                          type: "text",
+                                                          name:
+                                                            "relatiionship_other",
+                                                          id:
+                                                            "relatiionship_other",
+                                                          placeholder:
+                                                            "Please specify relation"
+                                                        },
+                                                        domProps: {
+                                                          value:
+                                                            _vm.relationshipOther
+                                                        },
+                                                        on: {
+                                                          input: function(
+                                                            $event
+                                                          ) {
+                                                            if (
+                                                              $event.target
+                                                                .composing
+                                                            ) {
+                                                              return
+                                                            }
+                                                            _vm.relationshipOther =
+                                                              $event.target.value
+                                                          }
+                                                        }
+                                                      }),
+                                                      _vm._v(" "),
+                                                      errors != undefined &&
+                                                      errors.length
+                                                        ? _c(
+                                                            "span",
+                                                            {
+                                                              staticClass:
+                                                                "invalid-feedback d-block"
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                "\n\t\t\t\t\t\t\t\t\t\t\t\t" +
+                                                                  _vm._s(
+                                                                    errors[0]
+                                                                  ) +
+                                                                  "\n\t\t\t\t\t\t\t\t\t\t\t"
+                                                              )
+                                                            ]
+                                                          )
+                                                        : _vm._e()
+                                                    ]
+                                                  }
                                                 }
-                                              }
-                                            ],
-                                            null,
-                                            true
-                                          )
-                                        })
-                                      ],
-                                      1
-                                    )
-                                  ]
-                                )
+                                              ],
+                                              null,
+                                              true
+                                            )
+                                          })
+                                        ],
+                                        1
+                                      )
+                                    ])
+                                  : _vm._e()
                               ]),
                               _vm._v(" "),
                               _c("home-address", {
-                                attrs: { "home-address": _vm.address },
+                                attrs: { "address-type": "personal" },
                                 on: {
-                                  "home-address-update": _vm.updateHomeAddress
+                                  input: function(newAddress) {
+                                    _vm.address = newAddress
+                                  }
+                                },
+                                model: {
+                                  value: _vm.address,
+                                  callback: function($$v) {
+                                    _vm.address = $$v
+                                  },
+                                  expression: "address"
                                 }
                               }),
                               _vm._v(" "),
@@ -60237,17 +60292,20 @@ var render = function() {
                                   "div",
                                   { staticClass: "col" },
                                   [
-                                    _vm.phoneNumbers.length > 0
-                                      ? _c("phone-details", {
-                                          attrs: {
-                                            "user-phones": _vm.phoneNumbers
-                                          },
-                                          on: {
-                                            "phone-details-updates":
-                                              _vm.updatePhoneNumbers
-                                          }
-                                        })
-                                      : _vm._e()
+                                    _c("phone-details", {
+                                      on: {
+                                        input: function(newPhoneNumbers) {
+                                          _vm.phoneNumbers = newPhoneNumbers
+                                        }
+                                      },
+                                      model: {
+                                        value: _vm.phoneNumbers,
+                                        callback: function($$v) {
+                                          _vm.phoneNumbers = $$v
+                                        },
+                                        expression: "phoneNumbers"
+                                      }
+                                    })
                                   ],
                                   1
                                 )
@@ -60285,11 +60343,8 @@ var render = function() {
                                                       {
                                                         name: "model",
                                                         rawName: "v-model",
-                                                        value:
-                                                          _vm.memberDetails
-                                                            .email,
-                                                        expression:
-                                                          "memberDetails.email"
+                                                        value: _vm.email,
+                                                        expression: "email"
                                                       }
                                                     ],
                                                     staticClass:
@@ -60302,8 +60357,7 @@ var render = function() {
                                                         "Email address"
                                                     },
                                                     domProps: {
-                                                      value:
-                                                        _vm.memberDetails.email
+                                                      value: _vm.email
                                                     },
                                                     on: {
                                                       input: function($event) {
@@ -60313,11 +60367,8 @@ var render = function() {
                                                         ) {
                                                           return
                                                         }
-                                                        _vm.$set(
-                                                          _vm.memberDetails,
-                                                          "email",
+                                                        _vm.email =
                                                           $event.target.value
-                                                        )
                                                       }
                                                     }
                                                   }),
@@ -60332,11 +60383,11 @@ var render = function() {
                                                         },
                                                         [
                                                           _vm._v(
-                                                            "\n                                            " +
+                                                            "\n\t\t\t\t\t\t\t\t\t\t\t\t" +
                                                               _vm._s(
                                                                 errors[0]
                                                               ) +
-                                                              "\n                                        "
+                                                              "\n\t\t\t\t\t\t\t\t\t\t\t"
                                                           )
                                                         ]
                                                       )
@@ -60387,10 +60438,9 @@ var render = function() {
                                                       {
                                                         name: "model",
                                                         rawName: "v-model",
-                                                        value:
-                                                          _vm.memberDetails.dob,
+                                                        value: _vm.dateOfBirth,
                                                         expression:
-                                                          "memberDetails.dob"
+                                                          "dateOfBirth"
                                                       },
                                                       {
                                                         name: "mask",
@@ -60407,8 +60457,7 @@ var render = function() {
                                                       placeholder: "mm/dd/yyyy"
                                                     },
                                                     domProps: {
-                                                      value:
-                                                        _vm.memberDetails.dob
+                                                      value: _vm.dateOfBirth
                                                     },
                                                     on: {
                                                       input: function($event) {
@@ -60418,11 +60467,8 @@ var render = function() {
                                                         ) {
                                                           return
                                                         }
-                                                        _vm.$set(
-                                                          _vm.memberDetails,
-                                                          "dob",
+                                                        _vm.dateOfBirth =
                                                           $event.target.value
-                                                        )
                                                       }
                                                     }
                                                   }),
@@ -60437,11 +60483,11 @@ var render = function() {
                                                         },
                                                         [
                                                           _vm._v(
-                                                            "\n                                            " +
+                                                            "\n\t\t\t\t\t\t\t\t\t\t\t\t" +
                                                               _vm._s(
                                                                 errors[0]
                                                               ) +
-                                                              "\n                                        "
+                                                              "\n\t\t\t\t\t\t\t\t\t\t\t"
                                                           )
                                                         ]
                                                       )
@@ -60466,10 +60512,8 @@ var render = function() {
                                 [
                                   _c("input", {
                                     staticClass: "field-submit btn-primary",
-                                    attrs: {
-                                      type: "submit",
-                                      value: "Add Member"
-                                    }
+                                    attrs: { type: "submit" },
+                                    domProps: { value: _vm.formSubmissionText }
                                   })
                                 ]
                               )
@@ -69883,7 +69927,7 @@ var render = function() {
     _vm.showFamilyDetails
       ? _c("div", [
           _c("h3", { staticClass: "heading3" }, [
-            _vm._v("\n            Close family members\n        ")
+            _vm._v("\n\t\t\tClose family members\n\t\t")
           ]),
           _vm._v(" "),
           _c(
@@ -69900,18 +69944,14 @@ var render = function() {
                   _vm._v(" "),
                   _c("div", { staticClass: "item__relationship" }, [
                     _vm._v(
-                      "\n                    " +
-                        _vm._s(family.family_relation.title) +
-                        "\n                "
+                      "\n\t\t\t\t\t" +
+                        _vm._s(family.relation.title) +
+                        "\n\t\t\t\t"
                     )
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "item__email" }, [
-                    _vm._v(
-                      "\n                    " +
-                        _vm._s(family.email) +
-                        "\n                "
-                    )
+                    _vm._v("\n\t\t\t\t\t" + _vm._s(family.email) + "\n\t\t\t\t")
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "item__phone" }),
@@ -69963,7 +70003,7 @@ var render = function() {
                           )
                         ]
                       ),
-                      _vm._v(" \n                    "),
+                      _vm._v(" \n\t\t\t\t\t"),
                       _c(
                         "a",
                         {
@@ -70120,11 +70160,7 @@ var render = function() {
                       staticClass: "btn-primary btn-editinfo",
                       attrs: { to: "/family-members" }
                     },
-                    [
-                      _vm._v(
-                        "\n                    Add Member\n                "
-                      )
-                    ]
+                    [_vm._v("\n\t\t\t\t\tAdd Member\n\t\t\t\t")]
                   )
                 ],
                 1
@@ -70139,7 +70175,7 @@ var render = function() {
           _c("div", { staticClass: "question-header" }, [
             _c("h3", [
               _vm._v(
-                "\n                Would you like to add close family members including\n                children?\n            "
+                "\n\t\t\t\tWould you like to add close family members including\n\t\t\t\tchildren?\n\t\t\t"
               )
             ]),
             _vm._v(" "),
@@ -70201,15 +70237,15 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "item item__header clearfix" }, [
       _c("div", { staticClass: "item__name" }, [
-        _vm._v("\n                    Name\n                ")
+        _vm._v("\n\t\t\t\t\tName\n\t\t\t\t")
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "item__relationship" }, [
-        _vm._v("\n                    Relationship\n                ")
+        _vm._v("\n\t\t\t\t\tRelationship\n\t\t\t\t")
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "item__email" }, [
-        _vm._v("\n                    Email\n                ")
+        _vm._v("\n\t\t\t\t\tEmail\n\t\t\t\t")
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "item__phone" }),

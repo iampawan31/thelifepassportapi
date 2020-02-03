@@ -53,6 +53,15 @@ Route::middleware(['auth'])->group(function () {
         Route::post('marriage-status', 'MarriageStatusController@store')->name('personal.marriage.post');
         Route::resource('spouse-info', 'SpouseInfoController')->only(['index', 'store', 'update', 'destroy']);
 
+        Route::get('family/status', 'FamilyStatusController@index');
+        Route::post('family/status', 'FamilyStatusController@store');
+        Route::get('family/create', 'FamilyController@create');
+        Route::get('family', 'FamilyController@index');
+        Route::put('family/{familyId}', 'FamilyController@update');
+        Route::post('family', 'FamilyController@store');
+        Route::get('family/{familyId?}/edit', 'FamilyController@edit');
+        Route::delete('family/{familyId}', 'FamilyController@destroy');
+
     });
 
     //Previous Spouse information route

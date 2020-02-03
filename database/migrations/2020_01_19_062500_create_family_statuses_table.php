@@ -17,8 +17,8 @@ class CreateFamilyStatusesTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->boolean('has_family_member')->default(false);
-            $table->tinyInteger('count');
-            
+            $table->tinyInteger('count')->default(0);
+
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });

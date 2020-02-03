@@ -144,8 +144,7 @@ class PersonalInfoController extends Controller
             }
 
             // Save step completed information
-            $user->steps()->sync([
-                'step_id' => 1,
+            $user->steps()->syncWithoutDetaching(1, [
                 'user_id' => $user->id,
                 'is_visited' => '1',
                 'is_filled' => '1',
@@ -308,8 +307,7 @@ class PersonalInfoController extends Controller
                 }
 
                 // Save step completed information
-                $user->steps()->sync([
-                    'step_id' => 1,
+                $user->steps()->syncWithoutDetaching(1, [
                     'user_id' => $user->id,
                     'is_visited' => '1',
                     'is_filled' => '1',

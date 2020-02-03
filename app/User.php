@@ -79,6 +79,7 @@ class User extends Authenticatable
 
     public function steps()
     {
-        return $this->belongsToMany(PersonalDetailsSteps::class, 'users_personal_details_completions', 'user_id', 'step_id');
+        return $this->belongsToMany(PersonalDetailsSteps::class, 'users_personal_details_completions', 'user_id', 'step_id')
+            ->withPivot('is_filled', 'is_visited', 'is_completed');
     }
 }

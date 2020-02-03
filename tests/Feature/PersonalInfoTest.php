@@ -162,15 +162,21 @@ class PersonalInfoTest extends TestCase
     {
         $this->actingAs($this->user)
             ->postJson('/steps', [
-                'step_id' => 1,
-                'is_visited' => 1
+                'step_id' => '1',
+                'is_visited' => '1',
+                'is_filled' => '1',
+                'is_completed' => '1'
             ])
             ->dump()
             ->assertStatus(201);
 
         $this->assertDatabaseHas('users_personal_details_completions', [
             'step_id' => 1,
-            'user_id' => $this->user->id
+            'user_id' => $this->user->id,
+            'is_filled' => '1',
+            'is_visited' => '1',
+            'is_completed' => '1'
+
         ]);
     }
 }

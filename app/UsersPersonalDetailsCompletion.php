@@ -27,12 +27,6 @@ class UsersPersonalDetailsCompletion extends Model
         return $this->belongsToMany(PersonalDetailsSteps::class, 'users_personal_details_completions', 'user_id', 'step_id');
     }
 
-    //Table Name
-    static function tableName()
-    {
-        return with(new static)->getTable();
-    }
-
     public function updatestepinfo($request, $user_id)
     {
         $inputs     = $request;

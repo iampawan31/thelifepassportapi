@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\FamilyMemberAddress;
+use App\FamilyMembers;
+use App\FamilyPhone;
+use App\FamilyRelation;
+use App\FamilyStatus;
+use Auth;
+use Carbon\Carbon;
 use Exception;
-use Session, Auth;
-use App\PersonalInfo;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class FamilyController extends Controller
 {
@@ -21,119 +27,99 @@ class FamilyController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Return all family members related to authenticated user.
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function index()
     {
-        //
+        $familyMembers = FamilyMembers::where('user_id', auth()->id())->get();
+        return response()->json(['status' => 200, 'data' => $familyMembers], 200);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Return information for adding a family member..
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function create()
     {
-        //
+        $familyRelations = FamilyRelation::where('status', 1)->get();
+
+        $map = $familyRelations->map(function ($items) {
+            $data['id'] = $items->id;
+            $data['text'] = $items->title;
+            return $data;
+        });
+        return response()->json(['data' => $map], 200);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store Family Member Information.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return JsonResponse
      */
     public function store(Request $request)
     {
-        $inputs = $request->all();
-        
-        //personal information
-        $legal_name         = $inputs['legal_name'];
-        $relationship_id    = $inputs['relationship'];
-        $relatiionship_other= @$inputs['relatiionship_other'];
-        $address            = $inputs['address'];
-        $email              = $inputs['email'];
-        $dob                = $inputs['dob'];
-
+        // Insert Family Member Information
+        // Update family member count
+        // Insert family member address
+        // Insert family member phone number(s)
         try {
-            //insert personal information
-            $objMemberInfo = new \App\FamilyMembers();
-            
-            $objMemberInfo->user_id               = Auth::user()->id;
-            $objMemberInfo->legal_name            = $legal_name ? $legal_name : "";
-            $objMemberInfo->relationship_id       = $relationship_id ? $relationship_id : 0;
-            $objMemberInfo->relatiionship_other   = $relatiionship_other ? $relatiionship_other : "";
-            $objMemberInfo->address               = $address ? $address : "";
-            $objMemberInfo->email                 = $email ? $email : "";
-            $objMemberInfo->dob                   = $dob ? date('Y-m-d', strtotime($dob)) : null;
-            $objMemberInfo->save();
+            DB::beginTransaction();
 
-            //insert record in user personal details completion
-            \App\UsersPersonalDetailsCompletion::where('step_id', 4)
-                                                ->where('user_id', Auth::user()->id)
-                                                ->update(['is_visited' => '1', 'is_filled' => '1']);
+            $familyMember = new FamilyMembers;
 
-            //phone info
-            $arrPhone = [];
-            if (isset($inputs['phone'])) {
-                foreach($inputs['phone'] as $phone) {
-                    if ($phone) {
-                        $arrPhone[] = ['user_id' => Auth::user()->id, 'family_member_id' => $objMemberInfo->user_id, 'phone' => $phone];
-                    }
-                }
-            }
-            //insert phone information
-            if (!empty($arrPhone)) {
-                foreach($arrPhone as $phones){
-                    $objPhone = \App\FamilyPhone::create($phones);
-                } 
+            $familyMember->user_id = auth()->id();
+            $this->updateFamilyMemberInformation($familyMember);
+
+            FamilyStatus::where('user_id', auth()->id())->increment('count');
+            FamilyStatus::where('user_id', auth()->id())->update(['has_family_member' => true]);
+
+            $address = json_decode(request('address'));
+            if (!empty($address)) {
+                $familyMemberAddress = new FamilyMemberAddress;
+
+                $familyMemberAddress->user_id = auth()->id();
+                $familyMemberAddress->family_member_id = $familyMember->id;
+                $familyMemberAddress->street_address1 = $address->street_address1;
+                $familyMemberAddress->street_address2 = $address->street_address2;
+                $familyMemberAddress->city = $address->city;
+                $familyMemberAddress->state = $address->state;
+                $familyMemberAddress->zipcode = $address->zipcode;
+
+                $familyMemberAddress->save();
+
             }
 
-            //increase family members count
-            $objFamilyStatus    = \App\FamilyStatus::where('user_id', Auth::user()->id)
-                ->update(['count'=> \DB::raw('count+1')]);
+            $this->updateFamilyMemberPhoneNumbers($familyMember);
 
-            return response()->json(['status' => 200, 'message' => 'Family members information has been saved successfully']);
+            DB::commit();
+            return response()
+                ->json([
+                    'status' => 201,
+                    'message' => 'Family members information has been saved successfully'
+                ], 201);
 
         } catch (Exception $e) {
-            return response()->json(['status' => 503, 'message' => 'Error']);
+            DB::rollBack();
+            return response()->json(['status' => 500, 'message' => $e]);
         }
 
     }
 
     /**
-     * Display the specified resource.
+     * Return information for updating a family member information.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $familyMemberId
+     * @return JsonResponse
      */
-    public function show($id)
+    public function edit($familyMemberId)
     {
-        
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $count = \App\FamilyMembers::where('id', $id)->get()->count();
-        
-        if ($count > 0) {
-            $member_info = \App\FamilyMembers::where('id', $id)
-                        ->with('Address')
-                        ->with('FamilyPhone')
-                        ->with('FamilyRelation')
-                        ->with('UsersPersonalDetailsCompletion')
-                        ->get();
-            
-            return response()->json(['status' => 200, 'data' => $member_info]);
+        $familyMember = FamilyMembers::where('id', $familyMemberId)->first();
+        if (!empty($familyMember)) {
+            return response()->json(['data' => $familyMember], 200);
         } else {
             return response()->json(['status' => 200, 'data' => []]);
         }
@@ -142,215 +128,136 @@ class FamilyController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $familyMemberId
+     * @return JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update($familyMemberId)
     {
-        $inputs = $request->all();
-        
-        //personal information
-        $legal_name         = $inputs['legal_name'];
-        $relationship_id    = $inputs['relationship'];
-        $relatiionship_other= $inputs['relatiionship_other'];
-        $address            = $inputs['address'];
-        $email              = $inputs['email'];
-        $dob                = $inputs['dob'];
-        
-        try {//
-            //get spouse information
-            $objMemberInfo = \App\FamilyMembers::find($id);
-            
-            //$objPersonalInfo->user_id       = Auth::user()->id;
-            $objMemberInfo->legal_name          = $legal_name ? $legal_name : "";
-            $objMemberInfo->relationship_id     = $relationship_id ? $relationship_id : 0;
-            $objMemberInfo->address             = $address ? $address : "";
-            $objMemberInfo->email               = $email ?  $email: "";
-            $objMemberInfo->dob                 = $dob ? date('Y-m-d', strtotime($dob)) : null;
-            $objMemberInfo->relatiionship_other = $relatiionship_other ? $relatiionship_other : "";
-            $objMemberInfo->save();
-            
-            //insert record in user personal details completion
-            \App\UsersPersonalDetailsCompletion::where('step_id', 4)
-                                                ->where('user_id', Auth::user()->id)
-                                                ->update(['is_visited' => '1', 'is_filled' => '1']);
+        // Check if the family member exists for an authenticated user.
+        // Update family member information.
+        // Update family member address.
+        // Update family member phone number(s).
 
-            //phone info
-            $arrPhone = [];
-            if (isset($inputs['phone'])) {
-                foreach($inputs['phone'] as $phone) {
-                    if ($phone) {
-                        $arrPhone[] = ['user_id' => Auth::user()->id, 'family_member_id' => $id, 'phone' => $phone];
-                    }
+        $familyMember = FamilyMembers::where(['id' => $familyMemberId, 'user_id' => auth()->id()])->first();
+
+        if ($familyMember) {
+
+            try {
+                DB::beginTransaction();
+
+                $this->updateFamilyMemberInformation($familyMember);
+
+                $address = json_decode(request('address'));
+                if (!empty($address)) {
+                    FamilyMemberAddress::updateOrCreate([
+                        'user_id' => auth()->id(),
+                        'family_member_id' => $familyMember->id
+                    ], [
+                        'street_address1' => $address->street_address1,
+                        'street_address2' => $address->street_address2,
+                        'city' => $address->city,
+                        'state' => $address->state,
+                        'zipcode' => $address->zipcode
+                    ]);
                 }
+
+                $this->updateFamilyMemberPhoneNumbers($familyMember);
+                DB::commit();
+
+                return response()
+                    ->json([
+                        'status' => 201,
+                        'message' => 'Family member information updated successfully'
+                    ], 201);
+            } catch (Exception $exception) {
+                DB::rollBack();
+                return response()->json(['status' => 500, 'message' => $exception], 500);
             }
-
-            //insert phone information
-            if (!empty($arrPhone)) {
-                //remove all phone details
-                \App\FamilyPhone::where('family_member_id', $id)->delete();
-                foreach($arrPhone as $phones){
-                    $objPhone = \App\FamilyPhone::create($phones);
-                } 
-            }
-            
-            return response()->json(['status' => 200, 'message' => 'Personal information has been saved successfully']);
-        } catch (Exception $e) {
-            dd($e);
-            return response()->json(['status' => 503, 'message' => 'Error']);
-        }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        try {
-            //\DB::transaction(function ($id) {
-                
-                //remove family member phone
-                \App\FamilyPhone::where('family_member_id', $id)->delete();
-
-                //remove 
-                \App\FamilyMembers::where('id', $id)->delete();
-
-                //get count of remaining members
-                $count = \App\FamilyMembers::where('user_id', Auth::user()->id)->get()->count();
-
-                //check members count
-                \App\FamilyStatus::where('user_id', Auth::user()->id)
-                    ->update(['count'=> \DB::raw('count-1')]);
-
-                if ($count == 0) {
-                    //check members count
-                    \App\FamilyStatus::where('user_id', Auth::user()->id)
-                        ->update(['has_family_member' => '0', 'count' => '0']);
-
-                    //update step table
-                    \App\UsersPersonalDetailsCompletion::where('step_id', 4)
-                        ->where('user_id', Auth::user()->id)
-                        ->update(['is_visited' => '1', 'is_filled' => '0', 'is_completed' => '0']);
-                }
-            //});
-
-            return response()->json(['status' => 200, 'msg' => 'Family member information has removed successfully', 'family_count' => $count], 200);
-        } catch(Exception $e) {
-            dd($e);
-            return response()->json(['status' => 500, 'msg' => 'Error', 'family_count' => 0], 500);
-        }
-    }
-    
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function getfamilymembersinfo() {
-        //\DB::enableQueryLog();
-        $user_id = Auth::user()->id;
-        $count = \App\FamilyMembers::where('user_id', $user_id)->get()->count();
-        
-        if ($count > 0) {
-            $spouse_info = \App\FamilyMembers::where('user_id', $user_id)
-                ->with('Address')
-                ->with('FamilyPhone')
-                ->with('FamilyRelation')
-                ->with('UsersPersonalDetailsCompletion')
-                ->get();
-            //dd(\DB::getQueryLog());
-            return response()->json(['status' => 200, 'data' => $spouse_info]);
         } else {
-            return response()->json(['status' => 200, 'data' => []]);
+            return response()->json(['status' => 401, 'message' => 'This action is unauthorized'], 401);
         }
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Remove family member for an authenticated user.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param $familyMemberId
+     * @return JsonResponse
      */
-    public function updatefamilystatus(Request $request) {
-        $inputs = $request->all();
-        $user_id    = Auth::user()->id;
-        $has_family_member = $inputs['has_family_member'];
+    public function destroy($familyMemberId)
+    {
+        // Check if the Family member is related to User
+        // Delete Family Member Address
+        // Delete Family Member Phone Number(s)
+        // Delete Family Member
+        // Update Family Member Count
 
-        try {
-            //\DB::enableQueryLog();
-            //check for record
-            $objMarriageStatus = \App\FamilyStatus::where('user_id', $user_id)->get();
-            
-            if ($objMarriageStatus->count()) {
-                \App\FamilyStatus::where('user_id', $user_id)
-                                    ->update(['has_family_member' => $has_family_member]);
-                // $objMarriageStatus->is_married = $is_married;
-                // $objMarriageStatus->save();
-            } else {
-                \App\FamilyStatus::create(['user_id' => $user_id, 'has_family_member' => $has_family_member]);
+        $familyMember = FamilyMembers::where(['id' => $familyMemberId, 'user_id' => auth()->id()])->first();
+
+        if ($familyMember->user_id == auth()->id()) {
+            try {
+                FamilyMemberAddress::where('family_member_id', $familyMember->id)->delete();
+                FamilyPhone::where('family_member_id', $familyMember->id)->delete();
+                FamilyMembers::where('id', $familyMember->id)->delete();
+
+                FamilyStatus::where('user_id', auth()->id())->decrement('count');
+
+
+                if (FamilyMembers::where('user_id', auth()->id())->get()->count() == 0) {
+                    FamilyStatus::where('user_id', auth()->id())->update(['has_family_member' => false]);
+                    auth()->user()->steps()->syncWithoutDetaching(4, [
+                        'is_visited' => '1', 'is_filled' => '0', 'is_completed' => '0'
+                    ]);
+                }
+
+                return response()->json(['status' => 201, 'message' => 'Family Member removed successfully'], 201);
+
+            } catch (Exception $exception) {
+                return response()->json(['status' => 500, 'message' => $exception], 500);
             }
-             //dd(\DB::getQueryLog());
-            //insert record in user personal details completion
-            if ($has_family_member == "0") {
-                $arrData = ['is_visited' => '1', 'is_filled' => '1', 'is_completed' => '1'];
-            } else {
-                $arrData = ['is_visited' => '1', 'is_filled' => '1', 'is_completed' => '0'];
-            }
-
-            \App\UsersPersonalDetailsCompletion::where('step_id', 4)
-                                                 ->where('user_id', $user_id)
-                                                 ->update($arrData);
-
-            return response()->json(['status' => 200, 'msg' => 'Marriage status has been updated successfully']);
-        } catch (Exception $e) {dd($e);
-            return response()->json(['status' => 503, 'msg' => 'Error']);
+        } else {
+            return response()->json(['status' => 401, 'message' => 'Unauthorized action'], 401);
         }
     }
 
-    public function getfamilymembersstatus() {
-        
-        $user_id    = Auth::user()->id;
+    /**
+     * @param $familyMember
+     */
+    protected function updateFamilyMemberInformation($familyMember): void
+    {
+        $familyMember->legal_name = request('legal_name');
+        $familyMember->relationship_id = request('relationship_id');
+        $familyMember->relationship_other = request('relationship_other');
+        $familyMember->dob = Carbon::parse(request('dob'));
+        $familyMember->email = request('email');
 
-        try {
-            //check for record
-            $objFamilyStatus    = \App\FamilyStatus::find($user_id);
-            return response()->json(['status' => 200, 'data' => $objFamilyStatus]);
-        } catch (Exception $e) {
-            return response()->json(['status' => 503, 'data' => [[]]]);
-        }
+        $familyMember->save();
     }
 
-    public function familyrelations() {
+    /**
+     * @param $familyMember
+     * @return mixed
+     */
+    protected function updateFamilyMemberPhoneNumbers($familyMember)
+    {
+        $phoneNumbers = json_decode(request('phones'));
 
-        $arrFamilyRelation = \App\FamilyRelation::select('id', 'title')->where('status', '1')->get();
-        
-        $data = [];
-        if ($arrFamilyRelation->count()) {
-            foreach( $arrFamilyRelation as $relation ) {
-                $data[] = ['id' => $relation->id, 'text' => $relation->title];
+        if (!empty($phoneNumbers)) {
+            FamilyPhone::where([
+                'user_id' => auth()->id(),
+                'family_member_id' => $familyMember->id
+            ])->delete();
+
+            foreach ($phoneNumbers as $phone) {
+                if (!empty($phone) && $phone->phone !== null) {
+                    FamilyPhone::create([
+                        'user_id' => auth()->id(),
+                        'family_member_id' => $familyMember->id,
+                        'phone' => $phone->phone
+                    ]);
+                }
             }
         }
-        return response()->json(['relation' => $data]);
-
-    }
-
-    public function updatestatus(Request $request) {
-        $inputs = $request->all();
-        $user_id    = Auth::user()->id;
-        $is_completed = @$inputs['chk_complete'] ? '1' : '0';
-
-        //insert record in user personal details completion
-        $arrData = ['is_completed' => $is_completed];
-
-        \App\UsersPersonalDetailsCompletion::where('step_id', 4)
-                                             ->where('user_id', $user_id)
-                                             ->update($arrData);
-
-        return response()->json(['status' => 200, 'msg' => 'Family information has completed successfully']);
+        return;
     }
 }
