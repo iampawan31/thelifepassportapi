@@ -71,6 +71,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('previousspouse/updatemarriagestatus', 'PreviousspouseController@updatemarriagestatus')->name('prevspouseinfo.updatemarriagestatus');
     Route::get('previousspouse/getpreviousmarriagestatus', 'PreviousspouseController@getpreviousmarriagestatus')->name('prevspouseinfo.getpreviousmarriagestatus');
     Route::post('removedivorcefile', 'PreviousspouseController@removedivorcefile')->name('prevspouseinfo.removedivorcefile');
+    Route::post('removechildsupportfile', 'PreviousspouseController@removechildsupportfile')->name('prevspouseinfo.removechildsupportfile');
     Route::delete('previousspouse/{id}/removespouse', 'PreviousspouseController@destroy')->name('prevspouseinfo.removespouse');
 
     //Close family members

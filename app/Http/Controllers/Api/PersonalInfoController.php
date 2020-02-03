@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\EmployerAddress;
 use App\Http\Controllers\Controller;
@@ -19,15 +19,6 @@ use Illuminate\Support\Facades\DB;
 
 class PersonalInfoController extends Controller
 {
-
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function index()
-    {
-        return view('personal.info', ['user' => auth()->user()]);
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -64,7 +55,7 @@ class PersonalInfoController extends Controller
             }
 
             //Saving user's phone numbers
-            $phoneNumbers = json_decode(request('phones'));
+            $phoneNumbers = json_decode(request('user_phones'));
 
             if (!empty($phoneNumbers)) {
                 foreach ($phoneNumbers as $phone) {
@@ -144,7 +135,8 @@ class PersonalInfoController extends Controller
             }
 
             // Save step completed information
-            $user->steps()->syncWithoutDetaching(1, [
+            $user->steps()->sync([
+                'step_id' => 1,
                 'user_id' => $user->id,
                 'is_visited' => '1',
                 'is_filled' => '1',
@@ -176,7 +168,7 @@ class PersonalInfoController extends Controller
      */
     public function show()
     {
-        //        dd(auth()->user());
+//        dd(auth()->user());
         return response()->json(['status' => 200, 'data' => auth()->user()]);
     }
 
@@ -193,7 +185,6 @@ class PersonalInfoController extends Controller
                 $user = User::findOrFail(auth()->id());
 
                 DB::beginTransaction();
-
                 $this->updatePersonalInformation($personalInfo);
 
                 // Save user's personal address
@@ -218,7 +209,7 @@ class PersonalInfoController extends Controller
                 if (!empty($phoneNumbers)) {
                     UserPhone::where('user_id', $user->id)->delete();
                     foreach ($phoneNumbers as $phone) {
-                        if (!empty($phone) && $phone->phone !== null) {
+                        if (!empty($phone)) {
                             UserPhone::create(['user_id' => $user->id, 'phone' => $phone->phone]);
                         }
                     }
@@ -231,7 +222,7 @@ class PersonalInfoController extends Controller
                     UserEmail::where('user_id', $user->id)->delete();
 
                     foreach ($emails as $email) {
-                        if (!empty($email) && $email->email !== null) {
+                        if (!empty($email)) {
                             UserEmail::create([
                                 'user_id' => $user->id,
                                 'email' => $email->email,
@@ -263,13 +254,13 @@ class PersonalInfoController extends Controller
                 $employers = json_decode(request('user_employer'));
 
                 if (!empty($employers)) {
+
                     foreach ($employers as $employer) {
-                        if (!empty($employer) && $employer->employer_name !== null) {
+                        if (!empty($employer)) {
                             if (!empty($employer->id)) {
                                 $userEmployer = UserEmployer::updateOrCreate([
                                     'id' => $employer->id,
-                                    'user_id' => $user->id
-                                ], [
+                                    'user_id' => $user->id], [
                                     'employer_name' => $employer->employer_name,
                                     'employer_phone' => $employer->employer_phone,
                                     'computer_username' => $employer->computer_username,
@@ -302,12 +293,14 @@ class PersonalInfoController extends Controller
                                 $benefitsSelected = $this->getSelectedBenefits($employer->benefits);
                                 $userEmployer->benefits()->sync($benefitsSelected);
                             }
+
                         }
                     }
                 }
 
                 // Save step completed information
-                $user->steps()->syncWithoutDetaching(1, [
+                $user->steps()->sync([
+                    'step_id' => 1,
                     'user_id' => $user->id,
                     'is_visited' => '1',
                     'is_filled' => '1',
@@ -322,7 +315,6 @@ class PersonalInfoController extends Controller
                         'message' => 'Personal information has been updated successfully'
                     ], 201);
             } catch (Exception $e) {
-                dd($e);
                 DB::rollBack();
 
                 return response()

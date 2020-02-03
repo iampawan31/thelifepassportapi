@@ -28,7 +28,6 @@ class PersonalStepsController extends Controller
                     'is_filled' => request('is_filled') ?: false,
                     'is_completed' => request('is_completed') ?: false
                 ]);
-
             } else {
                 $user->steps()->attach(request('step_id'), [
                     'is_visited' => request('is_visited') ?: false,
@@ -42,6 +41,7 @@ class PersonalStepsController extends Controller
                 'msg' => 'Step information saved successfully'
             ], 201);
         } catch (Exception $e) {
+            dd($e);
             return response()->json([
                 'status' => 500,
                 'msg' => $e

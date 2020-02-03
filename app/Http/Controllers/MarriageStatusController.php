@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\MarriageStatus;
 use Illuminate\Http\Request;
-use Exception;
+use App\UsersPersonalDetailsCompletion;
 
 class MarriageStatusController extends Controller
 {
@@ -30,25 +31,37 @@ class MarriageStatusController extends Controller
             $marriageStatus = MarriageStatus::updateOrCreate([
                 'user_id' => auth()->id()
             ], [
-                'is_married' => request('is_married')
+                'is_married' => request('is_married') == 'true' ? '1' : '0'
             ]);
-
+            
             if (request('is_married') == "0") {
-                auth()->user()->steps()->sync([
-                    'user_id' => auth()->id(),
-                    'step_id' => 2,
-                    'is_visited' => true,
-                    'is_filled' => true,
-                    'is_completed' => true
-                ]);
+                $is_completed = '1';
+                // auth()->user()->steps()->sync([
+                //     'user_id' => auth()->id(),
+                //     'step_id' => 2,
+                //     'is_visited' => true,
+                //     'is_filled' => true,
+                //     'is_completed' => true
+                // ]);
             } else {
-                auth()->user()->steps()->sync(['user_id' => auth()->id(),
-                    'step_id' => 2,
-                    'is_visited' => true,
-                    'is_filled' => true,
-                    'is_completed' => false
-                ]);
+                $is_completed = '0';
+                // auth()->user()->steps()->sync(['user_id' => auth()->id(),
+                //     'step_id' => 2,
+                //     'is_visited' => true,
+                //     'is_filled' => true,
+                //     'is_completed' => false
+                // ]);
             }
+
+            UsersPersonalDetailsCompletion::updateOrCreate(
+                ['user_id' => auth()->id(), 'step_id' => 2], 
+                [
+                    'is_visited'    => '1',
+                    'is_filled'     => '1',
+                    'is_completed'  => $is_completed
+                ]
+            );
+
 
             return response()
                 ->json([

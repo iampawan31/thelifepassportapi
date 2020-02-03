@@ -51,7 +51,8 @@
                         <div class="item">
                             <h4 class="item__title">Current Address</h4>
                             <div class="item__content">
-                                {{ spouseDetails.address }}
+                                {{ spouseDetails.address.street_address1 }}, {{ spouseDetails.address.street_address2 }}, {{ spouseDetails.address.city }}, {{ spouseDetails.address.state }}<br />
+                                {{ spouseDetails.address.zipcode }}
                             </div>
                         </div>
                     </div>
@@ -64,7 +65,7 @@
                             <div class="item__content">
                                 <span
                                     v-for="(phone,
-                                    index) in spouseDetails.previous_spouse_phone"
+                                    index) in spouseDetails.phones"
                                     v-bind:key="index"
                                 >
                                     {{ phone.phone }}<br />

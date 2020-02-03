@@ -16,44 +16,46 @@
                             @submit.prevent="handleSubmit"
                         >
                             <!-- Former spouse's name section -->
-                            <div class="row">
-                                <div class="col-md-12 col-sm-12">
-                                    <div class="field-group">
-                                        <label
-                                            for="former_spouse_name"
-                                            class="input-label"
-                                            >Former Spouse Name</label
-                                        >
-                                        <ValidationProvider
-                                            name="Legal Name"
-                                            rules="required|alpha_spaces|max:50"
-                                            v-slot="{ errors }"
-                                        >
-                                            <input
-                                                type="text"
-                                                name="legal_name"
-                                                id="legal_name"
-                                                class="field-input required"
-                                                placeholder="Former Spouse Name"
-                                                v-model="
-                                                    spouseDetails.legal_name
-                                                "
-                                            />
-                                            <div
-                                                class="invalid-feedback d-block"
-                                                v-for="(error, index) in errors"
-                                                v-bind:key="index"
+                            <div class="padding">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="field-group">
+                                            <label
+                                                for="former_spouse_name"
+                                                class="input-label"
+                                                >Former Spouse Name</label
                                             >
-                                                {{ error }}
-                                            </div>
-                                        </ValidationProvider>
+                                            <ValidationProvider
+                                                name="Legal Name"
+                                                rules="required|alpha_spaces|max:50"
+                                                v-slot="{ errors }"
+                                            >
+                                                <input
+                                                    type="text"
+                                                    name="legal_name"
+                                                    id="legal_name"
+                                                    class="field-input required"
+                                                    placeholder="Former Spouse Name"
+                                                    v-model="
+                                                        spouseDetails.legal_name
+                                                    "
+                                                />
+                                                <div
+                                                    class="invalid-feedback d-block"
+                                                    v-for="(error, index) in errors"
+                                                    v-bind:key="index"
+                                                >
+                                                    {{ error }}
+                                                </div>
+                                            </ValidationProvider>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Marriage date and location Section -->
                             <div class="row">
-                                <div class="col-md-6 col-sm-12">
+                                <div class="col-md-6 col-sm-12 pr">
                                     <div class="field-group">
                                         <label
                                             for="marriage_date"
@@ -87,7 +89,7 @@
                                         </ValidationProvider>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-sm-12">
+                                <div class="col-md-6 col-sm-12 pl">
                                     <div class="field-group">
                                         <label
                                             for="marriage_location"
@@ -125,7 +127,7 @@
 
                             <!-- Divorce Date and location section -->
                             <div class="row">
-                                <div class="col-md-6 col-sm-12">
+                                <div class="col-md-6 col-sm-12 pr">
                                     <div class="field-group">
                                         <label
                                             for="divorce_date"
@@ -160,7 +162,7 @@
                                         </validation-provider>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-sm-12">
+                                <div class="col-md-6 col-sm-12 pl">
                                     <div class="field-group">
                                         <label
                                             for="divorce_location"
@@ -197,50 +199,62 @@
                             </div>
                             <!-- Former spouse's current address -->
                             <home-address
-                                :home-address="address"
-                                @home-address-update="updateHomeAddress"
+                                v-model="address"
+                                @input="
+                                    newAddress => {
+                                        address = newAddress;
+                                    }
+                                "
+                                address-type="previousspouse"
+                                class="padding"
                             />
 
                             <!-- Former spouse's Phone number(s) section -->
                             <div class="row">
-                                <div class="col">
+                                <div class="col nopadding">
                                     <phone-details
-                                        :user-phones="phones"
-                                        v-if="phones.length > 0"
-                                    ></phone-details>
+                                        v-model="phones"
+                                        @input="
+                                            newPhoneNumbers => {
+                                                phoneNumbers = newPhoneNumbers;
+                                            }
+                                        "
+                                    />
                                 </div>
                             </div>
 
                             <!-- Former spouse's Email address section -->
-                            <div class="row">
-                                <div class="col">
-                                    <div class="field-group">
-                                        <label for="email" class="input-label"
-                                            >Email</label
-                                        >
-                                        <ValidationProvider
-                                            name="Email address"
-                                            rules="email"
-                                            v-slot="{ errors }"
-                                        >
-                                            <input
-                                                type="text"
-                                                name="email"
-                                                id="email"
-                                                class="field-input required email"
-                                                placeholder="Email address"
-                                                v-model="spouseDetails.email"
-                                            />
-                                            <span
-                                                v-if="
-                                                    errors != undefined &&
-                                                        errors.length
-                                                "
-                                                class="invalid-feedback d-block"
+                            <div class="padding">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="field-group">
+                                            <label for="email" class="input-label"
+                                                >Email</label
                                             >
-                                                {{ errors[0] }}
-                                            </span>
-                                        </ValidationProvider>
+                                            <ValidationProvider
+                                                name="Email address"
+                                                rules="email"
+                                                v-slot="{ errors }"
+                                            >
+                                                <input
+                                                    type="text"
+                                                    name="email"
+                                                    id="email"
+                                                    class="field-input required email"
+                                                    placeholder="Email address"
+                                                    v-model="spouseDetails.email"
+                                                />
+                                                <span
+                                                    v-if="
+                                                        errors != undefined &&
+                                                            errors.length
+                                                    "
+                                                    class="invalid-feedback d-block"
+                                                >
+                                                    {{ errors[0] }}
+                                                </span>
+                                            </ValidationProvider>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -429,15 +443,13 @@
                                                 >
                                                     <div
                                                         class="input-browse"
-                                                        v-if="
-                                                            !isDivorceDocumentUploaded
-                                                        "
+                                                        v-if="!isChildSupportDocumentUploaded"
                                                     >
                                                         <span class="btn-link"
                                                             >Add file</span
                                                         >
                                                         <ValidationProvider
-                                                            name="Divorce Document"
+                                                            name="Child Support Document"
                                                             rules="ext:pdf,docx,doc,txt,jpeg,png|size:5000"
                                                             v-slot="{
                                                                 errors,
@@ -468,7 +480,7 @@
                                                         <div class="btn-group">
                                                             <a
                                                                 :href="
-                                                                    divorceDoc.url
+                                                                    childSupportDoc.url
                                                                 "
                                                                 target="_blank"
                                                                 class="btn btn-success btn"
@@ -477,7 +489,7 @@
                                                             <a
                                                                 href="javascript:void(0);"
                                                                 @click="
-                                                                    removeDivorceFile()
+                                                                    removeChildSupportFile()
                                                                 "
                                                                 class="btn btn-danger btn"
                                                                 >Remove</a
@@ -490,12 +502,12 @@
                                         <div class="col-sm-6 col-xs-12">
                                             <div class="field-group">
                                                 <label
-                                                    for="alimony_amount"
+                                                    for="child_support_amount"
                                                     class="input-label"
                                                     >Amount</label
                                                 >
                                                 <ValidationProvider
-                                                    name="Alimony amount"
+                                                    name="Child support amount"
                                                     :rules="{
                                                         regex: /^[0-9]*(\.[0-9]{0,2})?$/
                                                     }"
@@ -503,12 +515,12 @@
                                                 >
                                                     <input
                                                         type="text"
-                                                        name="alimony_amount"
-                                                        id="alimony_amount"
+                                                        name="child_support_amount"
+                                                        id="child_support_amount"
                                                         class="field-input required"
                                                         placeholder="Amount"
                                                         v-model="
-                                                            spouseDetails.alimony_amount
+                                                            spouseDetails.child_support_amount
                                                         "
                                                     />
                                                     <span
@@ -583,10 +595,7 @@ export default {
         return {
             spouseDetails: [],
             phones: [],
-            emails: [],
-            socials: [],
-            address: [],
-            employers: [],
+            address: {},
             userId: 0,
             submitted: false,
             citizenshipOptions: [],
@@ -607,6 +616,12 @@ export default {
                 this.divorceDoc !== undefined &&
                 this.divorceDoc.title !== undefined
             );
+        },
+        isChildSupportDocumentUploaded() {
+            return (
+                this.childSupportDoc !== undefined &&
+                this.childSupportDoc.title !== undefined
+            );
         }
     },
     created() {
@@ -623,14 +638,26 @@ export default {
                         this.isAlimonyPaid = true;
                     }
 
-                    if (this.spouseDetails.previous_spouse_phone.length > 0) {
-                        this.phones = this.spouseDetails.previous_spouse_phone;
-                    } else {
-                        this.phones = [{ number: null }];
+                    if (this.spouseDetails.is_child_support == "1") {
+                        this.isChildSupportPaid = true;
                     }
 
-                    if (this.spouseDetails.divorce_doc.length > 0) {
-                        this.divorceDoc = this.spouseDetails.divorce_doc[0];
+                    if (this.spouseDetails.address) {
+                        this.address = this.spouseDetails.address;
+                    }
+
+                    if (this.spouseDetails.phones.length > 0) {
+                        this.phones = this.spouseDetails.phones;
+                    } else {
+                        this.phones = [{ phone: null }];
+                    }
+                    
+                    if (this.spouseDetails.documents) {
+                        this.divorceDoc = this.spouseDetails.documents;
+                    }
+
+                    if (this.spouseDetails.childsupportdoc) {
+                        this.childSupportDoc = this.spouseDetails.childsupportdoc;
                     }
 
                     if (
@@ -649,7 +676,7 @@ export default {
                         this.is_completed = false;
                     }
                 } else {
-                    this.phones = [{ number: null }];
+                    this.phones = [{ phone: null }];
                     this.is_completed = false;
                 }
             }
@@ -669,6 +696,8 @@ export default {
             } else {
                 let form = e.target;
                 let formData = new FormData(form);
+                formData.append("previousspouse_address", JSON.stringify(this.address));
+                formData.append("previousspouse_phones", JSON.stringify(this.phones));
                 formData.append("file", this.file);
 
                 if (this.userId) {
@@ -683,7 +712,6 @@ export default {
                             }
                         )
                         .then(response => {
-                            console.log(response);
                             this.$router.push("/family-members-question");
                         })
                         .catch(function() {});
@@ -717,6 +745,35 @@ export default {
                             .then(response => {
                                 if (response.status == 200) {
                                     this.divorceDoc = [];
+                                    this.$swal.fire(
+                                        "Deleted!",
+                                        "Document is removed",
+                                        "success"
+                                    );
+                                }
+                            })
+                            .catch(function() {});
+                    }
+                });
+        },
+        removeChildSupportFile() {
+            this.$swal
+                .fire({
+                    title: "Are you sure?",
+                    text: "Remove Child Support Agreement Document?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes"
+                })
+                .then(result => {
+                    if (result.value) {
+                        axios
+                            .post("/removechildsupportfile")
+                            .then(response => {
+                                if (response.status == 200) {
+                                    this.childSupportDoc = [];
                                     this.$swal.fire(
                                         "Deleted!",
                                         "Document is removed",

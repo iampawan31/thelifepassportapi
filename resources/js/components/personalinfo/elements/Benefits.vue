@@ -1,5 +1,23 @@
 <template>
     <div>
+        <!-- <div class="field-group form-group-checkbox clearfix vertical">
+             <div
+                    v-for="benefit in selectedBenefits"
+                    v-bind:key="benefit.id"
+                >
+                    <label for="benefit">
+                        <input
+                            type="checkbox"
+                            :id="benefit.id"
+                            :checked="benefit.checked"
+                            :value="benefit.id"
+                            @click="check($event)"
+                            name="benefit"
+                        /><i /> <span>{{ benefit.title }}</span>
+                        
+                    </label>
+            </div>
+        </div> -->
         <div class="field-group">
             <label for="benefits_used">Benefits used</label>
         </div>
