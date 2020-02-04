@@ -18,10 +18,10 @@ class CreateFamilyPhonesTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('family_member_id')->nullable();
             $table->string('phone', 20);
+            $table->timestamps();
 
             $table->foreign('family_member_id')->references('id')->on('family_members');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->timestamps();
         });
     }
 

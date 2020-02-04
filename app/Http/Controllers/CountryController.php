@@ -26,6 +26,7 @@ class CountryController extends Controller
     public function index()
     {
         $countries = Country::select('id', 'country_name')->get();
+
         $map = $countries->map(function ($items) {
             $data['id'] = $items->id;
             $data['text'] = $items->country_name;

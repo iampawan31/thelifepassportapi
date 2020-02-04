@@ -18,9 +18,9 @@ class CreateFriendsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('legal_name');
             $table->text('email')->nullable();
+            $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
-            $table->timestamps();
         });
     }
 

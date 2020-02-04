@@ -19,9 +19,9 @@ class CreateSpouseEmailsTable extends Migration
             $table->string('email', 255);
             $table->string('password', 20)->nullable();
             $table->boolean('is_primary')->default(false);
+            $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
-            $table->timestamps();
         });
     }
 

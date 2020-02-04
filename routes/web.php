@@ -39,16 +39,13 @@ Route::middleware(['auth'])->group(function () {
     // Personal Information Steps
     Route::post('steps', 'PersonalStepsController@update')->name('personal.steps');
 
-
     // Data Routes
     Route::get('social', 'SocialMediaController@index')->name('social.index');
     Route::get('countries', 'CountryController@index')->name('countries.index');
     Route::get('benefits', 'BenefitController@index')->name('benefit.index');
 
-
-    //Spouse information route
     Route::prefix('personal')->group(function () {
-        // Spouse Information Routes
+
         Route::get('marriage-status', 'MarriageStatusController@index')->name('personal.marriage.get');
         Route::post('marriage-status', 'MarriageStatusController@store')->name('personal.marriage.post');
         Route::resource('spouse-info', 'SpouseInfoController')->only(['index', 'store', 'update', 'destroy']);
@@ -61,6 +58,17 @@ Route::middleware(['auth'])->group(function () {
         Route::post('family', 'FamilyController@store');
         Route::get('family/{familyId?}/edit', 'FamilyController@edit');
         Route::delete('family/{familyId}', 'FamilyController@destroy');
+
+        Route::post('estate/status', 'PersonalEstateStatusController@store');
+        Route::get('estate', 'PersonalEstateController@index');
+        Route::put('estate/{estateId}', 'PersonalEstateController@update');
+        Route::post('estate', 'PersonalEstateController@store');
+
+        Route::post('spouse/estate/status', 'SpouseEstateStatusController@store');
+        Route::get('spouse/estate', 'SpouseEstateController@index');
+        Route::put('spouse/estate/{estateId}', 'SpouseEstateController@update');
+        Route::post('spouse/estate', 'SpouseEstateController@store');
+
 
     });
 

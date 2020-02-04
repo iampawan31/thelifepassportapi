@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSpouseestateStatusesTable extends Migration
+class CreatePersonalEstateStatusesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateSpouseestateStatusesTable extends Migration
      */
     public function up()
     {
-        Schema::create('spouseestate_statuses', function (Blueprint $table) {
+        Schema::create('personal_estate_statuses', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
-            $table->enum('has_spouseestate', [0,1])->comment('0=>No, 1=>Yes')->default('0');
+            $table->boolean('has_personal_estate')->default(false);
             $table->unsignedTinyInteger('count')->nullable();
+            $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
-            $table->timestamps();
         });
     }
 
@@ -31,6 +31,6 @@ class CreateSpouseestateStatusesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('spouseestate_statuses');
+        Schema::dropIfExists('personal_estate_statuses');
     }
 }

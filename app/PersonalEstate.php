@@ -16,14 +16,15 @@ class PersonalEstate extends Model
         'website'
     ];
 
-    //Table Name
-    static function tableName()
-    {
-        return with(new static)->getTable();
-    }
+    protected $with = ['address', 'step'];
 
     public function address()
     {
-        return $this->hasOne(PersonalestateAddress::class, 'estate_id');
+        return $this->hasOne(PersonalEstateAddress::class, 'estate_id');
+    }
+
+    public function step()
+    {
+        return $this->hasOne(UsersPersonalDetailsCompletion::class, 'step_id', 7);
     }
 }

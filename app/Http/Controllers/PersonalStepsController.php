@@ -41,7 +41,6 @@ class PersonalStepsController extends Controller
                 'msg' => 'Step information saved successfully'
             ], 201);
         } catch (Exception $e) {
-            dd($e);
             return response()->json([
                 'status' => 500,
                 'msg' => $e
@@ -55,7 +54,10 @@ class PersonalStepsController extends Controller
      */
     protected function hasExistingStep($user)
     {
-        $stepId = UsersPersonalDetailsCompletion::where(['user_id' => $user->id, 'step_id' => request('step_id')])->first();
+        $stepId = UsersPersonalDetailsCompletion::where([
+            'user_id' => $user->id,
+            'step_id' => request('step_id')
+        ])->first();
         return $stepId;
     }
 }

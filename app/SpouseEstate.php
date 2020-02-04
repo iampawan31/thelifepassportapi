@@ -16,6 +16,8 @@ class SpouseEstate extends Model
         'website'
     ];
 
+    protected $with = ['address'];
+
     //Table Name
     static function tableName()
     {
@@ -24,6 +26,6 @@ class SpouseEstate extends Model
 
     public function address()
     {
-        return $this->hasOne(PersonalestateAddress::class, 'spouse_estate_id');
+        return $this->hasOne(SpouseEstateAddress::class, 'spouse_estate_id');
     }
 }

@@ -25,8 +25,9 @@ class CreatePersonalInfo extends Migration
             $table->string('father_birth_place', 255)->nullable();
             $table->string('mother_name', 255)->nullable();
             $table->string('mother_birth_place', 255)->nullable();
-            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

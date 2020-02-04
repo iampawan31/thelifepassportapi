@@ -162,6 +162,7 @@ class FamilyController extends Controller
                 }
 
                 $this->updateFamilyMemberPhoneNumbers($familyMember);
+
                 DB::commit();
 
                 return response()

@@ -2224,8 +2224,37 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
-/* harmony import */ var _elements_Address__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./elements/Address */ "./resources/js/components/personalinfo/elements/Address.vue");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
+/* harmony import */ var _elements_Address__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./elements/Address */ "./resources/js/components/personalinfo/elements/Address.vue");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2491,29 +2520,122 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    ValidationObserver: vee_validate__WEBPACK_IMPORTED_MODULE_0__["ValidationObserver"],
-    ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_0__["ValidationProvider"],
-    HomeAddress: _elements_Address__WEBPACK_IMPORTED_MODULE_1__["default"]
+    ValidationObserver: vee_validate__WEBPACK_IMPORTED_MODULE_1__["ValidationObserver"],
+    ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_1__["ValidationProvider"],
+    HomeAddress: _elements_Address__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   data: function data() {
     return {
-      name: "",
+      legalName: "",
       relationship: "",
       company: "",
-      address: [],
+      address: {
+        street_address1: "",
+        street_address2: "",
+        city: "",
+        state: "",
+        zip: ""
+      },
       emailAddress: "",
       phoneNumber: "",
-      website: ""
+      website: "",
+      isCompleted: false,
+      estateRepId: ""
     };
   },
-  mounted: function mounted() {},
+  created: function created() {
+    this.getEstateRepresentativeInformation();
+  },
   methods: {
-    handleSubmit: function handleSubmit(e) {
-      console.log(e);
-      this.$router.push("/partner-estate-representative-question");
+    handleSubmit: function () {
+      var _handleSubmit = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(e) {
+        var _this = this;
+
+        var isValid, formData;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                this.submitted = true;
+                _context.next = 3;
+                return this.$refs.observer.validate();
+
+              case 3:
+                isValid = _context.sent;
+
+                if (!isValid) {// Do Something
+                } else {
+                  formData = this.getFormData(e);
+
+                  if (this.estateRepId) {
+                    formData.append("_method", "put");
+                    axios.post("/personal/estate/" + this.estateRepId, formData).then(function (response) {
+                      console.log(response);
+
+                      _this.$router.push("/spouse-estate-representative-question");
+                    })["catch"](function () {});
+                  } else {
+                    axios.post("/personal/estate", formData).then(function (response) {
+                      console.log(response);
+
+                      _this.$router.push("/spouse-estate-representative-question");
+                    })["catch"](function () {});
+                  }
+                }
+
+              case 5:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function handleSubmit(_x) {
+        return _handleSubmit.apply(this, arguments);
+      }
+
+      return handleSubmit;
+    }(),
+    getEstateRepresentativeInformation: function getEstateRepresentativeInformation() {
+      var _this2 = this;
+
+      axios.get("/personal/estate/").then(function (response) {
+        if (response.status == 200) {
+          // console.log(response.data.data);
+          _this2.populateData(response.data.data);
+        }
+      });
     },
-    updateHomeAddress: function updateHomeAddress(data) {
-      this.address = data;
+    populateData: function populateData(data) {
+      if (data !== null) {
+        this.legalName = data.legal_name;
+        this.relationship = data.relationship;
+        this.company = data.company;
+        this.emailAddress = data.email;
+        this.phoneNumber = data.phone;
+        this.website = data.website;
+        this.isCompleted = data.is_completed;
+
+        if (this.address) {
+          this.address = data.address;
+        }
+      }
+    },
+    getFormData: function getFormData(e) {
+      var form = e.target;
+      var formData = new FormData(form);
+      formData.append("legal_name", this.legalName);
+      formData.append("relationship", this.relationship);
+      formData.append("company", this.company);
+      formData.append("email", this.emailAddress);
+      formData.append("phone", this.phoneNumber);
+      formData.append("website", this.website);
+      formData.append("address", JSON.stringify(this.address));
+      formData.append("is_completed", this.isCompleted);
+      return formData;
     }
   }
 });
@@ -3830,8 +3952,36 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
-/* harmony import */ var _elements_Address__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./elements/Address */ "./resources/js/components/personalinfo/elements/Address.vue");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
+/* harmony import */ var _elements_Address__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./elements/Address */ "./resources/js/components/personalinfo/elements/Address.vue");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -4093,29 +4243,120 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    ValidationObserver: vee_validate__WEBPACK_IMPORTED_MODULE_0__["ValidationObserver"],
-    ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_0__["ValidationProvider"],
-    HomeAddress: _elements_Address__WEBPACK_IMPORTED_MODULE_1__["default"]
+    ValidationObserver: vee_validate__WEBPACK_IMPORTED_MODULE_1__["ValidationObserver"],
+    ValidationProvider: vee_validate__WEBPACK_IMPORTED_MODULE_1__["ValidationProvider"],
+    HomeAddress: _elements_Address__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   data: function data() {
     return {
-      name: "",
+      legalName: "",
       relationship: "",
       company: "",
-      address: [],
+      address: {
+        street_address1: "",
+        street_address2: "",
+        city: "",
+        state: "",
+        zip: ""
+      },
       emailAddress: "",
       phoneNumber: "",
-      website: ""
+      website: "",
+      isCompleted: false,
+      estateRepId: ""
     };
   },
-  mounted: function mounted() {},
+  created: function created() {
+    this.getEstateRepresentativeInformation();
+  },
   methods: {
-    handleSubmit: function handleSubmit(e) {
-      console.log(e);
-      this.$router.push("/belong-question");
+    handleSubmit: function () {
+      var _handleSubmit = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(e) {
+        var isValid, formData;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                this.submitted = true;
+                _context.next = 3;
+                return this.$refs.observer.validate();
+
+              case 3:
+                isValid = _context.sent;
+
+                if (!isValid) {// Do Something
+                } else {
+                  formData = this.getFormData(e);
+
+                  if (this.estateRepId) {
+                    formData.append("_method", "put");
+                    axios.post("/personal/spouse/estate/" + this.estateRepId, formData).then(function (response) {
+                      console.log(response); // this.$router.push(
+                      //     "/spouse-estate-representative-question"
+                      // );
+                    })["catch"](function () {});
+                  } else {
+                    axios.post("/personal/spouse/estate", formData).then(function (response) {
+                      console.log(response); // this.$router.push(
+                      //     "/spouse-estate-representative-question"
+                      // );
+                    })["catch"](function () {});
+                  }
+                }
+
+              case 5:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function handleSubmit(_x) {
+        return _handleSubmit.apply(this, arguments);
+      }
+
+      return handleSubmit;
+    }(),
+    getEstateRepresentativeInformation: function getEstateRepresentativeInformation() {
+      var _this = this;
+
+      axios.get("/personal/spouse/estate/").then(function (response) {
+        if (response.status == 200) {
+          // console.log(response.data.data);
+          _this.populateData(response.data.data);
+        }
+      });
     },
-    updateHomeAddress: function updateHomeAddress(data) {
-      this.address = data;
+    populateData: function populateData(data) {
+      if (data !== null) {
+        this.legalName = data.legal_name;
+        this.relationship = data.relationship;
+        this.company = data.company;
+        this.emailAddress = data.email;
+        this.phoneNumber = data.phone;
+        this.website = data.website;
+        this.isCompleted = data.is_completed;
+
+        if (this.address) {
+          this.address = data.address;
+        }
+      }
+    },
+    getFormData: function getFormData(e) {
+      var form = e.target;
+      var formData = new FormData(form);
+      formData.append("legal_name", this.legalName);
+      formData.append("relationship", this.relationship);
+      formData.append("company", this.company);
+      formData.append("email", this.emailAddress);
+      formData.append("phone", this.phoneNumber);
+      formData.append("website", this.website);
+      formData.append("address", JSON.stringify(this.address));
+      formData.append("is_completed", this.isCompleted);
+      return formData;
     }
   }
 });
@@ -8097,6 +8338,204 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/questions/EstateRepresentative.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/personalinfo/questions/EstateRepresentative.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      userId: "",
+      estateDetails: [],
+      showEstateRepresentativeDetails: false
+    };
+  },
+  created: function created() {
+    this.getEstateInfo();
+    this.updateStepInfo();
+  },
+  methods: {
+    getEstateInfo: function getEstateInfo() {
+      var _this = this;
+
+      axios.get("/personal/estate").then(function (response) {
+        if (response.status == 200) {
+          if (response.data.data) {
+            _this.estateDetails = JSON.parse(JSON.stringify(response.data.data));
+            _this.userId = _this.estateDetails.user_id;
+
+            if (_this.userId) {
+              _this.showEstateRepresentativeDetails = true;
+            }
+          }
+        }
+      });
+    },
+    updateStepInfo: function updateStepInfo() {
+      var data = {
+        step_id: 7,
+        is_visited: "1"
+      };
+      axios.post("/steps", data).then(function (response) {
+        console.log(response);
+      })["catch"](function () {});
+    },
+    updateEstateStatus: function updateEstateStatus(status) {
+      var _this2 = this;
+
+      if (status == 0) {
+        this.formData = {
+          has_personal_estate: "0"
+        };
+      } else if (status == 1) {
+        this.formData = {
+          has_personal_estate: "1"
+        };
+      } else if (status == 2) {
+        this.formData = {
+          has_personal_estate: "2"
+        };
+      }
+
+      axios.post("personal/estate/status", this.formData).then(function (response) {
+        if (response.status == 201) {
+          if (status == "1") {
+            _this2.$router.push("/spouse-estate-representative");
+          } else {
+            _this2.$router.push("/spouse-estate-representative-question");
+          }
+        }
+      })["catch"](function () {});
+    },
+    removeEstate: function removeEstate() {}
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/questions/FamilyMembers.vue?vue&type=script&lang=js&":
 /*!***********************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/personalinfo/questions/FamilyMembers.vue?vue&type=script&lang=js& ***!
@@ -8279,7 +8718,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
   },
   mounted: function mounted() {
-    this.updatestepinfo();
+    this.updateStepinfo();
     this.getFamilyMemberInfo();
   },
   methods: {
@@ -8316,7 +8755,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return handleSubmit;
     }(),
-    updatestepinfo: function updatestepinfo() {
+    updateStepinfo: function updateStepinfo() {
       var data = {
         step_id: 4,
         is_visited: "1"
@@ -8394,6 +8833,206 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }
       });
     }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/questions/PartnerEstateRepresentative.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/personalinfo/questions/PartnerEstateRepresentative.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      userId: "",
+      spouseEstateDetails: [],
+      showSpouseEstateRepresentativeDetails: false
+    };
+  },
+  created: function created() {
+    this.getEstateInfo();
+    this.updateStepInfo();
+  },
+  methods: {
+    getEstateInfo: function getEstateInfo() {
+      var _this = this;
+
+      axios.get("/personal/spouse/estate").then(function (response) {
+        if (response.status == 200) {
+          if (response.data.data) {
+            _this.spouseEstateDetails = JSON.parse(JSON.stringify(response.data.data));
+            _this.userId = _this.spouseEstateDetails.user_id;
+
+            if (_this.userId) {
+              _this.showEstateRepresentativeDetails = true;
+            }
+          }
+        }
+      });
+    },
+    updateStepInfo: function updateStepInfo() {
+      var data = {
+        step_id: 8,
+        is_visited: "1"
+      };
+      axios.post("/steps", data).then(function (response) {
+        console.log(response);
+      })["catch"](function () {});
+    },
+    updateEstateStatus: function updateEstateStatus(status) {
+      var _this2 = this;
+
+      if (status == 0) {
+        this.formData = {
+          has_spouse_estate: "0"
+        };
+      } else if (status == 1) {
+        this.formData = {
+          has_spouse_estate: "1"
+        };
+      } else if (status == 2) {
+        this.formData = {
+          has_spouse_estate: "2"
+        };
+      }
+
+      axios.post("personal/spouse/estate/status", this.formData).then(function (response) {
+        if (response.status == 201) {
+          if (status == "1") {
+            _this2.$router.push("/spouse-estate-representative");
+          } else {// this.$router.push("/previous-spouse-question");
+          }
+        }
+      })["catch"](function () {});
+    },
+    removeEstate: function removeEstate() {}
   }
 });
 
@@ -59412,7 +60051,7 @@ var render = function() {
                             on: {
                               submit: function($event) {
                                 $event.preventDefault()
-                                return _vm.handleSubmit()
+                                return _vm.handleSubmit($event)
                               }
                             }
                           },
@@ -59454,8 +60093,9 @@ var render = function() {
                                                         {
                                                           name: "model",
                                                           rawName: "v-model",
-                                                          value: _vm.name,
-                                                          expression: "name"
+                                                          value: _vm.legalName,
+                                                          expression:
+                                                            "legalName"
                                                         }
                                                       ],
                                                       staticClass:
@@ -59468,7 +60108,7 @@ var render = function() {
                                                         placeholder: "Name"
                                                       },
                                                       domProps: {
-                                                        value: _vm.name
+                                                        value: _vm.legalName
                                                       },
                                                       on: {
                                                         input: function(
@@ -59480,7 +60120,7 @@ var render = function() {
                                                           ) {
                                                             return
                                                           }
-                                                          _vm.name =
+                                                          _vm.legalName =
                                                             $event.target.value
                                                         }
                                                       }
@@ -59718,9 +60358,18 @@ var render = function() {
                                 ]),
                                 _vm._v(" "),
                                 _c("home-address", {
-                                  attrs: { "home-address": _vm.address },
+                                  attrs: { "address-type": "personal" },
                                   on: {
-                                    "home-address-update": _vm.updateHomeAddress
+                                    input: function(newAddress) {
+                                      _vm.address = newAddress
+                                    }
+                                  },
+                                  model: {
+                                    value: _vm.address,
+                                    callback: function($$v) {
+                                      _vm.address = $$v
+                                    },
+                                    expression: "address"
                                   }
                                 }),
                                 _vm._v(" "),
@@ -60020,7 +60669,81 @@ var render = function() {
                                       1
                                     )
                                   ])
-                                ])
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "field-group form-group-checkbox clearfix"
+                                  },
+                                  [
+                                    _c(
+                                      "label",
+                                      { attrs: { for: "chk_complete" } },
+                                      [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: _vm.isCompleted,
+                                              expression: "isCompleted"
+                                            }
+                                          ],
+                                          attrs: {
+                                            id: "chk_complete",
+                                            type: "checkbox",
+                                            name: "chk_complete"
+                                          },
+                                          domProps: {
+                                            checked: _vm.isCompleted,
+                                            value: _vm.isCompleted,
+                                            checked: Array.isArray(
+                                              _vm.isCompleted
+                                            )
+                                              ? _vm._i(
+                                                  _vm.isCompleted,
+                                                  _vm.isCompleted
+                                                ) > -1
+                                              : _vm.isCompleted
+                                          },
+                                          on: {
+                                            change: function($event) {
+                                              var $$a = _vm.isCompleted,
+                                                $$el = $event.target,
+                                                $$c = $$el.checked
+                                                  ? true
+                                                  : false
+                                              if (Array.isArray($$a)) {
+                                                var $$v = _vm.isCompleted,
+                                                  $$i = _vm._i($$a, $$v)
+                                                if ($$el.checked) {
+                                                  $$i < 0 &&
+                                                    (_vm.isCompleted = $$a.concat(
+                                                      [$$v]
+                                                    ))
+                                                } else {
+                                                  $$i > -1 &&
+                                                    (_vm.isCompleted = $$a
+                                                      .slice(0, $$i)
+                                                      .concat(
+                                                        $$a.slice($$i + 1)
+                                                      ))
+                                                }
+                                              } else {
+                                                _vm.isCompleted = $$c
+                                              }
+                                            }
+                                          }
+                                        }),
+                                        _c("i"),
+                                        _vm._v(" "),
+                                        _c("span", [_vm._v("Mark as complete")])
+                                      ]
+                                    )
+                                  ]
+                                )
                               ],
                               1
                             ),
@@ -62852,7 +63575,7 @@ var render = function() {
                             on: {
                               submit: function($event) {
                                 $event.preventDefault()
-                                return _vm.handleSubmit()
+                                return _vm.handleSubmit($event)
                               }
                             }
                           },
@@ -62894,8 +63617,9 @@ var render = function() {
                                                         {
                                                           name: "model",
                                                           rawName: "v-model",
-                                                          value: _vm.name,
-                                                          expression: "name"
+                                                          value: _vm.legalName,
+                                                          expression:
+                                                            "legalName"
                                                         }
                                                       ],
                                                       staticClass:
@@ -62908,7 +63632,7 @@ var render = function() {
                                                         placeholder: "Name"
                                                       },
                                                       domProps: {
-                                                        value: _vm.name
+                                                        value: _vm.legalName
                                                       },
                                                       on: {
                                                         input: function(
@@ -62920,7 +63644,7 @@ var render = function() {
                                                           ) {
                                                             return
                                                           }
-                                                          _vm.name =
+                                                          _vm.legalName =
                                                             $event.target.value
                                                         }
                                                       }
@@ -63158,9 +63882,18 @@ var render = function() {
                                 ]),
                                 _vm._v(" "),
                                 _c("home-address", {
-                                  attrs: { "home-address": _vm.address },
+                                  attrs: { "address-type": "personal" },
                                   on: {
-                                    "home-address-update": _vm.updateHomeAddress
+                                    input: function(newAddress) {
+                                      _vm.address = newAddress
+                                    }
+                                  },
+                                  model: {
+                                    value: _vm.address,
+                                    callback: function($$v) {
+                                      _vm.address = $$v
+                                    },
+                                    expression: "address"
                                   }
                                 }),
                                 _vm._v(" "),
@@ -63460,7 +64193,81 @@ var render = function() {
                                       1
                                     )
                                   ])
-                                ])
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "field-group form-group-checkbox clearfix"
+                                  },
+                                  [
+                                    _c(
+                                      "label",
+                                      { attrs: { for: "chk_complete" } },
+                                      [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: _vm.isCompleted,
+                                              expression: "isCompleted"
+                                            }
+                                          ],
+                                          attrs: {
+                                            id: "chk_complete",
+                                            type: "checkbox",
+                                            name: "chk_complete"
+                                          },
+                                          domProps: {
+                                            checked: _vm.isCompleted,
+                                            value: _vm.isCompleted,
+                                            checked: Array.isArray(
+                                              _vm.isCompleted
+                                            )
+                                              ? _vm._i(
+                                                  _vm.isCompleted,
+                                                  _vm.isCompleted
+                                                ) > -1
+                                              : _vm.isCompleted
+                                          },
+                                          on: {
+                                            change: function($event) {
+                                              var $$a = _vm.isCompleted,
+                                                $$el = $event.target,
+                                                $$c = $$el.checked
+                                                  ? true
+                                                  : false
+                                              if (Array.isArray($$a)) {
+                                                var $$v = _vm.isCompleted,
+                                                  $$i = _vm._i($$a, $$v)
+                                                if ($$el.checked) {
+                                                  $$i < 0 &&
+                                                    (_vm.isCompleted = $$a.concat(
+                                                      [$$v]
+                                                    ))
+                                                } else {
+                                                  $$i > -1 &&
+                                                    (_vm.isCompleted = $$a
+                                                      .slice(0, $$i)
+                                                      .concat(
+                                                        $$a.slice($$i + 1)
+                                                      ))
+                                                }
+                                              } else {
+                                                _vm.isCompleted = $$c
+                                              }
+                                            }
+                                          }
+                                        }),
+                                        _c("i"),
+                                        _vm._v(" "),
+                                        _c("span", [_vm._v("Mark as complete")])
+                                      ]
+                                    )
+                                  ]
+                                )
                               ],
                               1
                             ),
@@ -69977,48 +70784,228 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "c" }, [
-    _c(
-      "div",
-      {
-        staticClass: "question-item",
-        attrs: {
-          "data-nextpage": "questions/partner-estate-representative.php",
-          "data-viewpage": "views/estate-representative.php"
-        }
-      },
-      [
-        _c("div", { staticClass: "question-header" }, [
-          _c("h3", [
-            _vm._v("Do you have a personal representative for your estate?")
+    _vm.showEstateRepresentativeDetails
+      ? _c("div", [
+          _c("h3", { staticClass: "heading3" }, [
+            _vm._v("\n            Your Estate representative details\n        ")
           ]),
           _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "yesno" },
-            [
-              _c(
-                "router-link",
-                {
-                  staticClass: "btn-yes",
-                  attrs: { to: "/estate-representative" }
-                },
-                [_vm._v("Yes")]
-              ),
+          _c("div", { staticClass: "spouse-details" }, [
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-4 col-sm-12" }, [
+                _c("div", { staticClass: "item" }, [
+                  _c("h4", { staticClass: "item__title" }, [
+                    _vm._v(
+                      "\n                            Legal Name\n                        "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "item__content" }, [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(_vm.estateDetails.legal_name) +
+                        "\n                        "
+                    )
+                  ])
+                ])
+              ]),
               _vm._v(" "),
-              _c(
-                "router-link",
-                {
-                  staticClass: "btn-no",
-                  attrs: { to: "/partner-estate-representative-question" }
-                },
-                [_vm._v("No")]
-              )
-            ],
-            1
-          )
+              _c("div", { staticClass: "col-md-4 col-sm-12" }, [
+                _c("div", { staticClass: "item" }, [
+                  _c("h4", { staticClass: "item__title" }, [
+                    _vm._v(
+                      "\n                            Relationship\n                        "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "item__content" }, [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(_vm.estateDetails.relationship) +
+                        "\n                        "
+                    )
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-4 col-sm-12" }, [
+                _c("div", { staticClass: "item" }, [
+                  _c("h4", { staticClass: "item__title" }, [
+                    _vm._v(
+                      "\n                            Company\n                        "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "item__content" }, [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(_vm.estateDetails.company) +
+                        "\n                        "
+                    )
+                  ])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-4 col-sm-12" }, [
+                _c("div", { staticClass: "item" }, [
+                  _c("h4", { staticClass: "item__title" }, [
+                    _vm._v(
+                      "\n                            Phone Number\n                        "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "item__content" }, [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(_vm.estateDetails.phone) +
+                        "\n                        "
+                    )
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-4 col-sm-12" }, [
+                _c("div", { staticClass: "item" }, [
+                  _c("h4", { staticClass: "item__title" }, [
+                    _vm._v(
+                      "\n                            Email\n                        "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "item__content" }, [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(_vm.estateDetails.email) +
+                        "\n                        "
+                    )
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-4 col-sm-12" }, [
+                _c("div", { staticClass: "item" }, [
+                  _c("h4", { staticClass: "item__title" }, [
+                    _vm._v(
+                      "\n                            Website\n                        "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "item__content" }, [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(_vm.estateDetails.website) +
+                        "\n                        "
+                    )
+                  ])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "item__actions" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "btn-primary btn-editinfo",
+                    attrs: { to: "/spouse" }
+                  },
+                  [
+                    _vm._v(
+                      "\n                    Edit Information\n                "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  {
+                    staticClass: "btn-primary btn-danger delete-item",
+                    attrs: { href: "javascript:voi();" },
+                    on: {
+                      click: function($event) {
+                        return _vm.removeEstate()
+                      }
+                    }
+                  },
+                  [_vm._v("Delete")]
+                )
+              ],
+              1
+            )
+          ])
         ])
-      ]
-    )
+      : _vm._e(),
+    _vm._v(" "),
+    !_vm.showEstateRepresentativeDetails
+      ? _c(
+          "div",
+          {
+            staticClass: "question-item",
+            attrs: {
+              "data-nextpage": "questions/partner-estate-representative.php",
+              "data-viewpage": "views/estate-representative.php"
+            }
+          },
+          [
+            _c("div", { staticClass: "question-header" }, [
+              _c("h3", [
+                _vm._v("Do you have a personal representative for your estate?")
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "yesno" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "btn-yes",
+                    attrs: { href: "javascript:void(0)" },
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.updateEstateStatus(1)
+                      }
+                    }
+                  },
+                  [_vm._v("Yes")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  {
+                    staticClass: "btn-yes",
+                    attrs: { href: "javascript:void(0)" },
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.updateEstateStatus(0)
+                      }
+                    }
+                  },
+                  [_vm._v("No")]
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "a",
+              {
+                staticClass: "btn-skip",
+                attrs: { href: "javascript:void(0)" },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.updateEstateStatus(2)
+                  }
+                }
+              },
+              [_vm._v("Skip")]
+            )
+          ]
+        )
+      : _vm._e()
   ])
 }
 var staticRenderFns = []
@@ -70574,47 +71561,230 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "c" }, [
-    _c(
-      "div",
-      {
-        staticClass: "question-item",
-        attrs: {
-          "data-nextpage": "questions/belong.php",
-          "data-viewpage": "views/partner-estate-representative.php"
-        }
-      },
-      [
-        _c("div", { staticClass: "question-header" }, [
-          _c("h3", [
-            _vm._v(
-              "Does your spouse/life partner/signifcant other have a personal representative of their estate?"
-            )
+    _vm.showSpouseEstateRepresentativeDetails
+      ? _c("div", [
+          _c("h3", { staticClass: "heading3" }, [
+            _vm._v("\n            Your Estate representative details\n        ")
           ]),
           _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "yesno" },
-            [
-              _c(
-                "router-link",
-                {
-                  staticClass: "btn-yes",
-                  attrs: { to: "/partner-estate-representative" }
-                },
-                [_vm._v("Yes")]
-              ),
+          _c("div", { staticClass: "spouse-details" }, [
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-4 col-sm-12" }, [
+                _c("div", { staticClass: "item" }, [
+                  _c("h4", { staticClass: "item__title" }, [
+                    _vm._v(
+                      "\n                            Legal Name\n                        "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "item__content" }, [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(_vm.spouseEstateDetails.legal_name) +
+                        "\n                        "
+                    )
+                  ])
+                ])
+              ]),
               _vm._v(" "),
-              _c(
-                "router-link",
-                { staticClass: "btn-no", attrs: { to: "/belong-question" } },
-                [_vm._v("No")]
-              )
-            ],
-            1
-          )
+              _c("div", { staticClass: "col-md-4 col-sm-12" }, [
+                _c("div", { staticClass: "item" }, [
+                  _c("h4", { staticClass: "item__title" }, [
+                    _vm._v(
+                      "\n                            Relationship\n                        "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "item__content" }, [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(_vm.spouseEstateDetails.relationship) +
+                        "\n                        "
+                    )
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-4 col-sm-12" }, [
+                _c("div", { staticClass: "item" }, [
+                  _c("h4", { staticClass: "item__title" }, [
+                    _vm._v(
+                      "\n                            Company\n                        "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "item__content" }, [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(_vm.spouseEstateDetails.company) +
+                        "\n                        "
+                    )
+                  ])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-4 col-sm-12" }, [
+                _c("div", { staticClass: "item" }, [
+                  _c("h4", { staticClass: "item__title" }, [
+                    _vm._v(
+                      "\n                            Phone Number\n                        "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "item__content" }, [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(_vm.spouseEstateDetails.phone) +
+                        "\n                        "
+                    )
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-4 col-sm-12" }, [
+                _c("div", { staticClass: "item" }, [
+                  _c("h4", { staticClass: "item__title" }, [
+                    _vm._v(
+                      "\n                            Email\n                        "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "item__content" }, [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(_vm.spouseEstateDetails.email) +
+                        "\n                        "
+                    )
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-4 col-sm-12" }, [
+                _c("div", { staticClass: "item" }, [
+                  _c("h4", { staticClass: "item__title" }, [
+                    _vm._v(
+                      "\n                            Website\n                        "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "item__content" }, [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(_vm.spouseEstateDetails.website) +
+                        "\n                        "
+                    )
+                  ])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "item__actions" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "btn-primary btn-editinfo",
+                    attrs: { to: "/spouse" }
+                  },
+                  [
+                    _vm._v(
+                      "\n                    Edit Information\n                "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  {
+                    staticClass: "btn-primary btn-danger delete-item",
+                    attrs: { href: "javascript:voi();" },
+                    on: {
+                      click: function($event) {
+                        return _vm.removeEstate()
+                      }
+                    }
+                  },
+                  [_vm._v("Delete")]
+                )
+              ],
+              1
+            )
+          ])
         ])
-      ]
-    )
+      : _vm._e(),
+    _vm._v(" "),
+    !_vm.showSpouseEstateRepresentativeDetails
+      ? _c(
+          "div",
+          {
+            staticClass: "question-item",
+            attrs: {
+              "data-nextpage": "questions/partner-estate-representative.php",
+              "data-viewpage": "views/estate-representative.php"
+            }
+          },
+          [
+            _c("div", { staticClass: "question-header" }, [
+              _c("h3", [
+                _vm._v(
+                  "\n                Does your spouse/life partner/signifcant other have a\n                personal representative of their estate?\n            "
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "yesno" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "btn-yes",
+                    attrs: { href: "javascript:void(0)" },
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.updateEstateStatus(1)
+                      }
+                    }
+                  },
+                  [_vm._v("Yes")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  {
+                    staticClass: "btn-yes",
+                    attrs: { href: "javascript:void(0)" },
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.updateEstateStatus(0)
+                      }
+                    }
+                  },
+                  [_vm._v("No")]
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "a",
+              {
+                staticClass: "btn-skip",
+                attrs: { href: "javascript:void(0)" },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.updateEstateStatus(2)
+                  }
+                }
+              },
+              [_vm._v("Skip")]
+            )
+          ]
+        )
+      : _vm._e()
   ])
 }
 var staticRenderFns = []
@@ -98453,15 +99623,17 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EstateRepresentative_vue_vue_type_template_id_8c2a301e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EstateRepresentative.vue?vue&type=template&id=8c2a301e& */ "./resources/js/components/personalinfo/questions/EstateRepresentative.vue?vue&type=template&id=8c2a301e&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _EstateRepresentative_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./EstateRepresentative.vue?vue&type=script&lang=js& */ "./resources/js/components/personalinfo/questions/EstateRepresentative.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
-var script = {}
+
+
 
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__["default"])(
-  script,
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _EstateRepresentative_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _EstateRepresentative_vue_vue_type_template_id_8c2a301e___WEBPACK_IMPORTED_MODULE_0__["render"],
   _EstateRepresentative_vue_vue_type_template_id_8c2a301e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
@@ -98475,6 +99647,20 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 if (false) { var api; }
 component.options.__file = "resources/js/components/personalinfo/questions/EstateRepresentative.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/personalinfo/questions/EstateRepresentative.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************!*\
+  !*** ./resources/js/components/personalinfo/questions/EstateRepresentative.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EstateRepresentative_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./EstateRepresentative.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/questions/EstateRepresentative.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EstateRepresentative_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -98734,15 +99920,17 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _PartnerEstateRepresentative_vue_vue_type_template_id_24ad7b39___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PartnerEstateRepresentative.vue?vue&type=template&id=24ad7b39& */ "./resources/js/components/personalinfo/questions/PartnerEstateRepresentative.vue?vue&type=template&id=24ad7b39&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _PartnerEstateRepresentative_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PartnerEstateRepresentative.vue?vue&type=script&lang=js& */ "./resources/js/components/personalinfo/questions/PartnerEstateRepresentative.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
-var script = {}
+
+
 
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__["default"])(
-  script,
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _PartnerEstateRepresentative_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _PartnerEstateRepresentative_vue_vue_type_template_id_24ad7b39___WEBPACK_IMPORTED_MODULE_0__["render"],
   _PartnerEstateRepresentative_vue_vue_type_template_id_24ad7b39___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
@@ -98756,6 +99944,20 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 if (false) { var api; }
 component.options.__file = "resources/js/components/personalinfo/questions/PartnerEstateRepresentative.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/personalinfo/questions/PartnerEstateRepresentative.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************!*\
+  !*** ./resources/js/components/personalinfo/questions/PartnerEstateRepresentative.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PartnerEstateRepresentative_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./PartnerEstateRepresentative.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/personalinfo/questions/PartnerEstateRepresentative.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PartnerEstateRepresentative_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -110997,8 +112199,8 @@ var mainStore = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/mdprawezmusharraf/Sites/thelifepassportapi/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/mdprawezmusharraf/Sites/thelifepassportapi/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/pawankumar/valetcode/thelifepassportapi/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/pawankumar/valetcode/thelifepassportapi/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

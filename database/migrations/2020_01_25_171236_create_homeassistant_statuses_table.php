@@ -16,11 +16,11 @@ class CreateHomeassistantStatusesTable extends Migration
         Schema::create('homeassistant_statuses', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
-            $table->enum('has_homeassistant', [0,1])->comment('0=>No, 1=>Yes')->default('0');
+            $table->boolean('has_homeassistant')->default(false);
             $table->unsignedTinyInteger('count')->nullable();
+            $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
-            $table->timestamps();
         });
     }
 

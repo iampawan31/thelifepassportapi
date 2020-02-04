@@ -21,9 +21,9 @@ class CreateFamilyMembersTable extends Migration
             $table->string('relationship_other')->nullable();
             $table->string('email')->nullable();
             $table->date('dob')->nullable();
+            $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
-            $table->timestamps();
         });
     }
 

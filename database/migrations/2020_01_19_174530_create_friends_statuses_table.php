@@ -16,11 +16,11 @@ class CreateFriendsStatusesTable extends Migration
         Schema::create('friends_statuses', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
-            $table->enum('has_friends', [0,1])->default('0')->comment('0=>No, 1=>Yes');
+            $table->boolean('has_friends')->default(false);
             $table->tinyInteger('count')->default(0);
+            $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
-            $table->timestamps();
         });
     }
 

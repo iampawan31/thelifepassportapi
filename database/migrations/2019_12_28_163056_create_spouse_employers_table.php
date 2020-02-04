@@ -20,12 +20,12 @@ class CreateSpouseEmployersTable extends Migration
             $table->string('employer_phone', 20)->nullable();
             $table->string('computer_username', 20)->nullable();
             $table->string('computer_password', 20)->nullable();
+            $table->timestamps();
 
             $table->foreign('user_id')
                 ->references('id')
                 ->on('spouse_infos')
                 ->onDelete('cascade');
-            $table->timestamps();
         });
     }
 

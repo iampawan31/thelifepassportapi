@@ -22,10 +22,10 @@ class CreateFamilyMemberAddressesTable extends Migration
             $table->string('city')->nullable();
             $table->string('state')->nullable();
             $table->string('zipcode', 8)->nullable();
+            $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('family_member_id')->references('id')->on('family_members');
-            $table->timestamps();
         });
     }
 
