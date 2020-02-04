@@ -29,10 +29,11 @@ class FamilyStatusController extends Controller
         try {
             FamilyStatus::updateOrCreate([
                 'user_id' => auth()->id(),
-                'has_family_member' => request('has_family_member')
+                'has_family_member' => request('has_family_member'),
+                'count' => 0
             ]);
 
-            auth()->user()->steps()->sync(4, [
+            auth()->user()->steps()->syncWithoutDetaching(4, [
                 'is_visited' => '1',
                 'is_filled' => '1',
                 'is_completed' => request('has_family_member') ? 0 : 1

@@ -150,12 +150,14 @@ export default {
             }
             console.log(this.formData);
             axios
-                .post("previousspouse/updatemarriagestatus", this.formData)
+                .post("personal/marriage-status", this.formData)
                 .then(response => {
-                    if (status == "1") {
-                        this.$router.push("/previous-spouse");
-                    } else {
-                        this.$router.push("/family-members-question");
+                    if (response.status == 201) {
+                        if (status == "1") {
+                            this.$router.push("/previous-spouse");
+                        } else {
+                            this.$router.push("/family-members-question");
+                        }
                     }
                 })
                 .catch(function() {});
@@ -163,8 +165,10 @@ export default {
         updatestepinfo() {
             let data = { step_id: 3, is_visited: "1" };
             axios
-                .post("/updatepersonalstep", data)
-                .then(response => {})
+                .post("/steps", data)
+                .then(response => {
+                    console.log(response);
+                })
                 .catch(function() {});
         },
         getPreviousSpouseInfo() {

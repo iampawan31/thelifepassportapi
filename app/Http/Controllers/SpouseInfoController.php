@@ -167,7 +167,7 @@ class SpouseInfoController extends Controller
                 'user_id' => $user->id,
                 'is_visited' => '1',
                 'is_filled' => '1',
-                'is_completed' => request('is_completed') ? 1 : 0
+                'is_completed' => request('is_completed') ? '1' : '0'
             ]);
 
             DB::commit();
@@ -340,7 +340,7 @@ class SpouseInfoController extends Controller
             'user_id' => $user->id,
             'is_visited' => '1',
             'is_filled' => '1',
-            'is_completed' => request('is_completed') ? 1 : 0
+            'is_completed' => request('is_completed') ? '1' : '0'
         ]);
 
         DB::commit();

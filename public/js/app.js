@@ -8567,11 +8567,13 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       console.log(this.formData);
-      axios.post("previousspouse/updatemarriagestatus", this.formData).then(function (response) {
-        if (status == "1") {
-          _this.$router.push("/previous-spouse");
-        } else {
-          _this.$router.push("/family-members-question");
+      axios.post("personal/marriage-status", this.formData).then(function (response) {
+        if (response.status == 201) {
+          if (status == "1") {
+            _this.$router.push("/previous-spouse");
+          } else {
+            _this.$router.push("/family-members-question");
+          }
         }
       })["catch"](function () {});
     },
@@ -8580,7 +8582,9 @@ __webpack_require__.r(__webpack_exports__);
         step_id: 3,
         is_visited: "1"
       };
-      axios.post("/updatepersonalstep", data).then(function (response) {})["catch"](function () {});
+      axios.post("/steps", data).then(function (response) {
+        console.log(response);
+      })["catch"](function () {});
     },
     getPreviousSpouseInfo: function getPreviousSpouseInfo() {
       var _this2 = this;
