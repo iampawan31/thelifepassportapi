@@ -14,6 +14,7 @@ use App\UserPhone;
 use App\UserSocialMedia;
 use App\UsersPersonalDetailsCompletion;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -31,7 +32,7 @@ class PersonalInfoController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function store()
     {
@@ -45,22 +46,14 @@ class PersonalInfoController extends Controller
             $personalInfo = new PersonalInfo;
 
             $personalInfo->user_id = $user->id;
+
             $this->updatePersonalInformation($personalInfo);
 
             // Save user's personal address
             $homeAddress = json_decode(request('personal_address'));
 
             if (!empty($homeAddress)) {
-                $personalAddress = new PersonalAddress;
-
-                $personalAddress->user_id = $user->id;
-                $personalAddress->street_address1 = $homeAddress->street_address1 ?: "";
-                $personalAddress->street_address2 = $homeAddress->street_address2 ?: "";
-                $personalAddress->city = $homeAddress->city ?: "";
-                $personalAddress->state = $homeAddress->state ?: "";
-                $personalAddress->zipcode = $homeAddress->zipcode ?: "";
-
-                $personalAddress->save();
+                $this->updatePersonalAddress($user, $homeAddress);
             }
 
             //Saving user's phone numbers
@@ -144,12 +137,12 @@ class PersonalInfoController extends Controller
             }
 
             // Save step completed information
-            $user->steps()->syncWithoutDetaching(1, [
+            $user->steps()->syncWithoutDetaching([1 => [
                 'user_id' => $user->id,
                 'is_visited' => '1',
                 'is_filled' => '1',
                 'is_completed' => request('is_completed') ? 1 : 0
-            ]);
+            ]]);
 
             DB::commit();
 
@@ -172,19 +165,18 @@ class PersonalInfoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function show()
     {
-        //        dd(auth()->user());
-        return response()->json(['status' => 200, 'data' => auth()->user()]);
+        return response()->json(['status' => 200, 'data' => auth()->user(), 'is_completed' => auth()->user()->stepCompleted(1)]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param PersonalInfo $personalInfo
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function update(PersonalInfo $personalInfo)
     {
@@ -365,5 +357,21 @@ class PersonalInfoController extends Controller
         $personalInfo->mother_birth_place = request('mother_birth_place') ?: "";
 
         $personalInfo->save();
+    }
+
+    /**
+     * @param $user
+     * @param $homeAddress
+     */
+    protected function updatePersonalAddress($user, $homeAddress)
+    {
+        return PersonalAddress::updateOrCreate(['user_id' => auth()->id()], [
+            'user_id' => $user->id,
+            'street_address1' => $homeAddress->street_address1 ?: "",
+            'street_address2' => $homeAddress->street_address2 ?: "",
+            'city' => $homeAddress->city ?: "",
+            'state' => $homeAddress->state ?: "",
+            'zipcode' => $homeAddress->zipcode ?: "",
+        ]);
     }
 }

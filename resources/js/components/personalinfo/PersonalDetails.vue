@@ -158,8 +158,7 @@
                                             data-placeholder="Select an Options"
                                         >
                                             <option>
-                                                value="0">Select
-                                                Country</option
+                                                value="0">Select Country</option
                                             >
                                         </Select2>
                                         <span
@@ -483,10 +482,7 @@ export default {
                     formData.append("_method", "put");
 
                     axios
-                        .post(
-                            "/personal-info/" + this.user.personal.id,
-                            formData
-                        )
+                        .post("/personal/" + this.user.personal.id, formData)
                         .then(response => {
                             if (response.status == 201) {
                                 const Toast = this.$swal.mixin({
@@ -507,7 +503,7 @@ export default {
                         .catch(function() {});
                 } else {
                     axios
-                        .post("/personal-info", formData)
+                        .post("/personal", formData)
                         .then(response => {
                             if (response.status == 201) {
                                 const Toast = this.$swal.mixin({
@@ -549,14 +545,10 @@ export default {
             });
         },
         getPersonalInfo() {
-            axios.get("/get-personal-info").then(response => {
+            axios.get("get-personal-info").then(response => {
                 if (response.status == 200) {
                     if (response.data.data) {
-                        console.log(response.data.data);
-                        this.$store.dispatch(
-                            "populateData",
-                            response.data.data
-                        );
+                        this.isCompleted = response.data.is_completed;
                         this.populateData(response.data.data);
                     }
                     this.getCountyList();
@@ -588,7 +580,7 @@ export default {
                 JSON.stringify(this.employmentDetails)
             );
             formData.append("is_completed", this.isCompleted);
-            
+
             return formData;
         },
         populateNewForm() {

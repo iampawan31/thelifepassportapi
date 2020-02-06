@@ -23,11 +23,11 @@ class PersonalStepsController extends Controller
             $stepId = $this->hasExistingStep($user);
 
             if ($stepId) {
-                $user->steps()->syncWithoutDetaching(request('step_id'), [
+                $user->steps()->syncWithoutDetaching([request('step_id') => [
                     'is_visited' => request('is_visited') ?: false,
                     'is_filled' => request('is_filled') ?: false,
                     'is_completed' => request('is_completed') ?: false
-                ]);
+                ]]);
             } else {
                 $user->steps()->attach(request('step_id'), [
                     'is_visited' => request('is_visited') ?: false,

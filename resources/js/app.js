@@ -24,8 +24,6 @@ require("./jquery-mousewheel.js");
 
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Vuex from "vuex";
-import mainStore from "./store/mainStore";
 import { ValidationProvider, extend } from "vee-validate";
 import {
     required,
@@ -90,7 +88,6 @@ extend("website", value => {
 });
 
 Vue.use(VueRouter);
-Vue.use(Vuex);
 Vue.use(VeeValidateLaravel);
 Vue.use(VueSweetalert2);
 Vue.use(VueMask);
@@ -124,6 +121,5 @@ Vue.component("ValidationProvider", ValidationProvider);
 
 const app = new Vue({
     el: "#page",
-    router,
-    store: mainStore
+    router
 });
