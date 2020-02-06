@@ -4801,7 +4801,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
 
 
 
@@ -4879,7 +4878,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                   if (this.user.id && this.user.personal) {
                     formData.append("_method", "put");
-                    axios.post("/personal-info/" + this.user.personal.id, formData).then(function (response) {
+                    axios.post("/personal/" + this.user.personal.id, formData).then(function (response) {
                       if (response.status == 201) {
                         var Toast = _this.$swal.mixin({
                           toast: true,
@@ -4898,7 +4897,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                       }
                     })["catch"](function () {});
                   } else {
-                    axios.post("/personal-info", formData).then(function (response) {
+                    axios.post("/personal", formData).then(function (response) {
                       if (response.status == 201) {
                         var Toast = _this.$swal.mixin({
                           toast: true,
@@ -4974,7 +4973,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getPersonalInfo: function getPersonalInfo() {
       var _this3 = this;
 
-      axios.get("/get-personal-info").then(function (response) {
+      axios.get("get-personal-info").then(function (response) {
         if (response.status == 200) {
           if (response.data.data) {
             console.log(response.data.data);
@@ -64713,7 +64712,7 @@ var render = function() {
                                                 [
                                                   _c("option", [
                                                     _vm._v(
-                                                      '\n                                            value="0">Select\n                                            Country'
+                                                      '\n                                            value="0">Select Country'
                                                     )
                                                   ])
                                                 ]

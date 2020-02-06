@@ -77,7 +77,7 @@ class PersonalInfoTest extends TestCase
     /** @test */
     function authenticated_user_can_get_personal_information()
     {
-        $this->actingAs($this->user)->getJson('/personal-info')
+        $this->actingAs($this->user)->getJson('personal')
             ->assertStatus(200);
     }
 
@@ -87,7 +87,7 @@ class PersonalInfoTest extends TestCase
         $newUser = factory(User::class)->states('verified')->create();
 
         $this->actingAs($newUser)
-            ->postJson('/personal-info', [
+            ->post('personal', [
                 'legal_name' => 'Pawan Kumar',
                 'nickname' => 'Ricky',
                 'dob' => '02/05/1990',
@@ -116,6 +116,14 @@ class PersonalInfoTest extends TestCase
             'mother_name' => 'John Dee',
             'mother_birth_place' => 'New York'
         ]);
+
+        $this->assertDatabaseHas('users_personal_details_completions', [
+            'step_id' => 1,
+            'user_id' => $newUser->id,
+            'is_filled' => '1',
+            'is_visited' => '1',
+            'is_completed' => '1'
+        ]);
     }
 
     /** @test * */
@@ -124,7 +132,7 @@ class PersonalInfoTest extends TestCase
         $newAddress = factory(PersonalAddress::class)->create()->toJson();
         $this->actingAs($this->user)
             ->putJson(
-                "/personal-info/" . $this->personalInfo->id,
+                "personal/" . $this->personalInfo->id,
                 [
                     'legal_name' => 'John Doe',
                     'nickname' => 'John',

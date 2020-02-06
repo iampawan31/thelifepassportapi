@@ -31,10 +31,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::middleware(['auth'])->group(function () {
 
-    Route::get('personal-info', 'PersonalInfoController@index')->name('personal-info.index');
-    Route::get('get-personal-info', 'PersonalInfoController@show')->name('personal.info.show');
-    Route::post('personal-info', 'PersonalInfoController@store')->name('personal.info.post');
-    Route::put('personal-info/{personalInfo}', 'PersonalInfoController@update')->name('personal.info.update');
 
     // Personal Information Steps
     Route::post('steps', 'PersonalStepsController@update')->name('personal.steps');
@@ -43,6 +39,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('social', 'SocialMediaController@index')->name('social.index');
     Route::get('countries', 'CountryController@index')->name('countries.index');
     Route::get('benefits', 'BenefitController@index')->name('benefit.index');
+
+    Route::get('personal', 'PersonalInfoController@index')->name('personal-info.index');
+    Route::get('get-personal-info', 'PersonalInfoController@show')->name('personal.info.show');
+    Route::post('personal', 'PersonalInfoController@store')->name('personal.info.post');
+    Route::put('personal/{personalInfo}', 'PersonalInfoController@update')->name('personal.info.update');
 
     Route::prefix('personal')->group(function () {
 
