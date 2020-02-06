@@ -548,11 +548,7 @@ export default {
             axios.get("get-personal-info").then(response => {
                 if (response.status == 200) {
                     if (response.data.data) {
-                        console.log(response.data.data);
-                        this.$store.dispatch(
-                            "populateData",
-                            response.data.data
-                        );
+                        this.isCompleted = response.data.is_completed;
                         this.populateData(response.data.data);
                     }
                     this.getCountyList();

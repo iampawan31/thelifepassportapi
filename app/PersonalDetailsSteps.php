@@ -14,7 +14,8 @@ class PersonalDetailsSteps extends Model
      */
     public function users()
     {
-        return $this->belongsToMany(User::class, 'users_personal_details_completions', 'step_id', 'user_id');
+        return $this->belongsToMany(User::class, 'users_personal_details_completions', 'step_id', 'user_id')
+            ->withPivot(['is_filled', 'is_visited', 'is_completed']);
     }
 
     //Table Name

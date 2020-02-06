@@ -14,6 +14,7 @@ use App\UserPhone;
 use App\UserSocialMedia;
 use App\UsersPersonalDetailsCompletion;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -31,7 +32,7 @@ class PersonalInfoController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function store()
     {
@@ -164,18 +165,18 @@ class PersonalInfoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function show()
     {
-        return response()->json(['status' => 200, 'data' => auth()->user()]);
+        return response()->json(['status' => 200, 'data' => auth()->user(), 'is_completed' => auth()->user()->stepCompleted(1)]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param PersonalInfo $personalInfo
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function update(PersonalInfo $personalInfo)
     {

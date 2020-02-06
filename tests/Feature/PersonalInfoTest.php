@@ -36,6 +36,8 @@ class PersonalInfoTest extends TestCase
     {
         parent::setUp();
 
+        $this->withExceptionHandling();
+
         $this->user = factory(User::class)->states('verified')->create();
 
         $this->personalInfo = factory(PersonalInfo::class)->create([
@@ -77,7 +79,8 @@ class PersonalInfoTest extends TestCase
     /** @test */
     function authenticated_user_can_get_personal_information()
     {
-        $this->actingAs($this->user)->getJson('personal')
+        $this->actingAs($this->user)->get('get-personal-info')
+            ->dump()
             ->assertStatus(200);
     }
 
