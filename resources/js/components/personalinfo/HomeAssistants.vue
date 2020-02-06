@@ -12,7 +12,7 @@
                             action="#"
                             method="post"
                             class="custom-form"
-                            @submit.prevent="handleSubmit()"
+                            @submit.prevent="handleSubmit"
                         >
                             <!-- Person or asset cared for -->
                             <div class="row">
@@ -261,6 +261,8 @@ export default {
             this.submitted = true;
 
             const isValid = await this.$refs.observer.validate();
+
+            this.$router.push("/estate-representative-question");
             if (!isValid) {
                 // Do Something
             } else {
@@ -276,14 +278,14 @@ export default {
                         )
                         .then(response => {
                             console.log(response);
-                            //this.$router.push("/close-friends-question");
+                            this.$router.push("/estate-representative-question");
                         })
                         .catch(function() {});
                 } else {
                     axios
                         .post("/homeassistants/postdata", formData)
                         .then(response => {
-                            //this.$router.push("/close-friends-question");
+                            this.$router.push("/estate-representative-question");
                         })
                         .catch(function() {});
                 }

@@ -164,7 +164,7 @@ export default {
 		};
 	},
 	mounted() {
-		this.updatestepinfo();
+		this.updateStepinfo();
 		this.getFamilyMemberInfo();
 	},
 	methods: {
@@ -181,7 +181,7 @@ export default {
 				})
 				.catch(function() {});
 		},
-		updatestepinfo() {
+		updateStepinfo() {
 			let data = { step_id: 4, is_visited: "1" };
 			axios
 				.post("/steps", data)

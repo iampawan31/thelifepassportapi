@@ -2,14 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\Country;
 use App\EmployerBenefitsMaster;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class BenefitTest extends TestCase
 {

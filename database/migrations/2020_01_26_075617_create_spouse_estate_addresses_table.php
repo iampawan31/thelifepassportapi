@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePersonalestateAddressesTable extends Migration
+class CreateSpouseEstateAddressesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreatePersonalestateAddressesTable extends Migration
      */
     public function up()
     {
-        Schema::create('personalestate_addresses', function (Blueprint $table) {
+        Schema::create('spouse_estate_addresses', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('estate_id');
+            $table->unsignedBigInteger('spouse_estate_id');
             $table->string('street_address1')->nullable();
             $table->string('street_address2')->nullable();
             $table->string('city')->nullable();
@@ -24,7 +24,7 @@ class CreatePersonalestateAddressesTable extends Migration
             $table->string('zipcode', 8)->nullable();
 
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('estate_id')->references('id')->on('personal_estates');
+            $table->foreign('spouse_estate_id')->references('id')->on('spouse_estates');
             $table->timestamps();
         });
     }
@@ -36,6 +36,6 @@ class CreatePersonalestateAddressesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('personalestate_addresses');
+        Schema::dropIfExists('spouse_estate_addresses');
     }
 }

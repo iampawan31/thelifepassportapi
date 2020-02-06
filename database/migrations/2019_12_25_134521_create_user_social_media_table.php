@@ -20,9 +20,10 @@ class CreateUserSocialMediaTable extends Migration
             $table->string('username', 255)->nullable();
             $table->string('password', 20)->nullable();
             $table->boolean('is_primary')->default(false);
+            $table->timestamps();
+
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('social_id')->references('id')->on('social_media');
-            $table->timestamps();
         });
     }
 

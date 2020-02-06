@@ -164,7 +164,7 @@ export default {
         updatestepinfo() {
             let data = { step_id: 5, is_visited: "1" };
             axios
-                .post("/updatepersonalstep", data)
+                .post("/steps", data)
                 .then(response => {
                     console.log(response);
                 })

@@ -27,21 +27,18 @@ class FamilyStatusController extends Controller
     public function store()
     {
         try {
-            FamilyStatus::updateOrCreate([
-                'user_id' => auth()->id(),
-                'has_family_member' => request('has_family_member'),
-                'count' => 0
-            ]);
+            FamilyStatus::updateOrCreate(['user_id' => auth()->id()],
+                ['has_family_member' => request('has_family_member')]);
 
-            auth()->user()->steps()->syncWithoutDetaching(4, [
+            auth()->user()->steps()->syncWithouDetaching([4 => [
                 'is_visited' => '1',
                 'is_filled' => '1',
                 'is_completed' => request('has_family_member') ? 0 : 1
-            ]);
+            ]]);
 
             return response()->json(['status' => 201, 'message' => 'Family Status updated successfully'], 201);
 
-        } catch (\Exception $exception) {
+        } catch (\Exception $exception) {dd($exception);
             return response()->json(['status' => 500, 'message' => $exception], 500);
         }
     }

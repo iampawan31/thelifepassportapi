@@ -327,10 +327,10 @@ class FriendsController extends Controller
             $objFriendsStatus = FriendsStatus::where('user_id', $user_id)->get();
             
             if ($objFriendsStatus->count()) {
-                FamilyStatus::where('user_id', $user_id)
+                FriendsStatus::where('user_id', $user_id)
                                     ->update(['has_friends' => $has_friends]);
             } else {
-                FamilyStatus::create(['user_id' => $user_id, 'has_friends' => $has_friends]);
+                FriendsStatus::create(['user_id' => $user_id, 'has_friends' => $has_friends]);
             }
              //dd(\DB::getQueryLog());
             //insert record in user personal details completion

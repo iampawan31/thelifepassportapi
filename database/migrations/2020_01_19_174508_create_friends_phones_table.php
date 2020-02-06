@@ -18,10 +18,10 @@ class CreateFriendsPhonesTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('friend_id');
             $table->string('phone', 20);
+            $table->timestamps();
 
             $table->foreign('friend_id')->references('id')->on('friends');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->timestamps();
         });
     }
 

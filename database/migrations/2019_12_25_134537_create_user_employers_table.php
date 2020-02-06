@@ -20,8 +20,9 @@ class CreateUserEmployersTable extends Migration
             $table->string('employer_phone', 20)->nullable();
             $table->string('computer_username', 20)->nullable();
             $table->string('computer_password', 20)->nullable();
-            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

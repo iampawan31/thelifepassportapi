@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PersonalestateStatus extends Model
+class SpouseEstateStatus extends Model
 {
-    protected $fillable = ['user_id', 'has_personalestate', 'count'];
+    protected $fillable = ['user_id', 'has_spouseestate', 'count'];
 
     //Table Name
     static function tableName()

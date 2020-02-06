@@ -12,7 +12,7 @@
                             action="#"
                             method="post"
                             class="custom-form"
-                            @submit.prevent="handleSubmit()"
+                            @submit.prevent="handleSubmit"
                         >
                             <div class="staff-members-fields">
                                 <!-- Name Field -->
@@ -33,7 +33,7 @@
                                                     type="text"
                                                     name="name"
                                                     id="name"
-                                                    v-model="name"
+                                                    v-model="legalName"
                                                     data-id="name"
                                                     class="field-input required"
                                                     placeholder="Name"
@@ -128,8 +128,13 @@
 
                                 <!-- Address Field -->
                                 <home-address
-                                    :home-address="address"
-                                    @home-address-update="updateHomeAddress"
+                                    v-model="address"
+                                    @input="
+                                        newAddress => {
+                                            address = newAddress;
+                                        }
+                                    "
+                                    address-type="personal"
                                 />
 
                                 <!-- Phone Number Field -->
@@ -242,6 +247,22 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- Mark as complete button section -->
+                                <div
+                                    class="field-group form-group-checkbox clearfix"
+                                >
+                                    <label for="chk_complete">
+                                        <input
+                                            id="chk_complete"
+                                            v-model="isCompleted"
+                                            type="checkbox"
+                                            :checked="isCompleted"
+                                            name="chk_complete"
+                                            :value="isCompleted"
+                                        /><i /> <span>Mark as complete</span>
+                                    </label>
+                                </div>
                             </div>
 
                             <div class="field-group clearfix">
@@ -271,23 +292,97 @@ export default {
     },
     data() {
         return {
-            name: "",
+            legalName: "",
             relationship: "",
             company: "",
-            address: [],
+            address: {
+                street_address1: "",
+                street_address2: "",
+                city: "",
+                state: "",
+                zip: ""
+            },
             emailAddress: "",
             phoneNumber: "",
-            website: ""
+            website: "",
+            isCompleted: false,
+            estateRepId: ""
         };
     },
-    mounted() {},
+    created() {
+        this.getEstateRepresentativeInformation();
+    },
     methods: {
-        handleSubmit(e) {
-            console.log(e);
-            this.$router.push("/partner-estate-representative-question");
+        async handleSubmit(e) {
+            this.submitted = true;
+
+            const isValid = await this.$refs.observer.validate();
+            if (!isValid) {
+                // Do Something
+            } else {
+                const formData = this.getFormData(e);
+
+                if (this.estateRepId) {
+                    formData.append("_method", "put");
+                    axios
+                        .post("/personal/estate/" + this.estateRepId, formData)
+                        .then(response => {
+                            console.log(response);
+                            this.$router.push(
+                                "/spouse-estate-representative-question"
+                            );
+                        })
+                        .catch(function() {});
+                } else {
+                    axios
+                        .post("/personal/estate", formData)
+                        .then(response => {
+                            console.log(response);
+                            this.$router.push(
+                                "/spouse-estate-representative-question"
+                            );
+                        })
+                        .catch(function() {});
+                }
+            }
         },
-        updateHomeAddress(data) {
-            this.address = data;
+        getEstateRepresentativeInformation() {
+            axios.get("/personal/estate/").then(response => {
+                if (response.status == 200) {
+                    // console.log(response.data.data);
+                    this.populateData(response.data.data);
+                }
+            });
+        },
+        populateData(data) {
+            if (data !== null) {
+                this.legalName = data.legal_name;
+                this.relationship = data.relationship;
+                this.company = data.company;
+                this.emailAddress = data.email;
+                this.phoneNumber = data.phone;
+                this.website = data.website;
+                this.isCompleted = data.is_completed;
+
+                if (this.address) {
+                    this.address = data.address;
+                }
+            }
+        },
+        getFormData(e) {
+            const form = e.target;
+            const formData = new FormData(form);
+
+            formData.append("legal_name", this.legalName);
+            formData.append("relationship", this.relationship);
+            formData.append("company", this.company);
+            formData.append("email", this.emailAddress);
+            formData.append("phone", this.phoneNumber);
+            formData.append("website", this.website);
+            formData.append("address", JSON.stringify(this.address));
+            formData.append("is_completed", this.isCompleted);
+
+            return formData;
         }
     }
 };

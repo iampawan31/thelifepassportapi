@@ -22,10 +22,10 @@ class CreateHomeAssistantAddressesTable extends Migration
             $table->string('city')->nullable();
             $table->string('state')->nullable();
             $table->string('zipcode', 8)->nullable();
+            $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('assistant_id')->references('id')->on('home_assistants');
-            $table->timestamps();
         });
     }
 

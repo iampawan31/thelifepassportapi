@@ -102,7 +102,7 @@ class FamilyController extends Controller
                     'message' => 'Family members information has been saved successfully'
                 ], 201);
 
-        } catch (Exception $e) {
+        } catch (Exception $e) {dd($e);
             DB::rollBack();
             return response()->json(['status' => 500, 'message' => $e]);
         }
@@ -162,6 +162,7 @@ class FamilyController extends Controller
                 }
 
                 $this->updateFamilyMemberPhoneNumbers($familyMember);
+
                 DB::commit();
 
                 return response()

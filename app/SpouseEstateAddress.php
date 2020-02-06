@@ -4,11 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PersonalestateAddress extends Model
+class SpouseEstateAddress extends Model
 {
     protected $fillable = [
         'user_id',
-        'estate_id',
+        'spouse_estate_id',
         'street_address1',
         'street_address2',
         'city',
