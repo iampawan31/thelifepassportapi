@@ -14,15 +14,17 @@ use App\UserPhone;
 use App\UserSocialMedia;
 use App\UsersPersonalDetailsCompletion;
 use Exception;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 
 class PersonalInfoController extends Controller
 {
 
     /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Factory|View
      */
     public function index()
     {
@@ -40,7 +42,7 @@ class PersonalInfoController extends Controller
 
             DB::beginTransaction();
 
-            $user = User::find(auth()->id());
+            $user = auth()->user();
 
             // Save user's personal information
             $personalInfo = new PersonalInfo;
@@ -62,7 +64,10 @@ class PersonalInfoController extends Controller
             if (!empty($phoneNumbers)) {
                 foreach ($phoneNumbers as $phone) {
                     if ($phone) {
-                        $user->phones()->create(['user_id' => auth()->id(), 'phone' => $phone->phone]);
+                        $user->phones()->create([
+                            'user_id' => auth()->id(),
+                            'phone' => $phone->phone
+                        ]);
                     }
                 }
             }
@@ -139,8 +144,8 @@ class PersonalInfoController extends Controller
             // Save step completed information
             $user->steps()->syncWithoutDetaching([1 => [
                 'user_id' => $user->id,
-                'is_visited' => '1',
-                'is_filled' => '1',
+                'is_visited' => 1,
+                'is_filled' => 1,
                 'is_completed' => request('is_completed') ? 1 : 0
             ]]);
 
@@ -169,7 +174,11 @@ class PersonalInfoController extends Controller
      */
     public function show()
     {
-        return response()->json(['status' => 200, 'data' => auth()->user(), 'is_completed' => auth()->user()->stepCompleted(1)]);
+        return response()->json([
+            'status' => 200,
+            'data' => auth()->user(),
+            'is_completed' => auth()->user()->stepCompleted(1)
+        ], 200);
     }
 
     /**
@@ -301,8 +310,8 @@ class PersonalInfoController extends Controller
                 // Save step completed information
                 $user->steps()->syncWithoutDetaching(1, [
                     'user_id' => $user->id,
-                    'is_visited' => '1',
-                    'is_filled' => '1',
+                    'is_visited' => 1,
+                    'is_filled' => 1,
                     'is_completed' => request('is_completed') ? 1 : 0
                 ]);
 
@@ -362,6 +371,7 @@ class PersonalInfoController extends Controller
     /**
      * @param $user
      * @param $homeAddress
+     * @return
      */
     protected function updatePersonalAddress($user, $homeAddress)
     {

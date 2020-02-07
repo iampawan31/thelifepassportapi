@@ -10,7 +10,6 @@ class SpouseEmployer extends Model
         'user_id',
         'employer_name',
         'employer_phone',
-        'employer_address',
         'computer_username',
         'computer_password',
         'benefits_used'
@@ -22,6 +21,16 @@ class SpouseEmployer extends Model
      * @var array
      */
     protected $with = ['address', 'benefits'];
+
+    public static function boot()
+    {
+        parent::boot();
+//
+//        static::deleting(function ($userEmployer) { // before delete() method call this
+//            $userEmployer->address()->delete();
+//            $userEmployer->benefits()->delete();
+//        });
+    }
 
     public function address()
     {

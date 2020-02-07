@@ -85,6 +85,10 @@ class User extends Authenticatable
 
     public function stepCompleted($step)
     {
-        return $this->steps()->wherePivot('step_id', $step)->first()->pivot->is_completed;
+        $stepInformation = $this->steps()->wherePivot('step_id', $step)->first();
+
+        if ($stepInformation) {
+            return $stepInformation->pivot->is_completed;
+        }
     }
 }

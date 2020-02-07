@@ -449,13 +449,13 @@
 
             <!-- Mark as complete button section -->
             <div class="field-group form-group-checkbox clearfix">
-              <label for="chk_complete">
+              <label for="is_completed">
                 <input
-                  id="chk_complete"
+                  id="is_completed"
                   v-model="isCompleted"
                   type="checkbox"
                   :checked="isCompleted"
-                  name="chk_complete"
+                  name="is_completed"
                   :value="isCompleted"
                 ><i /> <span>Mark as complete</span>
               </label>
@@ -712,6 +712,7 @@ export default {
                 if (response.status == 200) {
                     if (response.data.data && response.data.data.id !== undefined) {
                         this.populateData(response.data.data);
+                        this.isCompleted = response.data.is_completed;
                     } else {
                         this.populateNewForm();
                     }
