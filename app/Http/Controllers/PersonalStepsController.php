@@ -21,7 +21,7 @@ class PersonalStepsController extends Controller
         try {
             $user = User::find(auth()->id());
             $stepId = $this->hasExistingStep($user);
-
+            dd($stepId);
             if ($stepId) {
                 $user->steps()->syncWithoutDetaching([request('step_id') => [
                     'is_visited' => request('is_visited') ?: false,

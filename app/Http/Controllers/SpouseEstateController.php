@@ -19,7 +19,12 @@ class SpouseEstateController extends Controller
     public function index()
     {
         $estateRepresentative = SpouseEstate::where('user_id', auth()->id())->first();
-        return response()->json(['status' => 200, 'data' => $estateRepresentative], 200);
+
+        return response()->json([
+            'status' => 200,
+            'data' => $estateRepresentative,
+            'is_completed' => auth()->user()->stepCompleted(8)
+        ], 200);
     }
 
     /**

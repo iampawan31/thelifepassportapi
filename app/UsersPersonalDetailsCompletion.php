@@ -17,6 +17,8 @@ class UsersPersonalDetailsCompletion extends Model
         'is_filled' => 'boolean',
         'is_completed' => 'boolean',
         'is_visited' => 'boolean',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
     ];
 
     /**
@@ -24,7 +26,7 @@ class UsersPersonalDetailsCompletion extends Model
      */
     public function steps()
     {
-        return $this->belongsToMany(PersonalDetailsSteps::class, 'users_personal_details_completions', 'user_id', 'step_id');
+        return $this->belongsToMany(PersonalDetailsSteps::class, 'users_personal_details_completions', 'user_id', 'step_id')->withTimestamps();
     }
 
     public function updatestepinfo($request, $user_id)

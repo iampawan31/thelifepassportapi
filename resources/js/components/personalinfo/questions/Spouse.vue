@@ -125,13 +125,13 @@
                     <a
                         href="javascript:void(0)"
                         class="btn-yes"
-                        @click.prevent="marriagestatus(1)"
+                        @click.prevent="marriageStatus(1)"
                         >Yes</a
                     >
                     <a
                         href="javascript:void(0)"
                         class="btn-no"
-                        @click.prevent="marriagestatus(0)"
+                        @click.prevent="marriageStatus(0)"
                         >No</a
                     >
                 </div>
@@ -139,7 +139,7 @@
             <a
                 href="javascript:void(0)"
                 class="btn-skip"
-                @click.prevent="marriagestatus(2)"
+                @click.prevent="marriageStatus(2)"
                 >Skip</a
             >
         </div>
@@ -157,7 +157,7 @@ export default {
     },
     created() {
         this.getSpouseInfo();
-        this.updatestepinfo();
+        this.updateStepInfo();
     },
     mounted() {},
     methods: {
@@ -176,14 +176,8 @@ export default {
                 }
             });
         },
-        marriagestatus(status) {
-            if (status == 0) {
-                this.formData = { is_married: "0" };
-            } else if (status == 1) {
-                this.formData = { is_married: "1" };
-            } else if (status == 2) {
-                this.formData = { is_married: "2" };
-            }
+        marriageStatus(status) {
+            this.formData = { is_married: status };
 
             axios
                 .post("personal/marriage-status", this.formData)
@@ -198,7 +192,7 @@ export default {
                 })
                 .catch(function() {});
         },
-        updatestepinfo() {
+        updateStepInfo() {
             let data = { step_id: 2, is_visited: "1" };
             axios
                 .post("/steps", data)

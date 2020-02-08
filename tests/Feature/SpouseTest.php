@@ -82,9 +82,24 @@ class SpouseTest extends TestCase
     /** @test */
     function an_authenticated_user_can_provide_marriage_information()
     {
-        $this->actingAs($this->user)->postJson('personal/marriage-status', [
-            'is_married' => 0
-        ])->dump()->assertStatus(201);
+        $this->actingAs($this->user)
+            ->post('personal/marriage-status', [
+                'is_married' => 1
+            ])->dump()
+            ->assertStatus(201);
+
+        $this->assertDatabaseHas('marriage_statuses', [
+            'user_id' => $this->user->id,
+            'is_married' => 1
+        ]);
+
+        $this->assertDatabaseHas('users_personal_details_completions', [
+            'user_id' => $this->user->id,
+            'step_id' => 2,
+            'is_visited' => 1,
+            'is_filled' => 1,
+            'is_completed' => 0
+        ]);
     }
 
     /** @test */
@@ -105,16 +120,17 @@ class SpouseTest extends TestCase
     /** @test */
     function an_authenticated_user_can_update_spouse_information_step()
     {
-        $this->actingAs($this->user)->postJson('/steps', [
-            'step_id' => 2,
-            'is_visited' => 1
-        ])
+        $this->actingAs($this->user)
+            ->postJson('steps', [
+                'step_id' => 2,
+                'is_visited' => 1
+            ])
             ->dump()
             ->assertStatus(201);
 
         $this->assertDatabaseHas('users_personal_details_completions', [
             'step_id' => 2,
-            'user_id' => $this->user->id
+            'user_id' => $this->user->id,
         ]);
     }
 
@@ -122,7 +138,7 @@ class SpouseTest extends TestCase
     function an_authenticated_user_can_submit_spouse_information()
     {
         $this->actingAs($this->user)
-            ->postJson('personal/spouse-info', [
+            ->post('personal/spouse-info', [
                 'marriage_location' => 'Marriage Location',
                 'marriage_date' => '05/03/1998',
                 'legal_name' => 'Pawan Kumar',
@@ -139,7 +155,7 @@ class SpouseTest extends TestCase
                 'emails' => $this->spouseEmails->toJson(),
                 'spouse_social_media' => $this->spouseSocialMedia->toJson(),
                 'spouse_employer' => $this->spouseEmployer->toJson(),
-                'is_completed' => true
+                'is_completed' => 1
             ])
             ->dump()
             ->assertStatus(201);
@@ -148,6 +164,28 @@ class SpouseTest extends TestCase
             'user_id' => $this->user->id,
             'legal_name' => 'Pawan Kumar',
             'nickname' => 'Ricky'
+        ]);
+
+        $this->assertDatabaseHas('spouse_phones', [
+            'user_id' => $this->user->id
+        ]);
+
+        $this->assertDatabaseHas('spouse_emails', [
+            'user_id' => $this->user->id
+        ]);
+
+        $this->assertDatabaseHas('spouse_social_media', [
+            'user_id' => $this->user->id
+        ]);
+
+        $this->assertDatabaseHas('spouse_employers', [
+            'user_id' => $this->user->id
+        ]);
+
+        $this->assertDatabaseHas('users_personal_details_completions', [
+            'user_id' => $this->user->id,
+            'step_id' => 2,
+            'is_completed' => 1
         ]);
     }
 
@@ -188,25 +226,25 @@ class SpouseTest extends TestCase
             'password' => null
         ];
         $this->actingAs($this->user)->put("/personal/spouse-info/" . $this->spouseInfo->id, [
-        'marriage_location' => 'New Marriage Location',
-        'marriage_date' => '05/03/1998',
-        'legal_name' => 'Ricky Kumar',
-        'nickname' => 'Rocky',
-        'dob' => '02/05/1990',
-        'country_id' => $this->spouseInfo->country_id,
-        'passport_number' => '1234566',
-        'father_name' => 'John Doe',
-        'father_birth_place' => 'New York',
-        'mother_name' => 'John Dee',
-        'mother_birth_place' => 'New York',
-        'spouse_address' => $this->spouseAddress->toJson(),
-        'phones' => json_encode($phones),
-        'emails' => json_encode($emails),
-        'spouse_social_media' => $this->spouseSocialMedia->toJson(),
-        'spouse_employer' => $this->spouseEmployer->toJson(),
-        'is_completed' => false
-    ])->dump()
-        ->assertStatus(201);
+            'marriage_location' => 'New Marriage Location',
+            'marriage_date' => '05/03/1998',
+            'legal_name' => 'Ricky Kumar',
+            'nickname' => 'Rocky',
+            'dob' => '02/05/1990',
+            'country_id' => $this->spouseInfo->country_id,
+            'passport_number' => '1234566',
+            'father_name' => 'John Doe',
+            'father_birth_place' => 'New York',
+            'mother_name' => 'John Dee',
+            'mother_birth_place' => 'New York',
+            'spouse_address' => $this->spouseAddress->toJson(),
+            'phones' => json_encode($phones),
+            'emails' => json_encode($emails),
+            'spouse_social_media' => $this->spouseSocialMedia->toJson(),
+            'spouse_employer' => $this->spouseEmployer->toJson(),
+            'is_completed' => false
+        ])->dump()
+            ->assertStatus(201);
     }
 
     /** @test */

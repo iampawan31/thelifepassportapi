@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Exception;
 use App\MarriageStatus;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\UsersPersonalDetailsCompletion;
 
@@ -22,52 +23,44 @@ class MarriageStatusController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @param Request $request
+     * @return JsonResponse
      */
     public function store(Request $request)
     {
-        try {
-            $marriageStatus = MarriageStatus::updateOrCreate([
-                'user_id' => auth()->id()
-            ], [
-                'is_married' => request('is_married') ? '1' : '0'
-            ]);
-            
-            if (request('is_married') == "0") {
-                //$is_completed = '1';
-                auth()->user()->steps()->syncWithoutDetaching(2, [
-                    'user_id' => auth()->id(),
-                    'is_visited' => '1',
-                    'is_filled' => '1',
-                    'is_completed' => '1'
+        if (request('is_married') == 2) {
+            // TODO:: What happens here?
+        } else {
+            try {
+                $marriageStatus = MarriageStatus::updateOrCreate([
+                    'user_id' => auth()->id()
+                ], [
+                    'is_married' => request('is_married') ? 1 : 0
                 ]);
-            } else {
-                //$is_completed = '0';
-                auth()->user()->steps()->syncWithoutDetaching(2, [
-                    'user_id' => auth()->id(),
-                    'is_visited' => '1',
-                    'is_filled' => '1',
-                    'is_completed' => '0'
-                ]);
+
+                if (request('is_married')) {
+                    auth()->user()->steps()->syncWithoutDetaching([2 => [
+                        'is_visited' => 1,
+                        'is_filled' => 1,
+                        'is_completed' => 0
+                    ]]);
+                } else {
+                    auth()->user()->steps()->syncWithoutDetaching([2 => [
+                        'is_visited' => 1,
+                        'is_filled' => 1,
+                        'is_completed' => 1
+                    ]]);
+                }
+
+                return response()
+                    ->json([
+                        'status' => 201,
+                        'message' => 'Marriage status updated successfully'
+                    ], 201);
+            } catch (Exception $e) {
+                return response()->json(['status' => 500, 'message' => $e], 500);
             }
-
-            // UsersPersonalDetailsCompletion::updateOrCreate(
-            //     ['user_id' => auth()->id(), 'step_id' => 2], 
-            //     [
-            //         'is_visited'    => '1',
-            //         'is_filled'     => '1',
-            //         'is_completed'  => $is_completed
-            //     ]
-            // );
-
-            return response()
-                ->json([
-                    'status' => 201,
-                    'message' => 'Marriage status updated successfully'
-                ], 201);
-        } catch (Exception $e) {
-            return response()->json(['status' => 500, 'message' => $e]);
         }
+        return;
     }
 }

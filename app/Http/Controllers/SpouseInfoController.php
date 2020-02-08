@@ -13,6 +13,7 @@ use App\SpouseSocialMedia;
 use App\User;
 use App\UsersPersonalDetailsCompletion;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -32,34 +33,40 @@ class SpouseInfoController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function index()
     {
-        $count = SpouseInfo::where('user_id', auth()->id())->get()->count();
-        if ($count > 0) {
-            $spouse_info = SpouseInfo::where('user_id', auth()->id())->first();
+        $spouse_info = SpouseInfo::where('user_id', auth()->id())->first();
 
-            return response()->json(['status' => 200, 'data' => $spouse_info]);
-        } else {
-            return response()->json(['status' => 200, 'data' => []]);
-        }
+        return response()->json([
+            'status' => 200,
+            'data' => $spouse_info,
+            'is_completed' => auth()->user()->stepCompleted(2)
+        ], 200);
     }
 
     /**
      * Store Spouse Information.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function store(Request $request)
     {
+        //TODO:: Store Spouse Personal Info
+        //TODO:: Store Address
+        //TODO:: Store Phone Numbers
+        //TODO:: Store Emails
+        //TODO:: Store Social Media,
+        //TODO:: Store Employer Information
+        //TODO:: Store Employer Address
+        //TODO:: Store Employer Benefits/
+        //TODO:: Update Step Information
         try {
+            DB::beginTransaction();
 
-//            DB::beginTransaction();
-
-            $user = User::find(auth()->id());
-
+            $user = auth()->user();
             // Save user's personal information
             $spouseInfo = new SpouseInfo;
 
@@ -72,7 +79,7 @@ class SpouseInfoController extends Controller
             if (!empty($homeAddress)) {
                 $spouseAddress = new SpouseAddress;
 
-                $spouseAddress->user_id = $user->id;
+                $spouseAddress->user_id = $spouseInfo->id;
                 $spouseAddress->street_address1 = $homeAddress->street_address1 ?: "";
                 $spouseAddress->street_address2 = $homeAddress->street_address2 ?: "";
                 $spouseAddress->city = $homeAddress->city ?: "";
@@ -88,7 +95,7 @@ class SpouseInfoController extends Controller
             if (!empty($phoneNumbers)) {
                 foreach ($phoneNumbers as $phone) {
                     if ($phone) {
-                        $user->phones()->create(['user_id' => auth()->id(), 'phone' => $phone->phone]);
+                        $spouseInfo->phones()->create(['phone' => $phone->phone]);
                     }
                 }
             }
@@ -98,9 +105,8 @@ class SpouseInfoController extends Controller
             if (!empty($emails)) {
                 foreach ($emails as $email) {
                     if ($email) {
-                        $user->emails()->create(
+                        $spouseInfo->emails()->create(
                             [
-                                'user_id' => auth()->id(),
                                 'email' => $email->email,
                                 'password' => $email->password
                             ]
@@ -115,9 +121,8 @@ class SpouseInfoController extends Controller
             if (!empty($socials)) {
                 foreach ($socials as $social) {
                     if ($social) {
-                        $user->socials()->create(
+                        $spouseInfo->socials()->create(
                             [
-                                'user_id' => auth()->id(),
                                 'social_id' => $social->social_id,
                                 'username' => $social->username,
                                 'password' => $social->password
@@ -133,8 +138,7 @@ class SpouseInfoController extends Controller
             if (!empty($employers)) {
                 foreach ($employers as $employer) {
                     if ($employer) {
-                        $employment = $user->employers()->create([
-                            'user_id' => auth()->id(),
+                        $employment = $spouseInfo->employers()->create([
                             'employer_name' => $employer->employer_name,
                             'employer_phone' => $employer->employer_phone,
                             'computer_username' => $employer->computer_username,
@@ -143,7 +147,7 @@ class SpouseInfoController extends Controller
 
                         if (!empty($employer->address)) {
                             $employment->address()->create([
-                                'user_id' => $user->id,
+                                'user_id' => $spouseInfo->id,
                                 'street_address1' => $employer->address->street_address1,
                                 'street_address2' => $employer->address->street_address2,
                                 'city' => $employer->address->city,
@@ -163,12 +167,12 @@ class SpouseInfoController extends Controller
             }
 
             // Save step completed information
-            $user->steps()->syncWithoutDetaching(2, [
+            auth()->user()->steps()->syncWithoutDetaching([2 => [
                 'user_id' => $user->id,
-                'is_visited' => '1',
-                'is_filled' => '1',
-                'is_completed' => request('is_completed') ? '1' : '0'
-            ]);
+                'is_visited' => 1,
+                'is_filled' => 1,
+                'is_completed' => request('is_completed') ? 1 : 0
+            ]]);
 
             DB::commit();
 
@@ -196,9 +200,9 @@ class SpouseInfoController extends Controller
      */
     public function show($id)
     {
-        $count = \App\SpouseInfo::where('user_id', $id)->get()->count();
+        $count = SpouseInfo::where('user_id', $id)->get()->count();
         if ($count > 0) {
-            $spouse_info = \App\PersonalInfo::find($id)
+            $spouse_info = PersonalInfo::find($id)
                 ->with('SpousePhone')
                 ->with('SpouseEmail')
                 ->with('SpouseSocailMedia')
@@ -216,7 +220,7 @@ class SpouseInfoController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param SpouseInfo $spouseInfo
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function update(Request $request, SpouseInfo $spouseInfo)
     {
@@ -336,12 +340,12 @@ class SpouseInfoController extends Controller
         // Save step completed information
         $user = auth()->user();
 
-        $user->steps()->syncWithoutDetaching(2, [
+        $user->steps()->syncWithoutDetaching([2 => [
             'user_id' => $user->id,
-            'is_visited' => '1',
-            'is_filled' => '1',
-            'is_completed' => request('is_completed') ? '1' : '0'
-        ]);
+            'is_visited' => 1,
+            'is_filled' => 1,
+            'is_completed' => request('is_completed') ? 1 : 0
+        ]]);
 
         DB::commit();
 
@@ -356,7 +360,7 @@ class SpouseInfoController extends Controller
      * Remove the specified resource from storage.
      *
      * @param SpouseInfo $spouseInfo
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function destroy(SpouseInfo $spouseInfo)
     {

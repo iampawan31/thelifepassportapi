@@ -34,7 +34,12 @@ class FamilyController extends Controller
     public function index()
     {
         $familyMembers = FamilyMembers::where('user_id', auth()->id())->get();
-        return response()->json(['status' => 200, 'data' => $familyMembers], 200);
+
+        return response()->json([
+            'status' => 200,
+            'data' => $familyMembers,
+            'is_completed' => auth()->user()->stepCompleted(4)
+        ], 200);
     }
 
     /**

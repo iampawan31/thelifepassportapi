@@ -6698,6 +6698,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         if (response.status == 200) {
           if (response.data.data && response.data.data.id !== undefined) {
             _this2.populateData(response.data.data);
+
+            _this2.isCompleted = response.data.is_completed;
           } else {
             _this2.populateNewForm();
           }
@@ -9433,7 +9435,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {
     this.getSpouseInfo();
-    this.updatestepinfo();
+    this.updateStepInfo();
   },
   mounted: function mounted() {},
   methods: {
@@ -9453,23 +9455,12 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     },
-    marriagestatus: function marriagestatus(status) {
+    marriageStatus: function marriageStatus(status) {
       var _this2 = this;
 
-      if (status == 0) {
-        this.formData = {
-          is_married: "0"
-        };
-      } else if (status == 1) {
-        this.formData = {
-          is_married: "1"
-        };
-      } else if (status == 2) {
-        this.formData = {
-          is_married: "2"
-        };
-      }
-
+      this.formData = {
+        is_married: status
+      };
       axios.post("personal/marriage-status", this.formData).then(function (response) {
         if (response.status == 201) {
           if (status == "1") {
@@ -9480,7 +9471,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       })["catch"](function () {});
     },
-    updatestepinfo: function updatestepinfo() {
+    updateStepInfo: function updateStepInfo() {
       var data = {
         step_id: 2,
         is_visited: "1"
@@ -68417,7 +68408,7 @@ var render = function() {
                                 "field-group form-group-checkbox clearfix"
                             },
                             [
-                              _c("label", { attrs: { for: "chk_complete" } }, [
+                              _c("label", { attrs: { for: "is_completed" } }, [
                                 _c("input", {
                                   directives: [
                                     {
@@ -68428,9 +68419,9 @@ var render = function() {
                                     }
                                   ],
                                   attrs: {
-                                    id: "chk_complete",
+                                    id: "is_completed",
                                     type: "checkbox",
-                                    name: "chk_complete"
+                                    name: "is_completed"
                                   },
                                   domProps: {
                                     checked: _vm.isCompleted,
@@ -72376,7 +72367,7 @@ var render = function() {
                   on: {
                     click: function($event) {
                       $event.preventDefault()
-                      return _vm.marriagestatus(1)
+                      return _vm.marriageStatus(1)
                     }
                   }
                 },
@@ -72391,7 +72382,7 @@ var render = function() {
                   on: {
                     click: function($event) {
                       $event.preventDefault()
-                      return _vm.marriagestatus(0)
+                      return _vm.marriageStatus(0)
                     }
                   }
                 },
@@ -72408,7 +72399,7 @@ var render = function() {
               on: {
                 click: function($event) {
                   $event.preventDefault()
-                  return _vm.marriagestatus(2)
+                  return _vm.marriageStatus(2)
                 }
               }
             },
