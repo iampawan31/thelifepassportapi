@@ -719,7 +719,7 @@ export default {
                     axios
                         .post("/previousspouse/postdata", formData)
                         .then(response => {
-                            if (response.status == 200) {
+                            if (response.status == 201) {
                                 this.$router.push("/family-members-question");
                             }
                         })

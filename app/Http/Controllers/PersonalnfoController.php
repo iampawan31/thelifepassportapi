@@ -40,7 +40,7 @@ class PersonalInfoController extends Controller
     {
         try {
 
-            DB::beginTransaction();
+            //DB::beginTransaction();
 
             $user = auth()->user();
 
@@ -63,7 +63,7 @@ class PersonalInfoController extends Controller
 
             if (!empty($phoneNumbers)) {
                 foreach ($phoneNumbers as $phone) {
-                    if ($phone) {
+                    if (!empty($phone)) {
                         $user->phones()->create([
                             'user_id' => auth()->id(),
                             'phone' => $phone->phone
@@ -76,7 +76,7 @@ class PersonalInfoController extends Controller
             $emails = json_decode(request('emails'));
             if (!empty($emails)) {
                 foreach ($emails as $email) {
-                    if ($email) {
+                    if (!empty($email)) {
                         $user->emails()->create(
                             [
                                 'user_id' => auth()->id(),
@@ -93,7 +93,7 @@ class PersonalInfoController extends Controller
 
             if (!empty($socials)) {
                 foreach ($socials as $social) {
-                    if ($social) {
+                    if (!empty($social)) {
                         $user->socials()->create(
                             [
                                 'user_id' => auth()->id(),
@@ -111,7 +111,7 @@ class PersonalInfoController extends Controller
 
             if (!empty($employers)) {
                 foreach ($employers as $employer) {
-                    if ($employer) {
+                    if (!empty($employer)) {
                         $employment = $user->employers()->create([
                             'user_id' => auth()->id(),
                             'employer_name' => $employer->employer_name,
@@ -149,7 +149,7 @@ class PersonalInfoController extends Controller
                 'is_completed' => request('is_completed') ? 1 : 0,
             ]]);
 
-            DB::commit();
+            //DB::commit();
 
             return response()
                 ->json([
@@ -157,7 +157,7 @@ class PersonalInfoController extends Controller
                     'message' => 'Personal information has been saved successfully'
                 ], 201);
         } catch (Exception $e) {
-            DB::rollBack();
+            //DB::rollBack();
 
             return response()
                 ->json([
@@ -358,7 +358,7 @@ class PersonalInfoController extends Controller
         $personalInfo->legal_name = request('legal_name') ?: "";
         $personalInfo->nickname = request('nickname') ?: "";
         $personalInfo->dob = Carbon::parse(request('dob')) ?: "";
-        $personalInfo->country_id = request('country_id') ?: "";
+        $personalInfo->country_id = request('country_id') ?: 0;
         $personalInfo->passport_number = request('passport_number') ?: "";
         $personalInfo->father_name = request('father_name') ?: "";
         $personalInfo->father_birth_place = request('father_birth_place') ?: "";

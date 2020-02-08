@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class SpouseInfo extends Model
 {
+    protected $primaryKey = 'user_id';
+
     protected $fillable = [
         'user_id',
         'legal_name',
@@ -22,7 +24,7 @@ class SpouseInfo extends Model
         'marriage_location'
     ];
 
-    protected $with = ['address', 'phones', 'emails', 'socials', 'employers', 'step'];
+    protected $with = ['address', 'phones', 'emails', 'socials', 'employers', 'step', 'country'];
 
     public function getMarriageDateAttribute($date)
     {

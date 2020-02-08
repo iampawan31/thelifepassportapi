@@ -5872,7 +5872,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     })["catch"](function () {});
                   } else {
                     axios.post("/previousspouse/postdata", formData).then(function (response) {
-                      if (response.status == 200) {
+                      if (response.status == 201) {
                         _this2.$router.push("/family-members-question");
                       }
                     })["catch"](function () {});
@@ -6538,13 +6538,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   }
 
                   if (this.spouseDetails && this.spouseDetails.id) {
-                    axios.post('/personal/spouse-info/' + this.spouseDetails.id, formData).then(function (response) {
+                    axios.post('/personal/spouse-info/' + this.spouseDetails.user_id, formData).then(function (response) {
                       console.log(response);
 
                       _this.$router.push('/previous-spouse-question');
                     })["catch"](function () {});
                   } else {
-                    axios.post('/personal/spouse-info/', formData).then(function (response) {
+                    axios.post('/personal/spouse-info', formData).then(function (response) {
                       console.log(response);
 
                       _this.$router.push('/previous-spouse-question');
@@ -9424,6 +9424,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -9444,13 +9445,15 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get("/personal/spouse-info").then(function (response) {
         if (response.status == 200) {
-          if (response.data.data[0]) {
-            _this.spouseDetails = JSON.parse(JSON.stringify(response.data.data[0]));
+          if (response.data) {
+            _this.spouseDetails = JSON.parse(JSON.stringify(response.data.data));
             _this.userId = _this.spouseDetails.user_id;
 
             if (_this.userId) {
               _this.showSpouseDetails = true;
             }
+
+            console.log(_this.showSpouseDetails);
           }
         }
       });
@@ -9476,8 +9479,7 @@ __webpack_require__.r(__webpack_exports__);
         step_id: 2,
         is_visited: "1"
       };
-      axios.post("/steps", data).then(function (response) {
-        console.log(response);
+      axios.post("/steps", data).then(function (response) {//console.log(response);
       })["catch"](function () {});
     },
     removeSpouse: function removeSpouse() {
@@ -72214,7 +72216,19 @@ var render = function() {
                   _c("div", { staticClass: "item__content" }, [
                     _vm._v(
                       "\n                            " +
-                        _vm._s(_vm.spouseDetails.home_address) +
+                        _vm._s(_vm.spouseDetails.address.street_address1) +
+                        ", " +
+                        _vm._s(_vm.spouseDetails.address.street_address2) +
+                        " "
+                    ),
+                    _c("br"),
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(_vm.spouseDetails.address.city) +
+                        ", " +
+                        _vm._s(_vm.spouseDetails.address.state) +
+                        ", " +
+                        _vm._s(_vm.spouseDetails.address.zipcode) +
                         "\n                        "
                     )
                   ])
@@ -72232,7 +72246,7 @@ var render = function() {
                   _c("div", { staticClass: "item__content" }, [
                     _vm._v(
                       "\n                            " +
-                        _vm._s(_vm.spouseDetails.countries.country_name) +
+                        _vm._s(_vm.spouseDetails.country.country_name) +
                         "\n                        "
                     )
                   ])
@@ -72270,10 +72284,7 @@ var render = function() {
                   _c(
                     "div",
                     { staticClass: "item__content" },
-                    _vm._l(_vm.spouseDetails.spouse_phone, function(
-                      phone,
-                      index
-                    ) {
+                    _vm._l(_vm.spouseDetails.phones, function(phone, index) {
                       return _c("span", { key: index }, [
                         _vm._v(
                           "\n                                " +
@@ -72298,10 +72309,7 @@ var render = function() {
                   _c(
                     "div",
                     { staticClass: "item__content" },
-                    _vm._l(_vm.spouseDetails.spouse_email, function(
-                      email,
-                      index
-                    ) {
+                    _vm._l(_vm.spouseDetails.emails, function(email, index) {
                       return _c("span", { key: index }, [
                         _vm._v(
                           "\n                                " +

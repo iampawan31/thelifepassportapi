@@ -552,7 +552,7 @@ export default {
                 if (this.spouseDetails && this.spouseDetails.id) {
                     axios
                         .post(
-                            '/personal/spouse-info/' + this.spouseDetails.id,
+                            '/personal/spouse-info/' + this.spouseDetails.user_id,
                             formData
                         )
                         .then(response => {
@@ -562,7 +562,7 @@ export default {
                         .catch(function() {});
                 } else {
                     axios
-                        .post('/personal/spouse-info/', formData)
+                        .post('/personal/spouse-info', formData)
                         .then(response => {
                             console.log(response);
                             this.$router.push('/previous-spouse-question');

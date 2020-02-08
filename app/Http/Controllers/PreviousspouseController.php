@@ -37,14 +37,21 @@ class PreviousspouseController extends Controller
         $user_id = Auth::user()->id;
         $count = \App\PreviousSpouseInfo::where('user_id', $user_id)->get()->count();
         if ($count > 0) {
-            $previous_spouse_info = \App\PreviousSpouseInfo::where('user_id', $user_id)
-                ->with('Address')
-                ->with('PreviousSpousePhone')
-                ->with('DivorceDoc')
-                ->with('UsersPersonalDetailsCompletion')
-                ->get();
+            $previous_spouse_info = PreviousSpouseInfo::where('user_id', auth()->id())->first();
+            // $previous_spouse_info = \App\PreviousSpouseInfo::where('user_id', $user_id)
+            //     ->with('Address')
+            //     ->with('PreviousSpousePhone')
+            //     ->with('DivorceDoc')
+            //     ->with('UsersPersonalDetailsCompletion')
+            //     ->get();
             
-            return response()->json(['status' => 200, 'data' => $previous_spouse_info]);
+            return response()->json(
+                [
+                    'status' => 200, 
+                    'data' => $previous_spouse_info,
+                    'is_completed' => auth()->user()->stepCompleted(3)
+                ]
+            );
         } else {
             return response()->json(['status' => 200, 'data' => []]);
         }
@@ -143,91 +150,12 @@ class PreviousspouseController extends Controller
                 }
             }
 
-            // Save step completed information
-            // $user->steps()->sync([
-            //     'step_id' => 3,
-            //     'user_id' => $user->id,
-            //     'is_visited' => '1',
-            //     'is_filled' => '1',
-            //     'is_completed' => request('chk_complete') ? '1' : '0'
-            // ]);
-
-            // //$inputs = $request->all();
-            
-            // //previous spouse information
-            // $user_id                = Auth::user()->id;
-            // $legal_name             = $inputs['legal_name'];
-            // $marriage_date          = $inputs['marriage_date'];
-            // $marriage_location      = $inputs['marriage_location'];
-            // $divorce_date           = $inputs['divorce_date'];
-            // $divorce_location       = $inputs['divorce_location'];
-            // $email                  = $inputs['email'];
-            // $address                = $inputs['address'];
-            // $is_alimony_paid        = @$inputs['owe_alimony'];
-            // $divorce_agreement_doc  = "";
-            // $alimony_amount         = @$inputs['alimony_amount'];
-            // $is_completed           = @$inputs['chk_complete'];
-
-            // //phone info
-            // $arrPhone = [];
-            // if (isset($inputs['phone'])) {
-            //     foreach($inputs['phone'] as $phone) {
-            //         if ($phone) {
-            //             $arrPhone[] = ['user_id' => $user_id, 'phone' => $phone];
-            //         }
-            //     }
-            // }
-
-            // $arrPreviousSpouseInfo = [
-            //     'user_id'           => $user_id,
-            //     'legal_name'        => $legal_name ? $legal_name : "",
-            //     'marriage_date'     => $marriage_date ? date('Y-m-d', strtotime($marriage_date)) : null,
-            //     'marriage_location' => $marriage_location ? $marriage_location : "",
-            //     'divorce_date'      => $divorce_date ? date('Y-m-d', strtotime($divorce_date)) : null,
-            //     'divorce_location'  => $divorce_location ? $divorce_location : "",
-            //     'address'           => $address ? $address : "",
-            //     'email'             => $email ? $email : "",
-            //     'is_alimony_paid'   => $is_alimony_paid == true ? '1' : '0',
-            //     'divorce_agreement_doc'  => "",
-            //     'alimony_amount'    => $alimony_amount ? $alimony_amount : 0
-            // ];
-
-            // try {
-            //     //insert Previous Spouce information
-            //     $objPreviousSpouseInfo = \App\PreviousSpouseInfo::create($arrPreviousSpouseInfo);
-
-            //     // //insert record in user personal details completion
-            //     $is_completed = $is_completed ? '1' : '0';
-            //     \App\UsersPersonalDetailsCompletion::where('step_id', 3)
-            //                                         ->where('user_id', Auth::user()->id)
-            //                                         ->update(['is_visited' => '1', 'is_filled' => '1', 'is_completed' => $is_completed]);
-
-            //     //insert previous spouse phone information
-            //     if (!empty($arrPhone)) {
-            //         foreach($arrPhone as $phones){
-            //             $objPhone = \App\PreviousSpousePhone::create($phones);
-            //         } 
-            //     }
-
-            //     //upload divorce documents
-            //     if ($request->file('alimony_agreement')) {
-            //         $file       = $request->file('alimony_agreement');
-            //         $ext        = $file->getClientOriginalExtension();
-            //         $filename   = $path = hash( 'sha256', time()) . '.' . $ext;
-            //         $path       = 'divorce_agreement/';
-                    
-            //         if(Storage::disk('public')->put($path.$filename, File::get($file))) {
-            //             $documents = [
-            //                 'user_id'   => $user_id,
-            //                 'title'     => $filename,
-            //                 'url'       => App::make('url')->to('/storage/divorce_agreement/'.$filename)
-            //             ];
-                        
-            //             $objPhone = \App\DivorceDoc::create($documents);
-            //         }
-            //     }
-            
-            //return response()->json(['status' => 200, 'message' => 'Previous Spouse information has been saved successfully'], 200);
+            $user->steps()->syncWithoutDetaching([3 => [
+                'user_id' => $user->id,
+                'is_visited' => 1,
+                'is_filled' => 1,
+                'is_completed' => request('is_completed') ? 1 : 0
+            ]]);
 
             DB::commit();
             return response()
@@ -288,7 +216,7 @@ class PreviousspouseController extends Controller
     {
         if (auth()->id()) {
             try {
-                $user = User::findOrFail(auth()->id());
+                $user = auth()->user();
 
                 DB::beginTransaction();
 
@@ -360,14 +288,12 @@ class PreviousspouseController extends Controller
                     }
                 }
 
-                // Save step completed information
-                // $user->steps()->sync([
-                //     'step_id' => 3,
-                //     'user_id' => $user->id,
-                //     'is_visited' => '1',
-                //     'is_filled' => '1',
-                //     'is_completed' => request('chk_complete') ? '1' : '0'
-                // ]);
+                $user->steps()->syncWithoutDetaching([2 => [
+                    'user_id' => $user->id,
+                    'is_visited' => 1,
+                    'is_filled' => 1,
+                    'is_completed' => request('is_completed') ? 1 : 0
+                ]]);
                 
                 DB::commit();
                 return response()
@@ -392,87 +318,6 @@ class PreviousspouseController extends Controller
                 'status' => 500,
                 'message' => "Something went wrong. Error Code APIC#332"
             ], 500);
-
-        // $inputs = $request->all();
-       
-        // //personal information
-        // $user_id            = Auth::user()->id;
-        // $legal_name         = $inputs['legal_name'];
-        // $marriage_date      = $inputs['marriage_date'];
-        // $marriage_location  = $inputs['marriage_location'];
-        // $divorce_date       = $inputs['divorce_date'];
-        // $divorce_location   = $inputs['divorce_location'];
-        // $email              = $inputs['email'];
-        // $address                = $inputs['address'];
-        // $is_alimony_paid        = @$inputs['owe_alimony'];
-        // $divorce_agreement_doc  = "";
-        // $alimony_amount         = @$inputs['alimony_amount'];
-        // $is_completed       = @$inputs['chk_complete'];
-       
-        // //phone info
-        // $arrPhone = [];
-        // if (isset($inputs['phone'])) {
-        //     foreach($inputs['phone'] as $phone) {
-        //         if ($phone) {
-        //             $arrPhone[] = ['user_id' => $user_id, 'phone' => $phone];
-        //         }
-        //     }
-        // }
-
-        // try {
-        //     //get previous spouse information
-        //     $objPreviousSpouseInfo                      = \App\PreviousSpouseInfo::find($id);
-        //     $objPreviousSpouseInfo->legal_name          = $legal_name ? $legal_name : "";
-        //     $objPreviousSpouseInfo->marriage_date       = $marriage_date ? date('Y-m-d', strtotime($marriage_date)) : null;
-        //     $objPreviousSpouseInfo->marriage_location   = $marriage_location ? $marriage_location : "";
-        //     $objPreviousSpouseInfo->divorce_date        = $divorce_date ? date('Y-m-d', strtotime($divorce_date)) : null;
-        //     $objPreviousSpouseInfo->divorce_location    = $divorce_location ? $divorce_location : "";
-        //     $objPreviousSpouseInfo->address             = $address ? $address : "";
-        //     $objPreviousSpouseInfo->email               = $email ? $email : "";
-        //     $objPreviousSpouseInfo->is_alimony_paid     = $is_alimony_paid == true ? '1' : '0';
-        //     $objPreviousSpouseInfo->divorce_agreement_doc = "";
-        //     $objPreviousSpouseInfo->alimony_amount      = $alimony_amount ? $alimony_amount : 0;
-        //     $objPreviousSpouseInfo->save();
-
-        //     // //insert record in user personal details completion
-        //     $is_completed = $is_completed ? '1' : '0';
-        //     \App\UsersPersonalDetailsCompletion::where('step_id', 3)
-        //                                         ->where('user_id', Auth::user()->id)
-        //                                         ->update(['is_visited' => '1', 'is_filled' => '1', 'is_completed' => $is_completed]);
-
-        //     //insert previous spouse phone information
-        //     if (!empty($arrPhone)) {
-        //         //remove all phone details
-        //         \App\PreviousSpousePhone::where('user_id', $user_id)->delete();
-        //         foreach($arrPhone as $phones){
-        //             $objPhone = \App\PreviousSpousePhone::create($phones);
-        //         } 
-        //     }
-
-        //     //upload divorce documents
-        //     if ($request->file('alimony_agreement')) {
-        //         $file       = $request->file('alimony_agreement');
-        //         $ext        = $file->getClientOriginalExtension();
-        //         $filename   = $path = hash( 'sha256', time()) . '.' . $ext;
-        //         $path       = 'divorce_agreement/';
-                
-        //         if(Storage::disk('public')->put($path.$filename, File::get($file))) {
-        //             $documents = [
-        //                 'user_id'   => $user_id,
-        //                 'title'     => $filename,
-        //                 'url'       => App::make('url')->to('/storage/divorce_agreement/'.$filename)
-        //             ];
-                    
-        //             //remove previous divorce documents
-        //             \App\DivorceDoc::where('user_id', $user_id)->delete();
-        //             $objPhone = \App\DivorceDoc::create($documents);
-        //         }
-        //     }
-            
-        //     return response()->json(['status' => 200, 'message' => 'Previous Spouse information has been saved successfully'], 200);
-        // } catch(Exception $e) {
-        //     return response()->json(['status' => 503, 'message' => 'Error'], 503);
-        // }
     }
 
     /**
@@ -659,7 +504,7 @@ class PreviousspouseController extends Controller
         $perviousSpouseInfo->is_alimony_paid        = request('owe_alimony') ? '1' : '0';
         $perviousSpouseInfo->divorce_agreement_doc  = request('divorce_agreement_doc') ?: "";
         $perviousSpouseInfo->alimony_amount         = request('alimony_amount') ?: 0;
-        $perviousSpouseInfo->is_child_support       = request('owe_child_support') ? '1' : "";
+        $perviousSpouseInfo->is_child_support       = request('owe_child_support') ? '1' : "0";
         $perviousSpouseInfo->child_support_amount   = request('child_support_amount') ?: 0;
 
         $perviousSpouseInfo->save();

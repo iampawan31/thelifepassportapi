@@ -49,7 +49,13 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('marriage-status', 'MarriageStatusController@index')->name('personal.marriage.get');
         Route::post('marriage-status', 'MarriageStatusController@store')->name('personal.marriage.post');
-        Route::resource('spouse-info', 'SpouseInfoController')->only(['index', 'store', 'update', 'destroy']);
+        //Route::resource('spouse-info', 'SpouseInfoController')->only(['index', 'store', 'update', 'destroy']);
+
+        Route::get('spouse-info', 'SpouseInfoController@index');
+        Route::post('spouse-info', 'SpouseInfoController@store');
+        Route::put('spouse-info/{id}', 'SpouseInfoController@update');
+
+
 
         Route::get('family/status', 'FamilyStatusController@index');
         Route::post('family/status', 'FamilyStatusController@store');

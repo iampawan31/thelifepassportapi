@@ -23,6 +23,8 @@ class PreviousSpouseInfo extends Model
         'child_support_amount'
     ];
 
+    protected $with = ['address', 'phones', 'documents', 'childsupportdoc', 'step'];
+
     public function getMarriageDateAttribute($date)
     {
         return $this->attributes['marriage_date'] = date('m/d/Y', strtotime($date));

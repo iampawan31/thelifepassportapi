@@ -45,7 +45,8 @@
                                 Home Address
                             </h4>
                             <div class="item__content">
-                                {{ spouseDetails.home_address }}
+                                {{ spouseDetails.address.street_address1 }}, {{ spouseDetails.address.street_address2 }} <br>
+                                {{ spouseDetails.address.city }}, {{ spouseDetails.address.state }}, {{ spouseDetails.address.zipcode }}
                             </div>
                         </div>
                     </div>
@@ -55,7 +56,7 @@
                                 Citizenship
                             </h4>
                             <div class="item__content">
-                                {{ spouseDetails.countries.country_name }}
+                                {{ spouseDetails.country.country_name }}
                             </div>
                         </div>
                     </div>
@@ -80,7 +81,7 @@
                             <div class="item__content">
                                 <span
                                     v-for="(phone,
-                                    index) in spouseDetails.spouse_phone"
+                                    index) in spouseDetails.phones"
                                     :key="index"
                                 >
                                     {{ phone.phone }}<br />
@@ -96,7 +97,7 @@
                             <div class="item__content">
                                 <span
                                     v-for="(email,
-                                    index) in spouseDetails.spouse_email"
+                                    index) in spouseDetails.emails"
                                     :key="index"
                                 >
                                     {{ email.email }}<br />
@@ -164,14 +165,16 @@ export default {
         getSpouseInfo() {
             axios.get("/personal/spouse-info").then(response => {
                 if (response.status == 200) {
-                    if (response.data.data[0]) {
+                    if (response.data) {
                         this.spouseDetails = JSON.parse(
-                            JSON.stringify(response.data.data[0])
+                            JSON.stringify(response.data.data)
                         );
                         this.userId = this.spouseDetails.user_id;
+                        
                         if (this.userId) {
                             this.showSpouseDetails = true;
                         }
+                        console.log(this.showSpouseDetails);
                     }
                 }
             });
@@ -197,7 +200,7 @@ export default {
             axios
                 .post("/steps", data)
                 .then(response => {
-                    console.log(response);
+                    //console.log(response);
                 })
                 .catch(function() {});
         },

@@ -25,11 +25,11 @@ class SpouseEmployer extends Model
     public static function boot()
     {
         parent::boot();
-//
-//        static::deleting(function ($userEmployer) { // before delete() method call this
-//            $userEmployer->address()->delete();
-//            $userEmployer->benefits()->delete();
-//        });
+
+       static::deleting(function ($spouseEmployer) { // before delete() method call this
+           $spouseEmployer->address()->delete();
+           $spouseEmployer->benefits()->delete();
+       });
     }
 
     public function address()
@@ -39,12 +39,7 @@ class SpouseEmployer extends Model
 
     public function benefits()
     {
-        return $this->morphToMany(EmployerBenefitsMaster::class, 'benefits');
-
-    }
-
-    public function user()
-    {
-        return $this->belongsTo(SpouseInfo::class);
+        //return $this->morphToMany(EmployerBenefitsMaster::class, 'benefits');
+        return $this->hasMany(SpouseEmployerBenefits::class, 'employer_id');
     }
 }

@@ -14,8 +14,8 @@ class SpouseEmail extends Model
         return with(new static)->getTable();
     }
 
-    public function user()
+    public function spouseinfo()
     {
-
+        return $this->belongsTo(SpouseInfo::class, 'user_id');
     }
 }

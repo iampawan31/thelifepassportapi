@@ -7,6 +7,7 @@ use App\SpouseAddress;
 use App\SpouseEmail;
 use App\SpouseEmployer;
 use App\SpouseEmployerAddress;
+use App\SpouseEmployerBenefits;
 use App\SpouseInfo;
 use App\SpousePhone;
 use App\SpouseSocialMedia;
@@ -64,7 +65,7 @@ class SpouseInfoController extends Controller
         //TODO:: Store Employer Benefits/
         //TODO:: Update Step Information
         try {
-            DB::beginTransaction();
+           DB::beginTransaction();
 
             $user = auth()->user();
             // Save user's personal information
@@ -76,10 +77,10 @@ class SpouseInfoController extends Controller
             // Save user's personal address
             $homeAddress = json_decode(request('spouse_address'));
 
-            if (!empty($homeAddress)) {
+            if (!empty($homeAddress) && !empty($homeAddress->street_address1)) {
                 $spouseAddress = new SpouseAddress;
 
-                $spouseAddress->user_id = $spouseInfo->id;
+                $spouseAddress->user_id = $user->id;
                 $spouseAddress->street_address1 = $homeAddress->street_address1 ?: "";
                 $spouseAddress->street_address2 = $homeAddress->street_address2 ?: "";
                 $spouseAddress->city = $homeAddress->city ?: "";
@@ -94,8 +95,9 @@ class SpouseInfoController extends Controller
 
             if (!empty($phoneNumbers)) {
                 foreach ($phoneNumbers as $phone) {
-                    if ($phone) {
-                        $spouseInfo->phones()->create(['phone' => $phone->phone]);
+                    if (!empty($phone->phone)) {
+                        //$spouseInfo->phones()->create(['user_id' => $user->id, 'phone' => $phone->phone]);
+                        SpousePhone::create(['user_id' => $user->id, 'phone' => $phone->phone]);
                     }
                 }
             }
@@ -104,13 +106,23 @@ class SpouseInfoController extends Controller
             $emails = json_decode(request('emails'));
             if (!empty($emails)) {
                 foreach ($emails as $email) {
-                    if ($email) {
-                        $spouseInfo->emails()->create(
-                            [
-                                'email' => $email->email,
-                                'password' => $email->password
-                            ]
+                    if (!empty($email->email)) {
+                        // $spouseInfo->emails()->create(
+                        //     [
+                        //         'user_id' => $user->id, 
+                        //         'email' => $email->email,
+                        //         'password' => $email->password
+                        //     ]
+                        // );
+                        
+                        SpouseEmail::create(
+                                [
+                                    'user_id' => $user->id, 
+                                    'email' => $email->email,
+                                    'password' => $email->password
+                                ]
                         );
+                    
                     }
                 }
             }
@@ -120,9 +132,19 @@ class SpouseInfoController extends Controller
 
             if (!empty($socials)) {
                 foreach ($socials as $social) {
-                    if ($social) {
-                        $spouseInfo->socials()->create(
+                    if (!empty($social->social_id)) {
+                        // $spouseInfo->socials()->create(
+                        //     [
+                        //         'user_id' => $user->id, 
+                        //         'social_id' => $social->social_id,
+                        //         'username' => $social->username,
+                        //         'password' => $social->password
+                        //     ]
+                        // );
+
+                        SpouseSocialMedia::create(
                             [
+                                'user_id' => $user->id, 
                                 'social_id' => $social->social_id,
                                 'username' => $social->username,
                                 'password' => $social->password
@@ -137,37 +159,69 @@ class SpouseInfoController extends Controller
 
             if (!empty($employers)) {
                 foreach ($employers as $employer) {
-                    if ($employer) {
-                        $employment = $spouseInfo->employers()->create([
-                            'employer_name' => $employer->employer_name,
-                            'employer_phone' => $employer->employer_phone,
-                            'computer_username' => $employer->computer_username,
-                            'computer_password' => $employer->computer_password
-                        ]);
+                    if (!empty($employer->employer_name)) {
 
-                        if (!empty($employer->address)) {
-                            $employment->address()->create([
-                                'user_id' => $spouseInfo->id,
-                                'street_address1' => $employer->address->street_address1,
-                                'street_address2' => $employer->address->street_address2,
-                                'city' => $employer->address->city,
-                                'state' => $employer->address->state,
-                                'zipcode' => $employer->address->zipcode,
-                            ]);
+                        $employment = new SpouseEmployer();
+                        $employment->user_id = auth()->id();
+                        $employment->employer_name = $employer->employer_name;
+                        $employment->employer_phone = $employer->employer_phone;
+                        $employment->computer_username = $employer->computer_username;
+                        $employment->computer_password = $employer->computer_password;
+                        $employment->save();
+
+                        if (!empty($employer->address->street_address1)) {
+                            $employerAddresss = new SpouseEmployerAddress();
+                            $employerAddresss->user_id = auth()->id();
+                            $employerAddresss->employer_id = $employment->id;
+                            $employerAddresss->street_address1 = $employer->address->street_address1;
+                            $employerAddresss->street_address2 = $employer->address->street_address2;
+                            $employerAddresss->city = $employer->address->city;
+                            $employerAddresss->state = $employer->address->state;
+                            $employerAddresss->zipcode = $employer->address->zipcode;
+                            $employerAddresss->save();
                         }
 
                         if (!empty($employer->benefits)) {
                             $benefits = $employer->benefits;
                             foreach ($benefits as $benefit) {
-                                $employment->benefits()->attach($benefit->id);
+                                $employerBenefits = new SpouseEmployerBenefits();
+                                $employerBenefits->employer_id = $employment->id;
+                                $employerBenefits->benefit_id = $benefit->id;
+                                $employerBenefits->save();
                             }
                         }
+
+                        // $employment = $spouseInfo->employers()->create([
+                        //     'user_id' => auth()->id(),
+                        //     'employer_name' => $employer->employer_name,
+                        //     'employer_phone' => $employer->employer_phone,
+                        //     'computer_username' => $employer->computer_username,
+                        //     'computer_password' => $employer->computer_password
+                        // ]);
+
+                        // if (!empty($employer->address->street_address1)) {
+                        //     $employment->address()->create([
+                        //         'user_id' => auth()->id(),
+                        //         'street_address1' => $employer->address->street_address1,
+                        //         'street_address2' => $employer->address->street_address2,
+                        //         'city' => $employer->address->city,
+                        //         'state' => $employer->address->state,
+                        //         'zipcode' => $employer->address->zipcode,
+                        //     ]);
+                        // }
+
+                        // if (!empty($employer->benefits)) {
+                        //     $benefits = $employer->benefits;
+                        //     foreach ($benefits as $benefit) {
+                        //         $employment->benefits()->attach($benefit->id);
+                        //     }
+                        // }
                     }
                 }
             }
 
             // Save step completed information
-            auth()->user()->steps()->syncWithoutDetaching([2 => [
+            $user->steps()->syncWithoutDetaching([2 => [
                 'user_id' => $user->id,
                 'is_visited' => 1,
                 'is_filled' => 1,
@@ -181,7 +235,7 @@ class SpouseInfoController extends Controller
                     'status' => 201,
                     'message' => 'Spouse information has been saved successfully'
                 ], 201);
-        } catch (Exception $e) {
+        } catch (Exception $e) {dd($e);
             DB::rollBack();
 
             return response()
@@ -222,17 +276,20 @@ class SpouseInfoController extends Controller
      * @param SpouseInfo $spouseInfo
      * @return JsonResponse
      */
-    public function update(Request $request, SpouseInfo $spouseInfo)
-    {
-        DB::beginTransaction();
-        $this->updateSpouseInformation($spouseInfo);
+    public function update(Request $request, $id)
+    { 
+        //DB::beginTransaction();
 
+        $spouseInfo = SpouseInfo::find($id);
+        
+        $this->updateSpouseInformation($spouseInfo);
+        
         // Update spouse's personal address
         $homeAddress = json_decode(request('spouse_address'));
 
         if (!empty($homeAddress)) {
             $personalAddress = SpouseAddress::updateOrCreate([
-                'user_id' => $spouseInfo->id,
+                'user_id' => $spouseInfo->user_id,
             ], [
                 'street_address1' => $homeAddress->street_address1 ?: "",
                 'street_address2' => $homeAddress->street_address2 ?: "",
@@ -246,10 +303,10 @@ class SpouseInfoController extends Controller
         $phoneNumbers = json_decode(request('phones'));
 
         if (!empty($phoneNumbers)) {
-            SpousePhone::where('user_id', $spouseInfo->id)->delete();
+            SpousePhone::where('user_id', $spouseInfo->user_id)->delete();
             foreach ($phoneNumbers as $phone) {
                 if (!empty($phone) && $phone->phone !== null) {
-                    SpousePhone::create(['user_id' => $spouseInfo->id, 'phone' => $phone->phone]);
+                    SpousePhone::create(['user_id' => $spouseInfo->user_id, 'phone' => $phone->phone]);
                 }
             }
         }
@@ -258,12 +315,12 @@ class SpouseInfoController extends Controller
         $emails = json_decode(request('emails'));
 
         if (!empty($emails)) {
-            SpouseEmail::where('user_id', $spouseInfo->id)->delete();
+            SpouseEmail::where('user_id', $spouseInfo->user_id)->delete();
 
             foreach ($emails as $email) {
                 if (!empty($email) && $email->email !== null) {
                     SpouseEmail::create([
-                        'user_id' => $spouseInfo->id,
+                        'user_id' => $spouseInfo->user_id,
                         'email' => $email->email,
                         'password' => $email->password
                     ]);
@@ -275,12 +332,12 @@ class SpouseInfoController extends Controller
         $socials = json_decode(request('spouse_social_media'));
 
         if (!empty($socials)) {
-            SpouseSocialMedia::where('user_id', $spouseInfo->id)->delete();
+            SpouseSocialMedia::where('user_id', $spouseInfo->user_id)->delete();
 
             foreach ($socials as $social) {
                 if (!empty($social) && $social->social_id !== null) {
                     SpouseSocialMedia::create([
-                        'user_id' => $spouseInfo->id,
+                        'user_id' => $spouseInfo->user_id,
                         'social_id' => $social->social_id,
                         'username' => $social->username,
                         'password' => $social->password
@@ -299,15 +356,17 @@ class SpouseInfoController extends Controller
                     if (!empty($employer->id)) {
                         $spouseEmployer = SpouseEmployer::updateOrCreate([
                             'id' => $employer->id,
-                            'user_id' => $spouseInfo->id], [
-                            'employer_name' => $employer->employer_name,
-                            'employer_phone' => $employer->employer_phone,
-                            'computer_username' => $employer->computer_username,
-                            'computer_password' => $employer->computer_password
-                        ]);
+                            'user_id' => $spouseInfo->user_id], 
+                            [
+                                'employer_name' => $employer->employer_name,
+                                'employer_phone' => $employer->employer_phone,
+                                'computer_username' => $employer->computer_username,
+                                'computer_password' => $employer->computer_password
+                            ]
+                        );
                     } else {
                         $spouseEmployer = SpouseEmployer::create([
-                            'user_id' => $spouseInfo->id,
+                            'user_id' => $spouseInfo->user_id,
                             'employer_name' => $employer->employer_name,
                             'employer_phone' => $employer->employer_phone,
                             'computer_username' => $employer->computer_username,
@@ -317,7 +376,7 @@ class SpouseInfoController extends Controller
 
                     if (!empty($employer->address)) {
                         SpouseEmployerAddress::updateOrCreate([
-                            'user_id' => $spouseInfo->id,
+                            'user_id' => $spouseInfo->user_id,
                             'employer_id' => $spouseEmployer->id
                         ], [
                             'street_address1' => $employer->address->street_address1,
@@ -328,9 +387,20 @@ class SpouseInfoController extends Controller
                         ]);
                     }
 
+                    // if (!empty($employer->benefits)) {
+                    //     $benefitsSelected = $this->getSelectedBenefits($employer->benefits);
+                    //     $spouseEmployer->benefits()->sync($benefitsSelected);
+                    // }
+
                     if (!empty($employer->benefits)) {
-                        $benefitsSelected = $this->getSelectedBenefits($employer->benefits);
-                        $spouseEmployer->benefits()->sync($benefitsSelected);
+                        $benefits = $employer->benefits;
+                        SpouseEmployerBenefits::where('employer_id', $spouseEmployer->id)->delete();
+                        foreach ($benefits as $benefit) {
+                            $employerBenefits = new SpouseEmployerBenefits();
+                            $employerBenefits->employer_id = $spouseEmployer->id;
+                            $employerBenefits->benefit_id = $benefit->id;
+                            $employerBenefits->save();
+                        }
                     }
 
                 }
@@ -347,7 +417,7 @@ class SpouseInfoController extends Controller
             'is_completed' => request('is_completed') ? 1 : 0
         ]]);
 
-        DB::commit();
+        //DB::commit();
 
         return response()
             ->json([
@@ -406,7 +476,7 @@ class SpouseInfoController extends Controller
         $spouseInfo->legal_name = request('legal_name') ?: "";
         $spouseInfo->nickname = request('nickname') ?: "";
         $spouseInfo->dob = Carbon::parse(request('dob')) ?: "";
-        $spouseInfo->country_id = request('country_id') ?: "";
+        $spouseInfo->country_id = request('country_id') ?: null;
         $spouseInfo->passport_number = request('passport_number') ?: "";
         $spouseInfo->father_name = request('father_name') ?: "";
         $spouseInfo->father_birth_place = request('father_birth_place') ?: "";

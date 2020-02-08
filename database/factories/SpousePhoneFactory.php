@@ -9,7 +9,7 @@ use Faker\Generator as Faker;
 
 $factory->define(SpousePhone::class, function (Faker $faker) {
     return [
-        'user_id' => factory(SpouseInfo::class),
+        'user_id' => factory(SpouseInfo::class, 'user_id')->create(),
         'phone' => '8123565698',
         'is_primary' => false
     ];
