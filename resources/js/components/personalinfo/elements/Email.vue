@@ -11,7 +11,7 @@
                     type="text"
                     name="email[]"
                     class="field-input field-input__first email"
-                    placeholder="Email address"
+                    placeholder="email address"
                     v-model.trim="localEmail.email"
                     value=""
                 />
@@ -32,7 +32,7 @@
                     type="password"
                     name="email_password[]"
                     class="field-input field-input__last"
-                    placeholder="password"
+                    placeholder="password(optional)"
                     v-model.trim="localEmail.password"
                     value=""
                 />

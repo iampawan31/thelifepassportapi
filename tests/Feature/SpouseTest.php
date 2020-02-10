@@ -43,6 +43,8 @@ class SpouseTest extends TestCase
             'user_id' => $this->user->id
         ]);
 
+        dd($this->spouseInfo);
+
         $this->spousePhoneNumbers = factory(SpousePhone::class, 3)->create([
             'user_id' => $this->spouseInfo->id
         ]);
@@ -82,6 +84,7 @@ class SpouseTest extends TestCase
     /** @test */
     function an_authenticated_user_can_provide_marriage_information()
     {
+        dd($this->spouseInfo);
         $this->actingAs($this->user)
             ->post('personal/marriage-status', [
                 'is_married' => 1

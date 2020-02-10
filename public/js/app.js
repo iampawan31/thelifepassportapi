@@ -8567,8 +8567,8 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.post("personal/estate/status", this.formData).then(function (response) {
         if (response.status == 201) {
-          if (status == "1") {
-            _this2.$router.push("/spouse-estate-representative");
+          if (status == 1) {
+            _this2.$router.push("/estate-representative");
           } else {
             _this2.$router.push("/spouse-estate-representative-question");
           }
@@ -9317,6 +9317,16 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -62232,7 +62242,7 @@ var render = function() {
                           _vm._s(_vm.personalDetails.updated_at)
                       )
                     ]),
-                    _vm._v("  /  \n                    "),
+                    _vm._v("  / \n                    "),
                     _c("router-link", { attrs: { to: "/" } }, [_vm._v("Edit")])
                   ],
                   1
@@ -62410,7 +62420,7 @@ var render = function() {
                           )
                         ])
                       : _vm._e(),
-                    _vm._v("  /  \n\n                    "),
+                    _vm._v("  / \n\n                    "),
                     _vm._v(" "),
                     _c("router-link", { attrs: { to: "/spouse-question" } }, [
                       _vm._v("Edit")
@@ -62596,7 +62606,7 @@ var render = function() {
                           )
                         ])
                       : _vm._e(),
-                    _vm._v("  /  \n\n                    "),
+                    _vm._v("  / \n\n                    "),
                     _vm._v(" "),
                     _c(
                       "router-link",
@@ -62790,7 +62800,7 @@ var render = function() {
                           )
                         ])
                       : _vm._e(),
-                    _vm._v("  /  \n                    "),
+                    _vm._v("  / \n                    "),
                     _c(
                       "router-link",
                       { attrs: { to: "/family-members-question" } },
@@ -62978,7 +62988,7 @@ var render = function() {
                           )
                         ])
                       : _vm._e(),
-                    _vm._v("  /  \n                    "),
+                    _vm._v("  / \n                    "),
                     _c(
                       "router-link",
                       { attrs: { to: "/close-friends-question" } },
@@ -63138,7 +63148,7 @@ var render = function() {
                         "Last Updated: " + _vm._s(_vm.homeAssistants.updated_at)
                       )
                     ]),
-                    _vm._v("  /  \n                    "),
+                    _vm._v("  / \n                    "),
                     _c("router-link", { attrs: { to: "/home-assistants" } }, [
                       _vm._v("Edit")
                     ])
@@ -63468,7 +63478,7 @@ var render = function() {
                           _vm._s(_vm.spouseEstateRepresentative.updated_at)
                       )
                     ]),
-                    _vm._v("  /  \n                    "),
+                    _vm._v("  / \n                    "),
                     _c(
                       "router-link",
                       { attrs: { to: "/spouse-estate-representative" } },
@@ -64436,7 +64446,7 @@ var render = function() {
                                                 id: "legal_name",
                                                 type: "text",
                                                 name: "legal_name",
-                                                placeholder: "Legal Name"
+                                                placeholder: "legal name"
                                               },
                                               domProps: {
                                                 value: _vm.legalName
@@ -64525,7 +64535,7 @@ var render = function() {
                                                 type: "text",
                                                 name: "nickname",
                                                 placeholder:
-                                                  "Nickname or prior name"
+                                                  "nickname or prior name"
                                               },
                                               domProps: { value: _vm.nickName },
                                               on: {
@@ -64845,7 +64855,7 @@ var render = function() {
                                                   id: "passport_number",
                                                   type: "text",
                                                   name: "passport_number",
-                                                  placeholder: "Passport Number"
+                                                  placeholder: "passport number"
                                                 },
                                                 domProps: {
                                                   value: _vm.passportNumber
@@ -64945,7 +64955,7 @@ var render = function() {
                                                   id: "father_name",
                                                   type: "text",
                                                   name: "father_name",
-                                                  placeholder: "Father's Name"
+                                                  placeholder: "father's Name"
                                                 },
                                                 domProps: {
                                                   value: _vm.fatherName
@@ -65041,7 +65051,7 @@ var render = function() {
                                                   id: "father_birth_place",
                                                   type: "text",
                                                   name: "father_birth_place",
-                                                  placeholder: "Birth place"
+                                                  placeholder: "birth place"
                                                 },
                                                 domProps: {
                                                   value: _vm.fatherBirthPlace
@@ -65138,7 +65148,7 @@ var render = function() {
                                                   id: "mother_name",
                                                   type: "text",
                                                   name: "mother_name",
-                                                  placeholder: "Mother's Name"
+                                                  placeholder: "mother's Name"
                                                 },
                                                 domProps: {
                                                   value: _vm.motherName
@@ -65234,7 +65244,7 @@ var render = function() {
                                                   id: "mother_birth_place",
                                                   type: "text",
                                                   name: "mother_birth_place",
-                                                  placeholder: "Birth place"
+                                                  placeholder: "birth place"
                                                 },
                                                 domProps: {
                                                   value: _vm.motherBirthPlace
@@ -68685,7 +68695,7 @@ var render = function() {
                         attrs: {
                           type: "text",
                           name: _vm.addressType + "_street_address_1",
-                          placeholder: "Street Address 1"
+                          placeholder: "street address 1"
                         },
                         domProps: { value: _vm.localAddress.street_address1 },
                         on: {
@@ -68763,7 +68773,7 @@ var render = function() {
                         attrs: {
                           type: "text",
                           name: _vm.addressType + "_street_address_2",
-                          placeholder: "Street Address 2"
+                          placeholder: "street address 2"
                         },
                         domProps: { value: _vm.localAddress.street_address2 },
                         on: {
@@ -68839,7 +68849,7 @@ var render = function() {
                         attrs: {
                           type: "text",
                           name: _vm.addressType + "_city",
-                          placeholder: "City"
+                          placeholder: "city"
                         },
                         domProps: { value: _vm.localAddress.city },
                         on: {
@@ -68915,7 +68925,7 @@ var render = function() {
                         attrs: {
                           type: "text",
                           name: _vm.addressType + "_state",
-                          placeholder: "State"
+                          placeholder: "state"
                         },
                         domProps: { value: _vm.localAddress.state },
                         on: {
@@ -68991,7 +69001,7 @@ var render = function() {
                         attrs: {
                           type: "text",
                           name: _vm.addressType + "_zipcode",
-                          placeholder: "Zipcode"
+                          placeholder: "zipcode"
                         },
                         domProps: { value: _vm.localAddress.zipcode },
                         on: {
@@ -69146,7 +69156,7 @@ var render = function() {
                     attrs: {
                       type: "text",
                       name: "email[]",
-                      placeholder: "Email address",
+                      placeholder: "email address",
                       value: ""
                     },
                     domProps: { value: _vm.localEmail.email },
@@ -69207,7 +69217,7 @@ var render = function() {
                     attrs: {
                       type: "password",
                       name: "email_password[]",
-                      placeholder: "password",
+                      placeholder: "password(optional)",
                       value: ""
                     },
                     domProps: { value: _vm.localEmail.password },
@@ -72350,17 +72360,17 @@ var render = function() {
                     _vm._v(
                       "\n                            " +
                         _vm._s(_vm.spouseDetails.address.street_address1) +
-                        ", " +
+                        ",\n                            " +
                         _vm._s(_vm.spouseDetails.address.street_address2) +
-                        " "
+                        "\n                            "
                     ),
                     _c("br"),
                     _vm._v(
                       "\n                            " +
                         _vm._s(_vm.spouseDetails.address.city) +
-                        ", " +
+                        ",\n                            " +
                         _vm._s(_vm.spouseDetails.address.state) +
-                        ", " +
+                        ",\n                            " +
                         _vm._s(_vm.spouseDetails.address.zipcode) +
                         "\n                        "
                     )
@@ -72461,6 +72471,15 @@ var render = function() {
               "div",
               { staticClass: "item__actions" },
               [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "btn-primary btn-editinfo",
+                    attrs: { to: "/previous-spouse-question" }
+                  },
+                  [_vm._v("\n                    Next Step\n                ")]
+                ),
+                _vm._v(" "),
                 _c(
                   "router-link",
                   {

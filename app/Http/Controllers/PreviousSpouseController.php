@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
-class PreviousspouseController extends Controller
+class PreviousSpouseController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -44,10 +44,10 @@ class PreviousspouseController extends Controller
             //     ->with('DivorceDoc')
             //     ->with('UsersPersonalDetailsCompletion')
             //     ->get();
-            
+
             return response()->json(
                 [
-                    'status' => 200, 
+                    'status' => 200,
                     'data' => $previous_spouse_info,
                     'is_completed' => auth()->user()->stepCompleted(3)
                 ]
@@ -70,7 +70,7 @@ class PreviousspouseController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -79,7 +79,7 @@ class PreviousspouseController extends Controller
             DB::beginTransaction();
 
             $inputs = $request->all();
-            
+
             $user = User::find(auth()->id());
 
             // Save previous spouse information
@@ -94,19 +94,19 @@ class PreviousspouseController extends Controller
             if (!empty($address)) {
                 $prevSpouseAddress = new PreviousSpouseAddress;
 
-                $prevSpouseAddress->user_id         = $user->id;
+                $prevSpouseAddress->user_id = $user->id;
                 $prevSpouseAddress->street_address1 = $address->street_address1 ?: "";
                 $prevSpouseAddress->street_address2 = $address->street_address2 ?: "";
-                $prevSpouseAddress->city            = $address->city ?: "";
-                $prevSpouseAddress->state           = $address->state ?: "";
-                $prevSpouseAddress->zipcode         = $address->zipcode ?: "";
+                $prevSpouseAddress->city = $address->city ?: "";
+                $prevSpouseAddress->state = $address->state ?: "";
+                $prevSpouseAddress->zipcode = $address->zipcode ?: "";
 
                 $prevSpouseAddress->save();
             }
 
             //Saving user's phone numbers
             $phoneNumbers = json_decode(request('previousspouse_phones'));
-            
+
             if (!empty($phoneNumbers)) {
                 foreach ($phoneNumbers as $phone) {
                     if ($phone) {
@@ -114,38 +114,38 @@ class PreviousspouseController extends Controller
                     }
                 }
             }
-            
+
             //upload divorce documents
             if ($request->file('alimony_agreement')) {
-                $file       = $request->file('alimony_agreement');
-                $ext        = $file->getClientOriginalExtension();
-                $filename   = $path = hash( 'sha256', time()) . '.' . $ext;
-                $path       = 'divorce_agreement/';
-                
-                if(Storage::disk('public')->put($path.$filename, File::get($file))) {
+                $file = $request->file('alimony_agreement');
+                $ext = $file->getClientOriginalExtension();
+                $filename = $path = hash('sha256', time()) . '.' . $ext;
+                $path = 'divorce_agreement/';
+
+                if (Storage::disk('public')->put($path . $filename, File::get($file))) {
                     $documents = [
-                        'user_id'   => $user->id,
-                        'title'     => $filename,
-                        'url'       => App::make('url')->to('/storage/divorce_agreement/'.$filename)
+                        'user_id' => $user->id,
+                        'title' => $filename,
+                        'url' => App::make('url')->to('/storage/divorce_agreement/' . $filename)
                     ];
-                    
+
                     $objPhone = \App\DivorceDoc::create($documents);
                 }
             }
 
             if ($request->file('child_support_agreement')) {
-                $file       = $request->file('child_support_agreement');
-                $ext        = $file->getClientOriginalExtension();
-                $filename   = $path = hash( 'sha256', time()) . '.' . $ext;
-                $path       = 'divorce_agreement/';
-                
-                if(Storage::disk('public')->put($path.$filename, File::get($file))) {
+                $file = $request->file('child_support_agreement');
+                $ext = $file->getClientOriginalExtension();
+                $filename = $path = hash('sha256', time()) . '.' . $ext;
+                $path = 'divorce_agreement/';
+
+                if (Storage::disk('public')->put($path . $filename, File::get($file))) {
                     $documents = [
-                        'user_id'   => $user->id,
-                        'title'     => $filename,
-                        'url'       => App::make('url')->to('/storage/divorce_agreement/'.$filename)
+                        'user_id' => $user->id,
+                        'title' => $filename,
+                        'url' => App::make('url')->to('/storage/divorce_agreement/' . $filename)
                     ];
-                    
+
                     $objPhone = \App\ChildSupportDoc::create($documents);
                 }
             }
@@ -163,7 +163,7 @@ class PreviousspouseController extends Controller
                     'status' => 201,
                     'message' => 'Previous Spouse information has been saved successfully'
                 ], 201);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
 
             return response()
@@ -177,7 +177,7 @@ class PreviousspouseController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -187,7 +187,7 @@ class PreviousspouseController extends Controller
             $previous_spouse_info = \App\PreviousSpouseInfo::find($id)
                 ->with('PreviousSpousePhone')
                 ->get();
-            
+
             return response()->json(['status' => 200, 'data' => $previous_spouse_info]);
         } else {
             return response()->json(['status' => 200, 'data' => []]);
@@ -197,7 +197,7 @@ class PreviousspouseController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -208,8 +208,8 @@ class PreviousspouseController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -222,7 +222,7 @@ class PreviousspouseController extends Controller
 
                 // Save previous spouse information
                 $previousSpouseInfo = PreviousSpouseInfo::find($user->id);
-               
+
                 $this->updatePerviousSpouseInformation($previousSpouseInfo);
 
                 // Save user's personal address
@@ -231,18 +231,18 @@ class PreviousspouseController extends Controller
                 if (!empty($address)) {
                     $prevSpouseAddress = PreviousSpouseAddress::updateOrCreate([
                         'user_id' => $user->id,
-                    ],[
+                    ], [
                         'street_address1' => $address->street_address1 ?: "",
                         'street_address2' => $address->street_address2 ?: "",
-                        'city'            => $address->city ?: "",
-                        'state'           => $address->state ?: "",
-                        'zipcode'         => $address->zipcode ?: ""
+                        'city' => $address->city ?: "",
+                        'state' => $address->state ?: "",
+                        'zipcode' => $address->zipcode ?: ""
                     ]);
                 }
 
                 //Saving user's phone numbers
                 $phoneNumbers = json_decode(request('previousspouse_phones'));
-                
+
                 if (!empty($phoneNumbers)) {
                     PreviousSpousePhone::where('user_id', $user->id)->delete();
                     foreach ($phoneNumbers as $phone) {
@@ -251,19 +251,19 @@ class PreviousspouseController extends Controller
                         }
                     }
                 }
-                
+
                 //upload divorce documents
                 if ($request->file('alimony_agreement')) {
-                    $file       = $request->file('alimony_agreement');
-                    $ext        = $file->getClientOriginalExtension();
-                    $filename   = $path = hash( 'sha256', time()) . '.' . $ext;
-                    $path       = 'divorce_agreement/';
-                    
-                    if(Storage::disk('public')->put($path.$filename, File::get($file))) {
+                    $file = $request->file('alimony_agreement');
+                    $ext = $file->getClientOriginalExtension();
+                    $filename = $path = hash('sha256', time()) . '.' . $ext;
+                    $path = 'divorce_agreement/';
+
+                    if (Storage::disk('public')->put($path . $filename, File::get($file))) {
                         $documents = [
-                            'user_id'   => $user->id,
-                            'title'     => $filename,
-                            'url'       => App::make('url')->to('/storage/divorce_agreement/'.$filename)
+                            'user_id' => $user->id,
+                            'title' => $filename,
+                            'url' => App::make('url')->to('/storage/divorce_agreement/' . $filename)
                         ];
                         \App\DivorceDoc::where('user_id', $user->id)->delete();
                         \App\DivorceDoc::create($documents);
@@ -271,18 +271,18 @@ class PreviousspouseController extends Controller
                 }
 
                 if ($request->file('child_support_agreement')) {
-                    $file       = $request->file('child_support_agreement');
-                    $ext        = $file->getClientOriginalExtension();
-                    $filename   = $path = hash( 'sha256', time()) . '.' . $ext;
-                    $path       = 'divorce_agreement/';
-                    
-                    if(Storage::disk('public')->put($path.$filename, File::get($file))) {
+                    $file = $request->file('child_support_agreement');
+                    $ext = $file->getClientOriginalExtension();
+                    $filename = $path = hash('sha256', time()) . '.' . $ext;
+                    $path = 'divorce_agreement/';
+
+                    if (Storage::disk('public')->put($path . $filename, File::get($file))) {
                         $documents = [
-                            'user_id'   => $user->id,
-                            'title'     => $filename,
-                            'url'       => App::make('url')->to('/storage/divorce_agreement/'.$filename)
+                            'user_id' => $user->id,
+                            'title' => $filename,
+                            'url' => App::make('url')->to('/storage/divorce_agreement/' . $filename)
                         ];
-                        
+
                         \App\ChildSupportDoc::where('user_id', $user->id)->delete();
                         \App\ChildSupportDoc::create($documents);
                     }
@@ -294,7 +294,7 @@ class PreviousspouseController extends Controller
                     'is_filled' => 1,
                     'is_completed' => request('is_completed') ? 1 : 0
                 ]]);
-                
+
                 DB::commit();
                 return response()
                     ->json([
@@ -310,7 +310,7 @@ class PreviousspouseController extends Controller
                         'status' => 500,
                         'message' => $e
                     ], 500);
-            }  
+            }
         }
 
         return response()
@@ -323,20 +323,20 @@ class PreviousspouseController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         try {
             \DB::transaction(function () {
-                
+
                 //remove sopuse information
                 \App\PreviousSpouseInfo::where('user_id', Auth::user()->id)->delete();
 
                 //remove sopuse address
                 \App\PreviousSpouseAddress::where('user_id', Auth::user()->id)->delete();
-    
+
                 //remove spouse phone
                 \App\PreviousSpousePhone::where('user_id', Auth::user()->id)->delete();
 
@@ -350,31 +350,32 @@ class PreviousspouseController extends Controller
                 if ($objDivorceFile->count()) {
                     //remove previous divorce documents
                     File::delete($objDivorceFile[0]->url);
-                    
+
                     \App\DivorceDoc::where('user_id', Auth::user()->id)->delete();
                 }
 
                 if ($objChildSupportFile->count()) {
                     //remove previous divorce documents
                     File::delete($objChildSupportFile[0]->url);
-                    
+
                     \App\ChildSupportDoc::where('user_id', Auth::user()->id)->delete();
                 }
 
                 //update step table
                 \App\UsersPersonalDetailsCompletion::where('step_id', 3)
-                                                ->where('user_id', Auth::user()->id)
-                                                ->update(['is_visited' => '1', 'is_filled' => '0', 'is_completed' => '0']);
+                    ->where('user_id', Auth::user()->id)
+                    ->update(['is_visited' => '1', 'is_filled' => '0', 'is_completed' => '0']);
             });
 
             return response()->json(['status' => 200, 'msg' => 'Previous Spouse information has removed successfully'], 200);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             dd($e);
             return response()->json(['status' => 200, 'msg' => 'Error'], 500);
         }
     }
 
-    public function getpreviousspouseinfo() {
+    public function getpreviousspouseinfo()
+    {
         //DB::enableQueryLog();
         $user_id = Auth::user()->id;
         $count = \App\PreviousSpouseInfo::where('user_id', $user_id)->get()->count();
@@ -396,13 +397,14 @@ class PreviousspouseController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function updatemarriagestatus(Request $request) {
+    public function updatemarriagestatus(Request $request)
+    {
         $inputs = $request->all();
-        
-        $user_id    = Auth::user()->id;
+
+        $user_id = Auth::user()->id;
         $is_married = $inputs['is_married'];
 
         try {
@@ -410,7 +412,7 @@ class PreviousspouseController extends Controller
             $objMarriageStatus = \App\PreviousMarriageStatus::find($user_id);
             if ($objMarriageStatus) {
                 \App\PreviousMarriageStatus::where('user_id', $user_id)
-                                    ->update(['is_previously_married' => $is_married]);
+                    ->update(['is_previously_married' => $is_married]);
             } else {
                 \App\PreviousMarriageStatus::create(['user_id' => $user_id, 'is_previously_married' => $is_married]);
             }
@@ -423,8 +425,8 @@ class PreviousspouseController extends Controller
             }
 
             \App\UsersPersonalDetailsCompletion::where('step_id', 3)
-                                                 ->where('user_id', $user_id)
-                                                 ->update($arrData);
+                ->where('user_id', $user_id)
+                ->update($arrData);
 
             return response()->json(['status' => 200, 'msg' => 'Marriage status has been updated successfully']);
         } catch (Exception $e) {
@@ -432,21 +434,23 @@ class PreviousspouseController extends Controller
         }
     }
 
-    public function getpreviousmarriagestatus() {
-        
-        $user_id    = Auth::user()->id;
+    public function getpreviousmarriagestatus()
+    {
+
+        $user_id = Auth::user()->id;
 
         try {
             //check for record
             $objMarriageStatus = \App\PreviousMarriageStatus::find($user_id);
-            
+
             return response()->json(['status' => 200, 'data' => $objMarriageStatus]);
         } catch (Exception $e) {
             return response()->json(['status' => 503, 'data' => [[]]]);
         }
     }
 
-    public function removedivorcefile() {
+    public function removedivorcefile()
+    {
 
         $user_id = Auth::user()->id;
 
@@ -460,17 +464,18 @@ class PreviousspouseController extends Controller
                 //remove previous divorce documents
                 File::delete($objDivorceFile->url);
                 //Storage::delete($objDivorceFile->url);
-                
+
                 \App\DivorceDoc::where('user_id', $user_id)->delete();
             }
 
             return response()->json(['status' => 200, 'msg' => 'Files has deleted successfully'], 200);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['status' => 500, 'msg' => 'Error'], 500);
         }
     }
 
-    public function removechildsupportfile() {
+    public function removechildsupportfile()
+    {
 
         $user_id = Auth::user()->id;
 
@@ -483,29 +488,29 @@ class PreviousspouseController extends Controller
             if ($objChildSupportFile->count()) {
                 //remove previous divorce documents
                 File::delete($objChildSupportFile->url);
-                
+
                 \App\ChildSupportDoc::where('user_id', $user_id)->delete();
             }
 
             return response()->json(['status' => 200, 'msg' => 'Files has deleted successfully'], 200);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['status' => 500, 'msg' => 'Error'], 500);
         }
     }
 
-    public function updatePerviousSpouseInformation(PreviousSpouseInfo $perviousSpouseInfo): void 
+    public function updatePerviousSpouseInformation(PreviousSpouseInfo $perviousSpouseInfo): void
     {
-        $perviousSpouseInfo->legal_name             = request('legal_name') ?: "";
-        $perviousSpouseInfo->marriage_date          = request('date') ? date('Y-m-d', strtotime(request('date'))) : null;
-        $perviousSpouseInfo->marriage_location      = request('marriage_location') ?: "";
-        $perviousSpouseInfo->divorce_date           = request('divorce_date') ? date('Y-m-d', strtotime(request('divorce_date'))) : null;
-        $perviousSpouseInfo->divorce_location       = request('divorce_location') ?: "";
-        $perviousSpouseInfo->email                  = request('email') ?: "";
-        $perviousSpouseInfo->is_alimony_paid        = request('owe_alimony') ? '1' : '0';
-        $perviousSpouseInfo->divorce_agreement_doc  = request('divorce_agreement_doc') ?: "";
-        $perviousSpouseInfo->alimony_amount         = request('alimony_amount') ?: 0;
-        $perviousSpouseInfo->is_child_support       = request('owe_child_support') ? '1' : "0";
-        $perviousSpouseInfo->child_support_amount   = request('child_support_amount') ?: 0;
+        $perviousSpouseInfo->legal_name = request('legal_name') ?: "";
+        $perviousSpouseInfo->marriage_date = request('date') ? date('Y-m-d', strtotime(request('date'))) : null;
+        $perviousSpouseInfo->marriage_location = request('marriage_location') ?: "";
+        $perviousSpouseInfo->divorce_date = request('divorce_date') ? date('Y-m-d', strtotime(request('divorce_date'))) : null;
+        $perviousSpouseInfo->divorce_location = request('divorce_location') ?: "";
+        $perviousSpouseInfo->email = request('email') ?: "";
+        $perviousSpouseInfo->is_alimony_paid = request('owe_alimony') ? '1' : '0';
+        $perviousSpouseInfo->divorce_agreement_doc = request('divorce_agreement_doc') ?: "";
+        $perviousSpouseInfo->alimony_amount = request('alimony_amount') ?: 0;
+        $perviousSpouseInfo->is_child_support = request('owe_child_support') ? '1' : "0";
+        $perviousSpouseInfo->child_support_amount = request('child_support_amount') ?: 0;
 
         $perviousSpouseInfo->save();
     }

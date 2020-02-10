@@ -80,14 +80,14 @@ Route::middleware(['auth'])->group(function () {
     });
 
     //Previous Spouse information route
-    Route::get('getprevspouseinfo', 'PreviousspouseController@getpreviousspouseinfo')->name('prevspouseinfo.getdata');
-    Route::post('previousspouse/postdata', 'PreviousspouseController@store')->name('prevspouseinfo.postdata');
-    Route::post('previousspouse/{id}/updatedata', 'PreviousspouseController@update')->name('prevspouseinfo.updatedata');
-    Route::post('previousspouse/updatemarriagestatus', 'PreviousspouseController@updatemarriagestatus')->name('prevspouseinfo.updatemarriagestatus');
-    Route::get('previousspouse/getpreviousmarriagestatus', 'PreviousspouseController@getpreviousmarriagestatus')->name('prevspouseinfo.getpreviousmarriagestatus');
-    Route::post('removedivorcefile', 'PreviousspouseController@removedivorcefile')->name('prevspouseinfo.removedivorcefile');
-    Route::post('removechildsupportfile', 'PreviousspouseController@removechildsupportfile')->name('prevspouseinfo.removechildsupportfile');
-    Route::delete('previousspouse/{id}/removespouse', 'PreviousspouseController@destroy')->name('prevspouseinfo.removespouse');
+    Route::get('getprevspouseinfo', 'PreviousSpouseController@getpreviousspouseinfo')->name('prevspouseinfo.getdata');
+    Route::post('previousspouse/postdata', 'PreviousSpouseController@store')->name('prevspouseinfo.postdata');
+    Route::post('previousspouse/{id}/updatedata', 'PreviousSpouseController@update')->name('prevspouseinfo.updatedata');
+    Route::post('previousspouse/updatemarriagestatus', 'PreviousSpouseController@updatemarriagestatus')->name('prevspouseinfo.updatemarriagestatus');
+    Route::get('previousspouse/getpreviousmarriagestatus', 'PreviousSpouseController@getpreviousmarriagestatus')->name('prevspouseinfo.getpreviousmarriagestatus');
+    Route::post('removedivorcefile', 'PreviousSpouseController@removedivorcefile')->name('prevspouseinfo.removedivorcefile');
+    Route::post('removechildsupportfile', 'PreviousSpouseController@removechildsupportfile')->name('prevspouseinfo.removechildsupportfile');
+    Route::delete('previousspouse/{id}/removespouse', 'PreviousSpouseController@destroy')->name('prevspouseinfo.removespouse');
 
     //Close family members
     Route::get('familyinfo/getfamilymembersinfo', 'FamilyController@getfamilymembersinfo')->name('familyinfo.getfamilymembersinfo');

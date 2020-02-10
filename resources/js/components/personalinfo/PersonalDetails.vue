@@ -31,7 +31,7 @@
                                             type="text"
                                             name="legal_name"
                                             class="field-input required"
-                                            placeholder="Legal Name"
+                                            placeholder="legal name"
                                         />
                                         <span
                                             v-if="
@@ -61,7 +61,7 @@
                                             type="text"
                                             name="nickname"
                                             class="field-input"
-                                            placeholder="Nickname or prior name"
+                                            placeholder="nickname or prior name"
                                         />
                                         <span
                                             v-if="
@@ -191,7 +191,7 @@
                                             type="text"
                                             name="passport_number"
                                             class="field-input"
-                                            placeholder="Passport Number"
+                                            placeholder="passport number"
                                         />
                                         <span
                                             v-if="
@@ -227,7 +227,7 @@
                                             type="text"
                                             name="father_name"
                                             class="field-input"
-                                            placeholder="Father's Name"
+                                            placeholder="father's Name"
                                         />
                                         <div
                                             v-if="
@@ -259,7 +259,7 @@
                                             type="text"
                                             name="father_birth_place"
                                             class="field-input"
-                                            placeholder="Birth place"
+                                            placeholder="birth place"
                                         />
                                         <div
                                             v-if="
@@ -293,7 +293,7 @@
                                             type="text"
                                             name="mother_name"
                                             class="field-input"
-                                            placeholder="Mother's Name"
+                                            placeholder="mother's Name"
                                         />
                                         <div
                                             v-if="
@@ -325,7 +325,7 @@
                                             type="text"
                                             name="mother_birth_place"
                                             class="field-input"
-                                            placeholder="Birth place"
+                                            placeholder="birth place"
                                         />
                                         <div
                                             v-if="

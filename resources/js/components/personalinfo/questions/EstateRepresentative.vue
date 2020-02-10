@@ -167,8 +167,8 @@ export default {
                 .post("personal/estate/status", this.formData)
                 .then(response => {
                     if (response.status == 201) {
-                        if (status == "1") {
-                            this.$router.push("/spouse-estate-representative");
+                        if (status == 1) {
+                            this.$router.push("/estate-representative");
                         } else {
                             this.$router.push(
                                 "/spouse-estate-representative-question"

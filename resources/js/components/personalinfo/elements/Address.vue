@@ -14,7 +14,7 @@
                         <input
                             type="text"
                             v-bind:name="addressType + '_street_address_1'"
-                            placeholder="Street Address 1"
+                            placeholder="street address 1"
                             v-model.trim="localAddress.street_address1"
                             class="field-input"
                         />
@@ -42,7 +42,7 @@
                         <input
                             type="text"
                             v-bind:name="addressType + '_street_address_2'"
-                            placeholder="Street Address 2"
+                            placeholder="street address 2"
                             v-model.trim="localAddress.street_address2"
                             class="field-input"
                         />
@@ -68,7 +68,7 @@
                         <input
                             type="text"
                             v-bind:name="addressType + '_city'"
-                            placeholder="City"
+                            placeholder="city"
                             v-model.trim="localAddress.city"
                             class="field-input"
                         />
@@ -94,7 +94,7 @@
                         <input
                             type="text"
                             v-bind:name="addressType + '_state'"
-                            placeholder="State"
+                            placeholder="state"
                             v-model.trim="localAddress.state"
                             class="field-input"
                         />
@@ -120,7 +120,7 @@
                         <input
                             type="text"
                             v-bind:name="addressType + '_zipcode'"
-                            placeholder="Zipcode"
+                            placeholder="zipcode"
                             v-model.trim="localAddress.zipcode"
                             class="field-input"
                         />

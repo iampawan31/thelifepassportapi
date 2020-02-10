@@ -45,8 +45,12 @@
                                 Home Address
                             </h4>
                             <div class="item__content">
-                                {{ spouseDetails.address.street_address1 }}, {{ spouseDetails.address.street_address2 }} <br>
-                                {{ spouseDetails.address.city }}, {{ spouseDetails.address.state }}, {{ spouseDetails.address.zipcode }}
+                                {{ spouseDetails.address.street_address1 }},
+                                {{ spouseDetails.address.street_address2 }}
+                                <br />
+                                {{ spouseDetails.address.city }},
+                                {{ spouseDetails.address.state }},
+                                {{ spouseDetails.address.zipcode }}
                             </div>
                         </div>
                     </div>
@@ -107,6 +111,12 @@
                     </div>
                 </div>
                 <div class="item__actions">
+                    <router-link
+                        to="/previous-spouse-question"
+                        class="btn-primary btn-editinfo"
+                    >
+                        Next Step
+                    </router-link>
                     <router-link to="/spouse" class="btn-primary btn-editinfo">
                         Edit Information
                     </router-link>
@@ -170,7 +180,7 @@ export default {
                             JSON.stringify(response.data.data)
                         );
                         this.userId = this.spouseDetails.user_id;
-                        
+
                         if (this.userId) {
                             this.showSpouseDetails = true;
                         }
