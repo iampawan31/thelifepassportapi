@@ -27,7 +27,7 @@
                                     >
                                         <input
                                             id="legal_name"
-                                            v-model="legalName"
+                                            v-model.trim="legalName"
                                             type="text"
                                             name="legal_name"
                                             class="field-input required"
@@ -57,7 +57,7 @@
                                     >
                                         <input
                                             id="nickname"
-                                            v-model="nickName"
+                                            v-model.trim="nickName"
                                             type="text"
                                             name="nickname"
                                             class="field-input"
@@ -116,7 +116,7 @@
                                         rules="date"
                                     >
                                         <input
-                                            v-model="dateOfBirth"
+                                            v-model.trim="dateOfBirth"
                                             v-mask="'##/##/####'"
                                             type="text"
                                             class="field-input"
@@ -152,7 +152,7 @@
                                         <Select2
                                             id="country_id"
                                             :options="citizenshipOptions"
-                                            v-model="countryId"
+                                            v-model.trim="countryId"
                                             name="country_id"
                                             width="resolve"
                                             data-placeholder="Select an Options"
@@ -187,7 +187,7 @@
                                     >
                                         <input
                                             id="passport_number"
-                                            v-model="passportNumber"
+                                            v-model.trim="passportNumber"
                                             type="text"
                                             name="passport_number"
                                             class="field-input"
@@ -223,7 +223,7 @@
                                         >
                                         <input
                                             id="father_name"
-                                            v-model="fatherName"
+                                            v-model.trim="fatherName"
                                             type="text"
                                             name="father_name"
                                             class="field-input"
@@ -255,7 +255,7 @@
                                     >
                                         <input
                                             id="father_birth_place"
-                                            v-model="fatherBirthPlace"
+                                            v-model.trim="fatherBirthPlace"
                                             type="text"
                                             name="father_birth_place"
                                             class="field-input"
@@ -289,7 +289,7 @@
                                     >
                                         <input
                                             id="mother_name"
-                                            v-model="motherName"
+                                            v-model.trim="motherName"
                                             type="text"
                                             name="mother_name"
                                             class="field-input"
@@ -321,7 +321,7 @@
                                     >
                                         <input
                                             id="mother_birth_place"
-                                            v-model="motherBirthPlace"
+                                            v-model.trim="motherBirthPlace"
                                             type="text"
                                             name="mother_birth_place"
                                             class="field-input"
@@ -586,8 +586,14 @@ export default {
         populateNewForm() {
             this.legalName = "";
             this.nickName = "";
-            this.address = {};
-            this.phoneNumbers = [];
+            this.address = {
+                street_address1: null,
+                street_address2: null,
+                city: null,
+                state: null,
+                zipcode: null
+            };
+            this.phoneNumbers = [{ phone: null }];
             this.dateOfBirth = "";
             this.countryId = "";
             this.passportNumber = "";
@@ -595,9 +601,26 @@ export default {
             this.fatherBirthPlace = "";
             this.motherName = "";
             this.motherBirthPlace = "";
-            this.emails = [];
-            this.socialMediaDetails = [];
-            this.employmentDetails = [];
+            this.emails = [{ email: null, password: null }];
+            this.socialMediaDetails = [
+                { social_id: null, username: null, password: null }
+            ];
+            this.employmentDetails = [
+                {
+                    employer_name: null,
+                    employer_phone: null,
+                    computer_username: null,
+                    computer_password: null,
+                    address: {
+                        street_address1: null,
+                        street_address2: null,
+                        city: null,
+                        state: null,
+                        zipcode: null
+                    },
+                    benefits: []
+                }
+            ];
             this.isCompleted = false;
         },
         populateData(userData) {
@@ -619,6 +642,14 @@ export default {
 
             if (userData.address) {
                 this.address = userData.address;
+            } else {
+                this.address = {
+                    street_address1: null,
+                    street_address2: null,
+                    city: null,
+                    state: null,
+                    zipcode: null
+                };
             }
 
             if (userData.phones.length > 0) {
@@ -637,7 +668,7 @@ export default {
                 this.socialMediaDetails = userData.socials;
             } else {
                 this.socialMediaDetails = [
-                    { social: null, username: null, password: null }
+                    { social_id: null, username: null, password: null }
                 ];
             }
 
@@ -648,8 +679,8 @@ export default {
                     {
                         employer_name: null,
                         employer_phone: null,
-                        employer_username: null,
-                        employer_password: null,
+                        computer_username: null,
+                        computer_password: null,
                         address: {
                             street_address1: null,
                             street_address2: null,

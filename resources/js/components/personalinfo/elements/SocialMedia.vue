@@ -11,7 +11,7 @@
                     name="social_media_type[]"
                     placeholder="Select an Options"
                     :options="socialMediaOptions"
-                    v-model="localSocial.social_id"
+                    v-model.trim="localSocial.social_id"
                 />
                 <span
                     v-if="errors != undefined && errors"
@@ -32,7 +32,7 @@
                     name="social_username[]"
                     class="field-input"
                     placeholder="Username"
-                    v-model="localSocial.username"
+                    v-model.trim="localSocial.username"
                     value=""
                 />
                 <span
@@ -53,7 +53,7 @@
                     name="social_password[]"
                     class="field-input field-input__last"
                     placeholder="Password"
-                    v-model="localSocial.password"
+                    v-model.trim="localSocial.password"
                     value=""
                 />
                 <span

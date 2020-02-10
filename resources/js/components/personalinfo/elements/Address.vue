@@ -15,7 +15,7 @@
                             type="text"
                             v-bind:name="addressType + '_street_address_1'"
                             placeholder="Street Address 1"
-                            v-model="localAddress.street_address1"
+                            v-model.trim="localAddress.street_address1"
                             class="field-input"
                         />
                         <span
@@ -43,7 +43,7 @@
                             type="text"
                             v-bind:name="addressType + '_street_address_2'"
                             placeholder="Street Address 2"
-                            v-model="localAddress.street_address2"
+                            v-model.trim="localAddress.street_address2"
                             class="field-input"
                         />
                         <span
@@ -69,7 +69,7 @@
                             type="text"
                             v-bind:name="addressType + '_city'"
                             placeholder="City"
-                            v-model="localAddress.city"
+                            v-model.trim="localAddress.city"
                             class="field-input"
                         />
                         <span
@@ -95,7 +95,7 @@
                             type="text"
                             v-bind:name="addressType + '_state'"
                             placeholder="State"
-                            v-model="localAddress.state"
+                            v-model.trim="localAddress.state"
                             class="field-input"
                         />
                         <span
@@ -121,7 +121,7 @@
                             type="text"
                             v-bind:name="addressType + '_zipcode'"
                             placeholder="Zipcode"
-                            v-model="localAddress.zipcode"
+                            v-model.trim="localAddress.zipcode"
                             class="field-input"
                         />
                         <span

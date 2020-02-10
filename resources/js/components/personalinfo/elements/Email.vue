@@ -12,7 +12,7 @@
                     name="email[]"
                     class="field-input field-input__first email"
                     placeholder="Email address"
-                    v-model="localEmail.email"
+                    v-model.trim="localEmail.email"
                     value=""
                 />
                 <span
@@ -33,7 +33,7 @@
                     name="email_password[]"
                     class="field-input field-input__last"
                     placeholder="password"
-                    v-model="localEmail.password"
+                    v-model.trim="localEmail.password"
                     value=""
                 />
                 <span

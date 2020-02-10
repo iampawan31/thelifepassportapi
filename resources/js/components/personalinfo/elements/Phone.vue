@@ -9,7 +9,7 @@
                 <div class="field-wrapper">
                     <input
                         type="text"
-                        v-model="localPhone"
+                        v-model.trim="localPhone"
                         numeric-keyboard-toggle
                         class="field-input input-mobile"
                         placeholder="Phone number"

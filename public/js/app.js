@@ -5014,8 +5014,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     populateNewForm: function populateNewForm() {
       this.legalName = "";
       this.nickName = "";
-      this.address = {};
-      this.phoneNumbers = [];
+      this.address = {
+        street_address1: null,
+        street_address2: null,
+        city: null,
+        state: null,
+        zipcode: null
+      };
+      this.phoneNumbers = [{
+        phone: null
+      }];
       this.dateOfBirth = "";
       this.countryId = "";
       this.passportNumber = "";
@@ -5023,9 +5031,29 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.fatherBirthPlace = "";
       this.motherName = "";
       this.motherBirthPlace = "";
-      this.emails = [];
-      this.socialMediaDetails = [];
-      this.employmentDetails = [];
+      this.emails = [{
+        email: null,
+        password: null
+      }];
+      this.socialMediaDetails = [{
+        social_id: null,
+        username: null,
+        password: null
+      }];
+      this.employmentDetails = [{
+        employer_name: null,
+        employer_phone: null,
+        computer_username: null,
+        computer_password: null,
+        address: {
+          street_address1: null,
+          street_address2: null,
+          city: null,
+          state: null,
+          zipcode: null
+        },
+        benefits: []
+      }];
       this.isCompleted = false;
     },
     populateData: function populateData(userData) {
@@ -5047,6 +5075,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       if (userData.address) {
         this.address = userData.address;
+      } else {
+        this.address = {
+          street_address1: null,
+          street_address2: null,
+          city: null,
+          state: null,
+          zipcode: null
+        };
       }
 
       if (userData.phones.length > 0) {
@@ -5070,7 +5106,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.socialMediaDetails = userData.socials;
       } else {
         this.socialMediaDetails = [{
-          social: null,
+          social_id: null,
           username: null,
           password: null
         }];
@@ -5082,8 +5118,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.employmentDetails = [{
           employer_name: null,
           employer_phone: null,
-          employer_username: null,
-          employer_password: null,
+          computer_username: null,
+          computer_password: null,
           address: {
             street_address1: null,
             street_address2: null,
@@ -7291,6 +7327,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vee-validate */ "./node_modules/vee-validate/dist/vee-validate.esm.js");
 /* harmony import */ var _Address__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Address */ "./resources/js/components/personalinfo/elements/Address.vue");
 /* harmony import */ var _Benefits__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Benefits */ "./resources/js/components/personalinfo/elements/Benefits.vue");
+//
+//
+//
+//
 //
 //
 //
@@ -64384,9 +64424,10 @@ var render = function() {
                                               directives: [
                                                 {
                                                   name: "model",
-                                                  rawName: "v-model",
+                                                  rawName: "v-model.trim",
                                                   value: _vm.legalName,
-                                                  expression: "legalName"
+                                                  expression: "legalName",
+                                                  modifiers: { trim: true }
                                                 }
                                               ],
                                               staticClass:
@@ -64405,8 +64446,10 @@ var render = function() {
                                                   if ($event.target.composing) {
                                                     return
                                                   }
-                                                  _vm.legalName =
-                                                    $event.target.value
+                                                  _vm.legalName = $event.target.value.trim()
+                                                },
+                                                blur: function($event) {
+                                                  return _vm.$forceUpdate()
                                                 }
                                               }
                                             }),
@@ -64470,9 +64513,10 @@ var render = function() {
                                               directives: [
                                                 {
                                                   name: "model",
-                                                  rawName: "v-model",
+                                                  rawName: "v-model.trim",
                                                   value: _vm.nickName,
-                                                  expression: "nickName"
+                                                  expression: "nickName",
+                                                  modifiers: { trim: true }
                                                 }
                                               ],
                                               staticClass: "field-input",
@@ -64489,8 +64533,10 @@ var render = function() {
                                                   if ($event.target.composing) {
                                                     return
                                                   }
-                                                  _vm.nickName =
-                                                    $event.target.value
+                                                  _vm.nickName = $event.target.value.trim()
+                                                },
+                                                blur: function($event) {
+                                                  return _vm.$forceUpdate()
                                                 }
                                               }
                                             }),
@@ -64597,9 +64643,10 @@ var render = function() {
                                               directives: [
                                                 {
                                                   name: "model",
-                                                  rawName: "v-model",
+                                                  rawName: "v-model.trim",
                                                   value: _vm.dateOfBirth,
-                                                  expression: "dateOfBirth"
+                                                  expression: "dateOfBirth",
+                                                  modifiers: { trim: true }
                                                 },
                                                 {
                                                   name: "mask",
@@ -64622,8 +64669,10 @@ var render = function() {
                                                   if ($event.target.composing) {
                                                     return
                                                   }
-                                                  _vm.dateOfBirth =
-                                                    $event.target.value
+                                                  _vm.dateOfBirth = $event.target.value.trim()
+                                                },
+                                                blur: function($event) {
+                                                  return _vm.$forceUpdate()
                                                 }
                                               }
                                             }),
@@ -64703,7 +64752,10 @@ var render = function() {
                                                   model: {
                                                     value: _vm.countryId,
                                                     callback: function($$v) {
-                                                      _vm.countryId = $$v
+                                                      _vm.countryId =
+                                                        typeof $$v === "string"
+                                                          ? $$v.trim()
+                                                          : $$v
                                                     },
                                                     expression: "countryId"
                                                   }
@@ -64781,9 +64833,11 @@ var render = function() {
                                                 directives: [
                                                   {
                                                     name: "model",
-                                                    rawName: "v-model",
+                                                    rawName: "v-model.trim",
                                                     value: _vm.passportNumber,
-                                                    expression: "passportNumber"
+                                                    expression:
+                                                      "passportNumber",
+                                                    modifiers: { trim: true }
                                                   }
                                                 ],
                                                 staticClass: "field-input",
@@ -64803,8 +64857,10 @@ var render = function() {
                                                     ) {
                                                       return
                                                     }
-                                                    _vm.passportNumber =
-                                                      $event.target.value
+                                                    _vm.passportNumber = $event.target.value.trim()
+                                                  },
+                                                  blur: function($event) {
+                                                    return _vm.$forceUpdate()
                                                   }
                                                 }
                                               }),
@@ -64878,9 +64934,10 @@ var render = function() {
                                                 directives: [
                                                   {
                                                     name: "model",
-                                                    rawName: "v-model",
+                                                    rawName: "v-model.trim",
                                                     value: _vm.fatherName,
-                                                    expression: "fatherName"
+                                                    expression: "fatherName",
+                                                    modifiers: { trim: true }
                                                   }
                                                 ],
                                                 staticClass: "field-input",
@@ -64900,8 +64957,10 @@ var render = function() {
                                                     ) {
                                                       return
                                                     }
-                                                    _vm.fatherName =
-                                                      $event.target.value
+                                                    _vm.fatherName = $event.target.value.trim()
+                                                  },
+                                                  blur: function($event) {
+                                                    return _vm.$forceUpdate()
                                                   }
                                                 }
                                               }),
@@ -64970,10 +65029,11 @@ var render = function() {
                                                 directives: [
                                                   {
                                                     name: "model",
-                                                    rawName: "v-model",
+                                                    rawName: "v-model.trim",
                                                     value: _vm.fatherBirthPlace,
                                                     expression:
-                                                      "fatherBirthPlace"
+                                                      "fatherBirthPlace",
+                                                    modifiers: { trim: true }
                                                   }
                                                 ],
                                                 staticClass: "field-input",
@@ -64993,8 +65053,10 @@ var render = function() {
                                                     ) {
                                                       return
                                                     }
-                                                    _vm.fatherBirthPlace =
-                                                      $event.target.value
+                                                    _vm.fatherBirthPlace = $event.target.value.trim()
+                                                  },
+                                                  blur: function($event) {
+                                                    return _vm.$forceUpdate()
                                                   }
                                                 }
                                               }),
@@ -65065,9 +65127,10 @@ var render = function() {
                                                 directives: [
                                                   {
                                                     name: "model",
-                                                    rawName: "v-model",
+                                                    rawName: "v-model.trim",
                                                     value: _vm.motherName,
-                                                    expression: "motherName"
+                                                    expression: "motherName",
+                                                    modifiers: { trim: true }
                                                   }
                                                 ],
                                                 staticClass: "field-input",
@@ -65087,8 +65150,10 @@ var render = function() {
                                                     ) {
                                                       return
                                                     }
-                                                    _vm.motherName =
-                                                      $event.target.value
+                                                    _vm.motherName = $event.target.value.trim()
+                                                  },
+                                                  blur: function($event) {
+                                                    return _vm.$forceUpdate()
                                                   }
                                                 }
                                               }),
@@ -65157,10 +65222,11 @@ var render = function() {
                                                 directives: [
                                                   {
                                                     name: "model",
-                                                    rawName: "v-model",
+                                                    rawName: "v-model.trim",
                                                     value: _vm.motherBirthPlace,
                                                     expression:
-                                                      "motherBirthPlace"
+                                                      "motherBirthPlace",
+                                                    modifiers: { trim: true }
                                                   }
                                                 ],
                                                 staticClass: "field-input",
@@ -65180,8 +65246,10 @@ var render = function() {
                                                     ) {
                                                       return
                                                     }
-                                                    _vm.motherBirthPlace =
-                                                      $event.target.value
+                                                    _vm.motherBirthPlace = $event.target.value.trim()
+                                                  },
+                                                  blur: function($event) {
+                                                    return _vm.$forceUpdate()
                                                   }
                                                 }
                                               }),
@@ -68607,9 +68675,10 @@ var render = function() {
                         directives: [
                           {
                             name: "model",
-                            rawName: "v-model",
+                            rawName: "v-model.trim",
                             value: _vm.localAddress.street_address1,
-                            expression: "localAddress.street_address1"
+                            expression: "localAddress.street_address1",
+                            modifiers: { trim: true }
                           }
                         ],
                         staticClass: "field-input",
@@ -68627,8 +68696,11 @@ var render = function() {
                             _vm.$set(
                               _vm.localAddress,
                               "street_address1",
-                              $event.target.value
+                              $event.target.value.trim()
                             )
+                          },
+                          blur: function($event) {
+                            return _vm.$forceUpdate()
                           }
                         }
                       }),
@@ -68681,9 +68753,10 @@ var render = function() {
                         directives: [
                           {
                             name: "model",
-                            rawName: "v-model",
+                            rawName: "v-model.trim",
                             value: _vm.localAddress.street_address2,
-                            expression: "localAddress.street_address2"
+                            expression: "localAddress.street_address2",
+                            modifiers: { trim: true }
                           }
                         ],
                         staticClass: "field-input",
@@ -68701,8 +68774,11 @@ var render = function() {
                             _vm.$set(
                               _vm.localAddress,
                               "street_address2",
-                              $event.target.value
+                              $event.target.value.trim()
                             )
+                          },
+                          blur: function($event) {
+                            return _vm.$forceUpdate()
                           }
                         }
                       }),
@@ -68753,9 +68829,10 @@ var render = function() {
                         directives: [
                           {
                             name: "model",
-                            rawName: "v-model",
+                            rawName: "v-model.trim",
                             value: _vm.localAddress.city,
-                            expression: "localAddress.city"
+                            expression: "localAddress.city",
+                            modifiers: { trim: true }
                           }
                         ],
                         staticClass: "field-input",
@@ -68773,8 +68850,11 @@ var render = function() {
                             _vm.$set(
                               _vm.localAddress,
                               "city",
-                              $event.target.value
+                              $event.target.value.trim()
                             )
+                          },
+                          blur: function($event) {
+                            return _vm.$forceUpdate()
                           }
                         }
                       }),
@@ -68825,9 +68905,10 @@ var render = function() {
                         directives: [
                           {
                             name: "model",
-                            rawName: "v-model",
+                            rawName: "v-model.trim",
                             value: _vm.localAddress.state,
-                            expression: "localAddress.state"
+                            expression: "localAddress.state",
+                            modifiers: { trim: true }
                           }
                         ],
                         staticClass: "field-input",
@@ -68845,8 +68926,11 @@ var render = function() {
                             _vm.$set(
                               _vm.localAddress,
                               "state",
-                              $event.target.value
+                              $event.target.value.trim()
                             )
+                          },
+                          blur: function($event) {
+                            return _vm.$forceUpdate()
                           }
                         }
                       }),
@@ -68897,9 +68981,10 @@ var render = function() {
                         directives: [
                           {
                             name: "model",
-                            rawName: "v-model",
+                            rawName: "v-model.trim",
                             value: _vm.localAddress.zipcode,
-                            expression: "localAddress.zipcode"
+                            expression: "localAddress.zipcode",
+                            modifiers: { trim: true }
                           }
                         ],
                         staticClass: "field-input",
@@ -68917,8 +69002,11 @@ var render = function() {
                             _vm.$set(
                               _vm.localAddress,
                               "zipcode",
-                              $event.target.value
+                              $event.target.value.trim()
                             )
+                          },
+                          blur: function($event) {
+                            return _vm.$forceUpdate()
                           }
                         }
                       }),
@@ -69048,9 +69136,10 @@ var render = function() {
                     directives: [
                       {
                         name: "model",
-                        rawName: "v-model",
+                        rawName: "v-model.trim",
                         value: _vm.localEmail.email,
-                        expression: "localEmail.email"
+                        expression: "localEmail.email",
+                        modifiers: { trim: true }
                       }
                     ],
                     staticClass: "field-input field-input__first email",
@@ -69066,7 +69155,14 @@ var render = function() {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(_vm.localEmail, "email", $event.target.value)
+                        _vm.$set(
+                          _vm.localEmail,
+                          "email",
+                          $event.target.value.trim()
+                        )
+                      },
+                      blur: function($event) {
+                        return _vm.$forceUpdate()
                       }
                     }
                   }),
@@ -69101,9 +69197,10 @@ var render = function() {
                     directives: [
                       {
                         name: "model",
-                        rawName: "v-model",
+                        rawName: "v-model.trim",
                         value: _vm.localEmail.password,
-                        expression: "localEmail.password"
+                        expression: "localEmail.password",
+                        modifiers: { trim: true }
                       }
                     ],
                     staticClass: "field-input field-input__last",
@@ -69122,8 +69219,11 @@ var render = function() {
                         _vm.$set(
                           _vm.localEmail,
                           "password",
-                          $event.target.value
+                          $event.target.value.trim()
                         )
+                      },
+                      blur: function($event) {
+                        return _vm.$forceUpdate()
                       }
                     }
                   }),
@@ -69334,9 +69434,10 @@ var render = function() {
                           directives: [
                             {
                               name: "model",
-                              rawName: "v-model",
+                              rawName: "v-model.trim",
                               value: _vm.localEmploymentDetail.employer_name,
-                              expression: "localEmploymentDetail.employer_name"
+                              expression: "localEmploymentDetail.employer_name",
+                              modifiers: { trim: true }
                             }
                           ],
                           staticClass: "field-input",
@@ -69357,8 +69458,11 @@ var render = function() {
                               _vm.$set(
                                 _vm.localEmploymentDetail,
                                 "employer_name",
-                                $event.target.value
+                                $event.target.value.trim()
                               )
+                            },
+                            blur: function($event) {
+                              return _vm.$forceUpdate()
                             }
                           }
                         }),
@@ -69415,9 +69519,11 @@ var render = function() {
                           directives: [
                             {
                               name: "model",
-                              rawName: "v-model",
+                              rawName: "v-model.trim",
                               value: _vm.localEmploymentDetail.employer_phone,
-                              expression: "localEmploymentDetail.employer_phone"
+                              expression:
+                                "localEmploymentDetail.employer_phone",
+                              modifiers: { trim: true }
                             }
                           ],
                           staticClass: "field-input",
@@ -69438,8 +69544,11 @@ var render = function() {
                               _vm.$set(
                                 _vm.localEmploymentDetail,
                                 "employer_phone",
-                                $event.target.value
+                                $event.target.value.trim()
                               )
+                            },
+                            blur: function($event) {
+                              return _vm.$forceUpdate()
                             }
                           }
                         }),
@@ -69510,11 +69619,12 @@ var render = function() {
                           directives: [
                             {
                               name: "model",
-                              rawName: "v-model",
+                              rawName: "v-model.trim",
                               value:
                                 _vm.localEmploymentDetail.computer_username,
                               expression:
-                                "localEmploymentDetail.computer_username"
+                                "\n                            localEmploymentDetail.computer_username\n                        ",
+                              modifiers: { trim: true }
                             }
                           ],
                           staticClass: "field-input",
@@ -69535,8 +69645,11 @@ var render = function() {
                               _vm.$set(
                                 _vm.localEmploymentDetail,
                                 "computer_username",
-                                $event.target.value
+                                $event.target.value.trim()
                               )
+                            },
+                            blur: function($event) {
+                              return _vm.$forceUpdate()
                             }
                           }
                         }),
@@ -69582,11 +69695,12 @@ var render = function() {
                           directives: [
                             {
                               name: "model",
-                              rawName: "v-model",
+                              rawName: "v-model.trim",
                               value:
                                 _vm.localEmploymentDetail.computer_password,
                               expression:
-                                "localEmploymentDetail.computer_password"
+                                "\n                            localEmploymentDetail.computer_password\n                        ",
+                              modifiers: { trim: true }
                             }
                           ],
                           staticClass: "field-input",
@@ -69607,8 +69721,11 @@ var render = function() {
                               _vm.$set(
                                 _vm.localEmploymentDetail,
                                 "computer_password",
-                                $event.target.value
+                                $event.target.value.trim()
                               )
+                            },
+                            blur: function($event) {
+                              return _vm.$forceUpdate()
                             }
                           }
                         }),
@@ -69805,9 +69922,10 @@ var render = function() {
                     directives: [
                       {
                         name: "model",
-                        rawName: "v-model",
+                        rawName: "v-model.trim",
                         value: _vm.localPhone,
-                        expression: "localPhone"
+                        expression: "localPhone",
+                        modifiers: { trim: true }
                       }
                     ],
                     staticClass: "field-input input-mobile",
@@ -69824,7 +69942,10 @@ var render = function() {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.localPhone = $event.target.value
+                        _vm.localPhone = $event.target.value.trim()
+                      },
+                      blur: function($event) {
+                        return _vm.$forceUpdate()
                       }
                     }
                   })
@@ -70032,7 +70153,11 @@ var render = function() {
                     model: {
                       value: _vm.localSocial.social_id,
                       callback: function($$v) {
-                        _vm.$set(_vm.localSocial, "social_id", $$v)
+                        _vm.$set(
+                          _vm.localSocial,
+                          "social_id",
+                          typeof $$v === "string" ? $$v.trim() : $$v
+                        )
                       },
                       expression: "localSocial.social_id"
                     }
@@ -70072,9 +70197,10 @@ var render = function() {
                     directives: [
                       {
                         name: "model",
-                        rawName: "v-model",
+                        rawName: "v-model.trim",
                         value: _vm.localSocial.username,
-                        expression: "localSocial.username"
+                        expression: "localSocial.username",
+                        modifiers: { trim: true }
                       }
                     ],
                     staticClass: "field-input",
@@ -70093,8 +70219,11 @@ var render = function() {
                         _vm.$set(
                           _vm.localSocial,
                           "username",
-                          $event.target.value
+                          $event.target.value.trim()
                         )
+                      },
+                      blur: function($event) {
+                        return _vm.$forceUpdate()
                       }
                     }
                   }),
@@ -70132,9 +70261,10 @@ var render = function() {
                     directives: [
                       {
                         name: "model",
-                        rawName: "v-model",
+                        rawName: "v-model.trim",
                         value: _vm.localSocial.password,
-                        expression: "localSocial.password"
+                        expression: "localSocial.password",
+                        modifiers: { trim: true }
                       }
                     ],
                     staticClass: "field-input field-input__last",
@@ -70153,8 +70283,11 @@ var render = function() {
                         _vm.$set(
                           _vm.localSocial,
                           "password",
-                          $event.target.value
+                          $event.target.value.trim()
                         )
+                      },
+                      blur: function($event) {
+                        return _vm.$forceUpdate()
                       }
                     }
                   }),
@@ -111073,8 +111206,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/mdprawezmusharraf/Sites/thelifepassportapi/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/mdprawezmusharraf/Sites/thelifepassportapi/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/pawankumar/valetcode/thelifepassportapi/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/pawankumar/valetcode/thelifepassportapi/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

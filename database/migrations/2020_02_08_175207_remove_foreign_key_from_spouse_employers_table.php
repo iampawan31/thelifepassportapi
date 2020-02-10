@@ -14,8 +14,8 @@ class RemoveForeignKeyFromSpouseEmployersTable extends Migration
     public function up()
     {
         Schema::table('spouse_employers', function (Blueprint $table) {
-            $table->dropForeign('spouse_employers_user_id_foreign');
-            $table->foreign('user_id')->references('id')->on('users');
+//            $table->dropForeign('spouse_employers_user_id_foreign');
+//            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

@@ -3,16 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\EmployerAddress;
-use App\Http\Controllers\Controller;
 use App\PersonalAddress;
-use App\PersonalEmployerBenefits;
 use App\PersonalInfo;
 use App\User;
 use App\UserEmail;
 use App\UserEmployer;
 use App\UserPhone;
 use App\UserSocialMedia;
-use App\UsersPersonalDetailsCompletion;
 use Exception;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
@@ -40,7 +37,7 @@ class PersonalInfoController extends Controller
     {
         try {
 
-            //DB::beginTransaction();
+            DB::beginTransaction();
 
             $user = auth()->user();
 
@@ -63,7 +60,7 @@ class PersonalInfoController extends Controller
 
             if (!empty($phoneNumbers)) {
                 foreach ($phoneNumbers as $phone) {
-                    if (!empty($phone)) {
+                    if (!empty($phone) && $phone->phone !== null) {
                         $user->phones()->create([
                             'user_id' => auth()->id(),
                             'phone' => $phone->phone
@@ -76,12 +73,12 @@ class PersonalInfoController extends Controller
             $emails = json_decode(request('emails'));
             if (!empty($emails)) {
                 foreach ($emails as $email) {
-                    if (!empty($email)) {
+                    if (!empty($email) && $email->email !== null) {
                         $user->emails()->create(
                             [
                                 'user_id' => auth()->id(),
                                 'email' => $email->email,
-                                'password' => $email->password
+                                'password' => $email->password ?: null
                             ]
                         );
                     }
@@ -93,13 +90,13 @@ class PersonalInfoController extends Controller
 
             if (!empty($socials)) {
                 foreach ($socials as $social) {
-                    if (!empty($social)) {
+                    if (!empty($social) && $social->social_id !== null) {
                         $user->socials()->create(
                             [
                                 'user_id' => auth()->id(),
                                 'social_id' => $social->social_id,
-                                'username' => $social->username,
-                                'password' => $social->password
+                                'username' => $social->username ?: null,
+                                'password' => $social->password ?: null
                             ]
                         );
                     }
@@ -111,23 +108,23 @@ class PersonalInfoController extends Controller
 
             if (!empty($employers)) {
                 foreach ($employers as $employer) {
-                    if (!empty($employer)) {
+                    if (!empty($employer) && $employer->employer_name !== null) {
                         $employment = $user->employers()->create([
                             'user_id' => auth()->id(),
                             'employer_name' => $employer->employer_name,
-                            'employer_phone' => $employer->employer_phone,
-                            'computer_username' => $employer->computer_username,
-                            'computer_password' => $employer->computer_password
+                            'employer_phone' => $employer->employer_phone ?: null,
+                            'computer_username' => $employer->computer_username ?: null,
+                            'computer_password' => $employer->computer_password ?: null
                         ]);
 
                         if (!empty($employer->address)) {
                             $employment->address()->create([
                                 'user_id' => $user->id,
-                                'street_address1' => $employer->address->street_address1,
-                                'street_address2' => $employer->address->street_address2,
-                                'city' => $employer->address->city,
-                                'state' => $employer->address->state,
-                                'zipcode' => $employer->address->zipcode,
+                                'street_address1' => $employer->address->street_address1 ?: null,
+                                'street_address2' => $employer->address->street_address2 ?: null,
+                                'city' => $employer->address->city ?: null,
+                                'state' => $employer->address->state ?: null,
+                                'zipcode' => $employer->address->zipcode ?: null,
                             ]);
                         }
 
@@ -149,7 +146,7 @@ class PersonalInfoController extends Controller
                 'is_completed' => request('is_completed') ? 1 : 0,
             ]]);
 
-            //DB::commit();
+            DB::commit();
 
             return response()
                 ->json([
@@ -157,7 +154,7 @@ class PersonalInfoController extends Controller
                     'message' => 'Personal information has been saved successfully'
                 ], 201);
         } catch (Exception $e) {
-            //DB::rollBack();
+            DB::rollBack();
 
             return response()
                 ->json([
@@ -205,11 +202,11 @@ class PersonalInfoController extends Controller
                     $personalAddress = PersonalAddress::updateOrCreate([
                         'user_id' => $user->id,
                     ], [
-                        'street_address1' => $homeAddress->street_address1 ?: "",
-                        'street_address2' => $homeAddress->street_address2 ?: "",
-                        'city' => $homeAddress->city ?: "",
-                        'state' => $homeAddress->state ?: "",
-                        'zipcode' => $homeAddress->zipcode ?: "",
+                        'street_address1' => $homeAddress->street_address1 ?: null,
+                        'street_address2' => $homeAddress->street_address2 ?: null,
+                        'city' => $homeAddress->city ?: null,
+                        'state' => $homeAddress->state ?: null,
+                        'zipcode' => $homeAddress->zipcode ?: null,
                     ]);
                 }
 
@@ -236,7 +233,7 @@ class PersonalInfoController extends Controller
                             UserEmail::create([
                                 'user_id' => $user->id,
                                 'email' => $email->email,
-                                'password' => $email->password
+                                'password' => $email->password ?: null
                             ]);
                         }
                     }
@@ -253,8 +250,8 @@ class PersonalInfoController extends Controller
                             UserSocialMedia::create([
                                 'user_id' => $user->id,
                                 'social_id' => $social->social_id,
-                                'username' => $social->username,
-                                'password' => $social->password
+                                'username' => $social->username ?: null,
+                                'password' => $social->password ?: null
                             ]);
                         }
                     }
@@ -272,17 +269,17 @@ class PersonalInfoController extends Controller
                                     'user_id' => $user->id
                                 ], [
                                     'employer_name' => $employer->employer_name,
-                                    'employer_phone' => $employer->employer_phone,
-                                    'computer_username' => $employer->computer_username,
-                                    'computer_password' => $employer->computer_password
+                                    'employer_phone' => $employer->employer_phone ?: null,
+                                    'computer_username' => $employer->computer_username ?: null,
+                                    'computer_password' => $employer->computer_password ?: null
                                 ]);
                             } else {
                                 $userEmployer = UserEmployer::create([
                                     'user_id' => $user->id,
                                     'employer_name' => $employer->employer_name,
-                                    'employer_phone' => $employer->employer_phone,
-                                    'computer_username' => $employer->computer_username,
-                                    'computer_password' => $employer->computer_password
+                                    'employer_phone' => $employer->employer_phone ?: null,
+                                    'computer_username' => $employer->computer_username ?: null,
+                                    'computer_password' => $employer->computer_password ?: null
                                 ]);
                             }
 
@@ -291,11 +288,11 @@ class PersonalInfoController extends Controller
                                     'user_id' => $user->id,
                                     'employer_id' => $userEmployer->id
                                 ], [
-                                    'street_address1' => $employer->address->street_address1,
-                                    'street_address2' => $employer->address->street_address2,
-                                    'city' => $employer->address->city,
-                                    'state' => $employer->address->state,
-                                    'zipcode' => $employer->address->zipcode,
+                                    'street_address1' => $employer->address->street_address1 ?: null,
+                                    'street_address2' => $employer->address->street_address2 ?: null,
+                                    'city' => $employer->address->city ?: null,
+                                    'state' => $employer->address->state ?: null,
+                                    'zipcode' => $employer->address->zipcode ?: null,
                                 ]);
                             }
 
@@ -306,14 +303,14 @@ class PersonalInfoController extends Controller
                         }
                     }
                 }
-                
+
                 // Save step completed information
-                $user->steps()->syncWithoutDetaching(1, [
+                $user->steps()->syncWithoutDetaching([1 => [
                     'user_id' => $user->id,
                     'is_visited' => 1,
                     'is_filled' => 1,
                     'is_completed' => request('is_completed') ? 1 : 0
-                ]);
+                ]]);
 
                 DB::commit();
 
@@ -355,15 +352,15 @@ class PersonalInfoController extends Controller
      */
     protected function updatePersonalInformation(PersonalInfo $personalInfo): void
     {
-        $personalInfo->legal_name = request('legal_name') ?: "";
-        $personalInfo->nickname = request('nickname') ?: "";
-        $personalInfo->dob = Carbon::parse(request('dob')) ?: "";
-        $personalInfo->country_id = request('country_id') ?: 0;
-        $personalInfo->passport_number = request('passport_number') ?: "";
-        $personalInfo->father_name = request('father_name') ?: "";
-        $personalInfo->father_birth_place = request('father_birth_place') ?: "";
-        $personalInfo->mother_name = request('mother_name') ?: "";
-        $personalInfo->mother_birth_place = request('mother_birth_place') ?: "";
+        $personalInfo->legal_name = request('legal_name') ?: null;
+        $personalInfo->nickname = request('nickname') ?: null;
+        $personalInfo->dob = Carbon::parse(request('dob')) ?: null;
+        $personalInfo->country_id = request('country_id') ?: null;
+        $personalInfo->passport_number = request('passport_number') ?: null;
+        $personalInfo->father_name = request('father_name') ?: null;
+        $personalInfo->father_birth_place = request('father_birth_place') ?: null;
+        $personalInfo->mother_name = request('mother_name') ?: null;
+        $personalInfo->mother_birth_place = request('mother_birth_place') ?: null;
 
         $personalInfo->save();
     }
@@ -375,13 +372,13 @@ class PersonalInfoController extends Controller
      */
     protected function updatePersonalAddress($user, $homeAddress)
     {
-        return PersonalAddress::updateOrCreate(['user_id' => auth()->id()], [
+        return PersonalAddress::updateOrCreate(['user_id' => $user->id], [
             'user_id' => $user->id,
-            'street_address1' => $homeAddress->street_address1 ?: "",
-            'street_address2' => $homeAddress->street_address2 ?: "",
-            'city' => $homeAddress->city ?: "",
-            'state' => $homeAddress->state ?: "",
-            'zipcode' => $homeAddress->zipcode ?: "",
+            'street_address1' => $homeAddress->street_address1 ?: null,
+            'street_address2' => $homeAddress->street_address2 ?: null,
+            'city' => $homeAddress->city ?: null,
+            'state' => $homeAddress->state ?: null,
+            'zipcode' => $homeAddress->zipcode ?: null,
         ]);
     }
 }

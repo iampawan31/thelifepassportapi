@@ -17,7 +17,7 @@
                             name="employer_name"
                             class="field-input"
                             placeholder="Employer Name"
-                            v-model="localEmploymentDetail.employer_name"
+                            v-model.trim="localEmploymentDetail.employer_name"
                             value=""
                         />
                         <span
@@ -44,7 +44,7 @@
                             name="employer_phone"
                             class="field-input"
                             placeholder="Phone number"
-                            v-model="localEmploymentDetail.employer_phone"
+                            v-model.trim="localEmploymentDetail.employer_phone"
                             value=""
                         />
                         <span
@@ -85,7 +85,9 @@
                             name="company_computer_username"
                             class="field-input"
                             placeholder="Username"
-                            v-model="localEmploymentDetail.computer_username"
+                            v-model.trim="
+                                localEmploymentDetail.computer_username
+                            "
                             value=""
                         />
                         <span
@@ -107,7 +109,9 @@
                             name="company_computer_password"
                             class="field-input"
                             placeholder="Password"
-                            v-model="localEmploymentDetail.computer_password"
+                            v-model.trim="
+                                localEmploymentDetail.computer_password
+                            "
                             value=""
                         />
                         <span
