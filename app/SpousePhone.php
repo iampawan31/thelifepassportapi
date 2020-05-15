@@ -6,16 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class SpousePhone extends Model
 {
-    protected $primaryKey = 'user_id';
-    
     protected $fillable = ['user_id', 'phone', 'is_primary'];
 
-    public function getRouteKeyName() {
-        return 'user_id';
-    }
-
-    //Table Name
-    static function tableName() {
-        return with(new static)->getTable();
+    public function spouseinfo()
+    {
+        return $this->belongsTo(SpouseInfo::class, 'user_id');
     }
 }

@@ -22,8 +22,10 @@ class CreatePreviousSpouseInfosTable extends Migration
             $table->date('divorce_date')->nullable();
             $table->string('divorce_location', 255)->nullable();
             $table->string('email', 255)->nullable();
-            $table->enum('is_alimony_paid', [0, 1])->comment('0=> No, 1=>Yes');
+            $table->boolean('is_alimony_paid')->default(false);
             $table->foreign('user_id')->references('id')->on('users');
+            $table->string('divorce_agreement_doc', 500)->nullable();
+            $table->decimal('alimony_amount', 8, 2)->nullable();
             $table->timestamps();
         });
     }

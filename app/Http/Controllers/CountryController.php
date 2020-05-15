@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Countries;
-use Illuminate\Http\Request;
+use App\Country;
+use App\Http\Resources\Country as CountryResource;
+use App\Http\Controllers\Controller;
 
 class CountryController extends Controller
 {
@@ -14,95 +15,24 @@ class CountryController extends Controller
      */
     public function __construct()
     {
-        
+        $this->middleware('verified');
     }
 
     /**
-     * Display a listing of the resource.
+     * Display the Personal Information Page.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        $arrCountries = \App\Countries::select('id', 'country_name')->get();
-        $data = [];
-        if ($arrCountries->count()) {
-            foreach( $arrCountries as $country ) {
-                $data[] = ['id' => $country->id, 'text' => $country->country_name];
-            }
-        }
-        //$arrCountries = collect($arrCountries)->map(function($x){ return (array) $x; })->toArray(); 
-        return response()->json(['countries' => $data]);
-    }
+        $countries = Country::select('id', 'country_name')->get();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+        $map = $countries->map(function ($items) {
+            $data['id'] = $items->id;
+            $data['text'] = $items->country_name;
+            return $data;
+        });
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\PersonalInfo  $personalInfo
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Countries $personalInfo)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\PersonalInfo  $personalInfo
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Countries $personalInfo)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\PersonalInfo  $personalInfo
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Countries $personalInfo)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\PersonalInfo  $personalInfo
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Countries $personalInfo)
-    {
-        //
-    }
-
-    public function personaldetails()
-    {
-        
+        return response()->json(['countries' => $map]);
     }
 }

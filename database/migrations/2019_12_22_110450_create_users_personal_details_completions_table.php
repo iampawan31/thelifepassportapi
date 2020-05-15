@@ -17,9 +17,9 @@ class CreateUsersPersonalDetailsCompletionsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('step_id');
             $table->unsignedBigInteger('user_id');
-            $table->enum('is_filled', [0,1])->comment('0=>No, 1=>Yes');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('step_id')->references('id')->on('personal_details_steps');
+            $table->boolean('is_filled')->default(false);
+            $table->boolean('is_completed')->default(false);
+            $table->boolean('is_visited')->default(false);
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ class CreateUsersPersonalDetailsCompletionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('personal_details_completions');
+        Schema::dropIfExists('users_personal_details_completions');
     }
 }

@@ -1,134 +1,111 @@
 <template>
     <div class="c">
-        <div class="question-item" data-nextpage="questions/home-assistants.php">
-            <div class="section-data hidden">
-                <div class="data__wrapper">
-                    <div class="data">
-                        <div class="item item__header clearfix">
-                            <div class="item__name">Name</div>
-                            <div class="item__phone">Primary phone</div>
-                            <div class="item__email">Email address</div>
-                            <div class="item__action"></div>
-                        </div>
-                        <div class="item clearfix">
-                            <div class="item__name">
-                                <strong>Kapil Jain</strong>
-                            </div>
-                            <div class="item__phone">(987) 144 5190</div>
-                            <div class="item__email">hello@kapiljain.in</div>
-                            <div class="item__action">
-                                <a href="#" class="btn-edit">
-                                    <i data-feather="edit"></i>
-                                </a> &nbsp;
-                                <a href="#" class="btn-delete">
-                                    <i data-feather="trash-2"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="btn-wrapper">
-                        <a
-                            href="#"
-                            class="btn-primary link-toogle"
-                            data-toggle="frm-nominations"
-                        >Add member</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="section-form">
-                <div class="success-message">
-                    <div class="success-message__text">Member added successfully.</div>
-                    <button class="success-message__close">
-                        <i data-feather="x-square"></i>
-                    </button>
-                </div>
-
-                <div class="form-wrapper form-friends">
-                    <h3 class="heading4 uppercase">Add friend details</h3>
-                    <div class="error-message"></div>
+        <div
+            class="question-item"
+            data-nextpage="questions/home-assistants.php"
+        >
+            <!-- Add Close friends section -->
+            <div class="form-wrapper form-friends">
+                <h3 class="heading4 uppercase">Add friend details</h3>
+                <div class="error-message"></div>
+                <ValidationObserver ref="observer" v-slot="{ invalid }">
                     <form
                         id="frmFriends"
                         name="frmFriends"
-                        action="#"
                         method="post"
                         class="custom-form"
-                        @submit.prevent="handleSubmit()"
+                        @submit.prevent="handleSubmit"
                     >
-                        <div class="field-group">
-                            <label for="friend_name" class="input-label">Name</label>
-                            <input
-                                type="text"
-                                name="friend_name"
-                                id="txt_name"
-                                data-id="friend_name"
-                                class="field-input required"
-                                placeholder="Name"
-                            />
-                        </div>
-
-                        <div class="field-group">
-                            <label for="home_address">Home Address</label>
-                            <textarea
-                                rows="2"
-                                name="home_address"
-                                id="home_address"
-                                class="field-input"
-                                placeholder="Street Address, Town, City, State, Zipcode and country"
-                            ></textarea>
-                        </div>
-
-                        <div class="field-group">
-                            <label for="phone_number">Phone Numbers</label>
-                            <input
-                                type="text"
-                                name="phone_number"
-                                id="phone_number"
-                                class="field-input required input-mobile"
-                                placeholder="Primary contact number"
-                            />
-                            <div class="add-anohter-field">
-                                <div class="field-wrapper hidden">
-                                    <input
-                                        type="text"
-                                        name="phone_number"
-                                        id="phone_number"
-                                        class="field-input required input-mobile"
-                                        placeholder="Alternate contact number"
-                                    />
-                                    <a href="#" class="btn-remove">
-                                        <i data-feather="minus-circle"></i>
-                                    </a>
-                                </div>
-                                <div class="field-wrapper hidden">
-                                    <input
-                                        type="text"
-                                        name="phone_number"
-                                        id="phone_number"
-                                        class="field-input required input-mobile"
-                                        placeholder="Alternate contact number"
-                                    />
-                                    <a href="#" class="btn-remove">
-                                        <i data-feather="minus-circle"></i>
-                                    </a>
-                                </div>
-                                <div class="btn-add">
-                                    <a href="#">
-                                        <i data-feather="plus"></i> Add another
-                                    </a>
+                        <!-- Name section -->
+                        <div class="row">
+                            <div class="col nopadding">
+                                <div class="field-group">
+                                    <label for="legal_name" class="input-label"
+                                        >Name</label
+                                    >
+                                    <ValidationProvider
+                                        name="Friend Name"
+                                        rules="required|max:50"
+                                        v-slot="{ errors }"
+                                    >
+                                        <input
+                                            type="text"
+                                            name="legal_name"
+                                            id="legal_name"
+                                            class="field-input required"
+                                            placeholder="Name"
+                                            v-model="friendsDetails.legal_name"
+                                        />
+                                        <div
+                                            class="invalid-feedback d-block"
+                                            v-for="(error, index) in errors"
+                                            v-bind:key="index"
+                                        >
+                                            {{ error }}
+                                        </div>
+                                    </ValidationProvider>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="field-group">
-                            <label for="user_email" class="input-label">Email</label>
-                            <input
-                                type="text"
-                                name="user_email"
-                                id="user_email"
-                                class="field-input required email"
-                                placeholder="Email address"
+                        <!-- Home addresss section -->
+                            <home-address
+                                v-model="address"
+                                @input="
+                                    newAddress => {
+                                        address = newAddress;
+                                    }
+                                "
+                                address-type="friends"
+                                class="padding"
                             />
+
+                        <!-- Phone number(s) section -->
+                        <div class="row">
+                            <div class="col nopadding">
+                                <phone-details
+                                    @input="
+                                        newPhoneNumbers => {
+                                            phoneNumbers = newPhoneNumbers;
+                                        }
+                                    "
+                                    v-model="phones"
+                                ></phone-details>
+                            </div>
+                        </div>
+
+                        <!-- Former spouse's Email address section -->
+                        <div class="row">
+                            <div class="col nopadding">
+                                <div class="field-group">
+                                    <label for="email" class="input-label"
+                                        >Email</label
+                                    >
+                                    <ValidationProvider
+                                        name="Email address"
+                                        rules="email"
+                                        v-slot="{ errors }"
+                                    >
+                                        <input
+                                            type="text"
+                                            name="email"
+                                            id="email"
+                                            class="field-input required email"
+                                            placeholder="Email address"
+                                            v-model="friendsDetails.email"
+                                        />
+                                        <span
+                                            v-if="
+                                                errors != undefined &&
+                                                    errors.length
+                                            "
+                                            class="invalid-feedback d-block"
+                                        >
+                                            {{ errors[0] }}
+                                        </span>
+                                    </ValidationProvider>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="field-group clearfix">
@@ -139,21 +116,125 @@
                             />
                         </div>
                     </form>
-                    <div class="clearfix"></div>
-                </div>
+                </ValidationObserver>
+                <div class="clearfix"></div>
             </div>
         </div>
     </div>
 </template>
 <script>
+import PhoneDetails from "./elements/PhoneDetails.vue";
+import Email from "./elements/Email.vue";
+import HomeAddress from "./elements/Address";
+import { ValidationObserver, ValidationProvider } from "vee-validate";
 export default {
+    components: {
+        PhoneDetails,
+        HomeAddress,
+        Email,
+        ValidationObserver,
+        ValidationProvider
+    },
+    computed: {
+        isOtherSelected() {
+            return this.relationship === "5" ? true : false;
+        },
+        disabledDates() {
+            return { from: new Date() };
+        }
+    },
     data() {
-        return {};
+        return {
+            name: "",
+            relationship: "",
+            address: {},
+            phones: [],
+            emailAddress: "",
+            dateOfBirth: "",
+            relationshipOptions: [
+                { id: 1, text: "Brother" },
+                { id: 2, text: "Sister" },
+                { id: 3, text: "Son" },
+                { id: 4, text: "Daughter" },
+                { id: 5, text: "Other" }
+            ],
+            friendsDetails: [],
+            submitted: false,
+            friendId: 0
+        };
     },
     mounted() {},
+    created() {
+        this.friendId = this.$route.params.id;
+        this.getFriendsInfo();
+    },
     methods: {
-        handleSubmit(e) {
-            this.$router.push("/home-assistants-question");
+        async handleSubmit(e) {
+            this.submitted = true;
+
+            const isValid = await this.$refs.observer.validate();
+            if (!isValid) {
+                // Do Something
+            } else {
+                const form = e.target;
+                const formData = new FormData(form);
+                formData.append("friends_address", JSON.stringify(this.address));
+                formData.append("friends_phones", JSON.stringify(this.phones));
+
+                if (this.friendId) {
+                    axios
+                        .post(
+                            "/friendsinfo/" + this.friendId + "/updatedata",
+                            formData
+                        )
+                        .then(response => {
+                            console.log(response);
+                            this.$router.push("/close-friends-question");
+                        })
+                        .catch(function() {});
+                } else {
+                    axios
+                        .post("/friendsinfo/postdata", formData)
+                        .then(response => {
+                            this.$router.push("/close-friends-question");
+                        })
+                        .catch(function() {});
+                }
+            }
+
+            //this.$router.push("/close-friends-question");
+        },
+        updatePhoneNumbers(data) {
+            this.phones = data;
+        },
+        getFriendsInfo() {
+            if (this.friendId) {
+                axios
+                    .get("/friendsinfo/" + this.friendId + "/getfriendsinfo")
+                    .then(response => {
+                        if (response.status == 200) {
+                            this.friendsDetails = JSON.parse(
+                                JSON.stringify(response.data.data[0])
+                            );
+
+                            if (this.friendsDetails.address) {
+                                this.address = this.friendsDetails.address;
+                            }
+                            console.log(this.address);
+
+                            if (this.friendsDetails.phone.length > 0) {
+                                this.phones = this.friendsDetails.phone;
+                            } else {
+                                this.phones = [{ phone: null }];
+                            }
+                        }
+                    });
+            } else {
+                this.phones = [{ phone: null }];
+            }
+        },
+        updateHomeAddress(data) {
+            this.address = data;
         }
     }
 };

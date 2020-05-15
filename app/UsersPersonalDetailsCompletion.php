@@ -6,33 +6,62 @@ use Illuminate\Database\Eloquent\Model;
 
 class UsersPersonalDetailsCompletion extends Model
 {
-    protected $primaryKey = 'user_id';
-    
     protected $fillable = ['step_id', 'user_id', 'is_visited', 'is_filled', 'is_completed'];
 
-    public function getRouteKeyName() {
-        return 'user_id';
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'is_filled' => 'boolean',
+        'is_completed' => 'boolean',
+        'is_visited' => 'boolean',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
+    ];
+
+    /**
+     * The roles that belong to the user.
+     */
+    public function steps()
+    {
+        return $this->belongsToMany(PersonalDetailsSteps::class, 'users_personal_details_completions', 'user_id', 'step_id')->withTimestamps();
     }
 
-    //Table Name
-    static function tableName() {
-        return with(new static)->getTable();
-    }
+    public function updatestepinfo($request, $user_id)
+    {
+        $inputs     = $request;
+        $step_id    = $inputs['step_id'];
 
-    public function updatestepinfo($request, $user_id) {
-        $inputs         = $request;
-        $step_id        = $inputs['step_id'];
-        $is_visited     = $inputs['is_visited'] ? '1' : '0';
-        $is_filled      = $inputs['is_filled'] ? '1' : '0';
-        $is_completed   = $inputs['is_completed'] ? '1' : '0';
+        $arrData        = [];
+        $is_visited     = @$inputs['is_visited'] ? '1' : '0';
+        $is_filled      = @$inputs['is_filled'] ? '1' : '0';
+        $is_completed   = @$inputs['is_completed'] ? '1' : '0';
+
+        $arrData['step_id'] = $step_id;
+        $arrData['user_id'] = $user_id;
+
+        if ($is_visited) {
+            $arrData['is_visited'] = $is_visited;
+        }
+
+        if ($is_filled) {
+            $arrData['is_filled'] = $is_filled;
+        }
+
+        if ($is_completed) {
+            $arrData['is_completed'] = $is_completed;
+        }
 
         //check if record exists
         $result = self::where('step_id', $step_id)->where('user_id', $user_id)->get();
 
         if ($result->count() > 0) {
-            self::where('user_id', $user_id)->where('step_id', $step_id)->update(['is_visited' => $is_visited, 'is_filled' => $is_filled, 'is_completed' => $is_completed]);
+            self::where('user_id', $user_id)->where('step_id', $step_id)->update($arrData);
         } else {
-            self::Create(['step_id' => $step_id, 'user_id' => $user_id, 'is_visited' => $is_visited, 'is_filled' => $is_filled, 'is_completed' => $is_completed]);
+
+            self::Create($arrData);
         }
 
         return true;

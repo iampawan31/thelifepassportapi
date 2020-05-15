@@ -16,10 +16,10 @@ class CreatePreviousMarriageStatusesTable extends Migration
         Schema::create('previous_marriage_statuses', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
-            $table->enum('is_previously_married', [0,1,2])->comment('0=>No, 1=>Yes, 2=>Skipped')->nullable();
+            $table->boolean('is_previously_married')->default(false);
+            $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
-            $table->timestamps();
         });
     }
 

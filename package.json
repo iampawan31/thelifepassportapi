@@ -15,6 +15,8 @@
         "browser-sync": "^2.26.7",
         "browser-sync-webpack-plugin": "^2.0.1",
         "cross-env": "^5.1",
+        "eslint": "^6.8.0",
+        "eslint-plugin-vue": "^6.1.2",
         "jquery": "^3.2",
         "laravel-mix": "^4.0.7",
         "lodash": "^4.17.5",
@@ -26,13 +28,18 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "v-mask": "^2.0.2",
         "v-select2-component": "^0.4.1",
         "vee-validate": "^3.0.11",
         "vee-validate-laravel": "^1.1.0",
+        "vue-datetime-picker": "^0.2.1",
         "vue-router": "^3.1.3",
         "vue-select2": "^0.2.6",
+        "vue-sweetalert2": "^3.0.1",
         "vue2-datepicker": "^2.13.3",
+        "vue2-timepicker": "^1.0.7",
         "vuejs-datepicker": "^1.6.2",
-        "vuelidate": "^0.7.4"
+        "vuelidate": "^0.7.4",
+        "vuex": "^3.1.2"
     }
 }

@@ -6,16 +6,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class MarriageStatus extends Model
 {
-    protected $primaryKey = 'user_id';
-    
     protected $fillable = ['user_id', 'is_married'];
 
-    public function getRouteKeyName() {
-        return 'user_id';
-    }
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'is_married' => 'boolean',
+        'user_id' => 'integer'
+    ];
 
     //Table Name
-    static function tableName() {
+    static function tableName()
+    {
         return with(new static)->getTable();
     }
 }

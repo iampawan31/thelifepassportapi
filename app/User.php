@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'phone_number', 'password',
+        'name', 'email', 'phone_number', 'password', 'api_token'
     ];
 
     /**
@@ -36,4 +36,60 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * The relationships that should always be loaded.
+     *
+     * @var array
+     */
+    protected $with = ['personal', 'address', 'phones', 'emails', 'socials', 'employers', 'steps'];
+
+    /**
+     * Get the personal info associated with the user.
+     */
+    public function personal()
+    {
+        return $this->hasOne(PersonalInfo::class);
+    }
+
+    public function address()
+    {
+        return $this->hasOne(PersonalAddress::class);
+    }
+
+    public function phones()
+    {
+        return $this->hasMany(UserPhone::class)->select(['user_id', 'phone', 'is_primary']);
+    }
+
+    public function emails()
+    {
+        return $this->hasMany(UserEmail::class)->select(['user_id', 'email', 'password', 'is_primary']);
+    }
+
+    public function socials()
+    {
+        return $this->hasMany(UserSocialMedia::class);
+    }
+
+    public function employers()
+    {
+        return $this->hasMany(UserEmployer::class);
+    }
+
+    public function steps()
+    {
+        return $this->belongsToMany(PersonalDetailsSteps::class, 'users_personal_details_completions', 'user_id', 'step_id')
+            ->withTimestamps()
+            ->withPivot(['is_filled', 'is_visited', 'is_completed']);
+    }
+
+    public function stepCompleted($step)
+    {
+        $stepInformation = $this->steps()->wherePivot('step_id', $step)->first();
+
+        if ($stepInformation) {
+            return $stepInformation->pivot->is_completed;
+        }
+    }
 }
